@@ -6,8 +6,9 @@ The goal is to go through **the whole product-building process, from scratch to 
 
 ### Two core learning goals
 
-1. **Learn the technical aspects** — understand how a modern frontend product is structured, built, tested, and deployed.
-2. **Apply AI to build faster** — learn how to use AI first as an assistive tutor, then as an autonomous agent, and understand the difference between the two.
+1. **Go deeper into the technical side** of building real products: code, testing, APIs, CI/CD, Git, frameworks, developer tools, and even electronics fundamentals.
+2. **Make design-to-code handoff smoother** by building both sides myself and learning where things get lost in translation.
+3. **Bring AI into my everyday workflow** as a practical tool for designing, coding, and learning faster.
 
 ---
 
