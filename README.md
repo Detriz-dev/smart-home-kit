@@ -8,4 +8,4 @@
 
 - Product description
 - Roadmap 
-- Progress
+- [Learning goals](docs/learning/goals.md) 
