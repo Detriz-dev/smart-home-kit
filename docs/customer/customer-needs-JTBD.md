@@ -1,6 +1,7 @@
 This file defines user needs using the Jobs to Be Done (JTBD) framework, which describes the progress users are trying to make in a given situation rather than the features they ask for.
 
 **Table of content**
+[Customer profile](#customer-profile-)
 
 [Main job](#main-job)
 
@@ -13,6 +14,8 @@ This file defines user needs using the Jobs to Be Done (JTBD) framework, which d
 [Emotional jobs](#emotional-and-social-jobs)
 
 ---
+### Customer profile 
+Product designers, creative technologists, and frontend developers who need to test IoT ideas with real sensor data but don't have the electronics or embedded programming skills to build hardware prototypes themselves. They typically work in product teams or agencies that need to judge an idea's feasibility quickly before committing engineering resources.
 
 ### Main job
 
