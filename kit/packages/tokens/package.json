@@ -1,0 +1,21 @@
+{
+  "name": "@detriz-sh-kit/tokens",
+  "version": "0.0.0",
+  "description": "Design tokens for Detriz Smart Home Kit: primitive, semantic and component tokens as CSS variables",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    "./tokens.css": "./dist/tokens.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "style-dictionary build --config build/config.json"
+  },
+  "devDependencies": {
+    "style-dictionary": "^5.6.1"
+  }
+}

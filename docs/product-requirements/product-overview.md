@@ -1,6 +1,4 @@
-### 1. Product Description
-
-**DeTriz Smart Home Kit** is a plug-and-play prototyping kit that takes you from unboxed hardware to live sensor data in a working interface in minutes. You don't need wiring, soldering, firmware, or electrical engineering knowledge. The components you prototype with are the same ones you ship.
+** DeTriz Smart Home Kit** is a plug-and-play prototyping kit that takes you from unboxed hardware to live sensor data in a working interface in minutes. You don't need wiring, soldering, firmware, or electrical engineering knowledge. The components you prototype with are the same ones you ship.
 
 - **Snap-In Sensors, Zero Configuration:** Temperature, light, and air-quality modules click into the core hub. They are detected, calibrated, and streaming automatically, with no drivers, pin mapping, or setup screens. Modules are hot-swappable and keep stable IDs, so you can add, swap, or combine sensors mid-session without restarting the hub or changing your code.
 - **Live Data in a Few Lines of Code:** Every sensor shows up immediately on REST and WebSocket endpoints. A typed TypeScript SDK (e.g. a `useSensor` hook) puts a live reading into a React component in about three lines. You never need serial protocols, polling loops, or embedded code.

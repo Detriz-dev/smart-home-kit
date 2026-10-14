@@ -1,0 +1,25 @@
+{
+  "name": "smart-home-kit",
+  "private": true,
+  "description": "DeTriz Smart Home Kit: design system, Live Studio and Raspberry Pi hub in one monorepo",
+  "type": "module",
+  "packageManager": "pnpm@11.28.2",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "storybook": "turbo run dev --filter=storybook",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "devDependencies": {
+    "prettier": "^3.9.10",
+    "turbo": "~2.11.7",
+    "typescript": "~6.0.3"
+  }
+}

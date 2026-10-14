@@ -1,0 +1,41 @@
+{
+  "name": "@detriz-sh-kit/ui",
+  "version": "0.0.0",
+  "description": "React components for DeTriz Smart Home Kit",
+  "type": "module",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./styles.css": "./dist/styles.css"
+  },
+  "sideEffects": [
+    "*.css"
+  ],
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@storybook/react-vite": "^10.6.2",
+    "@types/react": "catalog:",
+    "@types/react-dom": "catalog:",
+    "@vitejs/plugin-react": "^6.1.2",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "^10.6.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.4"
+  },
+  "peerDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "dependencies": {
+    "@detriz-sh-kit/tokens": "workspace:*"
+  }
+}

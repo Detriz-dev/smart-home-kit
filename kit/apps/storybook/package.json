@@ -1,0 +1,20 @@
+{
+  "name": "storybook",
+  "private": true,
+  "description": "Design system documentation for DeTriz Smart Home Kit",
+  "type": "module",
+  "scripts": {
+    "dev": "storybook dev --port 6007",
+    "build": "storybook build --output-dir storybook-static"
+  },
+  "devDependencies": {
+    "@detriz-sh-kit/tokens": "workspace:*",
+    "@detriz-sh-kit/ui": "workspace:*",
+    "@storybook/react-vite": "^10.6.2",
+    "react": "catalog:",
+    "react-dom": "catalog:",
+    "storybook": "^10.6.2",
+    "typescript": "~6.0.3",
+    "vite": "^8.3.4"
+  }
+}
