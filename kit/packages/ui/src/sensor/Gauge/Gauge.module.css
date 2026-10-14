@@ -3,14 +3,15 @@
   .gauge {
     display: inline-block;
     margin: 0;
-    padding: var(--dtz-space-md);
-    border: 2px solid var(--dtz-color-accent);
-    font-family: var(--dtz-font-family-base);
+    padding: 5px;
+    border: 2px solid;
+    border-color: var(--shk-palette-blue-100);
+
+
   }
 
   .value {
     margin: 0;
-    color: var(--dtz-color-accent);
     font-size: 2em;
   }
 }

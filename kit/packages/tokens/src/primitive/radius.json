@@ -1,0 +1,11 @@
+{
+  "radius": {
+    "sm": { "$type": "dimension", "$value": "4px" },
+    "md": { "$type": "dimension", "$value": "8px" },
+    "full": {
+      "$type": "dimension",
+      "$value": "9999px",
+      "$description": "Fully rounded: pills and circles"
+    }
+  }
+}

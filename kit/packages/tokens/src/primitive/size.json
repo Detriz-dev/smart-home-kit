@@ -1,0 +1,11 @@
+{
+  "size": {
+    "sm": { "$type": "dimension", "$value": "16px" },
+    "md": { "$type": "dimension", "$value": "24px" },
+    "lg": {
+      "$type": "dimension",
+      "$value": "48px",
+      "$description": "Large icons and touch targets"
+    }
+  }
+}

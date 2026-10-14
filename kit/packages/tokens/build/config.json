@@ -3,7 +3,7 @@
   "platforms": {
     "css": {
       "transformGroup": "css",
-      "prefix": "dtz",
+      "prefix": "shk",
       "buildPath": "dist/",
       "files": [
         {

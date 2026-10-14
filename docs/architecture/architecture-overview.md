@@ -977,11 +977,18 @@ Now any TypeScript code can write `Reading` and get autocomplete for `value`, `u
 
 ```
 tokens/
-├── src/
-│   ├── color.json              exported from Figma variables (DTCG format)
-│   ├── space.json
-│   └── typography.json
-├── build/config.mjs            Style Dictionary config: which formats to output
+├── src/                        DTCG format (what Figma variables export to)
+│   ├── primitive/              raw values, named by look
+│   │   ├── palette.json        palette.blue.500, palette.gray.900…
+│   │   ├── typography.json
+│   │   ├── space.json
+│   │   ├── radius.json
+│   │   ├── border.json
+│   │   └── size.json
+│   ├── semantic/               named by purpose, reference primitives
+│   │   └── color.json          color.accent → {palette.blue.500}
+│   └── component/              per-component overrides (empty for now)
+├── build/config.json           Style Dictionary config: which formats to output
 └── dist/
     ├── tokens.css              :root { --dtz-color-accent: #1f6feb; … }
     ├── tokens.ts               export const colorAccent = "#1f6feb";
@@ -1003,14 +1010,15 @@ No React, no runtime dependencies. This package is just data.
 **Example.**
 
 ```json
-// src/color.json (DTCG format, the same structure Figma variables export to)
+// src/semantic/color.json (DTCG format, the same structure Figma variables export to).
+// Values are references to primitives in src/primitive/palette.json.
 {
   "color": {
-    "accent":  { "$type": "color", "$value": "#1f6feb" },
+    "accent":  { "$type": "color", "$value": "{palette.blue.500}" },
     "status": {
-      "connected":    { "$type": "color", "$value": "#1a7f37" },
-      "stale":        { "$type": "color", "$value": "#9a6700" },
-      "disconnected": { "$type": "color", "$value": "#6e7781" }
+      "connected":    { "$type": "color", "$value": "{palette.green.500}" },
+      "stale":        { "$type": "color", "$value": "{palette.amber.500}" },
+      "disconnected": { "$type": "color", "$value": "{palette.gray.500}" }
     }
   }
 }
@@ -1020,14 +1028,16 @@ After `pnpm build`, `dist/tokens.css` contains:
 
 ```css
 :root {
-  --dtz-color-accent: #1f6feb;
+  --dtz-palette-blue-500: #1f6feb;          /* primitives are output too… */
+  …
+  --dtz-color-accent: #1f6feb;              /* …and references are resolved to real values */
   --dtz-color-status-connected: #1a7f37;
   --dtz-color-status-stale: #9a6700;
-  --dtz-color-status-disconnected: #6e7781;
+  --dtz-color-status-disconnected: #7a8291;
 }
 ```
 
-Any website can use these, React or not: `<link rel="stylesheet" href="…/tokens.css">` and then `color: var(--dtz-color-accent)`.
+Any website can use these, React or not: `<link rel="stylesheet" href="…/tokens.css">` and then `color: var(--dtz-color-accent)`. Components use the semantic `--dtz-color-*` names, never `--dtz-palette-*`.
 
 #### 3. `@detriz-sh-kit/ui`: the components
 

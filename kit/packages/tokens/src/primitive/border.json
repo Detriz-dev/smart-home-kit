@@ -1,0 +1,8 @@
+{
+  "border": {
+    "width": {
+      "thin": { "$type": "dimension", "$value": "1px" },
+      "thick": { "$type": "dimension", "$value": "2px" }
+    }
+  }
+}

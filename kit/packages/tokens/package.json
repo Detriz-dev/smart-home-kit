@@ -1,7 +1,7 @@
 {
   "name": "@detriz-sh-kit/tokens",
   "version": "0.0.0",
-  "description": "Design tokens for DeTriz Smart Home Kit: colour, typography and spacing as CSS variables",
+  "description": "Design tokens for Detriz Smart Home Kit: primitive, semantic and component tokens as CSS variables",
   "type": "module",
   "files": [
     "dist"

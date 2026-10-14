@@ -4,7 +4,7 @@
   "description": "Design system documentation for DeTriz Smart Home Kit",
   "type": "module",
   "scripts": {
-    "dev": "storybook dev --port 6006",
+    "dev": "storybook dev --port 6007",
     "build": "storybook build --output-dir storybook-static"
   },
   "devDependencies": {

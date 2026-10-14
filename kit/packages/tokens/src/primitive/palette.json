@@ -1,0 +1,23 @@
+{
+  "palette": {
+    "blue": {
+      "100": { "$type": "color", "$value": "#dbe9fe" },
+      "300": { "$type": "color", "$value": "#79b0f8" },
+      "500": {
+        "$type": "color",
+        "$value": "#1f6feb",
+        "$description": "The brand blue"
+      },
+      "700": { "$type": "color", "$value": "#1550b3" },
+      "900": { "$type": "color", "$value": "#0b2e66" }
+    },
+    "gray": {
+      "0": { "$type": "color", "$value": "#ffffff" },
+      "100": { "$type": "color", "$value": "#f2f4f7" },
+      "300": { "$type": "color", "$value": "#c9ced6" },
+      "500": { "$type": "color", "$value": "#7a8291" },
+      "700": { "$type": "color", "$value": "#3d4450" },
+      "900": { "$type": "color", "$value": "#14181f" }
+    }
+  }
+}
