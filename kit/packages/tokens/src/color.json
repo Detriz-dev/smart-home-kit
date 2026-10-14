@@ -1,0 +1,9 @@
+{
+  "color": {
+    "accent": {
+      "$type": "color",
+      "$value": "#1f6feb",
+      "$description": "The one brand colour: borders, highlights and the reading value"
+    }
+  }
+}

@@ -1,0 +1,11 @@
+{
+  "font": {
+    "family": {
+      "base": {
+        "$type": "fontFamily",
+        "$value": "system-ui, sans-serif",
+        "$description": "The one typeface, used for all text"
+      }
+    }
+  }
+}

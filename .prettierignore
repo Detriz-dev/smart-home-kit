@@ -1,0 +1,6 @@
+pnpm-lock.yaml
+dist/
+storybook-static/
+
+# Has its own npm set-up until it moves to platform/apps/studio
+frontend/

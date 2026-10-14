@@ -1,0 +1,9 @@
+{
+  "space": {
+    "md": {
+      "$type": "dimension",
+      "$value": "16px",
+      "$description": "The one spacing step, used for padding"
+    }
+  }
+}

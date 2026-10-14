@@ -1,0 +1,13 @@
+packages:
+  - "kit/packages/*"
+  - "kit/apps/*"
+
+allowBuilds:
+  esbuild: true
+
+# One shared version list. Projects use "react": "catalog:" instead of a version number.
+catalog:
+  react: ^19.3.0
+  react-dom: ^19.3.0
+  "@types/react": ^19.3.0
+  "@types/react-dom": ^19.3.0

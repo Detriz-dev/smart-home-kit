@@ -1,0 +1,16 @@
+/* Only tokens (var(--dtz-…)), never raw values like #1f6feb or 16px. */
+@layer detriz {
+  .gauge {
+    display: inline-block;
+    margin: 0;
+    padding: var(--dtz-space-md);
+    border: 2px solid var(--dtz-color-accent);
+    font-family: var(--dtz-font-family-base);
+  }
+
+  .value {
+    margin: 0;
+    color: var(--dtz-color-accent);
+    font-size: 2em;
+  }
+}
