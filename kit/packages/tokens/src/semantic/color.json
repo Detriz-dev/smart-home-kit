@@ -19,7 +19,7 @@
     },
     "surface": {
       "$type": "color",
-      "$value": "{palette.gray.0}",
+      "$value": "{palette.white}",
       "$description": "Background of cards and panels"
     },
     "border": {
