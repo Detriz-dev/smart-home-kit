@@ -1,0 +1,24 @@
+{
+  "line-height": {
+    "tight": {
+      "$type": "number",
+      "$value": 1.1,
+      "$description": "Ratio of font size (CSS: 1.1)"
+    },
+    "snug": {
+      "$type": "number",
+      "$value": 1.25,
+      "$description": "Ratio of font size (CSS: 1.25)"
+    },
+    "normal": {
+      "$type": "number",
+      "$value": 1.5,
+      "$description": "Ratio of font size (CSS: 1.5)"
+    },
+    "relaxed": {
+      "$type": "number",
+      "$value": 1.65,
+      "$description": "Ratio of font size (CSS: 1.65)"
+    }
+  }
+}

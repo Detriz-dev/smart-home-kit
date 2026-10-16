@@ -17,25 +17,25 @@ Editing in only one place is the important part. If both Figma and the JSON get 
 ## 2. The flow
 
 ```
- Figma variables ──export──▶ figma/*.json ──convert──▶ src/**/*.json ──build──▶ tokens.css ──▶ ui / Storybook
-   (you edit here)          (raw Figma format)        (DTCG, generated,     (Style Dictionary)
-                                                       never edited by hand)
+ Figma variables ──export──▶ figma/<layer>/*.json ──convert──▶ src/<layer>/*.json ──build──▶ tokens.css ──▶ ui / Storybook
+   (you edit here)          (raw Figma export)             (DTCG, generated,        (Style Dictionary)
+                                                          never edited by hand)
 ```
 
 ### Workflow: changing a token
 
 Run the commands from the repo root.
 
-1. **Make a branch** named after the issue: `git switch -c <issue-number>-short-name`.
+1. **Be on a branch for the issue.** One branch per issue, not one per export: you can export, convert and commit many times on the same branch. Only make a new one when you start a new issue: `git switch -c <issue-number>-short-name`.
 2. **Edit** the variables in Figma (section 6 covers the naming).
-3. **Export** the collection from Figma and save the file over `kit/packages/tokens/figma/palette.json`. Don't put it in `src/`.
+3. **Export** the collection from Figma and save the file in the folder for its layer, for example over `kit/packages/tokens/figma/primitive/palette.json`. Don't put it in `src/`. Only put real Figma exports in these folders, because every file in them gets imported.
 4. **Convert** it to DTCG:
 
    ```bash
    pnpm --filter @detriz-sh-kit/tokens figma:import
    ```
 
-   This overwrites `src/primitive/palette.json` (see "The converter" below).
+   This converts **every** `figma/<layer>/<name>.json` into `src/<layer>/<name>.json`, overwriting it (see "The converter" below).
 
 5. **Build** the CSS:
 
@@ -59,26 +59,19 @@ Run the commands from the repo root.
 
 Style Dictionary only reads `src/`, so the files there stay and stay committed. What changes is **who writes them**:
 
-| File                                                                                     | Written by                               | Today                                                            |
-| ---------------------------------------------------------------------------------------- | ---------------------------------------- | ---------------------------------------------------------------- |
-| `src/primitive/palette.json`                                                             | The converter, from `figma/palette.json` | Generated. Never edit by hand; it's overwritten on every import. |
-| `src/primitive/space.json`, `size.json`, `radius.json`, `border.json`, `typography.json` | You, by hand                             | Hand-written until these variables exist in Figma.               |
-| `src/semantic/color.json`                                                                | You, by hand                             | Hand-written until a `semantic` collection exists in Figma.      |
-| `src/component/`                                                                         | Nobody yet                               | Empty.                                                           |
+| File                                                                                                     | Written by                             | Today                                                       |
+| -------------------------------------------------------------------------------------------------------- | -------------------------------------- | ----------------------------------------------------------- |
+| `src/primitive/*.json` (palette, space, size, radius, border-width, font-*, letter-spacing, line-height) | The converter, from `figma/primitive/` | Generated. Never edit by hand; overwritten on every import. |
+| `src/semantic/color.json`                                                                                | You, by hand                           | Hand-written until a `semantic` collection exists in Figma. |
+| `src/component/`                                                                                         | Nobody yet                             | Empty.                                                      |
 
 So you **don't add or copy files into `src/` yourself**. You save exports into `figma/`, and the converter writes `src/`.
 
 To move another group into Figma (for example spacing):
 
 1. Create the variables in Figma (`space/xs`, `space/sm`, …) with the same names as the existing JSON, so the CSS names don't change.
-2. Export the collection to `figma/space.json`.
-3. Add it to the `figma:import` script in `kit/packages/tokens/package.json`:
-
-   ```json
-   "figma:import": "node scripts/figma-to-dtcg.mjs figma/palette.json src/primitive/palette.json && node scripts/figma-to-dtcg.mjs figma/space.json src/primitive/space.json"
-   ```
-
-4. Run `figma:import`. From then on, `src/primitive/space.json` is generated too.
+2. Export the collection to `figma/primitive/space.json`. The folder and file name decide the output: `figma/primitive/space.json` → `src/primitive/space.json`.
+3. Run `figma:import`. From then on, `src/primitive/space.json` is generated too. Nothing else needs changing.
 
 If a hand-written file and a generated file define the same token, the one Style Dictionary reads last wins, and it prints a "token collision" warning. Keep every token in exactly one file.
 
@@ -100,15 +93,22 @@ Figma's variable export is **not** DTCG. It is a flat list of variables, with co
 { "palette": { "gray": { "500": { "$type": "color", "$value": "#848e94" } } } }
 ```
 
-What it does:
+If a file in `figma/` is already DTCG (it has `$type` and `$value`), the converter copies it as it is, only applying the group renames below.
+
+What it does with Figma's own format:
 
 - **Names → nesting.** `color/gray/500` becomes `palette` → `gray` → `500`.
+- **The file name is the group.** A variable whose name doesn't start with the file's name gets it in front: `100` in `font-size.json` becomes `font-size` → `100` (`--shk-font-size-100`). Without this, `100` from `font-size.json` and `100` from `radius.json` would be the same token, and Style Dictionary would warn about "token collisions".
 - **Renames groups** listed in `RENAME_TOP_GROUP` at the top of the script. Today it turns `color/` into `palette/`. Once the group is called `palette` in Figma, remove that entry.
 - **Colours → hex.** `r/g/b` becomes `#848e94` (8 digits if the colour is see-through).
-- **Numbers get a unit.** Number variables become `px` dimensions, except those scoped to font weight or opacity, which stay plain numbers.
-- **Aliases → `{…}`.** A variable that points to another one becomes `"{palette.gray.500}"`. If it points to a variable in another collection, the script uses the resolved value and prints a warning.
+- **Numbers get a unit.** Number variables become `px` dimensions, with these exceptions:
+  - font weight and opacity stay plain numbers (`500`);
+  - the **line-height primitives** (`line-height.json`) stay plain multipliers (`1.5`), because in CSS `1.5` means 1.5 × the font size. A line height typed straight into a semantic token (`70`) is px, because that's what Figma uses;
+  - the **letter-spacing primitives** (`letter-spacing.json`) are a percent of the font size, so `-2` becomes `-0.02em`. Letter spacing typed straight into a semantic token (`-1.28`) is px.
+- **Rounds decimals.** Figma stores `1.1` as `1.100000023841858`; the converter writes `1.1`.
+- **Aliases → `{…}`.** A variable that points to another one becomes `"{font-size.1000}"`, also when it points to a different collection (a semantic token pointing to a primitive). The converter reads every file in `figma/` to find the target, so export all collections you point to. If the target isn't exported, it uses the raw value and prints a warning.
 - **Descriptions → `$description`.**
-- **Modes.** It uses the first mode. For a collection with several modes, pass the name: `node scripts/figma-to-dtcg.mjs figma/semantic.json src/semantic/color.dark.json --mode dark`.
+- **Modes.** It uses the first mode. For a collection with several modes, pass the name: `node scripts/figma-to-dtcg.mjs figma/semantic/color.json src/semantic/color.dark.json --mode dark`.
 
 Rules:
 

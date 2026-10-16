@@ -1,11 +1,48 @@
 {
   "size": {
-    "sm": { "$type": "dimension", "$value": "16px" },
-    "md": { "$type": "dimension", "$value": "24px" },
-    "lg": {
+    "3": {
       "$type": "dimension",
-      "$value": "48px",
-      "$description": "Large icons and touch targets"
+      "$value": "12px"
+    },
+    "4": {
+      "$type": "dimension",
+      "$value": "16px"
+    },
+    "5": {
+      "$type": "dimension",
+      "$value": "20px"
+    },
+    "6": {
+      "$type": "dimension",
+      "$value": "24px"
+    },
+    "8": {
+      "$type": "dimension",
+      "$value": "32px"
+    },
+    "10": {
+      "$type": "dimension",
+      "$value": "40px"
+    },
+    "11": {
+      "$type": "dimension",
+      "$value": "44px"
+    },
+    "12": {
+      "$type": "dimension",
+      "$value": "48px"
+    },
+    "16": {
+      "$type": "dimension",
+      "$value": "64px"
+    },
+    "20": {
+      "$type": "dimension",
+      "$value": "80px"
+    },
+    "24": {
+      "$type": "dimension",
+      "$value": "96px"
     }
   }
 }

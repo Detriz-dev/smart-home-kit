@@ -14,7 +14,7 @@
   ],
   "scripts": {
     "build": "style-dictionary build --config build/config.json",
-    "figma:import": "node scripts/figma-to-dtcg.mjs figma/palette.json src/primitive/palette.json"
+    "figma:import": "node scripts/figma-to-dtcg.mjs"
   },
   "devDependencies": {
     "style-dictionary": "^5.6.1"

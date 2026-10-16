@@ -1,0 +1,24 @@
+{
+  "font-weight": {
+    "light": {
+      "$type": "fontWeight",
+      "$value": 300
+    },
+    "regular": {
+      "$type": "fontWeight",
+      "$value": 400
+    },
+    "medium": {
+      "$type": "fontWeight",
+      "$value": 500
+    },
+    "semibold": {
+      "$type": "fontWeight",
+      "$value": 600
+    },
+    "bold": {
+      "$type": "fontWeight",
+      "$value": 700
+    }
+  }
+}

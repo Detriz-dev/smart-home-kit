@@ -1,0 +1,12 @@
+{
+  "font-family": {
+    "sans": {
+      "$type": "fontFamily",
+      "$value": "Space Grotesk"
+    },
+    "mono": {
+      "$type": "fontFamily",
+      "$value": "Space Mono"
+    }
+  }
+}
