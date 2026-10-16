@@ -13,7 +13,7 @@ After reading it you should be able to:
 
 You don't have to read it in one go. Sections 1–4 explain how things work; sections 5–9 are step-by-step instructions you can come back to; the last sections are reference.
 
-For the bigger picture (why the kit is split into packages, how they'll connect to the Raspberry Pi), see the [Architecture Overview](../architecture/architecture-overview.md) and its [beginner's guide to `kit/packages`](../architecture/architecture-overview.md#appendix-understanding-kitpackages-a-beginners-guide).
+For the bigger picture (why the kit is split into packages, how they'll connect to the Raspberry Pi), see the [Architecture Overview](../architecture-overview.md) and its [beginner's guide to `kit/packages`](../architecture-overview.md#appendix-understanding-kitpackages-a-beginners-guide).
 
 ## Contents
 
@@ -433,7 +433,7 @@ Here's what Vite made from `Gauge.module.css` (real output, shortened):
 
 It's squeezed onto one line ("minified") to be smaller, and `.gauge` became `._gauge_1bxtm_3`. That's the CSS module renaming explained [below](#gaugemodulecss-its-styles).
 
-**Rules for `dist`:** never edit, never commit, delete any time (`pnpm build` recreates it). After the [split into two repos](../architecture/architecture-overview.md#preparing-for-the-split), `dist/` is exactly what gets published to npm (`"files": ["dist"]` in `package.json`).
+**Rules for `dist`:** never edit, never commit, delete any time (`pnpm build` recreates it). After the [split into two repos](../architecture-overview.md#preparing-for-the-split), `dist/` is exactly what gets published to npm (`"files": ["dist"]` in `package.json`).
 
 #### `storybook-static`: the built website
 
@@ -1230,7 +1230,7 @@ Which stories should you write? **One per state or interesting case**:
 
 - the normal case (`Default`),
 - edge cases: very long text, very short text, empty, unusual numbers (negative, huge, many decimals),
-- later, every Connection Status from the [Ubiquitous Language](../architecture/domain-model/ubiquitous-language.md): Connected, Stale, Disconnected, Fault.
+- later, every Connection Status from the [Ubiquitous Language](../domain-model/ubiquitous-language.md): Connected, Stale, Disconnected, Fault.
 
 If a case isn't in Storybook, nobody checks that it looks right, and it'll break in Live Studio first.
 
@@ -1276,7 +1276,7 @@ git commit -m "feat(ui): add Badge component"
 
 `git status` should show only files you wrote: the three Badge files and `index.ts`. If it shows `dist/`, `node_modules/` or `.turbo/`, something is wrong with `.gitignore`. Don't commit them.
 
-The commit message follows **conventional commits**: `feat` (a new feature), then the area in brackets (`ui`), then a short description. See [Way of working](../architecture/architecture-overview.md#way-of-working).
+The commit message follows **conventional commits**: `feat` (a new feature), then the area in brackets (`ui`), then a short description. See [Way of working](../architecture-overview.md#way-of-working).
 
 ---
 
