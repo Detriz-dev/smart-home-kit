@@ -4,23 +4,23 @@
       "$type": "dimension",
       "$value": "0px"
     },
-    "100": {
+    "4": {
       "$type": "dimension",
       "$value": "4px"
     },
-    "200": {
+    "8": {
       "$type": "dimension",
       "$value": "8px"
     },
-    "300": {
+    "12": {
       "$type": "dimension",
       "$value": "12px"
     },
-    "400": {
+    "16": {
       "$type": "dimension",
       "$value": "16px"
     },
-    "500": {
+    "24": {
       "$type": "dimension",
       "$value": "24px"
     },

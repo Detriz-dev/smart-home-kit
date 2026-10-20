@@ -7,14 +7,7 @@
 Holds every UI component the package offers: cards, gauges, charts, status indicators. This is the main thing kit users install @detriz/ui for.
 One folder per component, named after the component in PascalCase. All of its files live inside:
 ```
-packages/ui/src/components/ModuleCard/
-├── ModuleCard.tsx          ← component
-├── ModuleCard.module.css   ← styles (tokens only)
-├── ModuleCard.types.ts     ← ModuleCardProps and related types
-├── ModuleCard.stories.tsx  ← Storybook stories, one per state/variant
-├── ModuleCard.test.tsx     ← tests
-├── ModuleCard.mock.ts      ← example props shared by stories and tests
-└── index.ts                ← public exports: component + types
+packages/ui/src/components/ModuleCard
 ```
 
 ### UI Source directory structure
