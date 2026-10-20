@@ -1,0 +1,19 @@
+{
+  "letter-spacing": {
+    "tight": {
+      "$type": "dimension",
+      "$value": "-0.02em",
+      "$description": "Percent of font size (CSS: -0.02em)"
+    },
+    "normal": {
+      "$type": "dimension",
+      "$value": "0em",
+      "$description": "Percent of font size (CSS: 0em)"
+    },
+    "wide": {
+      "$type": "dimension",
+      "$value": "0.04em",
+      "$description": "Percent of font size (CSS: 0.04em)"
+    }
+  }
+}

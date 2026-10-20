@@ -1,5 +1,8 @@
 {
   "source": ["src/**/*.json"],
+  "log": {
+    "verbosity": "verbose"
+  },
   "platforms": {
     "css": {
       "transformGroup": "css",
@@ -8,7 +11,10 @@
       "files": [
         {
           "destination": "tokens.css",
-          "format": "css/variables"
+          "format": "css/variables",
+          "options": {
+            "outputReferences": true
+          }
         }
       ]
     }

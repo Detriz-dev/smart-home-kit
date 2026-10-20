@@ -4,3 +4,6 @@ storybook-static/
 
 # Has its own npm set-up until it moves to platform/apps/studio
 frontend/
+
+# Raw Figma exports, kept exactly as Figma writes them
+kit/packages/tokens/figma/
