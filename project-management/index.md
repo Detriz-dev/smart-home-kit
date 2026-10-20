@@ -1,10 +1,10 @@
 # Todo
 
 
-#### Product requirments
+#### Product requirements
 - [x] [Project overview](/docs/product-requirements/product-overview.md)
 - [x] [Roadmap](/docs/product-requirements/roadmap.md)
-- [ ] Project scope and requirements 
+- [x] Project scope and requirements 
 
 #### Project setup
 - [x] Project structure
@@ -18,14 +18,14 @@
 
 
 #### Style guide
-- [ ] **[Potential Component list](/project-management/tasks/potential-ui-component-list.md)**
-- [ ] Inspirations
-- [ ] [Primitives](/kit/packages/tokens/src/primitive) 
-- [ ] [Semantic](/kit/packages/tokens/src/semantic)
-- [ ] [Component](/kit/packages/tokens/src/component)
+- [x] Inspirations
+- [x] [Primitives](/kit/packages/tokens/src/primitive) 
+- [x] [Semantic](/kit/packages/tokens/src/semantic)
+
 
 #### Component 
 - [ ] Component creation workflow (Mock Temperature) 
+- [ ] [Component](/kit/packages/tokens/src/component)
 
 
 #### Landing page 

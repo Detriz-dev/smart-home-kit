@@ -1,0 +1,114 @@
+{
+  "status": {
+    "neutral": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.gray.100}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.gray.600}"
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.gray.800}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{palette.gray.400}"
+      },
+      "on-solid": {
+        "$type": "color",
+        "$value": "{palette.gray.950}"
+      }
+    },
+    "progress": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.blue.100}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.blue.600}"
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.blue.800}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{palette.blue.400}"
+      },
+      "on-solid": {
+        "$type": "color",
+        "$value": "{palette.gray.950}"
+      }
+    },
+    "success": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.green.100}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.green.600}"
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.green.800}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{palette.green.400}"
+      },
+      "on-solid": {
+        "$type": "color",
+        "$value": "{palette.gray.950}"
+      }
+    },
+    "warning": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.amber.100}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.amber.600}"
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.amber.800}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{palette.amber.400}"
+      },
+      "on-solid": {
+        "$type": "color",
+        "$value": "{palette.gray.950}"
+      }
+    },
+    "danger": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.red.100}"
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.red.600}"
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.red.800}"
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{palette.red.400}"
+      },
+      "on-solid": {
+        "$type": "color",
+        "$value": "{palette.gray.950}"
+      }
+    }
+  }
+}

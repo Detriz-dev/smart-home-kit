@@ -1,0 +1,16 @@
+{
+  "surface": {
+    "page": {
+      "$type": "color",
+      "$value": "{palette.gray.50}"
+    },
+    "default": {
+      "$type": "color",
+      "$value": "{palette.white}"
+    },
+    "sunken": {
+      "$type": "color",
+      "$value": "{palette.gray.100}"
+    }
+  }
+}

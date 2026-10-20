@@ -1,42 +1,42 @@
 {
   "font-size": {
-    "100": {
+    "12": {
       "$type": "dimension",
       "$value": "12px"
     },
-    "200": {
+    "14": {
       "$type": "dimension",
       "$value": "14px"
     },
-    "300": {
+    "16": {
       "$type": "dimension",
       "$value": "16px"
     },
-    "400": {
+    "18": {
       "$type": "dimension",
       "$value": "18px"
     },
-    "500": {
+    "20": {
       "$type": "dimension",
       "$value": "20px"
     },
-    "600": {
+    "24": {
       "$type": "dimension",
       "$value": "24px"
     },
-    "700": {
+    "32": {
       "$type": "dimension",
       "$value": "32px"
     },
-    "800": {
+    "40": {
       "$type": "dimension",
       "$value": "40px"
     },
-    "900": {
+    "48": {
       "$type": "dimension",
       "$value": "48px"
     },
-    "1000": {
+    "64": {
       "$type": "dimension",
       "$value": "64px"
     }

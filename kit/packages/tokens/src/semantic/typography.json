@@ -7,7 +7,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.1000}"
+        "$value": "{font-size.64}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -31,7 +31,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.800}"
+        "$value": "{font-size.40}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -55,7 +55,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.700}"
+        "$value": "{font-size.32}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -79,7 +79,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.600}"
+        "$value": "{font-size.24}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -103,7 +103,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.500}"
+        "$value": "{font-size.20}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -127,7 +127,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.400}"
+        "$value": "{font-size.18}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -151,7 +151,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.300}"
+        "$value": "{font-size.16}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -175,7 +175,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.200}"
+        "$value": "{font-size.14}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -199,7 +199,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.200}"
+        "$value": "{font-size.14}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -223,7 +223,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.100}"
+        "$value": "{font-size.12}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -247,7 +247,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.100}"
+        "$value": "{font-size.12}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -271,7 +271,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.900}"
+        "$value": "{font-size.48}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -295,7 +295,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.700}"
+        "$value": "{font-size.32}"
       },
       "font-weight": {
         "$type": "fontWeight",
@@ -319,7 +319,7 @@
       },
       "font-size": {
         "$type": "dimension",
-        "$value": "{font-size.200}"
+        "$value": "{font-size.14}"
       },
       "font-weight": {
         "$type": "fontWeight",
