@@ -30,27 +30,7 @@ The order to design and build a new UI component, from the first idea to a merge
 
 [Checklist](#checklist)
 
-## The order at a glance
 
-The rule behind the order: **decide before you draw, draw before you code, and code from the bottom of the import chain up.** Each file then only imports things that already exist.
-
-```mermaid
-flowchart LR
-    A[1. Issue + branch] --> B[2. Spec .md]
-    B --> C[3. Figma component]
-    C --> D[4. Missing tokens]
-    D --> E[5. Figma link to Claude]
-    E --> F[6. Types]
-    F --> G[7. Utils, icons, hooks]
-    G --> H[8. Mock props]
-    H --> I[9. Component .tsx]
-    I --> J[10. Stories]
-    J --> K[11. CSS]
-    K --> L[12. Exports]
-    L --> M[13. Check]
-    M --> N[14. Code Connect + PR]
-    C -. found a gap .-> B
-```
 
 | # | Step | Output | Done when |
 | --- | --- | --- | --- |
@@ -84,7 +64,7 @@ Start here, before Figma. Writing forces you to decide what the component **is**
 
 Create the folder and the file: `kit/packages/ui/src/components/<group>/<Name>/<Name>.md`.
 
-Sections, in this order (copy them from [`DevicePairingStatus.md`](/kit/packages/ui/src/components/status/DeviceParingStatus/DeviceParingStatus.md)):
+Sections, in this order (copy them from [`DevicePairingStatus.md`](/kit/packages/ui/src/components/status/DeviceParingStatus/DevicePairingStatus.md)):
 
 | Section | What to write |
 | --- | --- |
