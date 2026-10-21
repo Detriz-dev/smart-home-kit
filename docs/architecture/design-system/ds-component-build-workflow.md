@@ -8,7 +8,8 @@ The order to design and build a new UI component, from the first idea to a merge
 
 - [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md): the words you must use in props, labels and docs.
 - [Relationship and cardinality](/docs/architecture/domain-model/relationship-and-cardinality.md)
-- [Device lifecycle](/docs/architecture/domain-model/device-lifecycle.md)
+- [Device lifecyc
+- le](/docs/architecture/domain-model/device-lifecycle.md)
 - [UI component conventions](ui-component-conventions.md): folders and the import chain.
 - [Frontend conventions](/docs/architecture/frontend/frontend-conventions.md): naming rules.
 - [Figma → code handoff](figma-code-handoff.md): how tokens move from Figma into the repo.

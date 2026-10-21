@@ -4,3 +4,8 @@ export type {
   DevicePairingStatusProps,
   PairingStatus,
 } from "./components/status/DeviceParingStatus";
+export { DeviceCommunicationStatus } from "./components/status/DeviceCommunicationStatus";
+export type {
+  ConnectionStatus,
+  DeviceCommunicationStatusProps,
+} from "./components/status/DeviceCommunicationStatus";
