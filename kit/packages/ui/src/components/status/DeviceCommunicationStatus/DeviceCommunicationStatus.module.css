@@ -1,0 +1,46 @@
+@layer detriz {
+  /* Label then indicator in one row, as in Figma. */
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--shk-space-1);
+    padding: var(--shk-space-0) var(--shk-space-1);
+    background: var(--shk-surface-default);
+    color: var(--shk-palette-black);
+  }
+
+  /* Figma's 12px / regular / 18px text is the caption text style. */
+  .label {
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+    white-space: nowrap;
+  }
+
+  /* A filled circle. Its colour comes from the status, set below. */
+  .indicator {
+    flex-shrink: 0;
+    inline-size: var(--shk-size-3);
+    block-size: var(--shk-size-3);
+    border-radius: var(--shk-radius-full);
+    background: var(--shk-status-neutral-solid);
+  }
+
+  .root[data-status="disconnected"] .indicator {
+    background: var(--shk-status-neutral-solid);
+  }
+
+  .root[data-status="connecting"] .indicator {
+    background: var(--shk-status-progress-solid);
+  }
+
+  .root[data-status="connected"] .indicator {
+    background: var(--shk-status-success-solid);
+  }
+
+  .root[data-status="stale"] .indicator {
+    background: var(--shk-status-warning-solid);
+  }
+}

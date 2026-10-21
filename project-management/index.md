@@ -24,7 +24,7 @@
 
 
 #### Component 
-- [ ] Component creation workflow (Mock Temperature) 
+- [x] Component creation workflow (Mock Temperature) 
 - [ ] [Component](/kit/packages/tokens/src/component)
 
 
