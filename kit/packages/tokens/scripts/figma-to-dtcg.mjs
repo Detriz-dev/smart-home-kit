@@ -20,6 +20,13 @@ import { basename, dirname, join } from "node:path";
 // group has the right name in Figma.
 const RENAME_TOP_GROUP = { color: "palette" };
 
+// Figma stores one font name, but CSS needs fallbacks for while the font
+// loads or if it's missing. They're added after the Figma name.
+const FONT_FALLBACKS = {
+  "Space Grotesk": ["system-ui", "sans-serif"],
+  "Space Mono": ["ui-monospace", "monospace"],
+};
+
 // figma/<layer>/ mirrors src/<layer>/, one folder per token layer.
 const FIGMA_DIR = "figma";
 const SRC_DIR = "src";
@@ -169,7 +176,10 @@ function fromFigmaFormat(collection, input) {
         return { $type: "dimension", $value: value ?? `${raw}px` };
       case "STRING":
         if (scopes.includes("FONT_FAMILY"))
-          return { $type: "fontFamily", $value: value ?? raw };
+          return {
+            $type: "fontFamily",
+            $value: value ?? [raw, ...(FONT_FALLBACKS[raw] ?? [])],
+          };
         return { $value: value ?? raw };
       default:
         warnings.push(
