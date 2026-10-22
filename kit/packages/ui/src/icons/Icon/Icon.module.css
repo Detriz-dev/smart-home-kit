@@ -8,7 +8,13 @@
     fill: currentColor;
   }
 
-  /* Material Symbols are drawn on a 24px grid, so 20, 24 and 32px look sharpest. */
+  /* Material Symbols are drawn on a 24px grid, so 20, 24 and 32px look sharpest.
+     16px is for small text (caption), where 20px is too big. */
+  .root[data-size="xs"] {
+    inline-size: var(--shk-size-4);
+    block-size: var(--shk-size-4);
+  }
+
   .root[data-size="sm"] {
     inline-size: var(--shk-size-5);
     block-size: var(--shk-size-5);

@@ -9,5 +9,10 @@ export type {
   ConnectionStatus,
   DeviceCommunicationStatusProps,
 } from "./components/status/DeviceCommunicationStatus";
+export { LocationPath } from "./components/context/LocationPath";
+export type {
+  LocationPathLayout,
+  LocationPathProps,
+} from "./components/context/LocationPath";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
