@@ -47,7 +47,7 @@ Complexity has **two causes**:
 **Where the project already fights this**
 
 - **Change amplification** → design tokens. The brand blue lives once in `kit/packages/tokens/src/primitive/palette.json`. Components use `var(--shk-…)`, so changing the colour is a one-line edit.
-- **Cognitive load** → `docs/architecture/design-system/how-to-create-a-component.md` (section 8 is a checklist) and `CLAUDE.md`. The rules are written down, so you don't have to remember them.
+- **Cognitive load** → `docs/architecture/design-system/workflows/component-building.md` (the checklist is at the end) and `CLAUDE.md`. The rules are written down, so you don't have to remember them.
 - **Unknown unknowns** → Turborepo. `turbo.json` knows that `ui` depends on `tokens`, so it rebuilds things in the right order for you.
 
 Complexity is **incremental**: it never arrives in one big commit. It grows from hundreds of small "it's just one hard-coded value" decisions. That's why the book asks for "zero tolerance" on small things.
@@ -286,7 +286,7 @@ The Ubiquitous Language (`docs/architecture/domain-model/ubiquitous-language.md`
 - A **Sensor** is never called a "device", because a Sensor is not a Device.
 - **Space**, not "room": a Space doesn't need walls.
 - **Reading**, not "data point", "measurement" or "value".
-- Naming rules like unit suffixes (`temperatureC`), `is/has` for booleans and `on<Event>` for callbacks (`docs/architecture/frontend/frontend-conventions.md`) make names predictable.
+- Naming rules like unit suffixes (`temperatureC`), `is/has` for booleans and `on<Event>` for callbacks (`docs/architecture/design-system/ds-conventions-and-structure.md`) make names predictable.
 
 **Watch out:** `GaugeProps.label` is described as _"What is being measured, e.g. 'Kitchen'"_. "Kitchen" is a Space (where), not a Metric (what). A precise comment, maybe a precise prop name, avoids confusion.
 
@@ -302,7 +302,7 @@ Ways to keep it: **write it down**, **enforce it with tools**, and **when in Rom
 
 **In this project**
 
-- **Written down:** `how-to-create-a-component.md`, `ui-component-conventions.md`, `frontend-conventions.md`, `CLAUDE.md`.
+- **Written down:** `component-building.md`, `ds-conventions-and-structure.md`, `CLAUDE.md`.
 - **Enforced by tools:** Prettier (`pnpm format:check`), TypeScript (`pnpm --filter @detriz-sh-kit/ui typecheck`). Linting isn't set up yet, so rules like "no raw values in CSS" are only enforced by review. A Stylelint rule could check it automatically.
 - **A reference example:** `sensor/Gauge` is the one component everyone copies. That makes it important to keep it perfect: whatever is in it, including mistakes, will be copied.
 - **Every component has the same states** (loading, Connected, Stale, Disconnected, Fault), so users learn the pattern once.

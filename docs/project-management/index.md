@@ -15,8 +15,7 @@
 
 #### Product architecture
 - [x] [Ubiquitous language](/docs/architecture/domain-model/ubiquitous-language.md)
-- [x] [Frontend conventions](/docs/architecture/frontend/frontend-conventions.md)
-- [x] [UI Component conventions](/docs/architecture/design-system/ui-component-conventions.md)
+- [x] [UI Component conventions](/docs/architecture/design-system/ds-conventions-and-structure.md)
 - [x] [Relationship and cardinality](/docs/architecture/domain-model/relationship-and-cardinality.md) **
 
 

@@ -11,7 +11,7 @@
 // - Figma's own format: a collection with a flat list of variables, colours as
 //   r/g/b numbers from 0 to 1. This script converts it to DTCG.
 // - DTCG ($type, $value): already what Style Dictionary reads, so it's copied.
-// See docs/architecture/design-system/figma-code-handoff.md.
+// See docs/architecture/design-system/figma-variables-code-handoff.md.
 
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { basename, dirname, join } from "node:path";
