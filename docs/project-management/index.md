@@ -1,6 +1,9 @@
 # Todo
 
 
+- [ ] Update architecture - style guide
+- [ ] Create tone of voice 
+
 #### Product requirements
 - [x] [Project overview](/docs/product-requirements/product-overview.md)
 - [x] [Roadmap](/docs/product-requirements/roadmap.md)
