@@ -1,4 +1,4 @@
-# Figma → code handoff
+# Figma varaibles → code handoff
 
 How design tokens and components move from Figma into this repo (`kit/packages/tokens`, `kit/packages/ui`), and how to name things so both sides match.
 

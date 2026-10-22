@@ -1,0 +1,21 @@
+@layer detriz {
+  /* Square, never squashed in a flex row, filled with the text colour around it. */
+  .root {
+    display: inline-block;
+    flex-shrink: 0;
+    inline-size: var(--shk-size-6);
+    block-size: var(--shk-size-6);
+    fill: currentColor;
+  }
+
+  /* Material Symbols are drawn on a 24px grid, so 20, 24 and 32px look sharpest. */
+  .root[data-size="sm"] {
+    inline-size: var(--shk-size-5);
+    block-size: var(--shk-size-5);
+  }
+
+  .root[data-size="lg"] {
+    inline-size: var(--shk-size-8);
+    block-size: var(--shk-size-8);
+  }
+}

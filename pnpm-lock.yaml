@@ -78,6 +78,9 @@ importers:
         specifier: workspace:*
         version: link:../tokens
     devDependencies:
+      '@material-symbols/svg-400':
+        specifier: ^0.48.0
+        version: 0.48.0
       '@storybook/react-vite':
         specifier: ^10.6.2
         version: 10.6.2(@types/react-dom@19.3.0(@types/react@19.3.0))(@types/react@19.3.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(storybook@10.6.2(@types/react@19.3.0)(prettier@3.9.10)(react@19.3.0))(typescript@6.0.3)(vite@8.3.4(esbuild@0.28.2))
@@ -515,6 +518,9 @@ packages:
     engines: {node: '>=10.0'}
     peerDependencies:
       tslib: '2'
+
+  '@material-symbols/svg-400@0.48.0':
+    resolution: {integrity: sha512-W20MjbiDbLJQ5yi4CPz2y6lCZ9bk3pJ1d5Ra+uErvtj/guVrCNfcYyMZn3KqHpDyyKVfBGkuGHVcdi5h+5+EqA==}
 
   '@napi-rs/wasm-runtime@1.2.5':
     resolution: {integrity: sha512-HshSvXzmBxNzqejd3k/KemgQ3hdREUYFRRrgxOZ+gPljDIsO2SDZrVZMd4Z/HsxudQbE62OVyVFE8z9BCurfjA==}
@@ -2271,6 +2277,8 @@ snapshots:
       '@jsonjoy.com/buffers': 17.67.0(tslib@2.8.1)
       '@jsonjoy.com/codegen': 17.67.0(tslib@2.8.1)
       tslib: 2.8.1
+
+  '@material-symbols/svg-400@0.48.0': {}
 
   '@napi-rs/wasm-runtime@1.2.5(@emnapi/core@1.11.0)(@emnapi/runtime@1.11.0)':
     dependencies:
