@@ -12,7 +12,7 @@ const meta = {
   // Show `name` and `size` as dropdowns in the Controls panel.
   argTypes: {
     name: { control: "select", options: iconNames },
-    size: { control: "inline-radio", options: ["sm", "md", "lg"] },
+    size: { control: "inline-radio", options: ["xs", "sm", "md", "lg"] },
   },
 } satisfies Meta<typeof Icon>;
 
@@ -25,6 +25,10 @@ export const Default: Story = {};
 // Meaningful: screen readers announce "Disconnected".
 export const WithLabel: Story = {
   args: { name: "wifi_off", label: "Disconnected" },
+};
+
+export const ExtraSmall: Story = {
+  args: { size: "xs" },
 };
 
 export const Small: Story = {

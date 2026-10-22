@@ -1,0 +1,20 @@
+{
+  "color-text": {
+    "primary": {
+      "$type": "color",
+      "$value": "{palette.gray.900}"
+    },
+    "secondary": {
+      "$type": "color",
+      "$value": "{palette.gray.700}"
+    },
+    "disabled": {
+      "$type": "color",
+      "$value": "{palette.gray.400}"
+    },
+    "inverse": {
+      "$type": "color",
+      "$value": "{palette.white}"
+    }
+  }
+}

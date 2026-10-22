@@ -1,0 +1,60 @@
+@layer detriz {
+  /* A plain list with no bullets or indent. Icons take the same colour as the text.
+     inline: all parts in one row. Each column is as wide as its name, but can shrink to 0.
+     When space runs out, short names stay whole and long names share what's left. */
+  .root {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, max-content);
+    justify-content: start;
+    gap: var(--shk-space-4);
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    list-style: none;
+    color: var(--shk-color-text-primary);
+  }
+
+  /* grid: two parts per row. Hidden parts leave no gap, the rest move up. */
+  .root[data-layout="grid"] {
+    grid-auto-flow: row;
+    grid-template-columns: repeat(2, minmax(0, max-content));
+  }
+
+  /* stack: one part per line. */
+  .root[data-layout="stack"] {
+    grid-auto-flow: row;
+    grid-auto-columns: minmax(0, 100%);
+    gap: var(--shk-space-2);
+  }
+
+  /* Icon next to its name. min-inline-size lets a long name shrink instead of overflowing. */
+  .item {
+    display: flex;
+    align-items: center;
+    gap: var(--shk-space-1);
+    min-inline-size: 0;
+  }
+
+  /* Figma's 12px / regular / 18px text is the caption text style. Long names end with "…". */
+  .label {
+    overflow: hidden;
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  /* Read by screen readers, invisible on screen ("Floor: "). 1px is the standard size:
+     some screen readers skip text that is 0px. */
+  .visuallyHidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

@@ -8,13 +8,13 @@ One limit: style, weight and fill can't change at runtime. If you need a filled 
 
 ## Decisions
 
-| Decision                                       | Choice                          | Why                                                                                                          |
-| ---------------------------------------------- | ------------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| Style                                          | **Rounded**                     | Soft corners suit a friendly home product.                                                                   |
-| Weight                                         | **400**                         | The default; pairs with regular body text. Fixed by the `@material-symbols/svg-400` package.                 |
-| Sizes                                          | `sm` 20px, `md` 24px, `lg` 32px | `--shk-size-5`, `--shk-size-6`, `--shk-size-8`. Icons are drawn on a 24px grid, so these look sharpest.      |
-| Colour                                         | The surrounding text colour     | The SVG uses `fill: currentColor`. Set `color` with a token on the parent, never on the icon.                |
-| Metric → icon map (temperature → `thermostat`) | **Not decided yet**             | When the Metric types exist, put the map next to them, so every app shows the same icon for the same Metric. |
+| Decision                                       | Choice                                     | Why                                                                                                                                                              |
+| ---------------------------------------------- | ------------------------------------------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Style                                          | **Rounded**                                | Soft corners suit a friendly home product.                                                                                                                       |
+| Weight                                         | **400**                                    | The default; pairs with regular body text. Fixed by the `@material-symbols/svg-400` package.                                                                     |
+| Sizes                                          | `xs` 16px, `sm` 20px, `md` 24px, `lg` 32px | `--shk-size-4`, `--shk-size-5`, `--shk-size-6`, `--shk-size-8`. Icons are drawn on a 24px grid, so 20, 24 and 32px look sharpest; 16px is for caption-size text. |
+| Colour                                         | The surrounding text colour                | The SVG uses `fill: currentColor`. Set `color` with a token on the parent, never on the icon.                                                                    |
+| Metric → icon map (temperature → `thermostat`) | **Not decided yet**                        | When the Metric types exist, put the map next to them, so every app shows the same icon for the same Metric.                                                     |
 
 ## How it works
 
