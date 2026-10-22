@@ -18,9 +18,11 @@
   ],
   "scripts": {
     "build": "vite build && tsc -p tsconfig.build.json",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "icons": "node --experimental-strip-types --no-warnings=ExperimentalWarning scripts/generate-icons.mjs"
   },
   "devDependencies": {
+    "@material-symbols/svg-400": "^0.48.0",
     "@storybook/react-vite": "^10.6.2",
     "@types/react": "catalog:",
     "@types/react-dom": "catalog:",

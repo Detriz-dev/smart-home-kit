@@ -7,3 +7,6 @@ frontend/
 
 # Raw Figma exports, kept exactly as Figma writes them
 kit/packages/tokens/figma/
+
+# Written by kit/packages/ui/scripts/generate-icons.mjs
+kit/packages/ui/src/icons/generated/

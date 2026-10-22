@@ -23,16 +23,4 @@ The goal is to go through **the whole product-building process, from scratch to 
 | 5 | **AI as a learning tool first** | In Phase 1, AI is used to **explain, teach, and review** — I write and understand the code myself. |
 | 6 | **AI as a builder second** | In Phase 2, AI agents do most of the building, so I can compare speed, quality, and my level of understanding against Phase 1. |
 
----
 
-## Project Phases
-
-### Phase 1 — One Component, End-to-End (AI as Assistant)
-
-**Goal:** Build one simple component (e.g. `TemperatureCard`) and take it through the complete process, from an empty repository to a live deployed page.
-
-### Phase 2 — Second Component (AI as Agent)
-
-**Goal:** Build a second component (e.g. `StatusIndicator` or a historical chart) using **AI agents** to do most of the implementation.
-
----

@@ -9,3 +9,5 @@ export type {
   ConnectionStatus,
   DeviceCommunicationStatusProps,
 } from "./components/status/DeviceCommunicationStatus";
+export { Icon } from "./icons/Icon";
+export type { IconName, IconProps, IconSize } from "./icons/Icon";
