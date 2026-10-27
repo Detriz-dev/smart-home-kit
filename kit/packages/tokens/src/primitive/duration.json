@@ -1,0 +1,8 @@
+{
+  "duration": {
+    "1000": {
+      "$type": "duration",
+      "$value": "1000ms"
+    }
+  }
+}

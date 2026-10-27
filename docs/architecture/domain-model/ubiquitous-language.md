@@ -83,7 +83,7 @@ A Device's status is three separate fields, each answering one question. Keeping
 | **Connecting** | A paired Device is (re)establishing its connection. Happens after every power-up, restart or dropped link. | The Hub boots after a power cut and reconnects its Modules |
 | **Connected** | The Device is reachable and sending Readings. | The Kitchen Hub streams temperature every few seconds |
 | **Stale** | Connected, but no Reading arrived within the expected interval. | "Last update 5 min ago" on the Light Module |
-| **Disconnected** | The Device can't be reached. Last known values stay visible but dimmed. | The Hub was unplugged from the wall |
+| **Disconnected** | The Device can't be reached. Its last known values are hidden: a disconnected icon shows in their place. | The Hub was unplugged from the wall |
 
 ### Fault
 

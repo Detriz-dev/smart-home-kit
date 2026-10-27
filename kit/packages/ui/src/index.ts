@@ -14,5 +14,10 @@ export type {
   LocationPathLayout,
   LocationPathProps,
 } from "./components/context/LocationPath";
+export { ReadingValue } from "./components/readings/ReadingValue";
+export type {
+  ReadingValueProps,
+  ReadingValueSize,
+} from "./components/readings/ReadingValue";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";

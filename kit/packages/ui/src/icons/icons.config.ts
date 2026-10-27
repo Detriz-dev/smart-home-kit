@@ -15,6 +15,8 @@ export const iconConfig = {
     "humidity_percentage",
     "lightbulb",
     "lightbulb-fill",
+      "link_off",
+      "refresh",
     "sensors",
     "stairs_2",
     "thermostat",
