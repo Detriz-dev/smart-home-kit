@@ -103,7 +103,7 @@ stateDiagram-v2
 | **Connecting** | Establishing or re-establishing the connection. | Right after **Device Paired**, after a power-up, or **Reconnect Started** after a dropped link. |
 | **Connected** | Reachable, and Readings arrive on time. | **Device Connected**, or a **Reading Recorded** while Stale. |
 | **Stale** | Still reachable, but no Reading arrived within the expected interval. | **Device Went Stale**, raised by the Staleness Policy in Telemetry. |
-| **Disconnected** | Can't be reached. Last known values stay visible but dimmed. | **Device Disconnected**, or **Connection Timed Out** while Connecting. |
+| **Disconnected** | Can't be reached. Last known values are hidden: a disconnected icon shows in their place. | **Device Disconnected**, or **Connection Timed Out** while Connecting. |
 
 There is no end state: a Paired Device keeps cycling between these statuses until it is removed.
 
@@ -238,7 +238,7 @@ sequenceDiagram
 
     User->>Module: Pulls it out of Slot 2
     Hub->>API: Module Ejected
-    API->>Studio: Module is Disconnected (last values dimmed)
+    API->>Studio: Module is Disconnected (values replaced by the disconnected icon)
     User->>Module: Snaps it into Slot 4
     Module->>Hub: Identifies itself (same Device ID)
     Hub->>API: Module Inserted (Slot 4)
@@ -305,7 +305,7 @@ How each status maps to the design-system target states (see `CLAUDE.md`, "Compo
 | Paired + Connecting | loading | "Connecting…" |
 | Paired + Connected | Connected | Live value |
 | Paired + Stale | Stale | Value with "Last update 5 min ago" |
-| Paired + Disconnected | Disconnected | Last value, dimmed |
+| Paired + Disconnected | Disconnected | Disconnected icon instead of the value |
 | Any + Has Fault | Fault | Fault message and help for its Fault Code, **on top of** the connection state |
 
 ## Open questions
