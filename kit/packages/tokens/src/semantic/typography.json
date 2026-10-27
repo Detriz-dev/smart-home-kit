@@ -312,6 +312,54 @@
         "$description": "32px × letter-spacing/tight (-2%)"
       }
     },
+    "readout-sm": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font-family.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": "{font-size.20}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font-weight.medium}"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "22px",
+        "$description": "20px × line-height/tight (1.1)"
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "-0.4px",
+        "$description": "20px × letter-spacing/tight (-2%)"
+      }
+    },
+    "readout-xs": {
+      "font-family": {
+        "$type": "fontFamily",
+        "$value": "{font-family.sans}"
+      },
+      "font-size": {
+        "$type": "dimension",
+        "$value": "{font-size.14}"
+      },
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font-weight.medium}"
+      },
+      "line-height": {
+        "$type": "dimension",
+        "$value": "15px",
+        "$description": "14px × line-height/tight (1.1)"
+      },
+      "letter-spacing": {
+        "$type": "dimension",
+        "$value": "-0.28px",
+        "$description": "14px × letter-spacing/tight (-2%)"
+      }
+    },
     "code": {
       "font-family": {
         "$type": "fontFamily",
