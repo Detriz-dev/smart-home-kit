@@ -183,4 +183,3 @@ Every value is bound to a Figma variable. The number uses the readout text style
 ### Open questions
 
 - **Unit component.** Name and category to decide (for example `ReadingUnit` in Readings, or `Unit` in Context, since a Unit is a fixed fact). Its own spec comes later.
-- **Branch name.** The branch is `40-build-sensorreading-component`, the component is `ReadingValue`. Check the issue title matches.
