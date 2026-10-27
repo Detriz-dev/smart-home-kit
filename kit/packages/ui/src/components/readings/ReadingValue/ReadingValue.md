@@ -119,7 +119,7 @@ interface ReadingValueProps {
   value: number | null;
   /** True when the Device's Connection Status is Disconnected. Hides the value and shows the disconnected icon. */
   isDisconnected?: boolean;
-  /** How many decimal places to show. Defaults to 1. */
+  /** How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0). Defaults to 1. */
   fractionDigits?: number;
   /** How big the number is drawn. Defaults to `lg`. */
   size?: ReadingValueSize;
@@ -128,45 +128,48 @@ interface ReadingValueProps {
 
 Notes:
 
-- The value is a number, not a string, so the component formats it the same way everywhere (decimal mark, real minus sign `−`, thousands spacing).
+- The value is a number, not a string. The component formats it with the browser's language (`Intl.NumberFormat`), so every user sees their own decimal mark and thousands separator: "22.4" and "1,250" in English, "22,4" and "1250" in Polish.
+- The parent passes `fractionDigits` for the Metric: each Metric has its own natural precision (Temperature 1, Humidity 0, CO₂ 0, Illuminance 0). The default of 1 fits Temperature, the most common case.
 - There is no `unit` prop. The parent renders the Unit component next to it.
 - `isDisconnected` is the only status prop. It's a yes/no on purpose: Stale and Fault don't change this component, so a full `connectionStatus` prop would suggest it reacts to them. The parent sets it from the Device's Connection Status (`connectionStatus === "disconnected"`).
 - The Unit stays visible next to the icon in `disconnected` (for example: link_off °C). It tells the user what was measured even when the value is hidden.
 
 ### Example values
 
-From the glossary examples. Figma sample text and stories use these. The Metric column is only there to show where the number comes from.
+From the glossary examples. Figma sample text and stories use these. The Metric column is only there to show where the number comes from. Stories render in English; the Polish column shows the same props in a Polish browser.
 
-| Use              | Metric      | value                  | Shows             |
-| ---------------- | ----------- | ---------------------- | ----------------- |
-| Default          | Temperature | 22.4                   | 22.4              |
-| Humidity         | Humidity    | 48                     | 48                |
-| Below zero       | Temperature | -3.5                   | −3.5              |
-| Air quality      | CO₂         | 1250                   | 1 250             |
-| `LongText` story | Illuminance | 100000                 | 100 000           |
-| `Minimal` story  | Illuminance | 0                      | 0                 |
-| Loading          | Temperature | null                   | loading icon      |
-| Disconnected     | Temperature | 22.4, `isDisconnected` | disconnected icon |
+| Use              | Metric      | value                  | fractionDigits | Shows (English)   | Shows (Polish)    |
+| ---------------- | ----------- | ---------------------- | -------------- | ----------------- | ----------------- |
+| Default          | Temperature | 22.4                   | 1              | 22.4              | 22,4              |
+| Humidity         | Humidity    | 48                     | 0              | 48                | 48                |
+| Below zero       | Temperature | -3.5                   | 1              | -3.5              | -3,5              |
+| Air quality      | CO₂         | 1250                   | 0              | 1,250             | 1250              |
+| `LongText` story | Illuminance | 100000                 | 0              | 100,000           | 100 000           |
+| `Minimal` story  | Illuminance | 0                      | 0              | 0                 | 0                 |
+| Loading          | Temperature | null                   | 1              | loading icon      | loading icon      |
+| Disconnected     | Temperature | 22.4, `isDisconnected` | 1              | disconnected icon | disconnected icon |
 
 ### Tokens
 
 Every value is bound to a Figma variable. The number uses the readout text styles: font family, size, weight, line height and letter spacing, for example `--shk-typography-readout-lg-font-size`.
 
-| Part  | Size | Property   | Figma variable                   | Code token                                      | In `tokens.css`?             |
-| ----- | ---- | ---------- | -------------------------------- | ----------------------------------------------- | ---------------------------- |
-| value | all  | colour     | `color-text/primary`             | `--shk-color-text-primary`                      | yes                          |
-| value | lg   | text style | `typography/readout-lg/*`        | `--shk-typography-readout-lg-*` (48 / 53 / 500) | yes                          |
-| value | md   | text style | `typography/readout/*`           | `--shk-typography-readout-*` (32 / 35 / 500)    | yes                          |
-| value | sm   | text style | `typography/readout-sm/*`        | `--shk-typography-readout-sm-*` (20 / 22 / 500) | yes                          |
-| value | xs   | text style | `typography/readout-xs/*`        | `--shk-typography-readout-xs-*` (14 / 15 / 500) | yes                          |
-| root  | all  | padding    | none                             | none (spacing belongs to the parent)            | —                            |
-| icon  | all  | name       | `refresh` (loading)              | `refresh` in `icons.config.ts`                  | config yes, generated **no** |
-| icon  | all  | name       | `link_off` (disconnected)        | `link_off` in `icons.config.ts`                 | config yes, generated **no** |
-| icon  | lg   | size       | 32×32                            | `Icon size="lg"` (32px)                         | yes                          |
-| icon  | md   | size       | 24×24                            | `Icon size="md"` (24px)                         | yes                          |
-| icon  | sm   | size       | 20×20                            | `Icon size="sm"` (20px)                         | yes                          |
-| icon  | xs   | size       | 16×16                            | `Icon size="xs"` (16px)                         | yes                          |
-| icon  | all  | colour     | `color-text/secondary` (to bind) | `--shk-color-text-secondary`                    | yes                          |
+| Part  | Size    | Property      | Figma variable                 | Code token                                      | In `tokens.css`? |
+| ----- | ------- | ------------- | ------------------------------ | ----------------------------------------------- | ---------------- |
+| value | all     | colour        | `color-text/primary`           | `--shk-color-text-primary`                      | yes              |
+| value | lg      | text style    | `typography/readout-lg/*`      | `--shk-typography-readout-lg-*` (48 / 53 / 500) | yes              |
+| value | md      | text style    | `typography/readout/*`         | `--shk-typography-readout-*` (32 / 35 / 500)    | yes              |
+| value | sm      | text style    | `typography/readout-sm/*`      | `--shk-typography-readout-sm-*` (20 / 22 / 500) | yes              |
+| value | xs      | text style    | `typography/readout-xs/*`      | `--shk-typography-readout-xs-*` (14 / 15 / 500) | yes              |
+| root  | xs      | min height    | 16 (icon taller than the line) | `--shk-size-4` (16px)                           | yes              |
+| root  | all     | padding       | none                           | none (spacing belongs to the parent)            | —                |
+| icon  | all     | name          | `refresh` (loading)            | `refresh` in `icons.config.ts`                  | yes              |
+| icon  | all     | name          | `link_off` (disconnected)      | `link_off` in `icons.config.ts`                 | yes              |
+| icon  | lg      | size          | 32×32                          | `Icon size="lg"` (32px)                         | yes              |
+| icon  | md      | size          | 24×24                          | `Icon size="md"` (24px)                         | yes              |
+| icon  | sm      | size          | 20×20                          | `Icon size="sm"` (20px)                         | yes              |
+| icon  | xs      | size          | 16×16                          | `Icon size="xs"` (16px)                         | yes              |
+| icon  | all     | colour        | `color-text/secondary`         | `--shk-color-text-secondary`                    | yes              |
+| icon  | loading | spin duration | — (Figma has no motion)        | `--shk-motion-duration-spin` (1000ms)           | yes              |
 
 ### Accessibility
 
@@ -179,8 +182,5 @@ Every value is bound to a Figma variable. The number uses the readout text style
 
 ### Open questions
 
-- **"Connecting" or "loading"?** In the glossary, **Connecting** means the _Device_ is re-establishing its link (a Connection Status, shown by `DeviceCommunicationStatus`). This component's second state means "_we_ don't have a number yet", so the spec calls it `loading`, matching Figma. Confirm that's what you meant.
 - **Unit component.** Name and category to decide (for example `ReadingUnit` in Readings, or `Unit` in Context, since a Unit is a fixed fact). Its own spec comes later.
-- **Decimal places per Metric.** Should the parent always pass `fractionDigits`, or should there be a default per Metric (Temperature 1, CO₂ 0)? The glossary has no word for this yet.
-- **Number format.** Decimal point or comma ("22.4" or "22,4")? Follow the browser's language, or a setting?
 - **Branch name.** The branch is `40-build-sensorreading-component`, the component is `ReadingValue`. Check the issue title matches.

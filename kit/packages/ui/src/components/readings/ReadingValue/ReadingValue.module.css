@@ -1,0 +1,85 @@
+@layer detriz {
+  /* Holds the number or an icon, centred. No padding or background: spacing comes from the parent.
+     min-block-size = the line height of the size's text style, so every state is as tall as the
+     number and nothing moves when the state changes. Default size is lg. */
+  .root {
+    display: inline-flex;
+    align-items: center;
+    min-block-size: var(--shk-typography-readout-lg-line-height);
+    color: var(--shk-color-text-primary);
+  }
+
+  .root[data-size="md"] {
+    min-block-size: var(--shk-typography-readout-line-height);
+  }
+
+  .root[data-size="sm"] {
+    min-block-size: var(--shk-typography-readout-sm-line-height);
+  }
+
+  /* xs: the 16px icon is taller than the 15px text line, so the icon sets the height. */
+  .root[data-size="xs"] {
+    min-block-size: var(--shk-size-4);
+  }
+
+  /* The number, in the readout text style for its size. Tabular figures give every digit the same
+     width, so 19.9 → 20.0 doesn't shift what's next to it. */
+  .value {
+    font-family: var(--shk-typography-readout-lg-font-family);
+    font-size: var(--shk-typography-readout-lg-font-size);
+    font-weight: var(--shk-typography-readout-lg-font-weight);
+    line-height: var(--shk-typography-readout-lg-line-height);
+    letter-spacing: var(--shk-typography-readout-lg-letter-spacing);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .root[data-size="md"] .value {
+    font-family: var(--shk-typography-readout-font-family);
+    font-size: var(--shk-typography-readout-font-size);
+    font-weight: var(--shk-typography-readout-font-weight);
+    line-height: var(--shk-typography-readout-line-height);
+    letter-spacing: var(--shk-typography-readout-letter-spacing);
+  }
+
+  .root[data-size="sm"] .value {
+    font-family: var(--shk-typography-readout-sm-font-family);
+    font-size: var(--shk-typography-readout-sm-font-size);
+    font-weight: var(--shk-typography-readout-sm-font-weight);
+    line-height: var(--shk-typography-readout-sm-line-height);
+    letter-spacing: var(--shk-typography-readout-sm-letter-spacing);
+  }
+
+  .root[data-size="xs"] .value {
+    font-family: var(--shk-typography-readout-xs-font-family);
+    font-size: var(--shk-typography-readout-xs-font-size);
+    font-weight: var(--shk-typography-readout-xs-font-weight);
+    line-height: var(--shk-typography-readout-xs-line-height);
+    letter-spacing: var(--shk-typography-readout-xs-letter-spacing);
+  }
+
+  /* Wraps the Icon. Icons are secondary text colour, so they read as "no value" rather than content.
+     The Icon takes its colour from here. */
+  .icon {
+    display: inline-flex;
+    color: var(--shk-color-text-secondary);
+  }
+
+  /* loading: the refresh icon turns, one turn per spin duration. */
+  .root[data-state="loading"] .icon {
+    animation: spin var(--shk-motion-duration-spin) linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* Reduced motion: the icon stands still but stays visible, so loading is still shown. */
+  @media (prefers-reduced-motion: reduce) {
+    .root[data-state="loading"] .icon {
+      animation: none;
+    }
+  }
+}

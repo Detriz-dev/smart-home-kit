@@ -31,7 +31,7 @@
 | Context / provider | `<Thing>Context`, `<Thing>Provider`         | `TelemetryProvider`                                        |
 | CSS token | `--<prefix>-<category>-<role>-<variant>`    | `--shk-color-status-warning`, `--space-4`                  |
 | CSS module | same name as component                      | `ModuleCard.module.css`                                    |
-| Component states | fixed vocabulary                            | `default`, `loading`, `empty`, `error`, `offline`, `stale` |
+| Component states | fixed vocabulary                            | `default`, `loading`, `empty`, `error`, `disconnected`, `stale` |
 | Mock / fixture data | `<name>.mock.ts`                            | `readings.mock.ts`                                         |
 | Asset | kebab-case, type prefix                     | `icon-air-quality.svg`                                     |
 | Route | kebab-case                                  | `/design-system`, `/live-studio`                           |

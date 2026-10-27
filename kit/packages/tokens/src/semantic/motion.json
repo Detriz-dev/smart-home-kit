@@ -1,0 +1,11 @@
+{
+  "motion": {
+    "duration": {
+      "spin": {
+        "$type": "duration",
+        "$value": "{duration.1000}",
+        "$description": "One full turn of a loading icon, e.g. ReadingValue's refresh icon."
+      }
+    }
+  }
+}
