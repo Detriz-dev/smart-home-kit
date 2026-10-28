@@ -10,7 +10,7 @@ Every component **starts with a Markdown file**. The `.md` file decides what the
                      └── fix ────────┘   (the review sends you back until it passes)
 ```
 
-Worked examples in the repo: [`DeviceCommunicationStatus`](/kit/packages/ui/src/components/status/DeviceCommunicationStatus/) and [`DevicePairingStatus`](/kit/packages/ui/src/components/status/DeviceParingStatus/).
+Worked examples in the repo: [`DeviceCommunicationStatus`](/kit/packages/ui/src/components/status/DeviceCommunicationStatus/) and [`DevicePairingStatus`](/kit/packages/ui/src/components/status/DevicePairingStatus/).
 
 ## Contents
 
