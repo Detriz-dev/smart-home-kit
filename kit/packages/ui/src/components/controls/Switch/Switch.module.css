@@ -1,0 +1,70 @@
+@layer detriz {
+  /* The switch and its On/Off text side by side. */
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--shk-space-2);
+    color: var(--shk-color-text-primary);
+    cursor: pointer;
+  }
+
+  /* The pill-shaped track: 40 × 24px, grey when off. */
+  .track {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    inline-size: var(--shk-size-10);
+    block-size: var(--shk-size-6);
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-1);
+    border: var(--shk-border-width-0);
+    border-radius: var(--shk-radius-full);
+    background: var(--shk-status-neutral-border);
+    cursor: inherit;
+  }
+
+  /* On: blue track. */
+  .track[aria-checked="true"] {
+    background: var(--shk-status-progress-border);
+  }
+
+  /* The white circle. It sits on the left when off. */
+  .thumb {
+    inline-size: var(--shk-size-4);
+    block-size: var(--shk-size-4);
+    border-radius: var(--shk-radius-full);
+    background: var(--shk-surface-default);
+  }
+
+  /* On: the circle moves to the right by its own width. */
+  .track[aria-checked="true"] .thumb {
+    transform: translateX(var(--shk-size-4));
+  }
+
+  /* A visible ring when the switch is reached with the keyboard. */
+  .track:focus-visible {
+    outline: var(--shk-border-width-medium) solid
+      var(--shk-status-progress-border);
+    outline-offset: var(--shk-space-1);
+  }
+
+  /* Disabled: grey track and grey text, no pointer. */
+  .root:has(.track:disabled) {
+    color: var(--shk-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .track:disabled {
+    background: var(--shk-color-text-disabled);
+  }
+
+  /* "On" / "Off" in the label text style. */
+  .state {
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    white-space: nowrap;
+  }
+}
