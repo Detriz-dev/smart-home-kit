@@ -62,7 +62,7 @@ Target states:
 | Target state | Applies? | Why                                                                                               |
 | ------------ | -------- | ------------------------------------------------------------------------------------------------- |
 | loading      | later    | Skipped for now. Later: a placeholder of the same height, so the layout doesn't jump.             |
-| Connected    | no       | Connection Status is shown by `DeviceConnectionStatus`.                                        |
+| Connected    | no       | Connection Status is shown by `DeviceConnectionStatus`.                                           |
 | Stale        | no       | Same as above.                                                                                    |
 | Disconnected | no       | The path doesn't change when a Device is unplugged. A parent card may dim it with the last value. |
 | Fault        | no       | Fault is Status.                                                                                  |
@@ -71,27 +71,24 @@ Target states:
 
 ```
 root                      (layout=inline | grid | stack)
-├── row                   (grid only: two parts per row)
-│   ├── site
-│   │   ├── icon          home
-│   │   └── label         "My flat"
-│   └── floor
-│       ├── icon          stairs_2
-│       └── label         "Level 2"
-└── row
-    ├── space
-    │   ├── icon          door_front
-    │   └── label         "Bedroom"
-    └── device
-        ├── icon          tv_gen
-        └── label         "Climate Module"
+├── site
+│   ├── icon              home
+│   └── label             "My flat"
+├── floor
+│   ├── icon              stairs_2
+│   └── label             "Level 2"
+├── space
+│   ├── icon              door_front
+│   └── label             "Bedroom"
+└── device
+    ├── icon              tv_gen
+    └── label             "Climate Module"
 ```
 
-1. **root**: holds the parts. Its direction and gap come from `layout`.
-2. **row**: only in Figma's `grid`. In code there is no row element: `grid` is a two-column CSS grid, so the parts fill the rows in order (a list may only have list items inside).
-3. **item** (`site`, `floor`, `space`, `device`): one part of the path, an icon next to a label.
-4. **icon**: tells which kind of part it is. Decorative for screen readers (see Accessibility).
-5. **label**: the name.
+1. **root**: holds the parts. Its direction and gap come from `layout`. In `grid` it is a two-column grid in both Figma and code, so the parts fill the rows in order and each column is as wide as its longest name.
+2. **item** (`site`, `floor`, `space`, `device`): one part of the path, an icon next to a label.
+3. **icon**: tells which kind of part it is. Decorative for screen readers (see Accessibility).
+4. **label**: the name.
 
 Long names: the label shrinks and ends with `…`.
 
@@ -117,22 +114,18 @@ interface LocationPathProps {
 
 ### Tokens
 
-From the Figma review. Figma's 12px text uses the `label` line height; code uses the **caption** style instead, which is the same 12/18 regular.
+The same tokens are bound in Figma.
 
-| Part            | Property     | Token                                   |
-| --------------- | ------------ | --------------------------------------- |
-| label           | colour       | `--shk-color-text-primary`              |
-| label           | font family  | `--shk-typography-caption-font-family`  |
-| label           | font size    | `--shk-typography-caption-font-size`    |
-| label           | font weight  | `--shk-typography-caption-font-weight`  |
-| label           | line height  | `--shk-typography-caption-line-height`  |
-| item            | icon ↔ label | `--shk-space-1` (4px)                   |
-| root (`inline`) | gap          | `--shk-space-4` (16px)                  |
-| row (`grid`)    | gap          | `--shk-space-4` (16px)                  |
-| root (`grid`)   | row gap      | `--shk-space-4` (16px)                  |
-| root (`stack`)  | gap          | `--shk-space-2` (8px)                   |
-| icon            | colour       | `--shk-color-text-primary` (to confirm) |
-| icon            | size         | `Icon size="xs"` (16px)                 |
+| Part            | Property       | Token                                                |
+| --------------- | -------------- | ---------------------------------------------------- |
+| label           | colour         | `--shk-color-text-primary`                           |
+| label           | text           | `--shk-typography-caption-*` (12px / regular / 18px) |
+| item            | icon ↔ label   | `--shk-space-1` (4px)                                |
+| root (`inline`) | gap            | `--shk-space-4` (16px)                               |
+| root (`grid`)   | column and row | `--shk-space-4` (16px)                               |
+| root (`stack`)  | gap            | `--shk-space-2` (8px)                                |
+| icon            | colour         | `--shk-color-text-primary` (inherited from the text) |
+| icon            | size           | `Icon size="xs"` (16px)                              |
 
 ### Accessibility
 

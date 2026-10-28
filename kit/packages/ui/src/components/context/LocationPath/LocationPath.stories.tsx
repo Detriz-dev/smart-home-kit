@@ -58,8 +58,18 @@ export const GridNoFloor: Story = {
   args: { layout: "grid", floorName: undefined },
 };
 
-// Long names end with "…" when there isn't enough room. The frame is narrow on purpose.
-export const LongNames: Story = {
+// Stress story: the smallest case, one short part.
+export const Minimal: Story = {
+  args: {
+    siteName: undefined,
+    floorName: undefined,
+    spaceName: undefined,
+    deviceName: "Hub",
+  },
+};
+
+// Stress story: long names end with "…" when there isn't enough room. The frame is narrow on purpose.
+export const LongText: Story = {
   args: {
     siteName: "Grandparents' summer house by the lake",
     spaceName: "Kitchen and dining area on the ground floor",
