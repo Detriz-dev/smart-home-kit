@@ -25,7 +25,7 @@ It shows one part of a [Reading](/docs/architecture/domain-model/ubiquitous-lang
 What it does **not** show, and why:
 
 - **The value** ("22.4"). That is `ReadingValue`. A parent puts the two side by side.
-- **Metric name** ("Temperature"). That says _what_ is measured, so it is Context. A label component sits next to the value.
+- **Metric name** ("Temperature"). That says _what_ is measured, so it is Context: `SensorLabel` sits next to the value.
 - **Which display Unit to use.** UnitLabel shows the Unit it is given. Converting °C to °F and remembering the user's choice is the parent's job (later: a setting).
 - **Connection Status, Fault.** Shown by Status components. UnitLabel doesn't change for them.
 

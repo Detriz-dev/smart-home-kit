@@ -14,6 +14,12 @@ export type {
   LocationPathLayout,
   LocationPathProps,
 } from "./components/context/LocationPath";
+export { SensorLabel } from "./components/context/SensorLabel";
+export type {
+  SensorLabelMetric,
+  SensorLabelProps,
+  SensorLabelSize,
+} from "./components/context/SensorLabel";
 export { ReadingValue } from "./components/readings/ReadingValue";
 export type {
   ReadingValueProps,

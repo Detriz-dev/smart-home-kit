@@ -6,7 +6,7 @@ Says what a Sensor measures: an icon and the name of its Metric, like 🌡 Tempe
 
 It is display-only and never changes on its own. It looks the same when the value is loading or the Device is Disconnected, so the user still knows _what_ was measured when the number is hidden.
 
-Figma: `SensorLabel` component set in _DeTriz - Smart Home Kit_ (node `224:34`).
+Figma: `SensorLabel` component set in _DeTriz - Smart Home Kit_ (node `224:34`). Long-name example: frame `SensorLabel / usage` (node `235:6`).
 
 Storybook: `Context/SensorLabel`.
 
@@ -62,14 +62,14 @@ Pairing Status doesn't apply either: the Metric belongs to the Sensor, not to th
 
 **Metric** (prop `metric`). A fixed list, one value per Metric in the glossary. In Figma this is not a variant property: change the label text and swap the icon on the instance.
 
-| Value         | Label       | Icon                  | In `icons.config.ts`? |
-| ------------- | ----------- | --------------------- | --------------------- |
-| `temperature` | Temperature | `thermometer`         | yes                   |
-| `humidity`    | Humidity    | `humidity_percentage` | yes                   |
-| `illuminance` | Illuminance | `light_mode`          | yes                   |
-| `co2`         | CO₂         | `co2`                 | yes                   |
-| `voc`         | VOC         | `airwave`             | yes                   |
-| `pm25`        | PM2.5       | `grain`               | yes                   |
+| Value         | Label       | Screen reader  | Icon                  | In `icons.config.ts`? |
+| ------------- | ----------- | -------------- | --------------------- | --------------------- |
+| `temperature` | Temperature | Temperature    | `thermometer`         | yes                   |
+| `humidity`    | Humidity    | Humidity       | `humidity_percentage` | yes                   |
+| `illuminance` | Illuminance | Illuminance    | `light_mode`          | yes                   |
+| `co2`         | CO₂         | carbon dioxide | `co2`                 | yes                   |
+| `voc`         | VOC         | VOC            | `airwave`             | yes                   |
+| `pm25`        | PM2.5       | PM 2.5         | `grain`               | yes                   |
 
 The label uses the subscript `₂` (U+2082) in "CO₂", the same character the glossary uses.
 
@@ -89,16 +89,20 @@ Figma: 4 variants, named `size=<size>`.
 ### Anatomy
 
 ```
-root          (size=xs | sm | md | lg)
-├── icon      thermometer
-└── label     "Temperature"
+root            (size=xs | sm | md | lg)
+├── icon        thermometer
+├── label       "Temperature"
+└── spokenName  "carbon dioxide"   (co2 and pm25 only; visually hidden, read by screen readers)
 ```
 
-1. **root**: puts the icon and the label in one row, centred vertically. No padding and no background: spacing around it belongs to the parent.
+1. **root**: puts the icon and the label in one row, centred vertically. No padding and no background: spacing around it belongs to the parent. In code, the size is a `data-size` attribute, so the CSS can pick the text style and gap.
 2. **icon**: says which Metric it is at a glance. Decorative for screen readers (see Accessibility).
 3. **label**: the Metric's name.
+4. **spokenName**: the Metric as it is said, for the labels screen readers read oddly. Visually hidden, like in `UnitLabel`. Only in code; Figma has no layer for it.
 
-Long names: the label shrinks and ends with `…`. The icon never shrinks.
+Long names: the label shrinks and ends with `…`. The icon never shrinks (the `Icon` component already makes sure of that).
+
+In code, the label, icon and spoken name for each Metric live in one table (`METRICS` in `SensorLabel.tsx`), and the icon size for each size in another (`ICON_SIZES`). Adding a Metric means adding one row to `METRICS`; TypeScript complains until it is there.
 
 ### API
 
@@ -142,7 +146,7 @@ Stories:
 | `Voc`         | `voc`, `sm`                                |
 | `Pm25`        | `pm25`, `lg`                               |
 | `Sizes`       | `temperature` in all four sizes            |
-| `AllMetrics`  | Every Metric at `xs`, stacked              |
+| `AllMetrics`  | Every Metric stacked, at the Controls size |
 | `LongText`    | `illuminance`, `lg`, in a narrow container |
 | `Minimal`     | `voc`, `xs`, on its own                    |
 
@@ -161,14 +165,16 @@ Every value is bound to a Figma variable, and all of these tokens already exist 
 | root  | xs sm | icon ↔ label | `space/1`              | `--shk-space-1` (4px)                        |
 | root  | md lg | icon ↔ label | `space/2`              | `--shk-space-2` (8px)                        |
 
+Checked in Storybook against Figma: every size has the same height, gap, icon size and text style. Widths match within 1px (text rounding).
+
 ### Accessibility
 
 - Markup: a `<span>`, not a heading. SensorLabel doesn't know where it sits, so the parent wraps it in a heading (`<h3>` in a card) when it is one.
 - The icon is hidden from screen readers (`aria-hidden`). The label already says the same thing, so nothing is lost.
-- Screen readers may read "CO₂" and "PM2.5" oddly. The label gets an accessible name for those: "carbon dioxide", "PM 2.5". "VOC" is read letter by letter, which is fine.
+- Screen readers may read "CO₂" and "PM2.5" oddly, so those two are said in two parts: the visible label gets `aria-hidden`, and a visually hidden copy next to it holds the spoken name from the Screen reader column ("carbon dioxide", "PM 2.5"). The same pattern `LocationPath` uses for its prefixes. Not `aria-label`: on a plain `<span>`, screen readers often ignore it. For the other Metrics the visible label is read as it is ("VOC" letter by letter, which is fine).
 - Not colour alone: the Metric is told apart by its text and its icon shape.
 - No live region: the Metric never changes on its own.
-- When the name is truncated, the full name is still available (for example in a `title`).
+- When the name is truncated, the full name is still available: the label has a `title`, so it shows on hover.
 - Contrast: `--shk-color-text-primary` (gray 900) on a light surface is well above 4.5:1.
 - No motion.
 
