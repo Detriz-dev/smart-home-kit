@@ -1,5 +1,8 @@
 import styles from "./DevicePairingStatus.module.css";
-import type { DevicePairingStatusProps, PairingStatus } from "./DevicePairingStatus.types";
+import type {
+  DevicePairingStatusProps,
+  PairingStatus,
+} from "./DevicePairingStatus.types";
 
 /** The text shown for each Pairing Status. */
 const LABELS: Record<PairingStatus, string> = {

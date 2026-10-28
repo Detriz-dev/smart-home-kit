@@ -6,7 +6,7 @@
     gap: var(--shk-space-1);
     padding: var(--shk-space-0) var(--shk-space-1);
     background: var(--shk-surface-default);
-    color: var(--shk-palette-black);
+    color: var(--shk-color-text-primary);
   }
 
   /* Figma's 12px / regular / 18px text is the caption text style. */

@@ -25,7 +25,7 @@ It shows one part of a [Reading](/docs/architecture/domain-model/ubiquitous-lang
 What it does **not** show, and why:
 
 - **Unit** ("°C", "%RH"). That is [`UnitLabel`](../UnitLabel/UnitLabel.md), so the same Unit style can be reused outside of readings. Choosing the display Unit (°C or °F) is a formatting choice made by the parent.
-- **Connection Status as a label** ("Stale", "Disconnected"). That is `DeviceCommunicationStatus`. `ReadingValue` only reacts to **Disconnected** (it swaps the number for an icon), because a number from an unreachable Device would look fresh when it isn't.
+- **Connection Status as a label** ("Stale", "Disconnected"). That is `DeviceConnectionStatus`. `ReadingValue` only reacts to **Disconnected** (it swaps the number for an icon), because a number from an unreachable Device would look fresh when it isn't.
 - **Fault.** Shown by a future Fault component. `ReadingValue` doesn't change its look for it.
 - **Metric name** ("Temperature"). That says _what_ is measured, so it is Context. A label component sits next to the value.
 - **Time of the Reading** ("Updated 5 s ago"). A fixed fact about the Reading, so it is Context too.
@@ -70,7 +70,7 @@ Target states:
 | ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | loading      | yes      | The `loading` state.                                                                                                                    |
 | Connected    | yes      | The `default` state: the latest value.                                                                                                  |
-| Stale        | no       | Shown by `DeviceCommunicationStatus`. The number stays as it is.                                                                        |
+| Stale        | no       | Shown by `DeviceConnectionStatus`. The number stays as it is.                                                                        |
 | Disconnected | yes      | The `disconnected` state. The last value is **hidden**, as the [glossary](/docs/architecture/domain-model/ubiquitous-language.md) says. |
 | Fault        | no       | Shown by a Status component.                                                                                                            |
 

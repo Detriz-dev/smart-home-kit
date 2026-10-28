@@ -55,7 +55,7 @@ Target states:
 | ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------- |
 | loading      | no       | The Unit is known before the first Reading arrives. It stays visible next to `ReadingValue`'s loading icon.            |
 | Connected    | no       | Nothing to show differently: the Unit is the same whatever the Connection Status.                                      |
-| Stale        | no       | Shown by `DeviceCommunicationStatus`.                                                                                  |
+| Stale        | no       | Shown by `DeviceConnectionStatus`.                                                                                     |
 | Disconnected | no       | The **value** is hidden (by `ReadingValue`), the Unit is not. Next to the disconnected icon it says what was measured. |
 | Fault        | no       | Shown by a Status component.                                                                                           |
 
@@ -104,7 +104,7 @@ The parent (for example a reading card) puts the two together:
 | Gap       | 4px                      | `space/1`              | `--shk-space-1`         |
 | Size      | the same `size` for both | same `size` variant    | the same `size` prop    |
 
-In `loading` and `disconnected`, `ReadingValue` shows an icon instead of the number. The Unit stays next to it: link_off °C. With baseline alignment, the Unit lines up with the bottom of the icon, in Figma and in code (checked in the `WithReadingValue` story).
+In `loading` and `disconnected`, `ReadingValue` shows an icon instead of the number. The Unit stays next to it: link_off °C. With baseline alignment, the Unit lines up with the bottom of the icon in code (checked in the `WithReadingValue` story): the icon is an SVG with no text baseline, so its bottom edge is used. In Figma the icons are a font, so the Unit sits 2–4px lower than the icon's bottom. This difference is accepted.
 
 ### Anatomy
 

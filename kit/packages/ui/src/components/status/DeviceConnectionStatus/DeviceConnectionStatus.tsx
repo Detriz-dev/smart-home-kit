@@ -1,8 +1,8 @@
-import styles from "./DeviceCommunicationStatus.module.css";
+import styles from "./DeviceConnectionStatus.module.css";
 import type {
   ConnectionStatus,
-  DeviceCommunicationStatusProps,
-} from "./DeviceCommunicationStatus.types";
+  DeviceConnectionStatusProps,
+} from "./DeviceConnectionStatus.types";
 
 /** The text shown for each Connection Status. */
 const LABELS: Record<ConnectionStatus, string> = {
@@ -13,9 +13,9 @@ const LABELS: Record<ConnectionStatus, string> = {
 };
 
 /** Shows a Device's Connection Status: a label and a coloured indicator. Takes props only, never fetches data. */
-export function DeviceCommunicationStatus({
+export function DeviceConnectionStatus({
   status,
-}: DeviceCommunicationStatusProps) {
+}: DeviceConnectionStatusProps) {
   return (
     <span role="status" data-status={status} className={styles.root}>
       <span className={styles.label}>{LABELS[status]}</span>

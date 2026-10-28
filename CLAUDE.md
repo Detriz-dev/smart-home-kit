@@ -51,7 +51,7 @@ Dependency rules (see "Dependency rules" in the overview):
 
 Full workflow: `docs/architecture/design-system/workflows/component-building-v2.md` (the checklist is at the end).
 
-- One folder per component: `kit/packages/ui/src/components/<category>/<Name>/` with `<Name>.md`, `<Name>.types.ts`, `<Name>.tsx`, `<Name>.module.css`, `<Name>.stories.tsx` and `index.ts`. Reference examples: `status/DeviceCommunicationStatus` (states) and `context/LocationPath` (variants).
+- One folder per component: `kit/packages/ui/src/components/<category>/<Name>/` with `<Name>.md`, `<Name>.types.ts`, `<Name>.tsx`, `<Name>.module.css`, `<Name>.stories.tsx` and `index.ts`. Reference examples: `status/DeviceConnectionStatus` (states) and `context/LocationPath` (variants).
 - An exported `<Name>Props` interface with a `/** */` comment on every prop. Use semantic HTML.
 - CSS Modules wrapped in `@layer detriz`, using only `var(--shk-…)` tokens (no raw colours or sizes).
 - Export the component and its props type from `src/index.ts`.

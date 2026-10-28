@@ -1,4 +1,4 @@
-# DeviceCommunicationStatus
+# DeviceConnectionStatus
 
 ### Purpose
 
@@ -6,7 +6,7 @@ A small status indicator that shows a Device's connection status.
 
 ### Component in domain model context
 
-This component will cover Connection Status from the domain model
+This component covers the Connection Status from the domain model
 [device lifecycle](/docs/architecture/domain-model/device-lifecycle.md)
 
 ### Anatomy of component
@@ -19,7 +19,7 @@ This component will cover Connection Status from the domain model
 ```ts
 type ConnectionStatus = "connecting" | "connected" | "stale" | "disconnected";
 
-interface DeviceCommunicationStatusProps {
+interface DeviceConnectionStatusProps {
   status: ConnectionStatus;
 }
 ```
@@ -32,3 +32,8 @@ interface DeviceCommunicationStatusProps {
 | `connecting`   | Connecting   | `--shk-status-progress-solid` |
 | `connected`    | Connected    | `--shk-status-success-solid`  |
 | `stale`        | Stale        | `--shk-status-warning-solid`  |
+
+### Stress stories
+
+- `LongText`: the longest label ("Disconnected") in a 96px container. Labels are short and fixed, so they never wrap or truncate.
+- `Minimal`: the shortest label ("Stale").

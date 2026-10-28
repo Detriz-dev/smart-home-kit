@@ -1,14 +1,14 @@
 // The front door of @detriz-sh-kit/ui. Only what is exported here can be imported by apps.
-export { DevicePairingStatus } from "./components/status/DeviceParingStatus";
+export { DevicePairingStatus } from "./components/status/DevicePairingStatus";
 export type {
   DevicePairingStatusProps,
   PairingStatus,
-} from "./components/status/DeviceParingStatus";
-export { DeviceCommunicationStatus } from "./components/status/DeviceCommunicationStatus";
+} from "./components/status/DevicePairingStatus";
+export { DeviceConnectionStatus } from "./components/status/DeviceConnectionStatus";
 export type {
   ConnectionStatus,
-  DeviceCommunicationStatusProps,
-} from "./components/status/DeviceCommunicationStatus";
+  DeviceConnectionStatusProps,
+} from "./components/status/DeviceConnectionStatus";
 export { LocationPath } from "./components/context/LocationPath";
 export type {
   LocationPathLayout,
