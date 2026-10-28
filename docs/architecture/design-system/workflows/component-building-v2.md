@@ -12,7 +12,7 @@ Every component **starts with a Markdown file**. The `.md` file decides what the
 
 Steps **1b** and **2b** are short checks you (or the AI) run alone, before asking for a review. They catch missing tokens, missing icons and small Figma mistakes early, so the review in step 3 can focus on domain words and naming.
 
-Worked examples in the repo: [`DeviceCommunicationStatus`](/kit/packages/ui/src/components/status/DeviceCommunicationStatus/) (Status) and [`LocationPath`](/kit/packages/ui/src/components/context/LocationPath/) (Context).
+Worked examples in the repo: [`DeviceConnectionStatus`](/kit/packages/ui/src/components/status/DeviceConnectionStatus/) (Status) and [`LocationPath`](/kit/packages/ui/src/components/context/LocationPath/) (Context).
 
 ## Contents
 
@@ -74,7 +74,7 @@ Start here, before Figma. Writing makes you decide what the component **is** and
 ### Pick the name and the folder
 
 1. **Category.** Pick one from [Components categorisation](/docs/architecture/design-system/ds-conventions-and-structure.md#3-components-categorisation) by the question it answers: Context, Readings, History, Comparison, Status, Feedback, Controls or Layout. The folder name is the category in lowercase.
-2. **Name.** PascalCase, built from domain words: `DeviceCommunicationStatus`, not `OnlineBadge`.
+2. **Name.** PascalCase, built from domain words: `DeviceConnectionStatus`, not `OnlineBadge`.
 3. **Create the file:** `kit/packages/ui/src/components/<category>/<Name>/<Name>.md`.
 
 ### Sections to write
@@ -119,7 +119,7 @@ What varies depends on the category:
 | Context, Layout, Comparison | **Variants:** variant prop, its values, which parts show (a "Parts shown" table) | One line on why they don't apply, or which ones do.            |
 | Feedback                    | **Variants:** info, success, warning, error                                      | Usually Fault only.                                            |
 
-`DeviceCommunicationStatus.md` is the example for a States table, `LocationPath.md` for a Variants table.
+`DeviceConnectionStatus.md` is the example for a States table, `LocationPath.md` for a Variants table.
 
 #### Example values
 
@@ -155,7 +155,7 @@ Build a real **component set**, not a loose frame. How you build it decides how 
 
 | Rule                                                                                                                  | Example                                        |
 | --------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Component name = the name in the spec                                                                                 | `DeviceCommunicationStatus`                    |
+| Component name = the name in the spec                                                                                 | `DeviceConnectionStatus`                    |
 | One variant per state or variant. Property named like the prop, values exactly like the TypeScript values (lowercase) | `status=connecting`, `layout=stacked`          |
 | Layer names = anatomy part names from the spec                                                                        | `root`, `label`, `indicator`, never `Frame 12` |
 | Only variables, never raw values: every fill, stroke, gap, padding, radius and text style                             | `status/success/solid`, `space/1`              |
@@ -252,7 +252,7 @@ Three files, in this order. Each one depends on the one before it.
 export type ConnectionStatus =
   "connecting" | "connected" | "stale" | "disconnected";
 
-export interface DeviceCommunicationStatusProps {
+export interface DeviceConnectionStatusProps {
   /** The Device's current Connection Status. */
   status: ConnectionStatus;
 }
@@ -273,9 +273,9 @@ const LABELS: Record<ConnectionStatus, string> = {
   disconnected: "Disconnected",
 };
 
-export function DeviceCommunicationStatus({
+export function DeviceConnectionStatus({
   status,
-}: DeviceCommunicationStatusProps) {
+}: DeviceConnectionStatusProps) {
   return (
     <span role="status" data-status={status} className={styles.root}>
       <span className={styles.label}>{LABELS[status]}</span>
@@ -315,7 +315,7 @@ Figma needs wrapper frames to lay things out. HTML often doesn't.
 
 ### 4c. Storybook: `<Name>.stories.tsx`
 
-- `title` = `"<Category>/<Name>"`, for example `"Status/DeviceCommunicationStatus"`.
+- `title` = `"<Category>/<Name>"`, for example `"Status/DeviceConnectionStatus"`.
 - `argTypes` with a `select` control listing every state or variant, so you can switch them in the Controls panel.
 - One story per state or variant from the spec, named after it (`Connected`, `Stale`, `Stacked`).
 - Two **stress stories**, always:

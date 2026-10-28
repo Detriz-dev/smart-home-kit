@@ -55,7 +55,7 @@ Target states:
 | ------------ | -------- | ---------------------------------------------------------------------------------------------------------------------- |
 | loading      | no       | The Unit is known before the first Reading arrives. It stays visible next to `ReadingValue`'s loading icon.            |
 | Connected    | no       | Nothing to show differently: the Unit is the same whatever the Connection Status.                                      |
-| Stale        | no       | Shown by `DeviceCommunicationStatus`.                                                                                  |
+| Stale        | no       | Shown by `DeviceConnectionStatus`.                                                                                  |
 | Disconnected | no       | The **value** is hidden (by `ReadingValue`), the Unit is not. Next to the disconnected icon it says what was measured. |
 | Fault        | no       | Shown by a Status component.                                                                                           |
 

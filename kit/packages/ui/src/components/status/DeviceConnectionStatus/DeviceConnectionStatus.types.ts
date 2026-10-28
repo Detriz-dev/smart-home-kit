@@ -2,7 +2,7 @@
 export type ConnectionStatus =
   "connecting" | "connected" | "stale" | "disconnected";
 
-export interface DeviceCommunicationStatusProps {
+export interface DeviceConnectionStatusProps {
   /** The Device's current Connection Status. */
   status: ConnectionStatus;
 }

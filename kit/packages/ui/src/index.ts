@@ -4,11 +4,11 @@ export type {
   DevicePairingStatusProps,
   PairingStatus,
 } from "./components/status/DevicePairingStatus";
-export { DeviceCommunicationStatus } from "./components/status/DeviceCommunicationStatus";
+export { DeviceConnectionStatus } from "./components/status/DeviceConnectionStatus";
 export type {
   ConnectionStatus,
-  DeviceCommunicationStatusProps,
-} from "./components/status/DeviceCommunicationStatus";
+  DeviceConnectionStatusProps,
+} from "./components/status/DeviceConnectionStatus";
 export { LocationPath } from "./components/context/LocationPath";
 export type {
   LocationPathLayout,

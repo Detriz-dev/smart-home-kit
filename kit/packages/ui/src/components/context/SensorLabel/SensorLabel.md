@@ -51,7 +51,7 @@ Target states:
 | Target state | Applies? | Why                                                                                                                     |
 | ------------ | -------- | ----------------------------------------------------------------------------------------------------------------------- |
 | loading      | no       | The Metric is known before the first Reading arrives. The label stays visible above `ReadingValue`'s loading icon.      |
-| Connected    | no       | Connection Status belongs to the Device. Shown by `DeviceCommunicationStatus`.                                          |
+| Connected    | no       | Connection Status belongs to the Device. Shown by `DeviceConnectionStatus`.                                          |
 | Stale        | no       | Same as above.                                                                                                          |
 | Disconnected | no       | The **value** is hidden (by `ReadingValue`), the label is not. Next to the disconnected icon it says what was measured. |
 | Fault        | no       | Fault is Status.                                                                                                        |

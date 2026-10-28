@@ -25,7 +25,7 @@ Every part is optional. The order is always Site, Floor, Space, Device. Missing 
 
 What it does **not** show, and why:
 
-- **Connection Status, Pairing Status, Fault.** These change over time, so they are Status. Use `DeviceCommunicationStatus` and `DevicePairingStatus` next to the path.
+- **Connection Status, Pairing Status, Fault.** These change over time, so they are Status. Use `DeviceConnectionStatus` and `DevicePairingStatus` next to the path.
 - **Sensor or Metric.** A Sensor is not a Device and has no location of its own. Readings components show the Metric.
 - **Space Type** (Bedroom, Kitchen…). It is a category, not a name. The path shows the Space's own name, which may be the same word.
 
@@ -62,7 +62,7 @@ Target states:
 | Target state | Applies? | Why                                                                                               |
 | ------------ | -------- | ------------------------------------------------------------------------------------------------- |
 | loading      | later    | Skipped for now. Later: a placeholder of the same height, so the layout doesn't jump.             |
-| Connected    | no       | Connection Status is shown by `DeviceCommunicationStatus`.                                        |
+| Connected    | no       | Connection Status is shown by `DeviceConnectionStatus`.                                        |
 | Stale        | no       | Same as above.                                                                                    |
 | Disconnected | no       | The path doesn't change when a Device is unplugged. A parent card may dim it with the last value. |
 | Fault        | no       | Fault is Status.                                                                                  |

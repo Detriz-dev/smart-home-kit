@@ -10,7 +10,7 @@ Every component **starts with a Markdown file**. The `.md` file decides what the
                      └── fix ────────┘   (the review sends you back until it passes)
 ```
 
-Worked examples in the repo: [`DeviceCommunicationStatus`](/kit/packages/ui/src/components/status/DeviceCommunicationStatus/) and [`DevicePairingStatus`](/kit/packages/ui/src/components/status/DevicePairingStatus/).
+Worked examples in the repo: [`DeviceConnectionStatus`](/kit/packages/ui/src/components/status/DeviceConnectionStatus/) and [`DevicePairingStatus`](/kit/packages/ui/src/components/status/DevicePairingStatus/).
 
 ## Contents
 
@@ -64,7 +64,7 @@ Start here, before Figma. Writing makes you decide what the component **is** and
 ### Pick the name and the folder
 
 1. **Category.** Pick one from [Components categorisation](/docs/architecture/design-system/ds-conventions-and-structure.md#3-components-categorisation) by the question it answers: Context, Readings, History, Comparison, Status, Feedback, Controls or Layout. The folder name is the category in lowercase.
-2. **Name.** PascalCase, built from domain words: `DeviceCommunicationStatus`, not `OnlineBadge`.
+2. **Name.** PascalCase, built from domain words: `DeviceConnectionStatus`, not `OnlineBadge`.
 3. **Create the file:** `kit/packages/ui/src/components/<category>/<Name>/<Name>.md`.
 
 ### Sections to write
@@ -90,7 +90,7 @@ Build a real **component set**, not a loose frame. How you build it decides how 
 
 | Rule                                                                                                       | Example                                        |
 | ---------------------------------------------------------------------------------------------------------- | ---------------------------------------------- |
-| Component name = the name in the spec                                                                      | `DeviceCommunicationStatus`                    |
+| Component name = the name in the spec                                                                      | `DeviceConnectionStatus`                    |
 | One variant per state. Property named like the prop, values exactly like the TypeScript values (lowercase) | `status=connecting`, `status=stale`            |
 | Layer names = anatomy part names from the spec                                                             | `root`, `label`, `indicator`, never `Frame 12` |
 | Only variables, never raw values: every fill, stroke, gap, padding, radius and text style                  | `status/success/solid`, `space/1`              |
@@ -161,7 +161,7 @@ Three files, in this order. Each one depends on the one before it.
 export type ConnectionStatus =
   "connecting" | "connected" | "stale" | "disconnected";
 
-export interface DeviceCommunicationStatusProps {
+export interface DeviceConnectionStatusProps {
   /** The Device's current Connection Status. */
   status: ConnectionStatus;
 }
@@ -182,9 +182,9 @@ const LABELS: Record<ConnectionStatus, string> = {
   disconnected: "Disconnected",
 };
 
-export function DeviceCommunicationStatus({
+export function DeviceConnectionStatus({
   status,
-}: DeviceCommunicationStatusProps) {
+}: DeviceConnectionStatusProps) {
   return (
     <span role="status" data-status={status} className={styles.root}>
       <span className={styles.label}>{LABELS[status]}</span>
@@ -213,7 +213,7 @@ export function DeviceCommunicationStatus({
 
 ### 4c. Storybook: `<Name>.stories.tsx`
 
-- `title` = `"<Category>/<Name>"`, for example `"Status/DeviceCommunicationStatus"`.
+- `title` = `"<Category>/<Name>"`, for example `"Status/DeviceConnectionStatus"`.
 - `argTypes` with a `select` control listing every state, so you can switch states in the Controls panel.
 - One story per state from the spec, named after the state (`Connected`, `Stale`).
 - Run `pnpm storybook`, open <http://localhost:6007> and open every story.
