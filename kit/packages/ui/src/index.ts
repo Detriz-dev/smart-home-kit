@@ -33,3 +33,5 @@ export type {
 } from "./components/readings/UnitLabel";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
+export { Switch } from "./components/controls/Switch";
+export type { SwitchProps } from "./components/controls/Switch";
