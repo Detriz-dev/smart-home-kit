@@ -52,7 +52,7 @@ An **Asset** is a physical object in a Space that a Sensor watches but that isn'
 | Term | Definition | Example |
 | --- | --- | --- |
 | **Metric** | *What* is measured: a kind of physical quantity, from a fixed list. | Temperature, Humidity, Illuminance, CO₂, VOC, PM2.5 |
-| **Unit** | How a Metric's value is expressed. Each Metric has one canonical Unit in the API; display Units are a formatting choice. | °C, %RH, lx, ppm |
+| **Unit** | How a Metric's value is expressed. Each Metric has one canonical Unit in the API; display Units are a formatting choice. | °C, °F (display Unit), %RH, lx, ppm |
 | **Reading** | One timestamped value from one Sensor: Metric, value, Unit and time. Never changes once recorded. | 22.4 °C in the Kitchen at 10:15:03 |
 
 

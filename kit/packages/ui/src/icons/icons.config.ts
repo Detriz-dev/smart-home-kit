@@ -20,6 +20,7 @@ export const iconConfig = {
     "sensors",
     "stairs_2",
     "thermostat",
+      "thermometer",
     "tv_gen",
     "wifi",
     "wifi_off",

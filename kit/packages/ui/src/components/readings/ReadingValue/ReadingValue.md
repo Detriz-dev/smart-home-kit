@@ -4,7 +4,7 @@
 
 Shows the latest value of one Metric as an easy-to-read number: "22.4". It is the number in a reading card, a Space overview or a detail view, the thing the user looks at first.
 
-It shows the number only. The Unit ("°C") is a separate component, so it can also be used on its own in other places (axis labels, table headers, settings). A parent puts the two side by side.
+It shows the number only. The Unit ("°C") is a separate component, [`UnitLabel`](../UnitLabel/UnitLabel.md), so it can also be used on its own in other places (axis labels, table headers, settings). A parent puts the two side by side.
 
 It is kept simple on purpose: it shows a number, a loading icon while there is no number yet, or a disconnected icon when the Device can't be reached. Everything else about the Device's health (Stale, Fault) is shown by Status components next to it.
 
@@ -24,7 +24,7 @@ It shows one part of a [Reading](/docs/architecture/domain-model/ubiquitous-lang
 
 What it does **not** show, and why:
 
-- **Unit** ("°C", "%RH"). A separate component (name to decide, see Open questions), so the same Unit style can be reused outside of readings. Choosing the display Unit (°C or °F) is a formatting choice made by the parent.
+- **Unit** ("°C", "%RH"). That is [`UnitLabel`](../UnitLabel/UnitLabel.md), so the same Unit style can be reused outside of readings. Choosing the display Unit (°C or °F) is a formatting choice made by the parent.
 - **Connection Status as a label** ("Stale", "Disconnected"). That is `DeviceCommunicationStatus`. `ReadingValue` only reacts to **Disconnected** (it swaps the number for an icon), because a number from an unreachable Device would look fresh when it isn't.
 - **Fault.** Shown by a future Fault component. `ReadingValue` doesn't change its look for it.
 - **Metric name** ("Temperature"). That says _what_ is measured, so it is Context. A label component sits next to the value.
@@ -130,7 +130,7 @@ Notes:
 
 - The value is a number, not a string. The component formats it with the browser's language (`Intl.NumberFormat`), so every user sees their own decimal mark and thousands separator: "22.4" and "1,250" in English, "22,4" and "1250" in Polish.
 - The parent passes `fractionDigits` for the Metric: each Metric has its own natural precision (Temperature 1, Humidity 0, CO₂ 0, Illuminance 0). The default of 1 fits Temperature, the most common case.
-- There is no `unit` prop. The parent renders the Unit component next to it.
+- There is no `unit` prop. The parent renders `UnitLabel` next to it.
 - `isDisconnected` is the only status prop. It's a yes/no on purpose: Stale and Fault don't change this component, so a full `connectionStatus` prop would suggest it reacts to them. The parent sets it from the Device's Connection Status (`connectionStatus === "disconnected"`).
 - The Unit stays visible next to the icon in `disconnected` (for example: link_off °C). It tells the user what was measured even when the value is hidden.
 
@@ -182,4 +182,4 @@ Every value is bound to a Figma variable. The number uses the readout text style
 
 ### Open questions
 
-- **Unit component.** Name and category to decide (for example `ReadingUnit` in Readings, or `Unit` in Context, since a Unit is a fixed fact). Its own spec comes later.
+None right now.

@@ -1,0 +1,49 @@
+@layer detriz {
+  /* Holds the symbol. No padding or background: spacing and baseline alignment next to
+     ReadingValue come from the parent. Secondary colour, so the number stays the first
+     thing the user sees. */
+  .root {
+    display: inline-flex;
+    color: var(--shk-color-text-secondary);
+  }
+
+  /* The symbol, one readout step smaller than ReadingValue at the same size. Default size is lg.
+     It never wraps or truncates ("%RH" stays whole); if there is no room, it overflows. */
+  .symbol {
+    font-family: var(--shk-typography-readout-font-family);
+    font-size: var(--shk-typography-readout-font-size);
+    font-weight: var(--shk-typography-readout-font-weight);
+    line-height: var(--shk-typography-readout-line-height);
+    letter-spacing: var(--shk-typography-readout-letter-spacing);
+    white-space: nowrap;
+  }
+
+  .root[data-size="md"] .symbol {
+    font-family: var(--shk-typography-readout-sm-font-family);
+    font-size: var(--shk-typography-readout-sm-font-size);
+    font-weight: var(--shk-typography-readout-sm-font-weight);
+    line-height: var(--shk-typography-readout-sm-line-height);
+    letter-spacing: var(--shk-typography-readout-sm-letter-spacing);
+  }
+
+  /* sm and xs share the smallest readout style: there is no step below readout-xs. */
+  .root[data-size="sm"] .symbol,
+  .root[data-size="xs"] .symbol {
+    font-family: var(--shk-typography-readout-xs-font-family);
+    font-size: var(--shk-typography-readout-xs-font-size);
+    font-weight: var(--shk-typography-readout-xs-font-weight);
+    line-height: var(--shk-typography-readout-xs-line-height);
+    letter-spacing: var(--shk-typography-readout-xs-letter-spacing);
+  }
+
+  /* Read by screen readers, invisible on screen ("degrees Celsius"). 1px is the standard size:
+     some screen readers skip text that is 0px. Same rule as in LocationPath. */
+  .spokenName {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
