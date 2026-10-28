@@ -19,5 +19,11 @@ export type {
   ReadingValueProps,
   ReadingValueSize,
 } from "./components/readings/ReadingValue";
+export { UnitLabel } from "./components/readings/UnitLabel";
+export type {
+  UnitLabelProps,
+  UnitLabelSize,
+  UnitLabelUnit,
+} from "./components/readings/UnitLabel";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
