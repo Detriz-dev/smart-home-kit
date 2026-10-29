@@ -1,0 +1,39 @@
+@layer detriz {
+  /* The card: label on top, reading below. It fills the width its parent gives it.
+     No overflow: hidden, so a long value is never cut off (see the spec, Visual idea).
+     Figma draws the outline inside the card, where it takes no space. A CSS border does take
+     space, so the padding is one border width smaller: the card ends up the same size as in
+     Figma. A border (not a box-shadow) stays visible in Windows High Contrast mode. */
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-1);
+    min-inline-size: 0;
+    padding: calc(var(--shk-space-2) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+    border-radius: var(--shk-radius-12);
+    background: var(--shk-surface-default);
+  }
+
+  /* Wraps SensorLabel so the group has a name. flex (not inline) avoids an extra line box
+     around it, and min-inline-size: 0 lets a long Metric name shrink and end with "…". */
+  .label {
+    display: flex;
+    min-inline-size: 0;
+  }
+
+  /* The value and the Unit on one baseline, never wrapped. Size comes from ReadingValue and
+     UnitLabel themselves (they get the same size prop). */
+  .reading {
+    display: flex;
+    align-items: baseline;
+    gap: var(--shk-space-1);
+    white-space: nowrap;
+  }
+
+  /* Wraps UnitLabel only to hide it from screen readers when there is no value.
+     flex keeps it the same height as UnitLabel, with no extra line box. */
+  .unit {
+    display: flex;
+  }
+}
