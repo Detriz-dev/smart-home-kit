@@ -1,0 +1,9 @@
+{
+  "color-border": {
+    "subtle": {
+      "$type": "color",
+      "$value": "{palette.gray.100}",
+      "$description": "Quiet outline of a card on a surface, e.g. SensorReading."
+    }
+  }
+}
