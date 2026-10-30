@@ -31,6 +31,11 @@ export type {
   UnitLabelSize,
   UnitLabelUnit,
 } from "./components/readings/UnitLabel";
+export { SensorReading } from "./components/readings/SensorReading";
+export type {
+  SensorReadingProps,
+  SensorReadingSize,
+} from "./components/readings/SensorReading";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
 export { Switch } from "./components/controls/Switch";
