@@ -10,7 +10,7 @@ export const METRIC_NAMES: Record<
 > = {
   temperature: { label: "Temperature" },
   humidity: { label: "Humidity" },
-  illuminance: { label: "So the next step" },
+  illuminance: { label: "Illuminance" },
   co2: { label: "CO₂", spokenName: "carbon dioxide" },
   voc: { label: "VOC" },
   pm25: { label: "PM2.5", spokenName: "PM 2.5" },

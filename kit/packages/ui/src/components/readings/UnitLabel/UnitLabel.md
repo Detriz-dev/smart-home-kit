@@ -65,13 +65,15 @@ Pairing Status doesn't apply either: the Unit belongs to the Metric, not to the 
 
 **Unit** (Figma variant property `unit`, prop `unit`). A fixed list, one value per Unit we show:
 
-| Value        | Shows | Screen reader               | Used for (Metric)          |
-| ------------ | ----- | --------------------------- | -------------------------- |
-| `celsius`    | °C    | "degrees Celsius"           | Temperature                |
-| `fahrenheit` | °F    | "degrees Fahrenheit"        | Temperature (display Unit) |
-| `percent-rh` | %RH   | "percent relative humidity" | Humidity                   |
-| `lux`        | lx    | "lux"                       | Illuminance                |
-| `ppm`        | ppm   | "parts per million"         | CO₂                        |
+| Value        | Shows | Screen reader                | Used for (Metric)          |
+| ------------ | ----- | ---------------------------- | -------------------------- |
+| `celsius`    | °C    | "degrees Celsius"            | Temperature                |
+| `fahrenheit` | °F    | "degrees Fahrenheit"         | Temperature (display Unit) |
+| `percent-rh` | %RH   | "percent relative humidity"  | Humidity                   |
+| `lux`        | lx    | "lux"                        | Illuminance                |
+| `ppm`        | ppm   | "parts per million"          | CO₂                        |
+| `ppb`        | ppb   | "parts per billion"          | VOC (provisional)          |
+| `ug-m3`      | µg/m³ | "micrograms per cubic metre" | PM2.5                      |
 
 A fixed list instead of free text, for two reasons:
 
@@ -124,7 +126,8 @@ Long text never wraps and never truncates: `white-space: nowrap`, so "%RH" never
 
 ```ts
 /** Which Unit to show. One value per Unit in the fixed list. */
-type UnitLabelUnit = "celsius" | "fahrenheit" | "percent-rh" | "lux" | "ppm";
+type UnitLabelUnit =
+  "celsius" | "fahrenheit" | "percent-rh" | "lux" | "ppm" | "ppb" | "ug-m3";
 
 /** How big the Unit is drawn. Same names as ReadingValue's sizes. */
 type UnitLabelSize = "xs" | "sm" | "md" | "lg";
@@ -160,17 +163,19 @@ From the glossary and `ReadingValue.md` examples. Figma sample text and stories 
 
 Stories:
 
-| Story              | Shows                                                                                                         |
-| ------------------ | ------------------------------------------------------------------------------------------------------------- |
-| `Celsius`          | °C, `lg`. The default.                                                                                        |
-| `Fahrenheit`       | °F, `lg`                                                                                                      |
-| `PercentRh`        | %RH, `md`                                                                                                     |
-| `Lux`              | lx, `xs`                                                                                                      |
-| `Ppm`              | ppm, `sm`                                                                                                     |
-| `Sizes`            | °C in all four sizes side by side                                                                             |
-| `WithReadingValue` | The pairs from the table above at every size, plus `loading` and `disconnected`. Checks the baseline in code. |
-| `LongText`         | %RH, `lg`, in a narrow container                                                                              |
-| `Minimal`          | lx, `xs`, on its own                                                                                          |
+| Story                     | Shows                                                                                                         |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------- |
+| `Celsius`                 | °C, `lg`. The default.                                                                                        |
+| `Fahrenheit`              | °F, `lg`                                                                                                      |
+| `PercentRh`               | %RH, `md`                                                                                                     |
+| `Lux`                     | lx, `xs`                                                                                                      |
+| `Ppm`                     | ppm, `sm`                                                                                                     |
+| `Sizes`                   | °C in all four sizes side by side                                                                             |
+| `WithReadingValue`        | The pairs from the table above at every size, plus `loading` and `disconnected`. Checks the baseline in code. |
+| `Ppb`                     | ppb, `md`                                                                                                     |
+| `MicrogramsPerCubicMetre` | µg/m³, `md`                                                                                                   |
+| `LongText`                | %RH, `lg`, in a narrow container                                                                              |
+| `Minimal`                 | lx, `xs`, on its own                                                                                          |
 
 ### Tokens
 
@@ -196,13 +201,5 @@ Every value is bound to a Figma variable. No new tokens are needed.
 
 ### Open questions
 
-- **Units for VOC and PM2.5.** The glossary lists them as Metrics but gives no Unit yet. Proposal, not in the `unit` list until the glossary names them:
-
-  | Metric | Proposed Unit | Value   | Shows | Screen reader                | Why                                                                                                                                                            |
-  | ------ | ------------- | ------- | ----- | ---------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-  | PM2.5  | µg/m³         | `ug-m3` | µg/m³ | "micrograms per cubic metre" | The usual Unit for particles: air quality guidelines (WHO, EU) give their limits in µg/m³.                                                                     |
-  | VOC    | ppb           | `ppb`   | ppb   | "parts per billion"          | Depends on the sensor in the Air Quality Module. Some give ppb; others (Sensirion SGP4x) give a **VOC Index** (0–500) with no Unit, and then nothing is shown. |
-
-  VOC waits until the sensor is chosen. The symbols use the micro sign `µ` (U+00B5) and the superscript `³` (U+00B3), not "ug/m3".
-
+- **VOC Unit.** `ppb` is provisional, because the Air Quality Module's sensor isn't chosen. Some sensors give a **VOC Index** (0–500) with no Unit instead. If that sensor is chosen, `unit` becomes optional in `SensorReading`, and the glossary needs an exception to "one canonical Unit per Metric".
 - **API Unit names.** Not decided. When `api-spec` exists, should `unit` use the API's canonical Unit strings, or keep its own names and map them in the `react` package?

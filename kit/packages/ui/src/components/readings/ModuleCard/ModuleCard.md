@@ -6,11 +6,11 @@ Shows one Module as a card: its name, its Connection Status, the latest Reading 
 
 It is used wherever a user looks at their Modules, for example a Space overview in Live Studio.
 
-It only puts existing components together: [`SensorReading`](../SensorReading/SensorReading.md), [`DeviceConnectionStatus`](../../status/DeviceConnectionStatus/DeviceConnectionStatus.md) and [`Switch`](../../controls/Switch/Switch.tsx). It adds the card around them, passes the Module's state down to them and rearranges them to fit the space it gets.
+It only puts existing components together: [`SensorReading`](../SensorReading/SensorReading.md), [`DeviceConnectionStatus`](../../status/DeviceConnectionStatus/DeviceConnectionStatus.md), [`DeviceFaultStatus`](../../status/DeviceFaultStatus/DeviceFaultStatus.md) and [`Switch`](../../controls/Switch/Switch.tsx). It adds the card around them, passes the Module's state down to them and rearranges them to fit the space it gets.
 
 It takes props only. It doesn't turn the Module off itself: it tells its parent the user flipped the Switch, and the parent sends the command.
 
-Figma: _DeTriz - Smart Home Kit_, page `ModuleCard` (node `169:2`). Two auto layout frames so far, both in the `row` layout: `ModuleCard - connected` (node `307:704`) and `ModuleCard - off` (node `335:860`). Not yet a component set, and `stacked` has no frame yet.
+Figma: `ModuleCard` component set in _DeTriz - Smart Home Kit_ (node `349:591`), page `ModuleCard`. Variant properties `layout` and `state`, boolean properties `hasFault`, `hasSecondSensor` and `hasThirdSensor`. The `ModuleCard examples` frame shows a Fault, one Sensor and three Sensors.
 
 ### Component in domain model context
 
@@ -18,12 +18,13 @@ Category: **Readings** ("What is it right now?"). A composite keeps the category
 
 It shows these terms from the [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md):
 
-| Part    | Domain term             | Example        | Shown by                 |
-| ------- | ----------------------- | -------------- | ------------------------ |
-| name    | **Module Name**         | Climate Module | `ModuleCard`             |
-| status  | **Connection Status**   | Connected      | `DeviceConnectionStatus` |
-| sensors | **Sensor**, **Reading** | 22.4 °C        | `SensorReading`          |
-| switch  | **On / Off**            | Off            | `Switch`                 |
+| Part    | Domain term             | Example            | Shown by                 |
+| ------- | ----------------------- | ------------------ | ------------------------ |
+| name    | **Module Name**         | Climate Module     | `ModuleCard`             |
+| status  | **Connection Status**   | Connected          | `DeviceConnectionStatus` |
+| fault   | **Fault**               | CO₂ sensor failure | `DeviceFaultStatus`      |
+| sensors | **Sensor**, **Reading** | 22.4 °C            | `SensorReading`          |
+| switch  | **On / Off**            | Off                | `Switch`                 |
 
 A Module has **one or more** Sensors, and **one Sensor per Metric** ([Domain Analysis](/docs/architecture/domain-model/domain-analysis.md)). The Sensors are fixed by the Module Type, so the user never adds or removes one.
 
@@ -109,13 +110,13 @@ If the Module is Off and its Hub is Disconnected, the card can't tell: the Switc
 
 Target states:
 
-| Target state | Applies? | Why                                                                                                                  |
-| ------------ | -------- | -------------------------------------------------------------------------------------------------------------------- |
-| loading      | yes      | The `loading` state.                                                                                                 |
-| Connected    | yes      | The `connected` state.                                                                                               |
-| Stale        | yes      | The `stale` state. `SensorReading` has no Stale state: only the status label changes, as `SensorReading.md` expects. |
-| Disconnected | yes      | The `disconnected` and `off` states. Values are **hidden**, as the glossary says.                                    |
-| Fault        | not yet  | A Module field, and this is where it should show. But no Status component for Fault exists. See Open questions.      |
+| Target state | Applies? | Why                                                                                                                               |
+| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| loading      | yes      | The `loading` state.                                                                                                              |
+| Connected    | yes      | The `connected` state.                                                                                                            |
+| Stale        | yes      | The `stale` state. `SensorReading` has no Stale state: only the status label changes, as `SensorReading.md` expects.              |
+| Disconnected | yes      | The `disconnected` and `off` states. Values are **hidden**, as the glossary says.                                                 |
+| Fault        | yes      | Not a state of its own: `fault` adds `DeviceFaultStatus` on top of any state, because a Module can be Connected and have a Fault. |
 
 ### Anatomy
 
@@ -124,9 +125,10 @@ root               <div role="group">    card: background, padding, stacks the p
 ├── header         <div>                 name and status
 │   ├── name       <span id>             gives the group its name
 │   └── DeviceConnectionStatus
+├── DeviceFaultStatus                    only when there is a Fault, under the header
 ├── sensors        <ul>                  one row, or a stack
 │   └── sensor     <li>                  one per Sensor
-│       └── SensorReading  size: see Open questions
+│       └── SensorReading  size="md"
 └── Switch
 ```
 
@@ -160,6 +162,8 @@ interface ModuleCardProps {
   sensors: ModuleCardSensor[];
   /** The Module's current Connection Status. */
   connectionStatus: ConnectionStatus;
+  /** The Module's current Fault. Leave it out when there is none. */
+  fault?: DeviceFaultStatusProps;
   /** Whether the Module is turned on. The parent owns this value. */
   isOn: boolean;
   /** Called with the new value when the user flips the Switch. */
@@ -173,6 +177,7 @@ Notes:
 - The list order is the display order. The parent decides it.
 - `isOn` has the same name and meaning as in `Switch`. It is a setting the user chose, not a status, so it is separate from `connectionStatus`. Without it, the card couldn't tell "the user turned it off" from "we lost it".
 - `connectionStatus` is required because only Paired Modules get a ModuleCard.
+- `fault` is the same `faultCode` and `metric` that `DeviceFaultStatus` takes, passed on unchanged. A Fault shows once per Module, and `metric` names the affected Sensor in the message. `SensorReading` doesn't change. It stays visible in `off` and `disconnected`, because the last Fault stays until **Fault Cleared**.
 - The Switch's `ariaLabel` comes from `name`, so a screen reader says "Climate Module, switch, on".
 - More than three Sensors isn't blocked, but no Module has that many today, and the layouts are only designed up to three.
 
@@ -180,18 +185,19 @@ Notes:
 
 Stories render in English. Which Sensors each Module Type has is not written down in the domain docs yet: these are assumed from the glossary examples.
 
-| Use              | name               | sensors                               | connectionStatus | isOn  | Shows                                         |
-| ---------------- | ------------------ | ------------------------------------- | ---------------- | ----- | --------------------------------------------- |
-| Connected        | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH  | `connected`      | true  | Two Sensors, Connected, On                    |
-| Loading          | Climate Module     | Temperature `null`, Humidity `null`   | `connecting`     | true  | Two spinning icons, Connecting                |
-| Stale            | Light Module       | Illuminance 320 lx                    | `stale`          | true  | One Sensor, Stale                             |
-| Disconnected     | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH  | `disconnected`   | true  | Values hidden, Switch On and greyed out       |
-| Off              | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH  | `disconnected`   | false | Values hidden, Switch Off and usable          |
-| Three Sensors    | Air Quality Module | CO₂ 1,250 ppm, VOC, PM2.5             | `connected`      | true  | Three in one row. Blocked, see Open questions |
-| `LongText` story | Air Quality Module | CO₂ 1,250 ppm, Illuminance 100,000 lx | `connected`      | true  | Longest name and values, 240px wide           |
-| `Minimal` story  | Light Module       | Illuminance 0 lx                      | `connected`      | true  | One Sensor                                    |
+| Use              | name               | sensors                                    | connectionStatus | isOn  | Shows                                      |
+| ---------------- | ------------------ | ------------------------------------------ | ---------------- | ----- | ------------------------------------------ |
+| Connected        | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH       | `connected`      | true  | Two Sensors, Connected, On                 |
+| Loading          | Climate Module     | Temperature `null`, Humidity `null`        | `connecting`     | true  | Two spinning icons, Connecting             |
+| Stale            | Light Module       | Illuminance 320 lx                         | `stale`          | true  | One Sensor, Stale                          |
+| Disconnected     | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH       | `disconnected`   | true  | Values hidden, Switch On and greyed out    |
+| Off              | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH       | `disconnected`   | false | Values hidden, Switch Off and usable       |
+| Fault            | Air Quality Module | CO₂ 1,250 ppm                              | `connected`      | true  | Value still shown, plus CO₂ sensor failure |
+| Three Sensors    | Air Quality Module | CO₂ 1,250 ppm, VOC 120 ppb, PM2.5 12 µg/m³ | `connected`      | true  | Three in one row                           |
+| `LongText` story | Air Quality Module | CO₂ 1,250 ppm, Illuminance 100,000 lx      | `connected`      | true  | Longest name and values, 240px wide        |
+| `Minimal` story  | Light Module       | Illuminance 0 lx                           | `connected`      | true  | One Sensor                                 |
 
-Stories: `Connected`, `Loading`, `Stale`, `Disconnected`, `Off`, `ThreeSensors`, `LongText`, `Minimal`.
+Stories: `Connected`, `Loading`, `Stale`, `Disconnected`, `Off`, `Fault`, `ThreeSensors`, `LongText`, `Minimal`.
 
 ### Tokens
 
@@ -209,7 +215,7 @@ The parts bring their own tokens. ModuleCard only adds the card and the spacing 
 | name    | text          | `typography/h4/*`     | `--shk-typography-h4-*`         |
 | name    | colour        | `color-text/primary`  | to confirm in step 3            |
 
-The Figma `row` frames are 429px wide, with two 191.5px Sensors. That is one example width: the card fills its parent.
+The Figma `row` variants are 364px wide (two 160px Sensors) and `stacked` 192px (one 160px Sensor). The card fills its parent, so these are the smallest widths.
 
 The switching widths (364px, 536px) can't be `var(--shk-…)`: CSS doesn't allow variables in a container query. They need an exception to the tokens-only rule, or another way to do it in the CSS step.
 
@@ -226,8 +232,5 @@ The switching widths (364px, 536px) can't be `var(--shk-…)`: CSS doesn't allow
 
 ### Open questions
 
-- **`SensorReading` size.** Figma uses `lg`, but `SensorReading.md` says `ModuleCard` columns use `md`, because 100,000 lx doesn't fit `lg` at 160px. Options: `md` always (every value fits, numbers are smaller), or `lg` with a wider minimum column (bigger numbers, and the switching widths go up).
-- **Fault.** Waiting for [`DeviceFaultStatus`](../../status/DeviceFaultStatus/DeviceFaultStatus.md). It shows once per Module, and its message names the Sensor. Once it exists, add its prop here and fill the Fault row in Target states.
-- **Units for VOC and PM2.5.** `UnitLabel` has no Unit for them, so an Air Quality Module's three Sensors can't all be shown yet, and `ThreeSensors` needs another example until they exist. Handle it in step 1b.
 - **Which Sensors each Module Type has.** Not written down in the domain docs, and "one to three" is the working limit. Add it to the Ubiquitous Language or the Relationship doc.
 - **Heading.** Should the Module name be a heading for screen-reader navigation? If yes, the card needs a `headingLevel` prop, because it doesn't know where it sits on the page.

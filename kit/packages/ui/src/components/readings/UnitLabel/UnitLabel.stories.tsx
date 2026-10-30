@@ -17,7 +17,15 @@ const meta = {
   argTypes: {
     unit: {
       control: "select",
-      options: ["celsius", "fahrenheit", "percent-rh", "lux", "ppm"],
+      options: [
+        "celsius",
+        "fahrenheit",
+        "percent-rh",
+        "lux",
+        "ppm",
+        "ppb",
+        "ug-m3",
+      ],
     },
     size: { control: "select", options: ["lg", "md", "sm", "xs"] },
   },
@@ -129,4 +137,14 @@ export const LongText: Story = {
 // Stress story: the smallest case, the shortest symbol at the smallest size, on its own.
 export const Minimal: Story = {
   args: { unit: "lux", size: "xs" },
+};
+
+// VOC, provisional until the Air Quality Module's sensor is chosen.
+export const Ppb: Story = {
+  args: { unit: "ppb", size: "md" },
+};
+
+// PM2.5. The longest symbol in the list.
+export const MicrogramsPerCubicMetre: Story = {
+  args: { unit: "ug-m3", size: "md" },
 };
