@@ -18,7 +18,7 @@ It shows the Metric of one Sensor, from [How is tracked](/docs/architecture/doma
 
 | Part  | Domain term                | Example     | Rule                                                                                            |
 | ----- | -------------------------- | ----------- | ----------------------------------------------------------------------------------------------- |
-| icon  | **Metric**                 | thermometer | One fixed icon per Metric. The parent can't change it, so a Metric looks the same everywhere.   |
+| icon  | **Metric**                 | thermostat  | One fixed icon per Metric. The parent can't change it, so a Metric looks the same everywhere.   |
 | label | **Metric** (of the Sensor) | Temperature | The Metric's name. A Sensor produces Readings for exactly one Metric, so this names the Sensor. |
 
 The parent passes the Metric. The icon and the text both follow from it.
@@ -51,7 +51,7 @@ Target states:
 | Target state | Applies? | Why                                                                                                                     |
 | ------------ | -------- | ----------------------------------------------------------------------------------------------------------------------- |
 | loading      | no       | The Metric is known before the first Reading arrives. The label stays visible above `ReadingValue`'s loading icon.      |
-| Connected    | no       | Connection Status belongs to the Device. Shown by `DeviceConnectionStatus`.                                          |
+| Connected    | no       | Connection Status belongs to the Device. Shown by `DeviceConnectionStatus`.                                             |
 | Stale        | no       | Same as above.                                                                                                          |
 | Disconnected | no       | The **value** is hidden (by `ReadingValue`), the label is not. Next to the disconnected icon it says what was measured. |
 | Fault        | no       | Fault is Status.                                                                                                        |
@@ -62,16 +62,18 @@ Pairing Status doesn't apply either: the Metric belongs to the Sensor, not to th
 
 **Metric** (prop `metric`). A fixed list, one value per Metric in the glossary. In Figma this is not a variant property: change the label text and swap the icon on the instance.
 
-| Value         | Label       | Screen reader  | Icon                  | In `icons.config.ts`? |
-| ------------- | ----------- | -------------- | --------------------- | --------------------- |
-| `temperature` | Temperature | Temperature    | `thermometer`         | yes                   |
-| `humidity`    | Humidity    | Humidity       | `humidity_percentage` | yes                   |
-| `illuminance` | Illuminance | Illuminance    | `light_mode`          | yes                   |
-| `co2`         | CO₂         | carbon dioxide | `co2`                 | yes                   |
-| `voc`         | VOC         | VOC            | `airwave`             | yes                   |
-| `pm25`        | PM2.5       | PM 2.5         | `grain`               | yes                   |
+| Value         | Label       | Screen reader  | Icon           | In `icons.config.ts`? |
+| ------------- | ----------- | -------------- | -------------- | --------------------- |
+| `temperature` | Temperature | Temperature    | `thermostat`   | yes                   |
+| `humidity`    | Humidity    | Humidity       | `humidity_mid` | yes                   |
+| `illuminance` | Illuminance | Illuminance    | `light_mode`   | yes                   |
+| `co2`         | CO₂         | carbon dioxide | `co2`          | yes                   |
+| `voc`         | VOC         | VOC            | `airwave`      | yes                   |
+| `pm25`        | PM2.5       | PM 2.5         | `grain`        | yes                   |
 
 The label uses the subscript `₂` (U+2082) in "CO₂", the same character the glossary uses.
+
+The labels and spoken names live in `utils/metricNames.ts`, because `DeviceFaultStatus` needs them too. The icons stay in `SensorLabel.tsx`, because utils can't import icons.
 
 **Size** (Figma variant property `size`, prop `size`). Default `xs`, the same size as `LocationPath`, so the two sit well together in a card header.
 
@@ -90,7 +92,7 @@ Figma: 4 variants, named `size=<size>`.
 
 ```
 root            (size=xs | sm | md | lg)
-├── icon        thermometer
+├── icon        thermostat
 ├── label       "Temperature"
 └── spokenName  "carbon dioxide"   (co2 and pm25 only; visually hidden, read by screen readers)
 ```

@@ -1,0 +1,31 @@
+@layer detriz {
+  /* Icon then message in one row. The icon stays beside the first line when the message wraps. */
+  .root {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: var(--shk-space-1);
+    padding: var(--shk-space-0);
+    color: var(--shk-status-danger-fg);
+  }
+
+  /* Figma's 12px / regular / 18px text is the caption text style.
+     The message wraps instead of truncating: a cut-off Fault message could hide what is wrong. */
+  .label {
+    min-inline-size: 0;
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+  }
+
+  /* On the page for screen readers only, never seen. */
+  .spokenMessage {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

@@ -16,6 +16,7 @@ export const iconConfig = {
     "grain",
     "home",
     "humidity_percentage",
+    "humidity_mid",
     "light_mode",
     "lightbulb",
     "lightbulb-fill",

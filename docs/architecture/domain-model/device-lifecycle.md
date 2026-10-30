@@ -103,9 +103,18 @@ stateDiagram-v2
 | **Connecting** | Establishing or re-establishing the connection. | Right after **Device Paired**, after a power-up, or **Reconnect Started** after a dropped link. |
 | **Connected** | Reachable, and Readings arrive on time. | **Device Connected**, or a **Reading Recorded** while Stale. |
 | **Stale** | Still reachable, but no Reading arrived within the expected interval. | **Device Went Stale**, raised by the Staleness Policy in Telemetry. |
-| **Disconnected** | Can't be reached. Last known values are hidden: a disconnected icon shows in their place. | **Device Disconnected**, or **Connection Timed Out** while Connecting. |
+| **Disconnected** | Can't be reached, or the user turned it Off. Last known values are hidden: a disconnected icon shows in their place. | **Device Disconnected**, or **Connection Timed Out** while Connecting. |
 
 There is no end state: a Paired Device keeps cycling between these statuses until it is removed.
+
+### Turning a Module Off
+
+A user can turn a Paired Module Off. It stays in its Slot and stays Paired, but it stops sending Readings.
+
+- **Module Turned Off** moves it to Disconnected, through **Device Disconnected** with the reason "turned off".
+- **Module Turned On** moves it to Connecting, then Connected as usual.
+
+On or Off is a setting the user chose, not a fourth status field. It tells a chosen Disconnected from a lost connection: an Off Module isn't a problem, so it must not raise an alert about a lost connection.
 
 ## Fault
 
@@ -264,12 +273,13 @@ A **command** is a request that can be refused. An **event** is a fact: it alrea
 | **Device Removed** | Leaves the lifecycle | API, after the Remove Device command |
 | **Device Connected** | Connection → Connected | Hub agent or API |
 | **Device Went Stale** | Connection → Stale | Staleness Policy (Telemetry) |
-| **Device Disconnected** | Connection → Disconnected | API (link lost) or Hub agent (Module ejected) |
+| **Device Disconnected** | Connection → Disconnected | API (link lost) or Hub agent (Module ejected, Module turned Off) |
 | **Connection Timed Out** | Connection → Disconnected | API |
 | **Reconnect Started** | Connection → Connecting | Hub agent or API |
 | **Reading Recorded** | Connection Stale → Connected | Telemetry |
 | **Fault Raised** / **Fault Cleared** | Fault | Hub agent (the Device reports it) |
 | **Module Inserted** / **Module Ejected** | Slot occupancy | Hub agent |
+| **Module Turned Off** / **Module Turned On** | On or Off | Hub agent, after the user's command |
 | **Hub Placed** | Hub placement | API, after the Place Hub command |
 
 ### Commands
@@ -280,6 +290,7 @@ A **command** is a request that can be refused. An **event** is a fact: it alrea
 | **Dismiss Device** | User | The Device isn't Unpaired |
 | **Remove Device** | User | The Device isn't Paired |
 | **Place Hub** | User | The Hub isn't Paired, or the Space is in another Account's Site |
+| **Turn Module Off** / **Turn Module On** | User | The Module isn't Paired, or its Hub is Disconnected |
 
 ## Rules
 
@@ -293,6 +304,7 @@ These add to the [invariants in the relationships doc](./relationship-and-cardin
 6. **Stale is decided from Readings, not from the link.** A Device is Stale only if it is reachable but no Reading arrived within the expected interval.
 7. **Fault never changes Pairing or Connection Status**, and they never clear a Fault.
 8. **Removing a Device keeps its Readings.** History is never deleted by the lifecycle.
+9. **An Off Module is Disconnected but stays Paired and in its Slot.** Only the user turns it On again: it doesn't reconnect by itself.
 
 ## What the UI shows
 
@@ -306,6 +318,7 @@ How each status maps to the design-system target states (see `CLAUDE.md`, "Compo
 | Paired + Connected | Connected | Live value |
 | Paired + Stale | Stale | Value with "Last update 5 min ago" |
 | Paired + Disconnected | Disconnected | Disconnected icon instead of the value |
+| Paired + Off | Disconnected | Disconnected icon instead of the value, switch Off and usable |
 | Any + Has Fault | Fault | Fault message and help for its Fault Code, **on top of** the connection state |
 
 ## Open questions

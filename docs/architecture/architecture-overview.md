@@ -123,7 +123,7 @@ smart-home-kit/
 │   │   │   └── src/
 │   │   │       ├── primitives/       Button, Card, Badge, Tooltip…
 │   │   │       ├── sensor/           Gauge, ReadingValue, HistoryChart, StatusTile, Alert
-│   │   │       ├── device/           HubCard, ModuleSlot, ConnectionBadge, FaultMessage
+│   │   │       ├── device/           HubCard, ModuleSlot, ConnectionBadge, DeviceFaultStatus
 │   │   │       └── <Component>/      Component.tsx, Component.module.css,
 │   │   │                             Component.stories.tsx, Component.test.tsx
 │   │   │

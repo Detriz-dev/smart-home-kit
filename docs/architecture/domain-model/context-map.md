@@ -150,7 +150,7 @@ From the [architecture overview](../architecture-overview.md). Folder names unde
 | --- | --- | --- | --- |
 | Identity and Access | `platform/services/api/.../domain/identity/` | ingest auth in `openapi.yaml` | — |
 | Location | `platform/services/api/.../domain/location/` | `openapi.yaml` | `client` types |
-| Device Management | `platform/services/api/.../domain/devices/` | `openapi.yaml` (hubs, modules) | `useHub`, `useConnectionStatus`; `ui/device/` (HubCard, ModuleSlot, ConnectionBadge, FaultMessage) |
+| Device Management | `platform/services/api/.../domain/devices/` | `openapi.yaml` (hubs, modules) | `useHub`, `useConnectionStatus`; `ui/device/` (HubCard, ModuleSlot, ConnectionBadge, DeviceFaultStatus) |
 | Telemetry | `platform/services/api/.../domain/telemetry/` | `openapi.yaml` (sensors, readings, history, stream) | `useSensor`, `useReadings`; `ui/sensor/` (Gauge, ReadingValue, HistoryChart) |
 | Hub agent (ACL) | `platform/hub/drivers/`, `platform/hub/agent/` | ingest endpoints in `openapi.yaml` | — |
 
