@@ -80,6 +80,12 @@ Three Sensors are never split into two rows: they all sit in one row, or all sta
 
 These two names are for Figma frames and this spec only. In code they are CSS, not a prop.
 
+A container query measures the space inside the card, without its padding and border. So the CSS uses 332px and 504px for the 364px and 536px card widths in the table above.
+
+The card needs a parent that gives it a width, such as a block or a grid cell. It gets its width from its parent, not from its content.
+
+The Module Name can be long, because the user can rename it. It stays on one line and ends with "…", and the full name shows on hover. The status label never shrinks. The value and the Unit never truncate (rule from `SensorReading`).
+
 ### States
 
 Figma variant property `state`. In code there is no `state` prop: the card works it out from `connectionStatus`, `isOn` and the Sensors' values.
@@ -138,7 +144,7 @@ root               <div role="group">    card: background, padding, stacks the p
 4. **sensors**: a list, because the Sensors are a group of equal items. Holds only `li`s, so any Figma `row` frame inside it doesn't become an element.
 5. **sensor**: one list item. `SensorReading` fills it.
 
-Figma layer names follow this anatomy.
+Figma layer names follow this anatomy. In Figma, `hasFault` stands for the `fault` prop, and `hasSecondSensor` and `hasThirdSensor` stand for the length of `sensors`.
 
 ### API
 
@@ -185,19 +191,19 @@ Notes:
 
 Stories render in English. Which Sensors each Module Type has is not written down in the domain docs yet: these are assumed from the glossary examples.
 
-| Use              | name               | sensors                                    | connectionStatus | isOn  | Shows                                      |
-| ---------------- | ------------------ | ------------------------------------------ | ---------------- | ----- | ------------------------------------------ |
-| Connected        | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH       | `connected`      | true  | Two Sensors, Connected, On                 |
-| Loading          | Climate Module     | Temperature `null`, Humidity `null`        | `connecting`     | true  | Two spinning icons, Connecting             |
-| Stale            | Light Module       | Illuminance 320 lx                         | `stale`          | true  | One Sensor, Stale                          |
-| Disconnected     | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH       | `disconnected`   | true  | Values hidden, Switch On and greyed out    |
-| Off              | Climate Module     | Temperature 22.4 °C, Humidity 48 %RH       | `disconnected`   | false | Values hidden, Switch Off and usable       |
-| Fault            | Air Quality Module | CO₂ 1,250 ppm                              | `connected`      | true  | Value still shown, plus CO₂ sensor failure |
-| Three Sensors    | Air Quality Module | CO₂ 1,250 ppm, VOC 120 ppb, PM2.5 12 µg/m³ | `connected`      | true  | Three in one row                           |
-| `LongText` story | Air Quality Module | CO₂ 1,250 ppm, Illuminance 100,000 lx      | `connected`      | true  | Longest name and values, 240px wide        |
-| `Minimal` story  | Light Module       | Illuminance 0 lx                           | `connected`      | true  | One Sensor                                 |
+| Use              | name                                  | sensors                                     | connectionStatus | isOn  | Shows                                           |
+| ---------------- | ------------------------------------- | ------------------------------------------- | ---------------- | ----- | ----------------------------------------------- |
+| Connected        | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `connected`      | true  | Two Sensors, Connected, On                      |
+| Loading          | Climate Module                        | Temperature `null`, Humidity `null`         | `connecting`     | true  | Two spinning icons, Connecting                  |
+| Stale            | Light Module                          | Illuminance 320 lx                          | `stale`          | true  | One Sensor, Stale                               |
+| Disconnected     | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `disconnected`   | true  | Values hidden, Switch On and greyed out         |
+| Off              | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `disconnected`   | false | Values hidden, Switch Off and usable            |
+| Fault            | Air Quality Module                    | CO₂ 1,250 ppm                               | `connected`      | true  | Value still shown, plus CO₂ sensor failure      |
+| Three Sensors    | Air Quality Module                    | CO₂ 1,250 ppm, VOC 120 ppb, PM2.5 12 µg/m³  | `connected`      | true  | Three in one row                                |
+| `LongText` story | Living room air quality by the window | Temperature 22.4 °C, Illuminance 100,000 lx | `connected`      | true  | Name ends with "…", Sensors stacked, 240px wide |
+| `Minimal` story  | Light Module                          | Illuminance 0 lx                            | `connected`      | true  | One Sensor                                      |
 
-Stories: `Connected`, `Loading`, `Stale`, `Disconnected`, `Off`, `Fault`, `ThreeSensors`, `LongText`, `Minimal`.
+Stories: `Connected`, `Loading`, `Stale`, `Disconnected`, `Off`, `Fault`, `ThreeSensors`, `Stacked`, `LongText`, `Minimal`.
 
 ### Tokens
 
@@ -217,13 +223,13 @@ The parts bring their own tokens. ModuleCard only adds the card and the spacing 
 
 The Figma `row` variants are 364px wide (two 160px Sensors) and `stacked` 192px (one 160px Sensor). The card fills its parent, so these are the smallest widths.
 
-The switching widths (364px, 536px) can't be `var(--shk-…)`: CSS doesn't allow variables in a container query. They need an exception to the tokens-only rule, or another way to do it in the CSS step.
+The container query widths (332px, 504px) are raw values, an exception to the tokens-only rule: CSS doesn't allow variables in a container query.
 
 ### Accessibility
 
 - `root` is a `<div role="group">` named by the Module's name (`aria-labelledby` → `name`), the same pattern as `SensorReading`.
 - Reading order follows the anatomy: name, status, Sensors, Switch. It stays the same in both layouts.
-- `sensors` is a real list, so a screen reader says how many Sensors there are.
+- `sensors` is a real list with `role="list"`, because Safari stops treating a list as a list once its bullets are removed. A screen reader says how many Sensors there are.
 - Each `SensorReading` keeps its own spoken name ("Temperature, 22.4 degrees Celsius").
 - Not colour alone: `DeviceConnectionStatus` has a text label, `disconnected` has its own icon, and the Switch shows "On" or "Off" as text.
 - A screen reader tells `off` from `disconnected` through the Switch: "on" and dimmed, or "off" and usable.

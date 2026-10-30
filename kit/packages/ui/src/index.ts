@@ -41,6 +41,11 @@ export type {
   SensorReadingProps,
   SensorReadingSize,
 } from "./components/readings/SensorReading";
+export { ModuleCard } from "./components/readings/ModuleCard";
+export type {
+  ModuleCardProps,
+  ModuleCardSensor,
+} from "./components/readings/ModuleCard";
 export type { Metric } from "./types/metric";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
