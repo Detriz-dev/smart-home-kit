@@ -227,7 +227,7 @@ The switching widths (364px, 536px) can't be `var(--shk-…)`: CSS doesn't allow
 ### Open questions
 
 - **`SensorReading` size.** Figma uses `lg`, but `SensorReading.md` says `ModuleCard` columns use `md`, because 100,000 lx doesn't fit `lg` at 160px. Options: `md` always (every value fits, numbers are smaller), or `lg` with a wider minimum column (bigger numbers, and the switching widths go up).
-- **Fault.** Depends on a new Status component, built before this card. Once it exists, add its prop here and fill the Fault row in Target states.
+- **Fault.** Waiting for [`DeviceFaultStatus`](../../status/DeviceFaultStatus/DeviceFaultStatus.md). It shows once per Module, and its message names the Sensor. Once it exists, add its prop here and fill the Fault row in Target states.
 - **Units for VOC and PM2.5.** `UnitLabel` has no Unit for them, so an Air Quality Module's three Sensors can't all be shown yet, and `ThreeSensors` needs another example until they exist. Handle it in step 1b.
 - **Which Sensors each Module Type has.** Not written down in the domain docs, and "one to three" is the working limit. Add it to the Ubiquitous Language or the Relationship doc.
 - **Heading.** Should the Module name be a heading for screen-reader navigation? If yes, the card needs a `headingLevel` prop, because it doesn't know where it sits on the page.

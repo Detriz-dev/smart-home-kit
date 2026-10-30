@@ -234,7 +234,7 @@ Inside the backend, events let contexts react to each other. Some of them are al
 | Group | Sent to the client? | Why |
 | --- | --- | --- |
 | Reading Recorded | Yes | Live values for `useSensor`, Gauge, HistoryChart |
-| Connection and Fault events | Yes | Live status for `useConnectionStatus`, ConnectionBadge, FaultMessage |
+| Connection and Fault events | Yes | Live status for `useConnectionStatus`, ConnectionBadge, DeviceFaultStatus |
 | Pairing, Module and Hub Placed events | Yes | Studio updates the Device list without reloading |
 | Location events | Yes | Studio updates the Site and Space tree |
 | Insight events | Yes | Alerts |

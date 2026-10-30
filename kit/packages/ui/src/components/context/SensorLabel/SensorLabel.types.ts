@@ -1,6 +1,7 @@
+import type { Metric } from "../../../types/metric";
+
 /** The Metric a Sensor measures. Decides the label and the icon. */
-export type SensorLabelMetric =
-  "temperature" | "humidity" | "illuminance" | "co2" | "voc" | "pm25";
+export type SensorLabelMetric = Metric;
 
 /** How big the label is drawn: xs (caption text, 16px icon) up to lg (body-lg text, 24px icon). */
 export type SensorLabelSize = "xs" | "sm" | "md" | "lg";
