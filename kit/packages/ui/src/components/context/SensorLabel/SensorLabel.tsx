@@ -14,8 +14,8 @@ const METRICS: Record<
   SensorLabelMetric,
   { label: string; icon: IconName; spokenName?: string }
 > = {
-  temperature: { label: "Temperature", icon: "thermometer" },
-  humidity: { label: "Humidity", icon: "humidity_percentage" },
+  temperature: { label: "Temperature", icon: "thermostat" },
+  humidity: { label: "Humidity", icon: "humidity_mid" },
   illuminance: { label: "Illuminance", icon: "light_mode" },
   co2: { label: "CO₂", icon: "co2", spokenName: "carbon dioxide" },
   voc: { label: "VOC", icon: "airwave" },

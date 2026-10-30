@@ -146,11 +146,13 @@ Lifecycle events are explained with diagrams in [Device Lifecycle](./device-life
 | **Device Removed** | A Paired Device left the Account | `deviceId` | Telemetry (stops accepting its Readings) | Yes |
 | **Module Inserted** | A Module was snapped into a Slot | `moduleId`, `hubId`, `slotNumber` | — | Yes |
 | **Module Ejected** | A Module was pulled out of a Slot | `moduleId`, `hubId`, `slotNumber` | — | Yes |
+| **Module Turned Off** | The user turned a Module Off (→ Disconnected) | `moduleId`, `hubId` | Client | Yes |
+| **Module Turned On** | The user turned a Module On (→ Connecting) | `moduleId`, `hubId` | Client | Yes |
 | **Hub Placed** | A Hub was placed in, or moved to, a Space | `hubId`, `spaceId`, `previousSpaceId?` | Telemetry (new Subject for new Readings) | Yes |
 | **Sensor Linked to Asset** | A Sensor now watches an Asset | `sensorId`, `assetId` | Telemetry (new Subject for new Readings) | Yes |
 | **Sensor Unlinked from Asset** | A Sensor stopped watching an Asset | `sensorId`, `assetId` | Telemetry (Subject goes back to the Space) | Yes |
 | **Device Connected** | Connection → Connected | `deviceId` | — | Yes |
-| **Device Disconnected** | Connection → Disconnected | `deviceId`, `reason` (link lost, Module ejected, Hub disconnected) | — | Yes |
+| **Device Disconnected** | Connection → Disconnected | `deviceId`, `reason` (link lost, Module ejected, Module turned Off, Hub disconnected) | — | Yes |
 | **Connection Timed Out** | Connecting took too long (→ Disconnected) | `deviceId` | — | Yes |
 | **Reconnect Started** | Connection → Connecting | `deviceId` | — | Yes |
 | **Fault Raised** | The Device reported a hardware problem | `deviceId`, `faultCode`, `sensorId?` | Client (shows Fault message) | Yes |
@@ -192,6 +194,8 @@ Lifecycle events are explained with diagrams in [Device Lifecycle](./device-life
 | **Dismiss Device** | Device Management | User | Device Dismissed | Device isn't Unpaired |
 | **Remove Device** | Device Management | User | Device Removed | Device isn't Paired |
 | **Place Hub** | Device Management | User | Hub Placed | Hub isn't Paired, or the Space belongs to another Account |
+| **Turn Module Off** | Device Management | User | Module Turned Off, then Device Disconnected | Module isn't Paired, or its Hub is Disconnected |
+| **Turn Module On** | Device Management | User | Module Turned On, then Reconnect Started | Module isn't Paired, or its Hub is Disconnected |
 | **Link Sensor to Asset** | Device Management | User | Sensor Linked to Asset | The Asset is in a different Space than the Sensor's Hub |
 | **Create Space** | Location | User | Space Created | The Site belongs to another Account |
 | **Add Asset** | Location | User | Asset Added | The Space doesn't exist |

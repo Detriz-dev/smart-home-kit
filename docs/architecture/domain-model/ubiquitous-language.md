@@ -36,6 +36,7 @@ This document defines the shared language of DeTriz Smart Home KIT. Each concept
 | **Hub** | The core unit that powers Modules, connects to the network and is placed in a Space. | The DeTriz Hub on the kitchen shelf |
 | **Module** | A snap-in hardware piece attached to a Hub. It belongs to the Hub's Space. | Climate Module, Light Module, Air Quality Module |
 | **Module Type** | The product model of a Module. It decides which Sensors the Module contains. | Climate, Light, Air Quality |
+| **Module Name** | The name shown for one Module. Starts as its Module Type name, and the user can rename it at any time. Renaming never changes the Module Type. | "Climate Module", renamed to "Kitchen climate" |
 | **Slot** | The physical position on a Hub where a Module snaps in. | Slot 1 to Slot 4 |
 | **Sensor** | One measuring element inside a Module. It produces Readings for exactly one Metric. | The CO₂ sensor inside the Air Quality Module |
 
@@ -83,7 +84,14 @@ A Device's status is three separate fields, each answering one question. Keeping
 | **Connecting** | A paired Device is (re)establishing its connection. Happens after every power-up, restart or dropped link. | The Hub boots after a power cut and reconnects its Modules |
 | **Connected** | The Device is reachable and sending Readings. | The Kitchen Hub streams temperature every few seconds |
 | **Stale** | Connected, but no Reading arrived within the expected interval. | "Last update 5 min ago" on the Light Module |
-| **Disconnected** | The Device can't be reached. Its last known values are hidden: a disconnected icon shows in their place. | The Hub was unplugged from the wall |
+| **Disconnected** | The Device can't be reached, or the user turned it Off. Its last known values are hidden: a disconnected icon shows in their place. | The Hub was unplugged from the wall |
+
+### On / Off
+
+| Term | Definition | Example |
+| --- | --- | --- |
+| **On** | The user wants this Module to run. The default. | A Climate Module sending Readings |
+| **Off** | The user turned this Module off. It stays in its Slot and stays Paired, but sends no Readings. It is a setting, not a status: an Off Module's Connection Status is Disconnected. | The Light Module is turned off in Live Studio, and shows as Disconnected with its switch Off |
 
 ### Fault
 

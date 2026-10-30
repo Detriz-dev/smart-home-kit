@@ -30,7 +30,7 @@ What it does **not** show, and why:
 - **Fault.** Also a Module field. See Open questions.
 - **Module, Space, Site.** Where the Sensor sits is `LocationPath` or the `ModuleCard` header.
 - **Time of the Reading** ("Updated 5 s ago"). Context, not part of this card yet.
-- **On/off.** Turning a Module on or off is not in the glossary yet. When it is, it lives on `ModuleCard`. See Open questions.
+- **On/Off.** Turning a Module on or off lives on `ModuleCard`. An Off Module is Disconnected, so SensorReading gets `isDisconnected`.
 
 Pairing Status doesn't apply: an Unpaired Module sends no Readings, so there is no SensorReading to show.
 
@@ -201,6 +201,5 @@ Figma draws the outline **inside** the card (it takes no space). A CSS `border` 
 
 - **Units for VOC and PM2.5.** `SensorLabel` knows these Metrics, but `UnitLabel` has no Unit for them yet (see `UnitLabel.md`). Until it does, SensorReading can't show a VOC or PM2.5 Reading. Doesn't block this component: the stories use Metrics that have a Unit.
 - **Fault on one Sensor.** A Fault belongs to the Module, but the glossary example "CO₂ sensor failure" is about one Sensor inside it. Should `ModuleCard` mark the affected SensorReading (which would need a prop here), or only show the Fault once for the Module? Decide with `ModuleCard`.
-- **Module On/Off.** When a Module is Off, what does each SensorReading show: the last value, the value hidden, or "Off"? Needs the glossary term first. Decide with `ModuleCard`; it may add a state here.
 - **Heading.** Inside `ModuleCard`, should each Metric name be a heading (`<h3>`) for screen-reader navigation? If yes, add an optional `headingLevel` prop then, not now.
 - **`fractionDigits` per Metric.** Every parent passes the same precision per Metric (Temperature 1, CO₂ 0). If this repeats in `ModuleCard` and elsewhere, move it into one shared Metric → precision map in `utils/`.

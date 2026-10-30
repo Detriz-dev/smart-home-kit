@@ -104,7 +104,7 @@ Components in the DeTriz Home design system are grouped by **the question they a
 | Category | Question it answers | What belongs here | Components |
 |---|---|---|---|
 | **Context** | "Where is this / what is it?" | Static, descriptive information about places, sensors, devices and time. Never changes on its own. | |
-| **Readings** | "What is it right now?" | The current value of a single measurement. | |
+| **Readings** | "What is it right now?" | The current values of a single measurement or a single Module. | |
 | **History** | "How has it changed?" | Data over time: trends, past values, summaries. | |
 | **Comparison** | "How do sensors relate to each other?" | Several sensors or metrics shown together. | |
 | **Status** | "Is everything OK?" | Changing state of the physical world or hardware: health, connection, alerts. | |
