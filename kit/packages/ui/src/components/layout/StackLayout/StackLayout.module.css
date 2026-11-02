@@ -1,0 +1,21 @@
+@layer detriz {
+  /* One column as wide as the parent. minmax(0, 1fr) stops a long child from pushing it wider.
+     align-content: start keeps the gap even when the parent is taller than the children. */
+  .root {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: var(--shk-space-4);
+    inline-size: 100%;
+  }
+
+  /* sm: the children belong closely together. */
+  .root[data-gap="sm"] {
+    gap: var(--shk-space-2);
+  }
+
+  /* lg: the children are separate groups. */
+  .root[data-gap="lg"] {
+    gap: var(--shk-space-8);
+  }
+}
