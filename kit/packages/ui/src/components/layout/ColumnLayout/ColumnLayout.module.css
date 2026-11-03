@@ -1,0 +1,42 @@
+@layer detriz {
+  /* Fills its parent and is what the container query below measures.
+     A container query can't change the element it measures, so the grid is a separate element. */
+  .root {
+    container-type: inline-size;
+    inline-size: 100%;
+  }
+
+  /* One column by default. minmax(0, 1fr) stops a long child from pushing it wider.
+     Grid stretches children, so the cards in a row get the same height. */
+  .columns {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: var(--shk-space-4);
+  }
+
+  /* equal: as many columns as fit, never narrower than 192px, and wraps onto new rows.
+     min() lets a single column shrink when the parent itself is narrower than 192px. */
+  .columns[data-ratio="equal"] {
+    grid-template-columns: repeat(
+      auto-fit,
+      minmax(min(calc(var(--shk-size-24) * 2), 100%), 1fr)
+    );
+  }
+
+  /* 592px = three 192px shares + a 16px gap, so the small column is never narrower than 192px.
+     It is a raw value because CSS doesn't allow variables here. */
+  @container (inline-size >= 592px) {
+    .columns[data-ratio="2:1"] {
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+    }
+
+    .columns[data-ratio="1:2"] {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 2fr);
+    }
+
+    /* A single child fills the width, so 2:1 and 1:2 never leave an empty column beside it. */
+    .columns > :only-child {
+      grid-column: 1 / -1;
+    }
+  }
+}

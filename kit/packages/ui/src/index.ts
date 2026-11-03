@@ -51,6 +51,11 @@ export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
 export { Switch } from "./components/controls/Switch";
 export type { SwitchProps } from "./components/controls/Switch";
+export { ColumnLayout } from "./components/layout/ColumnLayout";
+export type {
+  ColumnLayoutProps,
+  ColumnLayoutRatio,
+} from "./components/layout/ColumnLayout";
 export { StackLayout } from "./components/layout/StackLayout";
 export type {
   StackLayoutGap,
