@@ -81,13 +81,13 @@ The user page is written from the spec, so a spec has to be complete first. "Com
 
 ## 4. Other pages and docs
 
-| Item                                                          | What to do                                                                                                                                                 | Status |
-| ------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `get-started/installation.mdx`                                | Admonition fixed (`:::info[Coming soon]`). Write the page when the packages are published.                                                                 | 🟡     |
-| Landing page (`src/pages/index.tsx`)                          | Still uses Docusaurus's `--ifm-` variables and colours. Move it to the kit's tokens and components now that the site loads them.                           | ⬜     |
-| `docs/architecture/design-system/information-architecture.md` | Empty. The site's structure is only described in CLAUDE.md. Write it, or remove the file and point to this plan.                                           | ⬜     |
-| CLAUDE.md                                                     | Path fixed. It now also points to this plan.                                                                                                               | ✅     |
-| Domain Model pages                                            | Glossary, Data model and Device lifecycle exist. Check that every term the component pages link to (Metric, Unit, Subject, Pairing Status…) has an anchor. | ⬜     |
+| Item                                                          | What to do                                                                                                                                                                                                                                                                                                                     | Status |
+| ------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------ |
+| `get-started/installation.mdx`                                | Written as if the packages were already published: requirements, install, styles, fonts, the cascade layer rule, a check that it works, and a table of what to fix. Plus a new `quick-start.mdx` that builds a Bedroom screen step by step. Check both again when the packages are really published (package names, versions). | ✅     |
+| Landing page (`src/pages/index.tsx`)                          | Still uses Docusaurus's `--ifm-` variables and colours. Move it to the kit's tokens and components now that the site loads them.                                                                                                                                                                                               | ⬜     |
+| `docs/architecture/design-system/information-architecture.md` | Empty. The site's structure is only described in CLAUDE.md. Write it, or remove the file and point to this plan.                                                                                                                                                                                                               | ⬜     |
+| CLAUDE.md                                                     | Path fixed. It now also points to this plan.                                                                                                                                                                                                                                                                                   | ✅     |
+| Domain Model pages                                            | Glossary, Data model and Device lifecycle exist. Check that every term the component pages link to (Metric, Unit, Subject, Pairing Status…) has an anchor.                                                                                                                                                                     | ⬜     |
 
 ## 5. Foundations
 
@@ -105,7 +105,6 @@ A **Foundations** category in UI Components (first after the Overview), for what
 Still open:
 
 - **No dark theme.** The kit has one light theme. The docs site keeps previews on a light surface as a workaround (`custom.css`). Design tokens says so in a note.
-- **Get Started:** loading the CSS and fonts, and the cascade layer rule, should also be on the Installation page once the packages are published.
 - **Figma checks** listed in four specs: `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (node ID, variables, usage frame) and `UnitLabel` (5 vs 7 Units).
 
 ## Order of work

@@ -1,14 +1,154 @@
 ---
 sidebar_position: 1
 sidebar_label: Installation
+description: Install the kit's packages, load its styles and fonts, and render your first component.
 ---
 
 # Installation
 
-How to install the kit's packages and render your first component.
+How to add the kit to a React app and render your first component. It takes four steps: install the packages, load the styles, load the fonts, and check that your own CSS doesn't override the kit.
 
-:::info[Coming soon]
+## What you need
 
-The packages aren't published yet. This page will be filled in when they are.
+- **React 19** (`react` and `react-dom`). The kit's components use your app's React: they don't bring their own.
+- **A bundler that understands ES modules and CSS imports**, like Vite or Next.js. The packages are ES modules only.
+- **TypeScript** is optional. The types are included, so there's nothing extra to install.
 
-:::
+## 1. Install the packages
+
+The kit comes as two packages:
+
+| Package                 | What's in it                                                         |
+| ----------------------- | -------------------------------------------------------------------- |
+| `@detriz-sh-kit/ui`     | The React components and their styles.                               |
+| `@detriz-sh-kit/tokens` | The design tokens: the CSS variables the components are styled with. |
+
+Install both, plus the two fonts the kit uses:
+
+```sh
+npm install @detriz-sh-kit/ui @detriz-sh-kit/tokens @fontsource/space-grotesk @fontsource/space-mono
+```
+
+With pnpm or Yarn:
+
+```sh
+pnpm add @detriz-sh-kit/ui @detriz-sh-kit/tokens @fontsource/space-grotesk @fontsource/space-mono
+yarn add @detriz-sh-kit/ui @detriz-sh-kit/tokens @fontsource/space-grotesk @fontsource/space-mono
+```
+
+## 2. Load the styles
+
+Import the tokens and the components' styles **once**, at the root of your app. Load the tokens first:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+Where the root is depends on your setup:
+
+| Setup                  | File             |
+| ---------------------- | ---------------- |
+| Vite                   | `src/main.tsx`   |
+| Next.js (App Router)   | `app/layout.tsx` |
+| Next.js (Pages Router) | `pages/_app.tsx` |
+
+Without these two imports, the components render without any styling.
+
+## 3. Load the fonts
+
+The tokens name the fonts (Space Grotesk and Space Mono), but don't include the font files. Import the weights the kit uses, next to the styles:
+
+```tsx
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/space-mono/400.css";
+```
+
+Without them, the text falls back to the system font. See [Typography](/docs/ui-components/foundations/typography) for the text styles.
+
+## 4. Check your own CSS
+
+The kit's styles are inside a CSS cascade layer called `detriz`. Styles **outside** a layer always win over styles inside one, so global styles in your app, like a reset for every `button` or `ol`, can change the kit's components.
+
+If your app has global styles, put them in a layer that comes before `detriz`:
+
+```css
+@layer reset, detriz;
+
+@layer reset {
+  /* your global styles */
+}
+```
+
+If your app has no global styles, you can skip this step. See [Design tokens](/docs/ui-components/foundations/design-tokens#your-own-css-and-the-kit) for more.
+
+## All together
+
+The root of a Vite app, with everything in place:
+
+```tsx title="src/main.tsx"
+import { StrictMode } from "react";
+import { createRoot } from "react-dom/client";
+
+// Fonts
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/space-mono/400.css";
+
+// The kit's tokens, then its components' styles
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+
+import { App } from "./App";
+
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+);
+```
+
+## Check that it works
+
+Render one component:
+
+```tsx title="src/App.tsx"
+import { SensorReading } from "@detriz-sh-kit/ui";
+
+export function App() {
+  return (
+    <div style={{ maxWidth: 200 }}>
+      <SensorReading metric="temperature" value={22.4} unit="celsius" />
+    </div>
+  );
+}
+```
+
+You should see this:
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <SensorReading metric="temperature" value={22.4} unit="celsius" />
+</div>
+```
+
+If yours looks different:
+
+| You see                                          | Likely cause                                           | Fix                                               |
+| ------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------- |
+| Plain text, no card                              | The styles aren't loaded.                              | Step 2: import `ui/styles.css`.                   |
+| A card, but wrong colours or no spacing          | The tokens aren't loaded, or load after the styles.    | Step 2: import `tokens/tokens.css` first.         |
+| The right layout, but a different font           | The fonts aren't loaded.                               | Step 3.                                           |
+| Extra indents, margins or bullets                | Your global CSS overrides the kit.                     | Step 4.                                           |
+| A React error about hooks or two copies of React | React isn't version 19, or two versions are installed. | Install React 19 and check there's only one copy. |
+
+## Next steps
+
+- [Quick start](./quick-start.mdx): build a first screen from a few components.
+- [UI Components](/docs/ui-components): every component, with live examples.
+- [Domain Model](/docs/domain-model/glossary): the words the components use, like Site, Space, Module and Reading.

@@ -1,0 +1,197 @@
+---
+sidebar_position: 2
+sidebar_label: Quick start
+description: Build a first smart home screen from a few of the kit's components.
+---
+
+# Quick start
+
+Build a screen for one Space, the Bedroom, from a few of the kit's components. It takes about ten minutes. You need the kit installed first: see [Installation](./installation.mdx).
+
+This is what you'll build:
+
+```jsx live
+<ContentSection title="Bedroom">
+  <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
+  <ColumnLayout>
+    <ModuleCard
+      name="Climate Module"
+      connectionStatus="connected"
+      sensors={[
+        { metric: "temperature", value: 21.5, unit: "celsius" },
+        {
+          metric: "humidity",
+          value: 48,
+          unit: "percent-rh",
+          fractionDigits: 0,
+        },
+      ]}
+    />
+    <ModuleCard
+      name="Air Quality Module"
+      connectionStatus="connected"
+      faults={[{ faultCode: "calibration_required", metric: "co2" }]}
+      sensors={[{ metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 }]}
+    />
+  </ColumnLayout>
+</ContentSection>
+```
+
+## How the kit works
+
+Two things to know before you start:
+
+- **The components show what you pass them.** They never fetch data or talk to a Device. Your app gets the data and passes it in as props.
+- **They use the Domain Model's words.** A Space has Modules, a Module has Sensors, and a Sensor produces Readings. The props use the same words, so if you know the [Glossary](/docs/domain-model/glossary), you know what to pass.
+
+## 1. Describe the data
+
+Start with the data for the screen. In a real app it comes from your API. Here it's written out by hand. Use the kit's [shared types](/docs/ui-components/foundations/shared-types), so TypeScript checks the data against the components:
+
+```tsx title="src/bedroomData.ts"
+import type { ModuleCardProps } from "@detriz-sh-kit/ui";
+
+export const bedroomModules: ModuleCardProps[] = [
+  {
+    name: "Climate Module",
+    connectionStatus: "connected",
+    sensors: [
+      { metric: "temperature", value: 21.5, unit: "celsius" },
+      { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+    ],
+  },
+  {
+    name: "Air Quality Module",
+    connectionStatus: "connected",
+    faults: [{ faultCode: "calibration_required", metric: "co2" }],
+    sensors: [{ metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 }],
+  },
+];
+```
+
+## 2. Show one Module
+
+Render the first Module with [`ModuleCard`](/docs/ui-components/readings/module-card). It shows the Module's name, its Connection Status, any Faults and a Reading for each Sensor:
+
+```tsx title="src/App.tsx"
+import { ModuleCard } from "@detriz-sh-kit/ui";
+import { bedroomModules } from "./bedroomData";
+
+export function App() {
+  return <ModuleCard {...bedroomModules[0]} />;
+}
+```
+
+```jsx live
+<ModuleCard
+  name="Climate Module"
+  connectionStatus="connected"
+  sensors={[
+    { metric: "temperature", value: 21.5, unit: "celsius" },
+    { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+  ]}
+/>
+```
+
+## 3. Show every Module side by side
+
+Put one ModuleCard per Module in a [`ColumnLayout`](/docs/ui-components/layout/column-layout). It places them side by side, and stacks them when there isn't room:
+
+```tsx title="src/App.tsx"
+import { ColumnLayout, ModuleCard } from "@detriz-sh-kit/ui";
+import { bedroomModules } from "./bedroomData";
+
+export function App() {
+  return (
+    <ColumnLayout>
+      {bedroomModules.map((module) => (
+        <ModuleCard key={module.name} {...module} />
+      ))}
+    </ColumnLayout>
+  );
+}
+```
+
+## 4. Add a title and the location
+
+Wrap the screen in a [`ContentSection`](/docs/ui-components/layout/content-section) for its heading, and add a [`LocationPath`](/docs/ui-components/context/location-path) to say where the Space is:
+
+```tsx title="src/App.tsx"
+import {
+  ColumnLayout,
+  ContentSection,
+  LocationPath,
+  ModuleCard,
+} from "@detriz-sh-kit/ui";
+import { bedroomModules } from "./bedroomData";
+
+export function App() {
+  return (
+    <ContentSection title="Bedroom">
+      <LocationPath
+        siteName="My flat"
+        floorName="Level 2"
+        spaceName="Bedroom"
+      />
+      <ColumnLayout>
+        {bedroomModules.map((module) => (
+          <ModuleCard key={module.name} {...module} />
+        ))}
+      </ColumnLayout>
+    </ContentSection>
+  );
+}
+```
+
+That's the screen from the top of this page.
+
+## 5. Let the data change
+
+Readings arrive all the time, and Devices go Stale or disconnect. You don't change the components for that: you pass new data, and they show the right state.
+
+Try it here: the buttons change the data, and the card follows.
+
+```jsx live
+function LiveModule() {
+  const [status, setStatus] = useState("connected");
+  const [temperature, setTemperature] = useState(21.5);
+
+  return (
+    <StackLayout>
+      <div
+        style={{ display: "flex", flexWrap: "wrap", gap: "var(--shk-space-2)" }}
+      >
+        <Button
+          onClick={() => setTemperature((t) => Math.round((t + 0.3) * 10) / 10)}
+        >
+          New Reading
+        </Button>
+        <Button onClick={() => setStatus("stale")}>Go Stale</Button>
+        <Button onClick={() => setStatus("disconnected")}>Disconnect</Button>
+        <Button onClick={() => setStatus("connected")}>Reconnect</Button>
+      </div>
+      <ModuleCard
+        name="Climate Module"
+        connectionStatus={status}
+        sensors={[
+          { metric: "temperature", value: temperature, unit: "celsius" },
+          {
+            metric: "humidity",
+            value: 48,
+            unit: "percent-rh",
+            fractionDigits: 0,
+          },
+        ]}
+      />
+    </StackLayout>
+  );
+}
+```
+
+When the Module disconnects, the card hides its values by itself. The Glossary says the last values of a Disconnected Device must be hidden, so you don't have to remember to.
+
+## Next steps
+
+- [UI Components](/docs/ui-components): every component, grouped by the question it answers.
+- [Foundations](/docs/ui-components/foundations/design-tokens): change the kit's look with design tokens.
+- [Device lifecycle](/docs/domain-model/device-lifecycle): how Devices move between statuses, so you know what data to expect.
