@@ -4,6 +4,10 @@ packages:
 
 allowBuilds:
   esbuild: true
+  # docs-site (Docusaurus): the fast compiler checks its native binary
+  "@swc/core": true
+  # docs-site (Docusaurus): the script only prints a donation message
+  core-js: false
 
 # One shared version list. Projects use "react": "catalog:" instead of a version number.
 catalog:

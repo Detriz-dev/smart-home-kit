@@ -43,28 +43,28 @@ kit/apps/docs-site/
 ├── sidebars.ts                   sidebar groups
 ├── tsconfig.json
 ├── src/
+│   ├── pages/index.tsx           the landing page at "/" (explains the kit)
 │   ├── clientModules/
 │   │   └── kit-styles.ts         loads fonts, tokens.css and ui styles.css once
 │   ├── css/custom.css            maps Docusaurus colours and fonts to --shk- tokens
 │   └── components/               helpers used only on the site
 │       ├── Example.tsx           a framed box that shows a live component
 │       └── StorybookLink.tsx     "See all states in Storybook"
-└── docs/
-    ├── intro.md                  what the kit is, install, first component
-    ├── foundations/
-    │   ├── tokens.mdx            colours, spacing, type
-    │   └── icons.mdx
-    ├── components/               same categories as the ui package
-    │   ├── status/               device-connection-status.mdx, …
-    │   ├── readings/
-    │   ├── context/
-    │   ├── controls/
-    │   └── layout/
-    └── concepts/
-        └── glossary.mdx          user-facing part of the Ubiquitous Language
+└── docs/                         served under /docs
+    ├── domain/                   top bar "Domain": the smart home model
+    │   ├── index.mdx             overview
+    │   └── glossary.mdx          user-facing part of the Ubiquitous Language
+    └── components/               top bar "Components"
+        ├── index.mdx             overview
+        ├── foundations/          tokens.mdx (colours, spacing, type), icons.mdx
+        ├── status/               device-connection-status.mdx, …
+        ├── readings/
+        ├── context/
+        ├── controls/
+        └── layout/
 ```
 
-The categories (Status, Readings, Context, Controls, Layout) become the sidebar groups, so the site follows the same mental model as the code.
+The site has a landing page at `/` (like the Eightshift DevKit docs, see `screens/landing.png`) and two sections in the top bar, **Domain** and **Components**, each with its own sidebar. Clicking the site title opens the landing page. Inside Components, the categories (Status, Readings, Context, Controls, Layout) become the sidebar groups, so the site follows the same mental model as the code.
 
 ### How the site gets the components
 
@@ -175,7 +175,7 @@ Do one step per branch (`<issue-number>-short-name`). Each step has a clear "don
 ### 1. Scaffold the app
 
 - In `kit/apps`, run the Docusaurus `create` command with the `classic` template, TypeScript and without installing (`--skip-install`). Pin the version you get.
-- Clean up the template: remove the blog and the example pages, set `routeBasePath: "/"` so the docs are the homepage.
+- Clean up the template: remove the blog and the example pages. Add the landing page and the Domain and Components sections.
 - Switch React to `catalog:`, add the scripts above, add `.docusaurus/` to the ignore files, add the `pnpm docs-site` root script.
 - Run `pnpm install` from the root.
 
