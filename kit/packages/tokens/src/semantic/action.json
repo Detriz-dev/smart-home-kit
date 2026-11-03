@@ -1,0 +1,75 @@
+{
+  "action": {
+    "primary": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.blue.600}",
+        "$description": "Fill of the main action, e.g. Button primary."
+      },
+      "bg-hover": {
+        "$type": "color",
+        "$value": "{palette.blue.700}",
+        "$description": "Fill of the main action under the pointer."
+      },
+      "bg-pressed": {
+        "$type": "color",
+        "$value": "{palette.blue.800}",
+        "$description": "Fill of the main action while pressed."
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.white}",
+        "$description": "Text on the main action's fill."
+      }
+    },
+    "secondary": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.white}",
+        "$description": "Fill of every other action, e.g. Button secondary."
+      },
+      "bg-hover": {
+        "$type": "color",
+        "$value": "{palette.gray.100}",
+        "$description": "Fill of a secondary action under the pointer."
+      },
+      "bg-pressed": {
+        "$type": "color",
+        "$value": "{palette.gray.200}",
+        "$description": "Fill of a secondary action while pressed."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.gray.600}",
+        "$description": "Outline of a secondary action."
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.gray.900}",
+        "$description": "Text of a secondary action."
+      }
+    },
+    "disabled": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.gray.100}",
+        "$description": "Fill of an action that can't be used right now."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.gray.200}",
+        "$description": "Outline of a disabled secondary action."
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.gray.400}",
+        "$description": "Text of a disabled action."
+      }
+    },
+    "focus": {
+      "$type": "color",
+      "$value": "{palette.blue.600}",
+      "$description": "Keyboard focus ring around an action."
+    }
+  }
+}
