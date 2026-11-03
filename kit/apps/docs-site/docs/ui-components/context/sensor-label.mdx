@@ -120,7 +120,7 @@ Pass the [Metric](/docs/domain-model/glossary#what-is-tracked) of the Sensor as 
 A few rules from the domain model:
 
 - **One Sensor, one Metric.** A Sensor produces Readings for exactly one Metric, so naming the Metric names the Sensor. There is no separate Sensor name.
-- **A fixed list.** `metric` only accepts the six Metrics above. TypeScript tells you if you pass anything else. The list is exported as the `Metric` type, so you can use it in your own data:
+- **A fixed list.** `metric` only accepts the six Metrics above. TypeScript tells you if you pass anything else. The list is exported as the [`Metric` type](../foundations/shared-types.mdx#metric), so you can use it in your own data:
 
   ```tsx
   import type { Metric } from "@detriz-sh-kit/ui";
@@ -179,7 +179,7 @@ What's up to you:
 
 ## Styling
 
-SensorLabel uses the kit's design tokens (CSS variables starting with `--shk-`):
+SensorLabel uses the kit's [design tokens](../foundations/design-tokens.mdx) (CSS variables starting with `--shk-`):
 
 | What                      | Token                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------- |

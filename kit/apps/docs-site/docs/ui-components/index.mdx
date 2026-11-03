@@ -53,7 +53,18 @@ import "@detriz-sh-kit/ui/styles.css";
 import { ModuleCard } from "@detriz-sh-kit/ui";
 ```
 
-See [Installation](/docs/get-started/installation) for how to install the packages.
+See [Installation](/docs/get-started/installation) for how to install the packages. The kit's fonts aren't included in its CSS: see [Typography](./foundations/typography.mdx#loading-the-fonts) for how to load them.
+
+## Foundations
+
+What every component is built from. Start here if you want your own screens to match the kit:
+
+| Page                                             | What's in it                                                                                     |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| [Design tokens](./foundations/design-tokens.mdx) | The `--shk-` CSS variables, how to change them, and how your own CSS and the kit's fit together. |
+| [Typography](./foundations/typography.mdx)       | The two fonts, how to load them, and the 16 text styles.                                         |
+| [Icons](./foundations/icons.mdx)                 | The icon set and the `Icon` component.                                                           |
+| [Shared types](./foundations/shared-types.mdx)   | The TypeScript types for Metrics, Units and Device statuses.                                     |
 
 ## How the components are grouped
 
@@ -117,7 +128,7 @@ More groups are planned: History ("How has it changed?"), Comparison ("How do Se
 - **The Domain Model's words.** Props and labels use the [Glossary](/docs/domain-model/glossary)'s terms: `connectionStatus`, `metric`, `unit`. If you know the Domain Model, you know what to pass.
 - **Device states built in.** Readings and Status components cover the states of a Device: loading, Connected, Stale, Disconnected (the value is hidden) and Fault. You pass the data; the component shows the right state.
 - **Accessible by default.** Real HTML elements, screen reader text for icons and symbols, no meaning by colour alone. Each page says what you get and what's still up to you.
-- **Styled with tokens.** Every colour, size and space comes from the kit's design tokens (CSS variables starting with `--shk-`), so you can change the look in one place.
+- **Styled with tokens.** Every colour, size and space comes from the kit's [design tokens](./foundations/design-tokens.mdx) (CSS variables starting with `--shk-`), so you can change the look in one place.
 - **They fill their parent.** Cards and layouts take the width they're given and arrange themselves to fit it, not the screen.
 
 ## How to read a component page

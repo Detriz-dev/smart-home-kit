@@ -13,7 +13,7 @@ Status as of 2026-11-03: all 15 component pages and the overview are written.
 - [2. Specs to align](#2-specs-to-align)
 - [3. Docs site structure](#3-docs-site-structure)
 - [4. Other pages and docs](#4-other-pages-and-docs)
-- [5. Decisions needed](#5-decisions-needed)
+- [5. Foundations](#5-foundations)
 - [Order of work](#order-of-work)
 
 ## Status legend
@@ -71,13 +71,13 @@ The user page is written from the spec, so a spec has to be complete first. "Com
 
 ## 3. Docs site structure
 
-| Item                                        | What to do                                                                                                                                                                                                              | Status |
-| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
-| `ui-components/testing.mdx`, `testing2.mdx` | Deleted.                                                                                                                                                                                                                | ✅     |
-| Category folders                            | All five exist: `status/`, `readings/`, `context/`, `controls/`, `layout/`.                                                                                                                                             | ✅     |
-| Category order                              | `position` in each `_category_.json`, in the overview's order: Overview page `1`, Status `2`, Readings `3`, Context `4`, Controls `5`, Layout `6`. Readings and Context are set. Use these numbers for the new folders. | ✅     |
-| `ui-components/index.mdx`                   | Written: a live example, getting started, the groups and the question each answers, every component with one line, what they have in common, and how to read a component page.                                          | ✅     |
-| `sidebar_position` inside a category        | Order pages the way people meet them: building blocks first, cards last. Readings: `ReadingValue` 1, `UnitLabel` 2, `SensorReading` 3, `ModuleCard` 4, `SpaceCard` 5. Context: `LocationPath` 3, `SensorLabel` 4.       | ✅     |
+| Item                                        | What to do                                                                                                                                                                                                        | Status |
+| ------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ |
+| `ui-components/testing.mdx`, `testing2.mdx` | Deleted.                                                                                                                                                                                                          | ✅     |
+| Category folders                            | All five exist: `status/`, `readings/`, `context/`, `controls/`, `layout/`.                                                                                                                                       | ✅     |
+| Category order                              | `position` in each `_category_.json`: Overview page `1`, Foundations `2`, Status `3`, Readings `4`, Context `5`, Controls `6`, Layout `7`.                                                                        | ✅     |
+| `ui-components/index.mdx`                   | Written: a live example, getting started, the groups and the question each answers, every component with one line, what they have in common, and how to read a component page.                                    | ✅     |
+| `sidebar_position` inside a category        | Order pages the way people meet them: building blocks first, cards last. Readings: `ReadingValue` 1, `UnitLabel` 2, `SensorReading` 3, `ModuleCard` 4, `SpaceCard` 5. Context: `LocationPath` 3, `SensorLabel` 4. | ✅     |
 
 ## 4. Other pages and docs
 
@@ -89,14 +89,24 @@ The user page is written from the spec, so a spec has to be complete first. "Com
 | CLAUDE.md                                                     | Path fixed. It now also points to this plan.                                                                                                               | ✅     |
 | Domain Model pages                                            | Glossary, Data model and Device lifecycle exist. Check that every term the component pages link to (Metric, Unit, Subject, Pairing Status…) has an anchor. | ⬜     |
 
-## 5. Decisions needed
+## 5. Foundations
 
-| Question                            | Why it matters                                                                                                                                                                                  |
-| ----------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **Does `Icon` get a page?**         | It is exported from `ui` (`Icon`, `IconName`, `IconSize`) but has no folder, spec or stories like the components. If apps should use it, it needs a page, maybe in a new "Foundations" section. |
-| **A Foundations section?**          | Tokens, typography, colours and icons have no user page. The component pages' Styling sections already mention tokens, so a page that lists them would be useful to link to.                    |
-| **The `Metric` type**               | It is exported on its own, and several components use it. Document it once (on a Foundations or Domain Model page) and link to it from each component.                                          |
-| **Status pages: states shown how?** | Status components have states driven by data (Connecting, Connected, Stale, Disconnected). Decide whether to show one live example per state, or one example with all of them stacked.          |
+A **Foundations** category in UI Components (first after the Overview), for what every component is built from. Decided 2026-11-03.
+
+| Page                            | Status | Notes                                                                                                              |
+| ------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------ |
+| `foundations/design-tokens.mdx` | ✅     | What tokens are, primitive vs semantic, changing them, CSS cascade layers, and a reference of the semantic tokens. |
+| `foundations/typography.mdx`    | ✅     | The fonts, how to load them (`@fontsource`), the 16 text styles with live samples.                                 |
+| `foundations/icons.mdx`         | ✅     | The `Icon` component and the 22 icons, which component uses which, sizes, colour, decorative vs labelled.          |
+| `foundations/shared-types.mdx`  | ✅     | `Metric`, `UnitLabelUnit`, `ConnectionStatus`, `PairingStatus`, `FaultCode`.                                       |
+| Colour (palette, contrast)      | ⬜     | Later. The semantic colours are already in Design tokens; this would add the full palette and a contrast table.    |
+| Spacing and Motion              | ⬜     | Later, if the Design tokens reference isn't enough.                                                                |
+
+Still open:
+
+- **No dark theme.** The kit has one light theme. The docs site keeps previews on a light surface as a workaround (`custom.css`). Design tokens says so in a note.
+- **Get Started:** loading the CSS and fonts, and the cascade layer rule, should also be on the Installation page once the packages are published.
+- **Figma checks** listed in four specs: `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (node ID, variables, usage frame) and `UnitLabel` (5 vs 7 Units).
 
 ## Order of work
 
@@ -107,4 +117,4 @@ The user page is written from the spec, so a spec has to be complete first. "Com
 5. ✅ **Layout:** `StackLayout`, `ColumnLayout`, `ContentSection`.
 6. ✅ **Controls:** rewrite the `Switch` spec, then `Switch` and `Button`.
 7. ✅ **Overview page:** write `ui-components/index.mdx` last, when every component it lists has a page.
-8. **Foundations**, if decided (section 5).
+8. ✅ **Foundations:** Design tokens, Typography, Icons, Shared types (section 5).
