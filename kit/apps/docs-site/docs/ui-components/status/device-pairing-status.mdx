@@ -55,7 +55,7 @@ Use DevicePairingStatus:
 Don't use it for:
 
 - **Whether a Paired Device can be reached.** Use [`DeviceConnectionStatus`](./device-connection-status.mdx). Once a Device is Paired, that's usually what people want to see.
-- **Faults.** Use `DeviceFaultStatus`.
+- **Faults.** Use [`DeviceFaultStatus`](./device-fault-status.mdx).
 - **Why pairing failed.** A failed pairing goes back to Unpaired. Tell people what went wrong with a message next to it.
 
 ## States
@@ -201,5 +201,5 @@ The status colours are shared by every Status component, so change them for the 
 ## Related components
 
 - [`DeviceConnectionStatus`](./device-connection-status.mdx): whether a Paired Device can be reached right now.
-- `DeviceFaultStatus`: the Device's Fault, if it has one.
+- [`DeviceFaultStatus`](./device-fault-status.mdx): the Device's Fault, if it has one.
 - [`LocationPath`](../context/location-path.mdx): the Device's name and where it is. Sits well next to the status.

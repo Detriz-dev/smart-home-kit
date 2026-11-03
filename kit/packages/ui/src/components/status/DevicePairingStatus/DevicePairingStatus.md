@@ -14,7 +14,7 @@ Storybook: `Status/DevicePairingStatus`.
 
 ### Component in domain model context
 
-Category: **Status** ("Is it working?"). The Pairing Status changes rarely: usually once when the Device is added, and once when it is removed.
+Category: **Status** ("Is everything OK?"). The Pairing Status changes rarely: usually once when the Device is added, and once when it is removed.
 
 It shows one of the three Device Status fields from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx#pairing-status) and the [Device lifecycle](/kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx#pairing-status):
 

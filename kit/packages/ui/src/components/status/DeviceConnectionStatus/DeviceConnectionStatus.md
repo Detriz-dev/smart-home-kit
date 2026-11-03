@@ -14,7 +14,7 @@ Storybook: `Status/DeviceConnectionStatus`.
 
 ### Component in domain model context
 
-Category: **Status** ("Is it working?"). The Connection Status changes on its own, whenever the Device's link changes.
+Category: **Status** ("Is everything OK?"). The Connection Status changes on its own, whenever the Device's link changes.
 
 It shows one of the three Device Status fields from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx#connection-status) and the [Device lifecycle](/kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx#connection-status):
 

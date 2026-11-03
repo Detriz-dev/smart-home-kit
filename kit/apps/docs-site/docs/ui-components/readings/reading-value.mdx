@@ -190,7 +190,7 @@ A few rules from the domain model:
 
 - **Stale:** the Device is still Connected but late, so keep passing the last value. Show that it is late with [`DeviceConnectionStatus`](../status/device-connection-status.mdx) next to it.
 - **Connecting:** the Device is getting its connection back. You decide: pass the last value to keep showing it, or `null` to show Loading.
-- **Fault:** ReadingValue doesn't change for a Fault. Show it with `DeviceFaultStatus`.
+- **Fault:** ReadingValue doesn't change for a Fault. Show it with [`DeviceFaultStatus`](../status/device-fault-status.mdx).
 - **Not paired:** a Device that isn't Paired sends no Readings, so there is nothing to show. Don't render ReadingValue for it.
 
 See [Device lifecycle](/docs/domain-model/device-lifecycle#connection-status) for how a Device moves between these statuses.
@@ -264,4 +264,4 @@ To change how it looks, set a token on a parent element. The change applies to e
 - [`UnitLabel`](./unit-label.mdx): the Unit next to the value.
 - [`SensorLabel`](../context/sensor-label.mdx): says what is measured.
 - [`DeviceConnectionStatus`](../status/device-connection-status.mdx): shows Stale, Connecting and the other Connection Statuses.
-- `DeviceFaultStatus`: shows a Device's Fault.
+- [`DeviceFaultStatus`](../status/device-fault-status.mdx): shows a Device's Fault.

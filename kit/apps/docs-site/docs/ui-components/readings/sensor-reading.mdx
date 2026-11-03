@@ -67,7 +67,7 @@ Don't use it for:
 
 - **A whole Module.** Use `ModuleCard`. It shows one SensorReading per Sensor, plus the Module's name and status.
 - **A list row or a table cell.** The card only comes in two large sizes. Put [`ReadingValue`](./reading-value.mdx) and [`UnitLabel`](./unit-label.mdx) in your row instead, at `sm` or `xs`.
-- **Connection Status or Fault.** These belong to the Device, not the Sensor. Show them once for the Module, with [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and `DeviceFaultStatus`. `ModuleCard` does this for you.
+- **Connection Status or Fault.** These belong to the Device, not the Sensor. Show them once for the Module, with [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx). `ModuleCard` does this for you.
 
 ## States
 
@@ -250,4 +250,4 @@ To change how it looks, set a token on a parent element. The change applies to e
 - `ModuleCard`: one SensorReading per Sensor of a Module, with the Module's status.
 - [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx), [`UnitLabel`](./unit-label.mdx): the parts SensorReading is built from. Use them on their own for list rows and tables.
 - `ColumnLayout`, `StackLayout`: place several SensorReadings side by side or in a column.
-- [`DeviceConnectionStatus`](../status/device-connection-status.mdx), `DeviceFaultStatus`: the Module's status, shown once next to its Readings.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx), [`DeviceFaultStatus`](../status/device-fault-status.mdx): the Module's status, shown once next to its Readings.

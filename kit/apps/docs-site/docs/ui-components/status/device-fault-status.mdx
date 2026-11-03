@@ -1,0 +1,222 @@
+---
+sidebar_position: 3
+sidebar_label: DeviceFaultStatus
+description: Shows that a Device reports a hardware problem, with a danger icon and a short message.
+---
+
+# DeviceFaultStatus
+
+Shows that a Device has a Fault: a danger icon and a short message, like "CO₂ sensor failure". Use it wherever a Device is shown, so people don't mistake a broken Sensor for a normal value.
+
+```jsx live
+<DeviceFaultStatus faultCode="sensor_failure" metric="co2" />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { DeviceFaultStatus } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Fault Code, and the Metric of the affected Sensor if the Fault is about one Sensor:
+
+```tsx
+import { DeviceFaultStatus } from "@detriz-sh-kit/ui";
+
+<DeviceFaultStatus faultCode="calibration_required" metric="co2" />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use DeviceFaultStatus:
+
+- **in a Device's card**, under its name or Readings
+- **in list rows**, so people can spot Devices that need attention
+- **in a detail view**, next to the affected Sensor
+
+Don't use it for:
+
+- **"No Fault".** When the Device has no Fault, don't render the component. There is no "OK" state.
+- **Connection problems.** A Device that can't be reached is Disconnected, not faulty. Use [`DeviceConnectionStatus`](./device-connection-status.mdx).
+- **App errors** ("Couldn't save your settings"). A Fault is a hardware problem the Device reports about itself. Errors in your app are messages, not Faults.
+
+## States
+
+One state per Fault Code. They all look the same: only the message changes.
+
+| `faultCode`            | Without `metric`     | With `metric="co2"`             |
+| ---------------------- | -------------------- | ------------------------------- |
+| `sensor_failure`       | Sensor failure       | CO₂ sensor failure              |
+| `calibration_required` | Calibration required | CO₂ sensor calibration required |
+
+The Fault Code is a stable identifier (in `snake_case`, as the API writes it). The UI never shows it: it always shows the message for it.
+
+### Sensor failure
+
+```jsx live
+<StackLayout>
+  <DeviceFaultStatus faultCode="sensor_failure" />
+  <DeviceFaultStatus faultCode="sensor_failure" metric="co2" />
+</StackLayout>
+```
+
+### Calibration required
+
+```jsx live
+<StackLayout>
+  <DeviceFaultStatus faultCode="calibration_required" />
+  <DeviceFaultStatus faultCode="calibration_required" metric="co2" />
+</StackLayout>
+```
+
+### Naming the Sensor
+
+Pass `metric` when the Fault is about one Sensor. Its name comes first in the message, the same name [`SensorLabel`](../context/sensor-label.mdx) shows:
+
+```jsx live
+<StackLayout>
+  <DeviceFaultStatus faultCode="sensor_failure" metric="temperature" />
+  <DeviceFaultStatus faultCode="sensor_failure" metric="humidity" />
+  <DeviceFaultStatus faultCode="sensor_failure" metric="pm25" />
+</StackLayout>
+```
+
+## Several Faults
+
+A Device can have several Faults at once. Render one DeviceFaultStatus per Fault:
+
+```jsx live
+<StackLayout gap="sm">
+  <DeviceFaultStatus faultCode="sensor_failure" metric="co2" />
+  <DeviceFaultStatus faultCode="calibration_required" metric="voc" />
+</StackLayout>
+```
+
+## Next to Connection Status
+
+Fault and Connection Status are separate. A Device can be Connected **and** have a Fault, so show both when you need both:
+
+```jsx live
+<StackLayout gap="sm">
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "center",
+      gap: "var(--shk-space-2)",
+    }}
+  >
+    <LocationPath deviceName="Air Quality Module" />
+    <DeviceConnectionStatus status="connected" />
+  </span>
+  <DeviceFaultStatus faultCode="sensor_failure" metric="co2" />
+</StackLayout>
+```
+
+`ModuleCard` and `SpaceCard` already place the Fault for you.
+
+## Mapping your data
+
+| Prop        | Comes from                                                                                        | Example            |
+| ----------- | ------------------------------------------------------------------------------------------------- | ------------------ |
+| `faultCode` | The Fault's [Fault Code](/docs/domain-model/glossary#fault)                                       | `"sensor_failure"` |
+| `metric`    | The [Metric](/docs/domain-model/glossary#what-is-tracked) of the affected Sensor, if there is one | `"co2"`            |
+
+A few rules from the domain model:
+
+- **No Fault, no component.** Fault is "none, or a specific Fault". Render DeviceFaultStatus only when there is one.
+- **One component per Fault.** A Device can have several Faults, one per Fault Code. A new Fault is added to the others; it doesn't replace them.
+- **From Sensor to Metric.** A Fault can name the affected Sensor. Look up that Sensor's Metric in your data and pass it as `metric`. The component takes props only, so it can't look it up for you.
+- **Only Paired Devices have Faults.** A Device that isn't Paired yet never shows one.
+- **Faults stay until they are cleared.** A Fault doesn't go away when the Device disconnects. Keep showing it until the Device reports that it is cleared.
+
+See [Device lifecycle](/docs/domain-model/device-lifecycle#fault) for how Faults are raised and cleared.
+
+## Props
+
+| Prop        | Type                                         | Default | Description                                                                                    |
+| ----------- | -------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------- |
+| `faultCode` | `"sensor_failure" \| "calibration_required"` | –       | **Required.** The Fault Code of the Device's current Fault. Decides the message.               |
+| `metric`    | `Metric` (`"temperature"`, `"co2"`, …)       | none    | The Metric of the affected Sensor, when the Fault is about one Sensor. Adds it to the message. |
+
+The types `DeviceFaultStatusProps` and `FaultCode` are exported too. `Metric` is the same type `SensorLabel` uses:
+
+```tsx
+import type {
+  DeviceFaultStatusProps,
+  FaultCode,
+  Metric,
+} from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+A Fault message is never shortened: a cut-off message could hide what's wrong. When there isn't enough room, it wraps onto the next line, and the icon stays beside the first line:
+
+```jsx live
+<div
+  style={{ maxWidth: 160, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <DeviceFaultStatus faultCode="calibration_required" metric="illuminance" />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- **Not colour alone.** The message says what's wrong in words, and the icon has its own shape. The icon is hidden from screen readers, because the message says the same thing.
+- **New Faults are announced.** The component is a polite live region (`role="status"`), so when a Fault appears, screen readers read it without moving focus.
+- **Metric names are spoken in full:** "CO₂ sensor failure" is read as "carbon dioxide sensor failure".
+- The message meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Say which Device it is.** Place it next to the Device's name, or in the Device's card, so "Sensor failure" is never read without its Device.
+- **Don't add another live region** around it. It already announces new Faults, and a second one would announce them twice.
+- **Help.** The component shows the message only. If people need to know what to do next (for example, how to recalibrate), add that text or a link next to it.
+
+## Styling
+
+DeviceFaultStatus uses the kit's design tokens (CSS variables starting with `--shk-`):
+
+| What                         | Token                               |
+| ---------------------------- | ----------------------------------- |
+| Icon and message colour      | `--shk-status-danger-fg`            |
+| Message text style           | `--shk-typography-caption-*` (12px) |
+| Gap between icon and message | `--shk-space-1` (4px)               |
+
+It has no padding or background: the space around it belongs to the parent.
+
+The status colours are shared by every Status component, so change them for the whole app, not one screen:
+
+```css
+:root {
+  --shk-status-danger-fg: var(--shk-palette-red-900);
+}
+```
+
+## Related components
+
+- [`DeviceConnectionStatus`](./device-connection-status.mdx): whether the Device can be reached. Often shown next to the Fault.
+- [`DevicePairingStatus`](./device-pairing-status.mdx): whether the Device is Paired. Only Paired Devices have Faults.
+- [`SensorLabel`](../context/sensor-label.mdx): says what a Sensor measures, with the same Metric names.
+- `ModuleCard`, `SpaceCard`: cards that already include the Fault.
