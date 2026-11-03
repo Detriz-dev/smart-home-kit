@@ -33,9 +33,9 @@ This means each component must work safely in any arrangement the model chooses.
 
 - [x] 1. `StackLayout`
 - [x] 2. `ColumnLayout`
-- [ ] 3. `ContentSection`
+- [x] 3. `ContentSection`
 - [ ] 4. `ModuleCard` update
-- [ ] 5. `SpaceCard`
+- [x] 5. `SpaceCard`
 - [ ] 6. `Notice`
 - [ ] 7. `Button`
 - [ ] 8. `TextArea`
