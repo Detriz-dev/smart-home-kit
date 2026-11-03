@@ -129,7 +129,7 @@ The last row matters for the design system: `ui` never sees domain objects, only
 
 ## Events between contexts
 
-Events let a context react to another without calling it directly. All names are _(proposed)_; see [Device lifecycle](../../../kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx#events-and-commands) for the full Device list.
+Events let a context react to another without calling it directly. All names are _(proposed)_; see [Events and commands](../../../kit/apps/docs-site/docs/domain-model/events-and-commands.mdx) for the full Device list.
 
 | Event | Published by | Who reacts | What they do |
 | --- | --- | --- | --- |

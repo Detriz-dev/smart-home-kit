@@ -8,6 +8,65 @@ description: The kit's React components for smart home screens, grouped by the q
 
 The kit's React components for smart home screens. They show Sites, Spaces, Devices and Readings using the words of the [Domain Model](/docs/domain-model/glossary), so you can build a screen without designing those pieces yourself.
 
+## How the components are grouped
+
+Every component belongs to one group, and each group answers **one question** about the home. Knowing the question tells you which group to look in.
+
+```mermaid
+flowchart TB
+    Data[("Your data<br/>Sites · Devices · Readings")]
+    Person(["The person using your app"])
+
+    Context["Context<br/><b>Where is this, what is it?</b>"]
+    Readings["Readings<br/><b>What is it right now?</b>"]
+    Status["Status<br/><b>Is everything OK?</b>"]
+    Controls["Controls<br/><b>How do I change what I see?</b>"]
+    Layout["Layout<br/><b>How is it arranged?</b>"]
+    Screen(["A screen"])
+
+    Data -->|fixed facts| Context
+    Data -->|latest values| Readings
+    Data -->|Device Status| Status
+    Person -->|actions and settings| Controls
+    Context --> Layout
+    Readings --> Layout
+    Status --> Layout
+    Controls --> Layout
+    Layout -->|arranges them into| Screen
+
+    classDef context fill:#e8f4fb,stroke:#017bab,color:#272f34
+    classDef readings fill:#eaf7ee,stroke:#2e8555,color:#272f34
+    classDef status fill:#fff4e5,stroke:#b86e00,color:#272f34
+    classDef controls fill:#f3eefc,stroke:#6b4fbb,color:#272f34
+    classDef layout fill:#f6f9fb,stroke:#697379,color:#272f34
+    class Context context
+    class Readings readings
+    class Status status
+    class Controls controls
+    class Layout,Screen layout
+```
+
+The groups differ in **where their content comes from** and **how often it changes**:
+
+| Group                 | Answers                       | Shows                                                             | Changes when                                                                   | Examples                                        |
+| --------------------- | ----------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------- |
+| [Context](#context)   | "Where is this, what is it?"  | Fixed facts: where a Device is, what a Sensor measures.           | Almost never: only when the user renames or moves something.                   | `LocationPath`, `SensorLabel`                   |
+| [Readings](#readings) | "What is it right now?"       | Current values, from one number up to a card for a whole Space.   | With every new Reading, every few seconds.                                     | `ReadingValue`, `ModuleCard`, `SpaceCard`       |
+| [Status](#status)     | "Is everything OK?"           | The state of a Device: Pairing Status, Connection Status, Faults. | When a Device's health changes: it goes Stale, disconnects or reports a Fault. | `DeviceConnectionStatus`, `DeviceFaultStatus`   |
+| [Controls](#controls) | "How do I change what I see?" | Inputs for actions and settings in your app.                      | When the person clicks or flips something.                                     | `Button`, `Switch`                              |
+| [Layout](#layout)     | "How is it arranged?"         | Structure and spacing for the other components. No data.          | Never: it only places what's inside it.                                        | `StackLayout`, `ColumnLayout`, `ContentSection` |
+
+Two rules make the groups easy to use:
+
+- **A component that combines groups belongs to its main job.** `ModuleCard` shows a Connection Status and Faults, but its main job is the current values, so it's in Readings.
+- **Fixed facts and changing values are kept apart.** A Sensor's name (`SensorLabel`, Context) stays on screen while its value (`ReadingValue`, Readings) is loading or hidden, so people always know what was measured.
+
+More groups are planned: History ("How has it changed?"), Comparison ("How do Sensors relate to each other?") and Feedback ("What is the interface doing?").
+
+### One screen, four groups
+
+This screen uses four of the groups: **Layout** (`ContentSection`, `ColumnLayout`) arranges it, **Context** (`LocationPath`) says where it is, **Readings** (`ModuleCard`) shows the values, and each card shows its **Status** (`DeviceConnectionStatus`) inside it.
+
 ```jsx live
 <ContentSection title="Bedroom">
   <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
@@ -65,20 +124,6 @@ What every component is built from. Start here if you want your own screens to m
 | [Typography](./foundations/typography.mdx)       | The two fonts, how to load them, and the 16 text styles.                                         |
 | [Icons](./foundations/icons.mdx)                 | The icon set and the `Icon` component.                                                           |
 | [Shared types](./foundations/shared-types.mdx)   | The TypeScript types for Metrics, Units and Device statuses.                                     |
-
-## How the components are grouped
-
-Each group answers one question about the home:
-
-| Group                 | Answers                       | What's in it                                                         |
-| --------------------- | ----------------------------- | -------------------------------------------------------------------- |
-| [Status](#status)     | "Is everything OK?"           | The state of a Device: Pairing Status, Connection Status and Faults. |
-| [Readings](#readings) | "What is it right now?"       | Current values, from one number up to a card for a whole Space.      |
-| [Context](#context)   | "Where is this, what is it?"  | Fixed facts: where a Device is, what a Sensor measures.              |
-| [Controls](#controls) | "How do I change what I see?" | Inputs for actions and settings in your app.                         |
-| [Layout](#layout)     | "How is it arranged?"         | Structure and spacing for placing the other components.              |
-
-More groups are planned: History ("How has it changed?"), Comparison ("How do Sensors relate to each other?") and Feedback ("What is the interface doing?").
 
 ## All components
 
