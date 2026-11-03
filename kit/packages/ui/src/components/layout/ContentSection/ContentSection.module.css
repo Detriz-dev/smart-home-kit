@@ -1,0 +1,44 @@
+@layer detriz {
+  /* The heading, then the children, in one column as wide as the parent, 16px apart.
+     minmax(0, 1fr) stops a long child from pushing it wider.
+     align-content: start keeps the gap even when the parent is taller than the content. */
+  .root {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: var(--shk-space-4);
+    inline-size: 100%;
+  }
+
+  /* The title. Level 2 by default (H2, 32px).
+     margin: 0 removes the browser's default space around headings, so only the gap counts.
+     overflow-wrap: anywhere breaks a very long word instead of letting it overflow. */
+  .heading {
+    margin: 0;
+    overflow-wrap: anywhere;
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-h2-font-family);
+    font-size: var(--shk-typography-h2-font-size);
+    font-weight: var(--shk-typography-h2-font-weight);
+    line-height: var(--shk-typography-h2-line-height);
+    letter-spacing: var(--shk-typography-h2-letter-spacing);
+  }
+
+  /* Level 3: a group on the screen (H3, 24px). */
+  .root[data-heading-level="3"] .heading {
+    font-family: var(--shk-typography-h3-font-family);
+    font-size: var(--shk-typography-h3-font-size);
+    font-weight: var(--shk-typography-h3-font-weight);
+    line-height: var(--shk-typography-h3-line-height);
+    letter-spacing: var(--shk-typography-h3-letter-spacing);
+  }
+
+  /* Level 4: a group inside a group (H4, 20px). */
+  .root[data-heading-level="4"] .heading {
+    font-family: var(--shk-typography-h4-font-family);
+    font-size: var(--shk-typography-h4-font-size);
+    font-weight: var(--shk-typography-h4-font-weight);
+    line-height: var(--shk-typography-h4-line-height);
+    letter-spacing: var(--shk-typography-h4-letter-spacing);
+  }
+}

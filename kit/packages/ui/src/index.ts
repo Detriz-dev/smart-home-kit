@@ -56,6 +56,11 @@ export type {
   ColumnLayoutProps,
   ColumnLayoutRatio,
 } from "./components/layout/ColumnLayout";
+export { ContentSection } from "./components/layout/ContentSection";
+export type {
+  ContentSectionHeadingLevel,
+  ContentSectionProps,
+} from "./components/layout/ContentSection";
 export { StackLayout } from "./components/layout/StackLayout";
 export type {
   StackLayoutGap,
