@@ -1,5 +1,7 @@
 # SensorLabel
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/context/sensor-label.mdx). Props are defined in [`SensorLabel.types.ts`](./SensorLabel.types.ts).
+
 ### Purpose
 
 Says what a Sensor measures: an icon and the name of its Metric, like 🌡 Temperature. It sits at the top of a reading card, in list rows and in table headers, so the user knows what the number next to it is about.
@@ -108,21 +110,12 @@ In code, the label, icon and spoken name for each Metric live in one table (`MET
 
 ### API
 
-```ts
-/** The Metric the Sensor measures. Decides the label and the icon. */
-type SensorLabelMetric =
-  "temperature" | "humidity" | "illuminance" | "co2" | "voc" | "pm25";
+The props are defined in [`SensorLabel.types.ts`](./SensorLabel.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-/** How big the label is drawn. */
-type SensorLabelSize = "xs" | "sm" | "md" | "lg";
+The decisions behind them:
 
-interface SensorLabelProps {
-  /** The Metric the Sensor measures. The label text and the icon follow from it. */
-  metric: SensorLabelMetric;
-  /** How big the label is drawn. Defaults to `xs`. */
-  size?: SensorLabelSize;
-}
-```
+- `metric` is required and is the only thing that decides the label and the icon, so a Metric looks the same everywhere. `SensorLabelMetric` is the shared `Metric` type from `src/types/metric.ts`.
+- `size` is `"xs" | "sm" | "md" | "lg"`, default `xs`, matching the Figma `size` variant values.
 
 ### Example values
 
@@ -172,6 +165,7 @@ Checked in Storybook against Figma: every size has the same height, gap, icon si
 ### Accessibility
 
 - Markup: a `<span>`, not a heading. SensorLabel doesn't know where it sits, so the parent wraps it in a heading (`<h3>` in a card) when it is one.
+- Apps shouldn't add an `aria-label` or a hidden "Metric:" prefix: the label is already read out, so it would be announced twice. The user docs page tells developers this.
 - The icon is hidden from screen readers (`aria-hidden`). The label already says the same thing, so nothing is lost.
 - Screen readers may read "CO₂" and "PM2.5" oddly, so those two are said in two parts: the visible label gets `aria-hidden`, and a visually hidden copy next to it holds the spoken name from the Screen reader column ("carbon dioxide", "PM 2.5"). The same pattern `LocationPath` uses for its prefixes. Not `aria-label`: on a plain `<span>`, screen readers often ignore it. For the other Metrics the visible label is read as it is ("VOC" letter by letter, which is fine).
 - Not colour alone: the Metric is told apart by its text and its icon shape.

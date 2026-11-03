@@ -186,8 +186,9 @@ Rules:
    Running Prettier on the whole docs folder also reformats pages you didn't touch.
 
 2. Update the spec, as described in [One home for each fact](#one-home-for-each-fact): link to the page and the types file at the top, replace the API block with a link, and add anything the page says that the spec doesn't.
-3. Typecheck the site: `pnpm --filter docs-site typecheck`.
-4. Commit with a Conventional Commit scoped to the docs site, for example `docs(docs-site): add LocationPath page`.
+3. Link to the new page from older ones. Search the other component pages for the component's name in backticks (for example `` `SensorLabel` ``) and turn those mentions into links.
+4. Typecheck the site: `pnpm --filter docs-site typecheck`.
+5. Commit with a Conventional Commit scoped to the docs site, for example `docs(docs-site): add LocationPath page`.
 
 ## Checklist
 
@@ -201,6 +202,7 @@ Rules:
 - [ ] One live example per variant or state, plus long text.
 - [ ] Checked in the browser, light and dark mode.
 - [ ] Spec updated: links to the page and `<Name>.types.ts`, API block replaced by a link, nothing on the page missing from the spec.
+- [ ] Older pages that mention the component now link to the new page.
 - [ ] Only changed files formatted. The build and typecheck pass.
 
 ## When something goes wrong
