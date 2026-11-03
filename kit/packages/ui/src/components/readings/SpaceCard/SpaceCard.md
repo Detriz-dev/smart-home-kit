@@ -1,5 +1,7 @@
 # SpaceCard
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/readings/space-card.mdx). Props are defined in [`SpaceCard.types.ts`](./SpaceCard.types.ts).
+
 ### Purpose
 
 Shows one Space at a glance: its name, its Faults and one row per Metric with the latest Reading. It is the building block of whole-home screens: a Site overview shows one SpaceCard per Space instead of a `ModuleCard` for every Module. Passing only some Metrics answers prompts like "temperature in every room".
@@ -112,30 +114,14 @@ Figma layer names follow this anatomy. The `unit` wrapper exists only in code (i
 
 ### API
 
-```ts
-/** One row: the latest Reading of one Metric in the Space. */
-interface SpaceCardReading {
-  /** The Metric the Sensor measures. */
-  metric: Metric;
-  /** The latest value. `null` while the first Reading is on its way. */
-  value: number | null;
-  /** The Unit to show. The parent picks it (°C or °F). */
-  unit: UnitLabelUnit;
-  /** How many decimal places to show. Defaults to 1. */
-  fractionDigits?: number;
-  /** Connection Status of the Module this Reading comes from. */
-  connectionStatus: ConnectionStatus;
-}
+The props are defined in [`SpaceCard.types.ts`](./SpaceCard.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface SpaceCardProps {
-  /** The Space name, e.g. "Bedroom". */
-  name: string;
-  /** One row per Metric, in display order. At least one: a Space with no Paired Modules gets a `Notice` from the renderer instead. */
-  readings: SpaceCardReading[];
-  /** Current Faults in this Space's Modules. Leave it out when there are none. */
-  faults?: DeviceFaultStatusProps[];
-}
-```
+The decisions behind them:
+
+- `readings` is a list with one row per Metric, not one prop per Metric, so the card works for any set of Metrics. The Metric is the row's React key, so each Metric appears once.
+- `connectionStatus` sits on each row, not on the card: a Space has no status, and its rows can come from different Modules.
+- Each item in `faults` is the same `faultCode` and `metric` that `DeviceFaultStatus` takes, passed on unchanged.
+- At least one row. A Space with no Paired Modules gets a message instead of the card (the user docs page says so; the renderer's `Notice` is planned).
 
 ### Example values
 

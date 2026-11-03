@@ -67,7 +67,7 @@ Use ModuleCard for **one Paired Module** and its latest Readings.
 Don't use it for:
 
 - **A Module that isn't Paired** ("New module found"). It has no Connection Status yet. Show its name with [`DevicePairingStatus`](../status/device-pairing-status.mdx) instead.
-- **A whole Space at a glance.** Use `SpaceCard`: one row per Metric for the whole Space, instead of one card per Module.
+- **A whole Space at a glance.** Use [`SpaceCard`](./space-card.mdx): one row per Metric for the whole Space, instead of one card per Module.
 - **One Reading on its own.** Use [`SensorReading`](./sensor-reading.mdx).
 - **Several Modules side by side.** ModuleCard shows one Module. Place several cards with a layout component such as `ColumnLayout` or `StackLayout`.
 
@@ -321,5 +321,5 @@ To change how it looks, set a token on a parent element. The change applies to e
 - [`SensorReading`](./sensor-reading.mdx): one Sensor's Reading. The card shows one per Sensor.
 - [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx): the Module's status and Faults.
 - [`DevicePairingStatus`](../status/device-pairing-status.mdx): for Modules that aren't Paired yet.
-- `SpaceCard`: one Space at a glance, for whole-home screens.
+- [`SpaceCard`](./space-card.mdx): one Space at a glance, for whole-home screens.
 - `ColumnLayout`, `StackLayout`: place several ModuleCards side by side or in a column.
