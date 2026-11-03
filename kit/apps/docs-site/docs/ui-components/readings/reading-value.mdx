@@ -51,7 +51,7 @@ Use ReadingValue to show **one value**, the latest one, of one Metric.
 
 Don't use it for:
 
-- **A full Reading.** To show the Metric name, the value and the Unit together, use `SensorReading`. It already includes ReadingValue.
+- **A full Reading.** To show the Metric name, the value and the Unit together, use [`SensorReading`](./sensor-reading.mdx). It already includes ReadingValue.
 - **The Unit** ("°C"). Use [`UnitLabel`](./unit-label.mdx) next to it.
 - **Connection Status as a label** ("Stale", "Disconnected"). Use `DeviceConnectionStatus`. ReadingValue only reacts to Disconnected.
 - **Several values or a trend.** ReadingValue shows one value. Comparison and History components are planned for that.
@@ -260,7 +260,7 @@ To change how it looks, set a token on a parent element. The change applies to e
 
 ## Related components
 
-- `SensorReading`: the Metric name, the value and the Unit together. Uses ReadingValue inside.
+- [`SensorReading`](./sensor-reading.mdx): the Metric name, the value and the Unit together. Uses ReadingValue inside.
 - [`UnitLabel`](./unit-label.mdx): the Unit next to the value.
 - [`SensorLabel`](../context/sensor-label.mdx): says what is measured.
 - `DeviceConnectionStatus`: shows Stale, Connecting and the other Connection Statuses.
