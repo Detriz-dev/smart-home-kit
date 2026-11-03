@@ -1,0 +1,78 @@
+@layer detriz {
+  /* The button: at least 44px tall, text centred, secondary look by default.
+     The padding subtracts the 1px border, so the size matches Figma (where the stroke sits inside). */
+  .root {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-block-size: var(--shk-size-11);
+    max-inline-size: 100%;
+    margin: var(--shk-space-0);
+    padding-block: calc(var(--shk-space-2) - var(--shk-border-width-thin));
+    padding-inline: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid
+      var(--shk-action-secondary-border);
+    border-radius: var(--shk-radius-8);
+    background: var(--shk-action-secondary-bg);
+    color: var(--shk-action-secondary-fg);
+    text-align: center;
+    cursor: pointer;
+  }
+
+  /* Secondary under the pointer and while pressed. */
+  .root:hover:not(:disabled) {
+    background: var(--shk-action-secondary-bg-hover);
+  }
+
+  .root:active:not(:disabled) {
+    background: var(--shk-action-secondary-bg-pressed);
+  }
+
+  /* Primary: blue fill, white text. The border has the fill's colour, so it never shows. */
+  .root[data-variant="primary"] {
+    border-color: var(--shk-action-primary-bg);
+    background: var(--shk-action-primary-bg);
+    color: var(--shk-action-primary-fg);
+  }
+
+  .root[data-variant="primary"]:hover:not(:disabled) {
+    border-color: var(--shk-action-primary-bg-hover);
+    background: var(--shk-action-primary-bg-hover);
+  }
+
+  .root[data-variant="primary"]:active:not(:disabled) {
+    border-color: var(--shk-action-primary-bg-pressed);
+    background: var(--shk-action-primary-bg-pressed);
+  }
+
+  /* A visible ring when the button is reached with the keyboard. */
+  .root:focus-visible {
+    outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+    outline-offset: var(--shk-space-1);
+  }
+
+  /* Disabled: light grey fill and grey text for both variants, no pointer.
+     Secondary keeps a faint outline; primary's border matches its fill. */
+  .root:disabled {
+    border-color: var(--shk-action-disabled-border);
+    background: var(--shk-action-disabled-bg);
+    color: var(--shk-action-disabled-fg);
+    cursor: not-allowed;
+  }
+
+  .root[data-variant="primary"]:disabled {
+    border-color: var(--shk-action-disabled-bg);
+  }
+
+  /* The text in the label style. Long text wraps instead of being cut off. */
+  .label {
+    min-inline-size: var(--shk-space-0);
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    overflow-wrap: break-word;
+  }
+}
