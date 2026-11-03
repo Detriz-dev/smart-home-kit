@@ -14,7 +14,7 @@ Storybook: `Context/SensorLabel`.
 
 Category: **Context** ("Where is this / what is it?"). Which Metric a Sensor measures is a fixed fact. A `ReadingCard` that uses SensorLabel inside still stays in **Readings** (see [Rules for placing a component](/docs/architecture/design-system/ds-conventions-and-structure.md#rules-for-placing-a-component)).
 
-It shows the Metric of one Sensor, from [How is tracked](/docs/architecture/domain-model/ubiquitous-language.md#how-is-tracked) and [What is tracked](/docs/architecture/domain-model/ubiquitous-language.md#what-is-tracked):
+It shows the Metric of one Sensor, from [How is tracked](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked) and [What is tracked](/kit/apps/docs-site/docs/domain-model/glossary.mdx#what-is-tracked):
 
 | Part  | Domain term                | Example     | Rule                                                                                            |
 | ----- | -------------------------- | ----------- | ----------------------------------------------------------------------------------------------- |

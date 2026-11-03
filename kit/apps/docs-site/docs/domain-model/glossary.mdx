@@ -1,0 +1,92 @@
+---
+sidebar_position: 2
+sidebar_label: Glossary
+---
+
+# Glossary
+
+This page defines the shared language of DeTriz Smart Home KIT. Each concept has exactly one name, and that name is used everywhere: in product specs, UI copy, the API, TypeScript types and design-system components.
+
+## Who it belongs to
+
+| Term | Definition | Example |
+| --- | --- | --- |
+| **Account** | One person's sign-in to the kit. An Account owns Sites, and Devices are paired to it. An Account can also view Sites that other Accounts share with it, but can't change them. | "anna@example.com" |
+
+## Where things are
+
+| Term           | Definition | Example |
+|----------------| --- | --- |
+| **Site**       | A physical property the user monitors. The top of the location hierarchy. Each Site is owned by one Account, and one Account can own several Sites. The owner can share a Site with other Accounts, who can only view it. | "My flat", "Warsaw office", "Test lab" |
+| **Space**      | A named area inside a Site where a Hub is placed. It does not need walls. | Living room, Meeting room A, Open-plan desk zone, Balcony |
+| **Space Type** | A category of Space, used for icons, defaults and comfort presets. | Bedroom, Kitchen, Office, Meeting, Outdoor, Other |
+| **Floor**      | A grouping of Spaces within a Site, added only when Sites grow large. | Ground floor, Level 3 |
+
+
+## How is tracked
+**Device** is the umbrella term for every piece of connected hardware in the system: anything that can be paired, connects to the network and reports its own status. There are two kinds: the Hub and the Module. A Sensor is not a Device; it is a measuring element on a Module and has no status of its own. The API Simulator pretends to be one or more Hubs with Modules and Sensors, and they behave exactly like real ones, so an app can't tell simulated from real. Non-connected objects that Sensors watch, such as a tap or a door, are Assets, not Devices.
+
+| Term | Definition | Example |
+| --- | --- | --- |
+| **Device** | Any trackable hardware with its own identity and Device Status. The shared parent of Hub and Module. | A Hub, a Module |
+| **Device Kind** | Which sort of Device it is. | Hub, Module |
+| **Hub** | A Raspberry Pi running the DeTriz Hub software. Modules are wired to it; it reads their Sensors, connects to the network over Wi-Fi and is placed in a Space. | The Raspberry Pi on the kitchen shelf |
+| **Hub Token** | A secret code that links a Hub to an Account. The user creates it in their Account and copies it into the Hub's settings when setting the Hub up. | A long random code like `hub_7f3k…` |
+| **Module** | A sensor board wired to a Hub, with one or more Sensors on it. The user lists it in the Hub's settings. It belongs to the Hub's Space. | A BME280 board (a Climate Module), a BH1750 board (a Light Module) |
+| **Module Type** | The category of a Module, decided by what its board measures. The board's model name is only a detail in the Hub's settings. | Climate, Light, Air Quality |
+| **Module Name** | The name shown for one Module. Starts as its Module Type name, and the user can rename it at any time. Renaming never changes the Module Type. | "Climate Module", renamed to "Kitchen climate" |
+| **Sensor** | One measuring element on a Module. It produces Readings for exactly one Metric. | The temperature sensor on a BME280 board |
+
+An **Asset** is a physical object in a Space that a Sensor watches but that isn't connected itself. It has no Device Status: a tap can't be paired, disconnected or faulty. Devices do the measuring; Assets are what some measurements are about.
+
+| Term | Definition | Example |
+| --- | --- | --- |
+| **Asset** | A non-connected physical object in a Space that one or more Sensors monitor. | Kitchen tap, front door, office plant |
+| **Asset Type** | A category of Asset, used for icons, default Metrics and Thresholds. | Tap, Door, Window, Plant |
+| **Subject** | What a Reading is about: either a Space (room air) or an Asset in that Space (the tap). | Humidity → Bedroom; water flow → Kitchen tap |
+
+
+## What is tracked
+| Term | Definition | Example |
+| --- | --- | --- |
+| **Metric** | *What* is measured: a kind of physical quantity, from a fixed list. | Temperature, Humidity, Illuminance, CO₂, VOC, PM2.5 |
+| **Unit** | How a Metric's value is expressed. Each Metric has one canonical Unit in the API; display Units are a formatting choice. VOC uses ppb for now: provisional until the supported Air Quality board is chosen. | °C, °F (display Unit), %RH, lx, ppm, ppb, µg/m³ |
+| **Reading** | One timestamped value from one Sensor: Metric, value, Unit and time. Never changes once recorded. | 22.4 °C in the Kitchen at 10:15:03 |
+
+
+## What are things statuses
+
+### Device Status
+
+A Device's status is three separate fields, each answering one question. Keeping them apart means a Device can be connected *and* faulty at the same time, and an unpaired Device can never carry a Connection Status or a Fault.
+
+| Field | Question it answers | Values |
+| --- | --- | --- |
+| **Pairing Status** | Is this Device registered to the Account? | Unpaired, Pairing, Paired |
+| **Connection Status** | Can we reach it right now? (Paired Devices only) | Connecting, Connected, Stale, Disconnected |
+| **Fault** | Is the hardware healthy? (Paired Devices only) | None, or one or more Faults |
+
+### Pairing Status
+
+| Term | Definition | Example |
+| --- | --- | --- |
+| **Unpaired** | The Device has been detected, but the user hasn't confirmed adding it to the Account yet. | A Climate Module listed in the Hub's settings appears as "New module found" |
+| **Pairing** | First-time setup is running: the Device is joining the Account. Happens once per Device. | The user taps "Add" and the Module is set up |
+| **Paired** | The Device belongs to the Account. Only now does it have a Connection Status. | The Climate Module shows up in the Kitchen Space |
+
+### Connection Status
+
+| Term | Definition | Example |
+| --- | --- | --- |
+| **Connecting** | A paired Device is (re)establishing its connection. Happens after every power-up, restart or dropped link. | The Hub boots after a power cut and reconnects its Modules |
+| **Connected** | The Device is reachable and sending Readings. | The Kitchen Hub streams temperature every few seconds |
+| **Stale** | Connected, but no Reading arrived within its Expected Interval. | "Last update 5 min ago" on the Light Module |
+| **Expected Interval** | How long a Device can go without sending a Reading before it becomes Stale. The user sets it for each Device. | 5 minutes for the Kitchen Hub |
+| **Disconnected** | The Device can't be reached. Its last known values are hidden: a disconnected icon shows in their place. | The Hub was unplugged from the wall, or a Module's wires came loose |
+
+### Fault
+
+| Term | Definition | Example |
+| --- | --- | --- |
+| **Fault** | A hardware problem the Device reports about itself. Only Paired Devices have Faults. Independent of connection: a Device can be Connected and have a Fault. | CO₂ sensor failure, calibration issue |
+| **Fault Code** | A stable identifier for the kind of Fault, so the UI can show the right message and help. | `sensor_failure`, `calibration_required` |

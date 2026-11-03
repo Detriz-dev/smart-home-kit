@@ -16,7 +16,7 @@ Storybook: `Readings/UnitLabel`.
 
 Category: **Readings** ("What is it right now?"). It is kept next to `ReadingValue` because the two are almost always used together. Unlike `ReadingValue`, it doesn't change when a new Reading arrives.
 
-It shows one part of a [Reading](/docs/architecture/domain-model/ubiquitous-language.md#what-is-tracked):
+It shows one part of a [Reading](/kit/apps/docs-site/docs/domain-model/glossary.mdx#what-is-tracked):
 
 | Part   | Domain term | Example | Rule                                                                                                            |
 | ------ | ----------- | ------- | --------------------------------------------------------------------------------------------------------------- |

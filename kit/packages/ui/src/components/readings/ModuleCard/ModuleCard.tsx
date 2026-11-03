@@ -1,25 +1,18 @@
 import { useId } from "react";
-import { Switch } from "../../controls/Switch";
 import { DeviceConnectionStatus } from "../../status/DeviceConnectionStatus";
 import { DeviceFaultStatus } from "../../status/DeviceFaultStatus";
 import { SensorReading } from "../SensorReading";
 import styles from "./ModuleCard.module.css";
 import type { ModuleCardProps } from "./ModuleCard.types";
 
-/** One Module as a card: its name, Connection Status, Fault, Sensors and Switch. Takes props only, never fetches data. */
+/** One Module as a card: its name, Connection Status, Faults and Sensors. Takes props only, never fetches data. */
 export function ModuleCard({
   name,
   sensors,
   connectionStatus,
-  fault,
-  isOn,
-  onToggle,
+  faults = [],
 }: ModuleCardProps) {
   const nameId = useId();
-  // Off is a setting, not a status: an Off Module always shows as Disconnected.
-  const shownStatus = isOn ? connectionStatus : "disconnected";
-  // Greyed out only when the Module is lost. An Off Module must stay usable, so the user can turn it back on.
-  const isSwitchDisabled = isOn && connectionStatus === "disconnected";
 
   return (
     <div role="group" aria-labelledby={nameId} className={styles.root}>
@@ -27,9 +20,12 @@ export function ModuleCard({
         <span id={nameId} className={styles.name} title={name}>
           {name}
         </span>
-        <DeviceConnectionStatus status={shownStatus} />
+        <DeviceConnectionStatus status={connectionStatus} />
       </div>
-      {fault && <DeviceFaultStatus {...fault} />}
+      {/* One DeviceFaultStatus per Fault. Each Fault Code appears once, so it works as the key. */}
+      {faults.map((fault) => (
+        <DeviceFaultStatus key={fault.faultCode} {...fault} />
+      ))}
       {/* role="list": Safari stops treating a list as a list once its bullets are removed. */}
       <ul
         role="list"
@@ -43,18 +39,12 @@ export function ModuleCard({
               value={value}
               unit={unit}
               fractionDigits={fractionDigits}
-              isDisconnected={shownStatus === "disconnected"}
+              isDisconnected={connectionStatus === "disconnected"}
               size="md"
             />
           </li>
         ))}
       </ul>
-      <Switch
-        isOn={isOn}
-        onChange={onToggle}
-        ariaLabel={name}
-        isDisabled={isSwitchDisabled}
-      />
     </div>
   );
 }

@@ -6,7 +6,7 @@ Shows the latest Reading of one Sensor as a small card: what is measured on top 
 
 It only puts three existing components together: [`SensorLabel`](../../context/SensorLabel/SensorLabel.md), [`ReadingValue`](../ReadingValue/ReadingValue.md) and [`UnitLabel`](../UnitLabel/UnitLabel.md). It adds the card around them, keeps their sizes in step and gives the group one spoken name.
 
-It is read-only. It has no switch and no status label: those belong to the Module, so `ModuleCard` shows them once for all its Sensors.
+It is read-only. It has no status label: that belongs to the Module, so `ModuleCard` shows it once for all its Sensors.
 
 Figma: `SensorReading` component set in _DeTriz - Smart Home Kit_ (node `310:32`), page `SensorReading`.
 
@@ -14,11 +14,11 @@ Figma: `SensorReading` component set in _DeTriz - Smart Home Kit_ (node `310:32`
 
 Category: **Readings** ("What is it right now?"). A composite keeps the category of its main job, and its main job is the current value.
 
-It shows these terms from the [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md):
+It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx):
 
 | Part  | Domain term                                                                                            | Example     | Shown by       |
 | ----- | ------------------------------------------------------------------------------------------------------ | ----------- | -------------- |
-| label | **Metric** (names the [Sensor](/docs/architecture/domain-model/ubiquitous-language.md#how-is-tracked)) | Temperature | `SensorLabel`  |
+| label | **Metric** (names the [Sensor](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked)) | Temperature | `SensorLabel`  |
 | value | **Reading** (its value)                                                                                | 22.4        | `ReadingValue` |
 | unit  | **Unit**                                                                                               | °C          | `UnitLabel`    |
 
@@ -27,10 +27,9 @@ A Sensor measures exactly one Metric, so the Metric name is enough to name the S
 What it does **not** show, and why:
 
 - **Connection Status as a label** ("Connected", "Stale"). A Sensor is not a Device and has no status of its own. The status belongs to the Module, and `ModuleCard` shows it once for all its Sensors. SensorReading only reacts to **Disconnected**, through `ReadingValue` (the value is hidden).
-- **Fault.** Also a Module field. `ModuleCard` shows it once with `DeviceFaultStatus`, and the message names the affected Sensor.
+- **Fault.** Also a Module field. `ModuleCard` shows each Fault once with `DeviceFaultStatus`, and the message names the affected Sensor.
 - **Module, Space, Site.** Where the Sensor sits is `LocationPath` or the `ModuleCard` header.
 - **Time of the Reading** ("Updated 5 s ago"). Context, not part of this card yet.
-- **On/Off.** Turning a Module on or off lives on `ModuleCard`. An Off Module is Disconnected, so SensorReading gets `isDisconnected`.
 
 Pairing Status doesn't apply: an Unpaired Module sends no Readings, so there is no SensorReading to show.
 

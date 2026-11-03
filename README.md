@@ -18,8 +18,8 @@
 
 
 #### 3. Domain model
-- [Ubiquitous langauge](/docs/architecture/domain-model/ubiquitous-language.md)
-- [Relationship and cardinality](/docs/architecture/domain-model/relationship-and-cardinality.md)
+- [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx)
+- [Data model](/kit/apps/docs-site/docs/domain-model/data-model.mdx)
 
 #### 4. Design system
 - [Design system architecture]

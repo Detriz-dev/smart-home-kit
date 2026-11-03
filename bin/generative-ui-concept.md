@@ -2,7 +2,7 @@
 
 An exploration of the direction chosen in [product ideation](product-ideation.md): a person describes a screen in plain language, and Live Studio builds it from the DeTriz design system using live data.
 
-This is a concept, not a final spec. Terms follow the [Ubiquitous Language](../architecture/domain-model/ubiquitous-language.md).
+This is a concept, not a final spec. Terms follow the [Glossary](../kit/apps/docs-site/docs/domain-model/glossary.mdx).
 
 ## Table of contents
 

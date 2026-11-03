@@ -81,7 +81,6 @@ React hooks that several components share: `useTimeAgo(updatedAtMs)`, `useReduce
 - If logic is used by only one component, keep it inside that component's folder.
 
 
-
 #### `icons/`: visual symbols
 React components for icons: status icons (`IconWarning`, `IconOffline`) and module types (`IconTemperature`, `IconAirQuality`).
 - Icons are components, so they follow component rules: they accept `size` and `className`, use `currentColor`, and are `aria-hidden` by default.

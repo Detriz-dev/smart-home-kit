@@ -4,7 +4,7 @@
 
 A **context map** shows the bounded contexts of the system and how they connect: which one provides data, which one uses it, and how they agree on its shape.
 
-A **bounded context** is a boundary inside which every term has exactly one meaning. The contexts below were proposed in the [Domain Analysis](./domain-analysis.md#strategic-design-bounded-contexts). Terms follow the [Ubiquitous Language](./ubiquitous-language.md). Contexts and terms marked _(proposed)_ aren't part of the glossary yet.
+A **bounded context** is a boundary inside which every term has exactly one meaning. The contexts below were proposed in the [Domain Analysis](./domain-analysis.md#strategic-design-bounded-contexts). Terms follow the [Glossary](../../../kit/apps/docs-site/docs/domain-model/glossary.mdx). Contexts and terms marked _(proposed)_ aren't part of the glossary yet.
 
 ## Table of contents
 
@@ -39,7 +39,7 @@ A simple test: if context A disappeared, would context B break? If yes, A is ups
 
 | Context | Subdomain type | Owns | In the POC? |
 | --- | --- | --- | --- |
-| **Identity and Access** | Generic | Account, Hub Token _(proposed)_ | Hub Token only |
+| **Identity and Access** | Generic | Account, Hub Token | Hub Token only |
 | **Location** | Supporting | Site, Floor, Space, Space Type, Asset, Asset Type | Later |
 | **Device Management** | Core | Device, Hub, Module, Module Type, Slot, Sensor, Device Status | Yes |
 | **Telemetry** | Core | Reading, Metric, Unit, Subject | Yes |
@@ -129,7 +129,7 @@ The last row matters for the design system: `ui` never sees domain objects, only
 
 ## Events between contexts
 
-Events let a context react to another without calling it directly. All names are _(proposed)_; see [Device Lifecycle](./device-lifecycle.md#events-and-commands) for the full Device list.
+Events let a context react to another without calling it directly. All names are _(proposed)_; see [Device lifecycle](../../../kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx#events-and-commands) for the full Device list.
 
 | Event | Published by | Who reacts | What they do |
 | --- | --- | --- | --- |

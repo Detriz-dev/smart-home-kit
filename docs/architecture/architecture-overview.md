@@ -52,7 +52,7 @@ On top of that, two supporting deliverables: a **landing page** that explains th
 
 The repo is also meant to be read by others (recruiters, engineers, designers) who want to evaluate how I think and work, so the way of working is part of the architecture (see [How to approach this project](#how-to-approach-this-project)).
 
-Terms such as Hub, Module, Sensor, Reading and Connection Status follow the [Ubiquitous Language](domain-model/ubiquitous-language.md).
+Terms such as Hub, Module, Sensor, Reading and Connection Status follow the [Glossary](../../kit/apps/docs-site/docs/domain-model/glossary.mdx).
 
 ## Table of contents
 

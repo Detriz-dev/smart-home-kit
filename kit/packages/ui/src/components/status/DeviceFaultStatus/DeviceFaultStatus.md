@@ -16,7 +16,7 @@ Category: **Status** ("Is everything OK?"). Not Feedback: Status describes the h
 
 It is the third of the three Device Status fields, next to [`DevicePairingStatus`](../DevicePairingStatus/) and [`DeviceConnectionStatus`](../DeviceConnectionStatus/DeviceConnectionStatus.md).
 
-It shows these terms from the [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md):
+It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx):
 
 | Part  | Domain term | Example            | Note                           |
 | ----- | ----------- | ------------------ | ------------------------------ |
@@ -29,7 +29,7 @@ What it does **not** show, and why:
 
 - **No Fault.** The glossary says Fault is "None, or a specific Fault". When there is none, the parent doesn't render this component, so there is no "None" state.
 - **Connection Status.** A Device can be Connected and have a Fault, so the two are shown side by side, never mixed.
-- **Help or a fix.** The [device lifecycle](/docs/architecture/domain-model/device-lifecycle.md) asks for a message and help per Fault Code. A clickable help link would belong in Controls, so this component starts with the message only. See Open questions.
+- **Help or a fix.** The [device lifecycle](/kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx) asks for a message and help per Fault Code. A clickable help link would belong in Controls, so this component starts with the message only. See Open questions.
 - **Which Device it is.** The parent shows that, for example the `ModuleCard` name.
 
 ### Visual idea
@@ -84,7 +84,7 @@ root           <span role="status">   icon and message in one row
 ### API
 
 ```ts
-/** Which hardware problem the Device reports. See docs/architecture/domain-model/ubiquitous-language.md. */
+/** Which hardware problem the Device reports. See kit/apps/docs-site/docs/domain-model/glossary.mdx. */
 type FaultCode = "sensor_failure" | "calibration_required";
 
 interface DeviceFaultStatusProps {
@@ -99,7 +99,7 @@ Notes:
 
 - The Metric's name comes from `METRIC_NAMES` in `utils/metricNames.ts`, the same list `SensorLabel` uses.
 - `metric`, not `sensorId`: **Fault Raised** carries an optional `sensorId`, but this component takes props only and can't look it up. The parent finds the Sensor's Metric and passes it.
-- One Fault at a time, because the glossary allows one per Device. See Open questions in the [device lifecycle](/docs/architecture/domain-model/device-lifecycle.md#open-questions).
+- One component shows one Fault. A Device can report several Faults at once, so the parent renders one `DeviceFaultStatus` per Fault.
 
 ### Example values
 

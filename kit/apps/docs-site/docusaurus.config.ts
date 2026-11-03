@@ -19,6 +19,12 @@ const config: Config = {
 
   onBrokenLinks: "throw",
 
+  // Draws ```mermaid code blocks as diagrams (used on the Concepts pages).
+  markdown: {
+    mermaid: true,
+  },
+  themes: ["@docusaurus/theme-mermaid"],
+
   i18n: {
     defaultLocale: "en",
     locales: ["en"],
@@ -50,14 +56,20 @@ const config: Config = {
       items: [
         {
           type: "docSidebar",
-          sidebarId: "domainSidebar",
-          label: "Domain",
+          sidebarId: "getStartedSidebar",
+          label: "Get Started",
           position: "right",
         },
         {
           type: "docSidebar",
-          sidebarId: "componentsSidebar",
-          label: "Components",
+          sidebarId: "domainModelSidebar",
+          label: "Domain Model",
+          position: "right",
+        },
+        {
+          type: "docSidebar",
+          sidebarId: "uiComponentsSidebar",
+          label: "UI Components",
           position: "right",
         },
       ],

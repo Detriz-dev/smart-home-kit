@@ -236,7 +236,7 @@ Figma uses `/` to make groups. On export those groups become JSON nesting, and S
 
 ### Status colours use the domain language
 
-Connection Status is Connected / Stale / Disconnected, plus a separate Fault (see `docs/architecture/domain-model/ubiquitous-language.md`). Use two layers in the `semantic` collection:
+Connection Status is Connected / Stale / Disconnected, plus a separate Fault (see `kit/apps/docs-site/docs/domain-model/glossary.mdx`). Use two layers in the `semantic` collection:
 
 ```
 color/feedback/success | warning | danger | info       ← generic, reusable
