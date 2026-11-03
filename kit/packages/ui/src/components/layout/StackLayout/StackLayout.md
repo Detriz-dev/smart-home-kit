@@ -1,5 +1,7 @@
 # StackLayout
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/layout/stack-layout.mdx). Props are defined in [`StackLayout.types.ts`](./StackLayout.types.ts).
+
 ### Purpose
 
 Places children in one column with an even gap, for example a `LocationPath` above a `ModuleCard`. It is the root of most generated screens, and people building screens by hand can use it too.
@@ -72,17 +74,12 @@ In Figma, `children` is a slot, so designers can place any content in an instanc
 
 ### API
 
-```ts
-/** The space between the children of a StackLayout. */
-type StackLayoutGap = "sm" | "md" | "lg";
+The props are defined in [`StackLayout.types.ts`](./StackLayout.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface StackLayoutProps {
-  /** The components to place in one column, top to bottom. */
-  children: ReactNode;
-  /** The space between the children. Defaults to `md`. */
-  gap?: StackLayoutGap;
-}
-```
+The decisions behind them:
+
+- One prop besides `children`: `gap`, with names (`sm`, `md`, `lg`) instead of pixels, so only tested spacing can be chosen. Default `md`.
+- No padding, background or role props: StackLayout only adds space.
 
 ### Example values
 

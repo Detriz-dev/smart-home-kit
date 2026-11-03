@@ -1,0 +1,308 @@
+---
+sidebar_position: 2
+sidebar_label: ColumnLayout
+description: Places components side by side, and falls back to one column when there isn't room.
+---
+
+# ColumnLayout
+
+Places components side by side. Use it to show several items of the same importance in a row, like the SpaceCards of a home, or to make one item the focus with a smaller one beside it.
+
+```jsx live
+<ColumnLayout>
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  <SensorReading
+    metric="humidity"
+    value={48}
+    unit="percent-rh"
+    fractionDigits={0}
+    size="md"
+  />
+  <SensorReading
+    metric="co2"
+    value={840}
+    unit="ppm"
+    fractionDigits={0}
+    size="md"
+  />
+</ColumnLayout>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+ColumnLayout only adds columns and the space between them. It has no background, border or padding, so you never see it, and you can put it inside any other component.
+
+## Import
+
+```tsx
+import { ColumnLayout } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Put the components you want side by side inside it:
+
+```tsx
+import { ColumnLayout, SpaceCard } from "@detriz-sh-kit/ui";
+
+<ColumnLayout>
+  <SpaceCard name="Bedroom" readings={bedroomReadings} />
+  <SpaceCard name="Kitchen" readings={kitchenReadings} />
+</ColumnLayout>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use ColumnLayout:
+
+- **for a grid of cards** of the same importance, like one SpaceCard per Space
+- **for a main item with a smaller one beside it**, with `ratio="2:1"` or `"1:2"`
+
+Don't use it for:
+
+- **Components one under the other.** Use [`StackLayout`](./stack-layout.mdx). ColumnLayout only falls back to one column when it runs out of room.
+- **A group with a heading.** Use [`ContentSection`](./content-section.mdx), and put a ColumnLayout inside it.
+- **Padding or a background.** ColumnLayout adds neither. The screen or the card around it owns those.
+
+## Ratios
+
+Use the `ratio` prop. The default is `equal`.
+
+| `ratio` | Columns                    | Use it when                                                     |
+| ------- | -------------------------- | --------------------------------------------------------------- |
+| `equal` | As many as fit, same width | Items of the same importance.                                   |
+| `2:1`   | Wide, then narrow          | The first child is the focus, with a supporting item beside it. |
+| `1:2`   | Narrow, then wide          | The second child is the focus.                                  |
+
+There are only three ratios and no gap prop, so every screen uses layouts that have been tested. The gap is always 16px, between columns and between rows.
+
+### equal
+
+```jsx live
+<ColumnLayout ratio="equal">
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  <SensorReading
+    metric="humidity"
+    value={48}
+    unit="percent-rh"
+    fractionDigits={0}
+    size="md"
+  />
+</ColumnLayout>
+```
+
+### 2:1
+
+```jsx live
+<ColumnLayout ratio="2:1">
+  <ModuleCard
+    name="Air Quality Module"
+    connectionStatus="connected"
+    sensors={[
+      { metric: "co2", value: 1250, unit: "ppm", fractionDigits: 0 },
+      { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
+    ]}
+  />
+  <ModuleCard
+    name="Climate Module"
+    connectionStatus="connected"
+    sensors={[{ metric: "temperature", value: 22.4, unit: "celsius" }]}
+  />
+</ColumnLayout>
+```
+
+### 1:2
+
+The narrow child still comes first, so it is also read first.
+
+```jsx live
+<ColumnLayout ratio="1:2">
+  <ModuleCard
+    name="Climate Module"
+    connectionStatus="connected"
+    sensors={[{ metric: "temperature", value: 22.4, unit: "celsius" }]}
+  />
+  <ModuleCard
+    name="Air Quality Module"
+    connectionStatus="connected"
+    sensors={[
+      { metric: "co2", value: 1250, unit: "ppm", fractionDigits: 0 },
+      { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
+    ]}
+  />
+</ColumnLayout>
+```
+
+## Responding to width
+
+ColumnLayout looks at **its own width, not the screen's**, so it works the same on a full page and inside another column. A column is never narrower than 192px, the narrowest width a [`ModuleCard`](../readings/module-card.mdx) is designed for.
+
+| `ratio`         | Narrow                  | Wide                                     |
+| --------------- | ----------------------- | ---------------------------------------- |
+| `equal`         | Below 400px: one column | One more column for every 208px of width |
+| `2:1` and `1:2` | Below 592px: one column | From 592px: two columns                  |
+
+Drag the slider to change the width:
+
+```jsx live
+function ResizeColumns() {
+  const [width, setWidth] = useState(640);
+  const card = (name, value) => (
+    <SpaceCard
+      name={name}
+      readings={[
+        {
+          metric: "temperature",
+          value,
+          unit: "celsius",
+          connectionStatus: "connected",
+        },
+      ]}
+    />
+  );
+
+  return (
+    <StackLayout>
+      <label>
+        Width: {width}px{" "}
+        <input
+          type="range"
+          min="200"
+          max="760"
+          value={width}
+          onChange={(e) => setWidth(Number(e.target.value))}
+        />
+      </label>
+      <div style={{ width }}>
+        <ColumnLayout>
+          {card("Bedroom", 21.5)}
+          {card("Kitchen", 23.1)}
+          {card("Hall", 19.8)}
+        </ColumnLayout>
+      </div>
+    </StackLayout>
+  );
+}
+```
+
+## Number of children
+
+Any number of children works:
+
+| Children             | `equal`                                        | `2:1` and `1:2`                                      |
+| -------------------- | ---------------------------------------------- | ---------------------------------------------------- |
+| One                  | Fills the full width                           | Fills the full width, with no empty column beside it |
+| Fewer than fit a row | They share the full width                      | –                                                    |
+| More than fit a row  | Wrap onto new rows, with the same column width | Wrap onto new rows, each row with the same ratio     |
+
+`2:1` and `1:2` are made for two children.
+
+## Same height in a row
+
+Children in the same row get the same height, so the tops and bottoms of a row of cards line up. If the children have different heights on purpose, for example to compare sizes, put them in a [`StackLayout`](./stack-layout.mdx) instead.
+
+```jsx live
+<ColumnLayout>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: 21.5,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+      {
+        metric: "humidity",
+        value: 48,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+  <SpaceCard
+    name="Hall"
+    readings={[
+      {
+        metric: "temperature",
+        value: 19.8,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+</ColumnLayout>
+```
+
+## Props
+
+| Prop       | Type                        | Default   | Description                                                           |
+| ---------- | --------------------------- | --------- | --------------------------------------------------------------------- |
+| `children` | `ReactNode`                 | –         | **Required.** The components to place side by side, in reading order. |
+| `ratio`    | `"equal" \| "2:1" \| "1:2"` | `"equal"` | How the width is divided.                                             |
+
+The types `ColumnLayoutProps` and `ColumnLayoutRatio` are exported too:
+
+```tsx
+import type { ColumnLayoutProps, ColumnLayoutRatio } from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+ColumnLayout has no text of its own. A child with long content can't push the columns wider than their parent: each child handles its own long text (see its page).
+
+```jsx live
+<div
+  style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <ColumnLayout>
+    <ModuleCard
+      name="Bedroom ceiling Air Quality Module near the window"
+      connectionStatus="connected"
+      sensors={[{ metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 }]}
+    />
+  </ColumnLayout>
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- ColumnLayout is plain `<div>`s with no role, because columns have no meaning of their own. Screen readers go straight to the children.
+- The reading order is always the order of the children, at every width. ColumnLayout never moves children around. In `1:2` the narrow child is read first, because it comes first.
+
+What's up to you:
+
+- **Order.** Put the children in the order people should read them, even when one is the focus.
+
+## Styling
+
+| What                         | Token                       |
+| ---------------------------- | --------------------------- |
+| Gap between columns and rows | `--shk-space-4` (16px)      |
+| Narrowest column (`equal`)   | `--shk-size-24` × 2 (192px) |
+
+The 592px width where `2:1` and `1:2` switch to two columns is fixed: CSS doesn't allow it to be a token.
+
+## Related components
+
+- [`StackLayout`](./stack-layout.mdx): places components one under the other.
+- [`ContentSection`](./content-section.mdx): a group of components with a heading.
+- [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx), [`SensorReading`](../readings/sensor-reading.mdx): cards that are often placed side by side.

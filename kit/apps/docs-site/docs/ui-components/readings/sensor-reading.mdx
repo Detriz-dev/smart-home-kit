@@ -131,7 +131,7 @@ There is no `sm` or `xs`: at those sizes a value belongs in a list row or a tabl
 
 ## Several Readings side by side
 
-Put one SensorReading per Metric in a layout component, such as `ColumnLayout`:
+Put one SensorReading per Metric in a layout component, such as [`ColumnLayout`](../layout/column-layout.mdx):
 
 ```jsx live
 <ColumnLayout>
@@ -249,5 +249,5 @@ To change how it looks, set a token on a parent element. The change applies to e
 
 - [`ModuleCard`](./module-card.mdx): one SensorReading per Sensor of a Module, with the Module's status.
 - [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx), [`UnitLabel`](./unit-label.mdx): the parts SensorReading is built from. Use them on their own for list rows and tables.
-- `ColumnLayout`, `StackLayout`: place several SensorReadings side by side or in a column.
+- [`ColumnLayout`](../layout/column-layout.mdx), [`StackLayout`](../layout/stack-layout.mdx): place several SensorReadings side by side or in a column.
 - [`DeviceConnectionStatus`](../status/device-connection-status.mdx), [`DeviceFaultStatus`](../status/device-fault-status.mdx): the Module's status, shown once next to its Readings.

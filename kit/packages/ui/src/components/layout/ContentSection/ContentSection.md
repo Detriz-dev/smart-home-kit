@@ -1,5 +1,7 @@
 # ContentSection
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/layout/content-section.mdx). Props are defined in [`ContentSection.types.ts`](./ContentSection.types.ts).
+
 ### Purpose
 
 Gives a screen its title and splits it into named groups, such as "Air quality" and "Comfort". The heading helps people scan the page, and because it is a real heading, screen reader users can jump from group to group.
@@ -46,7 +48,7 @@ The heading, and each child, is 16px from the next. Every child fills the full w
 | `3`   | `<h3>` | H3, 24px   | A group on that screen, such as "Air quality".                   |
 | `4`   | `<h4>` | H4, 20px   | A group inside a group. Rare: most screens need only two levels. |
 
-There is no `1`: Studio's own page owns the one `<h1>`, and the generated screen sits inside it. The size always matches the level, so what people see matches what screen readers announce.
+There is no `1`: the app's own page owns the one `<h1>`, and the screen sits inside it. (This used to say "Studio's page"; Live Studio was dropped from the scope.) The size always matches the level, so what people see matches what screen readers announce.
 
 **Parts shown:** there are no optional parts. The heading is always shown, and every child is shown in the order it was given.
 
@@ -79,19 +81,13 @@ In Figma, `children` is a slot, so designers can place any content in an instanc
 
 ### API
 
-```ts
-/** The heading level of a ContentSection: <h2>, <h3> or <h4>. */
-type ContentSectionHeadingLevel = 2 | 3 | 4;
+The props are defined in [`ContentSection.types.ts`](./ContentSection.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface ContentSectionProps {
-  /** The section's name, shown as a heading. Plain text, such as "Air quality". */
-  title: string;
-  /** Which heading element to use, set from nesting. Also sets the text size. Defaults to `2`. */
-  headingLevel?: ContentSectionHeadingLevel;
-  /** The components that belong to this section, top to bottom. */
-  children: ReactNode;
-}
-```
+The decisions behind them:
+
+- `title` is plain text, never HTML.
+- `headingLevel` is `2 | 3 | 4`, default `2`. There is no `1`: the app's page owns the one `<h1>`. The level sets both the element and the text size, so they can't disagree.
+- No gap prop: the spacing is fixed. Put a `StackLayout` inside for a different gap.
 
 ### Example values
 

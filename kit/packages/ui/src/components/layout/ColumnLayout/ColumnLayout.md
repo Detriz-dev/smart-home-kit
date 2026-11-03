@@ -1,5 +1,7 @@
 # ColumnLayout
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/layout/column-layout.mdx). Props are defined in [`ColumnLayout.types.ts`](./ColumnLayout.types.ts).
+
 ### Purpose
 
 Places children side by side, which is how a screen shows what matters most. `2:1` makes one item the focus with a smaller one beside it, and `equal` treats all items the same, such as a row of `SpaceCard`s.
@@ -103,17 +105,12 @@ Figma can't do three things the code does, so its variants are snapshots at one 
 
 ### API
 
-```ts
-/** How a ColumnLayout divides its width. */
-type ColumnLayoutRatio = "equal" | "2:1" | "1:2";
+The props are defined in [`ColumnLayout.types.ts`](./ColumnLayout.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface ColumnLayoutProps {
-  /** The components to place side by side, in reading order. */
-  children: ReactNode;
-  /** How the width is divided. Defaults to `equal`. */
-  ratio?: ColumnLayoutRatio;
-}
-```
+The decisions behind them:
+
+- One prop besides `children`: `ratio` (`equal`, `2:1`, `1:2`), default `equal`. No gap prop and no other ratios, so only tested layouts can be chosen.
+- No prop for the number of columns: `equal` fits as many 192px columns as the width allows.
 
 ### Example values
 
