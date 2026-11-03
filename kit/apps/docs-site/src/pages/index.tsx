@@ -31,15 +31,15 @@ export default function Home(): ReactNode {
           <div className={styles.actions}>
             <Link
               className="button button--primary button--lg"
-              to="/docs/domain"
+              to="/docs/domain-model"
             >
-              Understand the domain
+              Explore the domain model
             </Link>
             <Link
               className="button button--secondary button--lg"
-              to="/docs/components"
+              to="/docs/ui-components"
             >
-              Browse components
+              Browse UI components
             </Link>
           </div>
         </div>

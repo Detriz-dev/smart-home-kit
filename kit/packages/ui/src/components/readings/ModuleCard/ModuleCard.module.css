@@ -1,6 +1,6 @@
 @layer detriz {
   /* The card fills its parent, and its own width decides the layout (see the container queries below).
-     flex-start keeps the Switch and the Fault as wide as their content, so a click beside the Switch does nothing.
+     flex-start keeps each Fault as wide as its content.
      Figma draws the outline inside the card, so the padding is one border width smaller (same as SensorReading). */
   .root {
     container-type: inline-size;

@@ -19,8 +19,6 @@ const climateCard = (
     name="Climate Module"
     sensors={CLIMATE_SENSORS}
     connectionStatus="connected"
-    isOn
-    onToggle={() => {}}
   />
 );
 
@@ -29,8 +27,6 @@ const airQualityCard = (
     name="Air Quality Module"
     sensors={AIR_QUALITY_SENSORS}
     connectionStatus="connected"
-    isOn
-    onToggle={() => {}}
   />
 );
 

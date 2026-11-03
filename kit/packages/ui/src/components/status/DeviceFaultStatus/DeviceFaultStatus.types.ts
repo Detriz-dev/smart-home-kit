@@ -1,6 +1,6 @@
 import type { Metric } from "../../../types/metric";
 
-/** Which hardware problem the Device reports. See docs/architecture/domain-model/ubiquitous-language.md. */
+/** Which hardware problem the Device reports. See kit/apps/docs-site/docs/domain-model/glossary.mdx. */
 export type FaultCode = "sensor_failure" | "calibration_required";
 
 export interface DeviceFaultStatusProps {

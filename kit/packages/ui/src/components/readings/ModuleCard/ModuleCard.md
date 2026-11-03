@@ -2,44 +2,45 @@
 
 ### Purpose
 
-Shows one Module as a card: its name, its Connection Status, the latest Reading of each of its Sensors, and a Switch to turn the Module off or on. A Module has one to three Sensors, so the card shows one to three `SensorReading`s.
+Shows one Module as a card: its name, its Connection Status, its Faults and the latest Reading of each of its Sensors. A Module has one to three Sensors, so the card shows one to three `SensorReading`s.
 
-It is used wherever a user looks at their Modules, for example a Space overview in Live Studio.
+It is used wherever a user looks at their Modules, for example a Space overview in an app built with the kit.
 
-It only puts existing components together: [`SensorReading`](../SensorReading/SensorReading.md), [`DeviceConnectionStatus`](../../status/DeviceConnectionStatus/DeviceConnectionStatus.md), [`DeviceFaultStatus`](../../status/DeviceFaultStatus/DeviceFaultStatus.md) and [`Switch`](../../controls/Switch/Switch.tsx). It adds the card around them, passes the Module's state down to them and rearranges them to fit the space it gets.
+It only puts existing components together: [`SensorReading`](../SensorReading/SensorReading.md), [`DeviceConnectionStatus`](../../status/DeviceConnectionStatus/DeviceConnectionStatus.md), and [`DeviceFaultStatus`](../../status/DeviceFaultStatus/DeviceFaultStatus.md). It adds the card around them, passes the Module's state down to them and rearranges them to fit the space it gets.
 
-It takes props only. It doesn't turn the Module off itself: it tells its parent the user flipped the Switch, and the parent sends the command.
+It takes props only and is read-only: it has no controls.
 
 Figma: `ModuleCard` component set in _DeTriz - Smart Home Kit_ (node `349:591`), page `ModuleCard`. Variant properties `layout` and `state`, boolean properties `hasFault`, `hasSecondSensor` and `hasThirdSensor`. The `ModuleCard examples` frame shows a Fault, one Sensor and three Sensors.
 
+Figma is behind the code: it still has the `state=off` variant and the Switch layer, which were removed when On / Off left the domain. See Open questions.
+
 ### Component in domain model context
 
-Category: **Readings** ("What is it right now?"). A composite keeps the category of its main job, and most of this card is the current values. The Switch doesn't move it to Controls: only the Switch is interactive, and `Switch` already lives there.
+Category: **Readings** ("What is it right now?"). A composite keeps the category of its main job, and this card is the current values.
 
-It shows these terms from the [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md):
+It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx):
 
 | Part    | Domain term             | Example            | Shown by                 |
 | ------- | ----------------------- | ------------------ | ------------------------ |
 | name    | **Module Name**         | Climate Module     | `ModuleCard`             |
 | status  | **Connection Status**   | Connected          | `DeviceConnectionStatus` |
-| fault   | **Fault**               | CO₂ sensor failure | `DeviceFaultStatus`      |
+| faults  | **Fault**               | CO₂ sensor failure | `DeviceFaultStatus`      |
 | sensors | **Sensor**, **Reading** | 22.4 °C            | `SensorReading`          |
-| switch  | **On / Off**            | Off                | `Switch`                 |
 
-A Module has **one or more** Sensors, and **one Sensor per Metric** ([Domain Analysis](/docs/architecture/domain-model/domain-analysis.md)). The Sensors are fixed by the Module Type, so the user never adds or removes one.
+A Module has **one or more** Sensors, and **one Sensor per Metric** ([Domain Analysis](/docs/architecture/domain-model/domain-analysis.md)). The Sensors are fixed by the Module's board, so the user never adds or removes one.
 
 What it does **not** show, and why:
 
-- **Several Modules side by side.** A Hub has 4 Slots, so a screen can show up to 4 Modules. Placing those cards is the job of a separate Layout component, because a card shouldn't know about its neighbours.
+- **Several Modules side by side.** A Hub can have several Modules wired to it. Placing those cards is the job of a separate Layout component, because a card shouldn't know about its neighbours.
 - **Pairing Status.** Only Paired Modules have a Connection Status, so only Paired Modules get a ModuleCard. An Unpaired Module ("New module found") belongs to another component.
-- **Hub, Slot, Space, Site.** Where the Module sits is `LocationPath`.
+- **Hub, Space, Site.** Where the Module sits is `LocationPath`.
 - **Time of the Reading** ("Last update 5 min ago"). Context, not part of this card yet.
 
 ### Visual idea
 
 | Question                        | Answer                                                                                                |
 | ------------------------------- | ----------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | A white card: the name and status on top, the Sensors below, the Switch at the bottom.                |
+| What does it roughly look like? | A white card: the name and status on top, any Faults below them, then the Sensors.                    |
 | Icons?                          | Only those of its parts.                                                                              |
 | Separators?                     | No. The cards inside (`SensorReading`) separate the Sensors.                                          |
 | More than one layout?           | Yes, two, chosen automatically by the card's own width: `row` and `stacked`. See [Layouts](#layouts). |
@@ -53,12 +54,10 @@ row (wide)                                      stacked (narrow)
 │ │ 🌡 Temperature │ │ 💧 Humidity    │       │   │ ┌───────────┐ │
 │ │ 22.4 °C       │ │ 48 %RH        │       │   │ │ Temperature│ │
 │ └───────────────┘ └───────────────┘       │   │ │ 22.4 °C   │ │
-│ (●  ) On                                  │   │ └───────────┘ │
-└───────────────────────────────────────────┘   │ ┌───────────┐ │
+└───────────────────────────────────────────┘   │ └───────────┘ │
                                                 │ │ Humidity  │ │
                                                 │ │ 48 %RH    │ │
                                                 │ └───────────┘ │
-                                                │ (●  ) On      │
                                                 └───────────────┘
 ```
 
@@ -88,31 +87,20 @@ The Module Name can be long, because the user can rename it. It stays on one lin
 
 ### States
 
-Figma variant property `state`. In code there is no `state` prop: the card works it out from `connectionStatus`, `isOn` and the Sensors' values.
+Figma variant property `state`. In code there is no `state` prop: the card works it out from `connectionStatus` and the Sensors' values.
 
-| State          | Figma value          | When                                                     | Status label | Sensors                    | Switch                 |
-| -------------- | -------------------- | -------------------------------------------------------- | ------------ | -------------------------- | ---------------------- |
-| `loading`      | `state=loading`      | The first Readings are on their way (`value` is `null`). | Connecting   | Spinning icon, per Sensor  | On                     |
-| `connected`    | `state=connected`    | Reachable and sending Readings.                          | Connected    | The values                 | On                     |
-| `stale`        | `state=stale`        | Connected, but no Reading within the expected interval.  | Stale        | The last values, unchanged | On                     |
-| `disconnected` | `state=disconnected` | The Module is On, but can't be reached.                  | Disconnected | Hidden, disconnected icon  | On, greyed out         |
-| `off`          | `state=off`          | The Module is in its Slot, and the user turned it off.   | Disconnected | Hidden, disconnected icon  | Off, can be flipped on |
+| State          | Figma value          | When                                                                     | Status label | Sensors                    |
+| -------------- | -------------------- | ------------------------------------------------------------------------ | ------------ | -------------------------- |
+| `loading`      | `state=loading`      | The first Readings are on their way (`value` is `null`).                 | Connecting   | Spinning icon, per Sensor  |
+| `connected`    | `state=connected`    | Reachable and sending Readings.                                          | Connected    | The values                 |
+| `stale`        | `state=stale`        | Connected, but no Reading within its Expected Interval.                  | Stale        | The last values, unchanged |
+| `disconnected` | `state=disconnected` | The Module can't be reached, for example it was unplugged.               | Disconnected | Hidden, disconnected icon  |
 
-`disconnected` and `off` look the same except for the Switch, and that is on purpose. Off is not a new status: an Off Module is Disconnected, and the Switch shows why. Switch Off means the user chose it. Switch On and greyed out means something went wrong.
-
-The card works out what to show in this order, first match wins:
-
-1. `isOn` is false → `off`. The label says Disconnected, whatever `connectionStatus` says, and the Switch stays usable so the user can turn the Module back on.
-2. `connectionStatus` is `disconnected` → `disconnected`. The Switch can't reach the Module, so it is greyed out.
-3. Otherwise → follows `connectionStatus`. Each `SensorReading` picks up its own `loading` from a `null` value.
-
-In `off` and `disconnected`, the card passes `isDisconnected` to every `SensorReading`.
+The card follows `connectionStatus`. Each `SensorReading` picks up its own `loading` from a `null` value. In `disconnected`, the card passes `isDisconnected` to every `SensorReading`.
 
 **Connecting** has no state of its own, same rule as `SensorReading`: the status label says "Connecting", and the parent passes the last values to keep showing them, or `null` to show `loading`.
 
-When the user turns the Module back on, the parent passes `isOn` true and `connectionStatus` `connecting`. It then follows the normal path to Connected.
-
-If the Module is Off and its Hub is Disconnected, the card can't tell: the Switch stays usable and the command fails. The parent handles that failure.
+When an unplugged Module is plugged back in, the parent passes `connectionStatus` `connecting`. It then follows the normal path to Connected.
 
 Target states:
 
@@ -121,8 +109,8 @@ Target states:
 | loading      | yes      | The `loading` state.                                                                                                              |
 | Connected    | yes      | The `connected` state.                                                                                                            |
 | Stale        | yes      | The `stale` state. `SensorReading` has no Stale state: only the status label changes, as `SensorReading.md` expects.              |
-| Disconnected | yes      | The `disconnected` and `off` states. Values are **hidden**, as the glossary says.                                                 |
-| Fault        | yes      | Not a state of its own: `fault` adds `DeviceFaultStatus` on top of any state, because a Module can be Connected and have a Fault. |
+| Disconnected | yes      | The `disconnected` state. Values are **hidden**, as the glossary says.                                                            |
+| Fault        | yes      | Not a state of its own: `faults` adds one `DeviceFaultStatus` per Fault on top of any state, because a Module can be Connected and have Faults. |
 
 ### Anatomy
 
@@ -131,11 +119,10 @@ root               <div role="group">    card: background, padding, stacks the p
 ├── header         <div>                 name and status
 │   ├── name       <span id>             gives the group its name
 │   └── DeviceConnectionStatus
-├── DeviceFaultStatus                    only when there is a Fault, under the header
+├── DeviceFaultStatus                    one per Fault, under the header (none when there are no Faults)
 ├── sensors        <ul>                  one row, or a stack
 │   └── sensor     <li>                  one per Sensor
 │       └── SensorReading  size="md"
-└── Switch
 ```
 
 1. **root**: the card, and the element whose width decides the layout.
@@ -144,7 +131,7 @@ root               <div role="group">    card: background, padding, stacks the p
 4. **sensors**: a list, because the Sensors are a group of equal items. Holds only `li`s, so any Figma `row` frame inside it doesn't become an element.
 5. **sensor**: one list item. `SensorReading` fills it.
 
-Figma layer names follow this anatomy. In Figma, `hasFault` stands for the `fault` prop, and `hasSecondSensor` and `hasThirdSensor` stand for the length of `sensors`.
+Figma layer names follow this anatomy. In Figma, `hasFault` stands for a non-empty `faults` list, and `hasSecondSensor` and `hasThirdSensor` stand for the length of `sensors`.
 
 ### API
 
@@ -168,12 +155,8 @@ interface ModuleCardProps {
   sensors: ModuleCardSensor[];
   /** The Module's current Connection Status. */
   connectionStatus: ConnectionStatus;
-  /** The Module's current Fault. Leave it out when there is none. */
-  fault?: DeviceFaultStatusProps;
-  /** Whether the Module is turned on. The parent owns this value. */
-  isOn: boolean;
-  /** Called with the new value when the user flips the Switch. */
-  onToggle: (isOn: boolean) => void;
+  /** The Module's current Faults, one per Fault Code. A Module can report several at once. Leave it out, or pass an empty list, when there are none. */
+  faults?: DeviceFaultStatusProps[];
 }
 ```
 
@@ -181,29 +164,28 @@ Notes:
 
 - `sensors` is a list, not `temperatureC` / `humidityPct` props, because the card works with any Module Type. This is the "sensor-agnostic" rule from the conventions.
 - The list order is the display order. The parent decides it.
-- `isOn` has the same name and meaning as in `Switch`. It is a setting the user chose, not a status, so it is separate from `connectionStatus`. Without it, the card couldn't tell "the user turned it off" from "we lost it".
 - `connectionStatus` is required because only Paired Modules get a ModuleCard.
-- `fault` is the same `faultCode` and `metric` that `DeviceFaultStatus` takes, passed on unchanged. A Fault shows once per Module, and `metric` names the affected Sensor in the message. `SensorReading` doesn't change. It stays visible in `off` and `disconnected`, because the last Fault stays until **Fault Cleared**.
-- The Switch's `ariaLabel` comes from `name`, so a screen reader says "Climate Module, switch, on".
+- Each item in `faults` is the same `faultCode` and `metric` that `DeviceFaultStatus` takes, passed on unchanged. Each Fault shows once, and `metric` names the affected Sensor in the message. `SensorReading` doesn't change. Faults stay visible in `disconnected`, because a Fault stays until **Fault Cleared**.
+- `faults` is a list because a Device can report several Faults at once, one per Fault Code. The card uses the Fault Code as the React key.
 - More than three Sensors isn't blocked, but no Module has that many today, and the layouts are only designed up to three.
 
 ### Example values
 
 Stories render in English. Which Sensors each Module Type has is not written down in the domain docs yet: these are assumed from the glossary examples.
 
-| Use              | name                                  | sensors                                     | connectionStatus | isOn  | Shows                                           |
-| ---------------- | ------------------------------------- | ------------------------------------------- | ---------------- | ----- | ----------------------------------------------- |
-| Connected        | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `connected`      | true  | Two Sensors, Connected, On                      |
-| Loading          | Climate Module                        | Temperature `null`, Humidity `null`         | `connecting`     | true  | Two spinning icons, Connecting                  |
-| Stale            | Light Module                          | Illuminance 320 lx                          | `stale`          | true  | One Sensor, Stale                               |
-| Disconnected     | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `disconnected`   | true  | Values hidden, Switch On and greyed out         |
-| Off              | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `disconnected`   | false | Values hidden, Switch Off and usable            |
-| Fault            | Air Quality Module                    | CO₂ 1,250 ppm                               | `connected`      | true  | Value still shown, plus CO₂ sensor failure      |
-| Three Sensors    | Air Quality Module                    | CO₂ 1,250 ppm, VOC 120 ppb, PM2.5 12 µg/m³  | `connected`      | true  | Three in one row                                |
-| `LongText` story | Living room air quality by the window | Temperature 22.4 °C, Illuminance 100,000 lx | `connected`      | true  | Name ends with "…", Sensors stacked, 240px wide |
-| `Minimal` story  | Light Module                          | Illuminance 0 lx                            | `connected`      | true  | One Sensor                                      |
+| Use              | name                                  | sensors                                     | connectionStatus | faults                                               | Shows                                           |
+| ---------------- | ------------------------------------- | ------------------------------------------- | ---------------- | ---------------------------------------------------- | ----------------------------------------------- |
+| Connected        | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `connected`      | none                                                 | Two Sensors, Connected                          |
+| Loading          | Climate Module                        | Temperature `null`, Humidity `null`         | `connecting`     | none                                                 | Two spinning icons, Connecting                  |
+| Stale            | Light Module                          | Illuminance 320 lx                          | `stale`          | none                                                 | One Sensor, Stale                               |
+| Disconnected     | Climate Module                        | Temperature 22.4 °C, Humidity 48 %RH        | `disconnected`   | none                                                 | Values hidden, disconnected icon                |
+| Fault            | Air Quality Module                    | CO₂ 1,250 ppm                               | `connected`      | `sensor_failure` (CO₂)                               | Value still shown, plus CO₂ sensor failure      |
+| Several Faults   | Air Quality Module                    | CO₂ 1,250 ppm, VOC 120 ppb, PM2.5 12 µg/m³  | `connected`      | `sensor_failure` (CO₂), `calibration_required` (VOC) | Two Fault messages above the Sensors            |
+| Three Sensors    | Air Quality Module                    | CO₂ 1,250 ppm, VOC 120 ppb, PM2.5 12 µg/m³  | `connected`      | none                                                 | Three in one row                                |
+| `LongText` story | Living room air quality by the window | Temperature 22.4 °C, Illuminance 100,000 lx | `connected`      | none                                                 | Name ends with "…", Sensors stacked, 240px wide |
+| `Minimal` story  | Light Module                          | Illuminance 0 lx                            | `connected`      | none                                                 | One Sensor                                      |
 
-Stories: `Connected`, `Loading`, `Stale`, `Disconnected`, `Off`, `Fault`, `ThreeSensors`, `Stacked`, `LongText`, `Minimal`.
+Stories: `Connected`, `Loading`, `Stale`, `Disconnected`, `Fault`, `SeveralFaults`, `ThreeSensors`, `Stacked`, `LongText`, `Minimal`.
 
 ### Tokens
 
@@ -228,15 +210,15 @@ The container query widths (332px, 504px) are raw values, an exception to the to
 ### Accessibility
 
 - `root` is a `<div role="group">` named by the Module's name (`aria-labelledby` → `name`), the same pattern as `SensorReading`.
-- Reading order follows the anatomy: name, status, Sensors, Switch. It stays the same in both layouts.
+- Reading order follows the anatomy: name, status, Faults, Sensors. It stays the same in both layouts.
 - `sensors` is a real list with `role="list"`, because Safari stops treating a list as a list once its bullets are removed. A screen reader says how many Sensors there are.
 - Each `SensorReading` keeps its own spoken name ("Temperature, 22.4 degrees Celsius").
-- Not colour alone: `DeviceConnectionStatus` has a text label, `disconnected` has its own icon, and the Switch shows "On" or "Off" as text.
-- A screen reader tells `off` from `disconnected` through the Switch: "on" and dimmed, or "off" and usable.
+- Not colour alone: `DeviceConnectionStatus` has a text label, and `disconnected` has its own icon.
 - No new live region. `DeviceConnectionStatus` already has `role="status"`, so status changes are announced. Readings are not, same rule as `SensorReading`.
 - The rest (contrast, reduced motion) comes from the parts.
 
 ### Open questions
 
-- **Which Sensors each Module Type has.** Not written down in the domain docs, and "one to three" is the working limit. Add it to the Ubiquitous Language or the Relationship doc.
+- **Which Sensors each Module Type has.** Not written down in the domain docs, and "one to three" is the working limit. Add it to the Glossary or the Data model once the supported boards are chosen (domain open question 19).
 - **Heading.** Should the Module name be a heading for screen-reader navigation? If yes, the card needs a `headingLevel` prop, because it doesn't know where it sits on the page.
+- **Figma is behind.** Remove the `state=off` variant and the Switch layer from the `ModuleCard` component set (node `349:591`), so Figma matches the code.

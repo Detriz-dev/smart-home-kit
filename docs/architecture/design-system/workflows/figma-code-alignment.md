@@ -28,7 +28,7 @@ Worked examples: [`DevicePairingStatus`](/kit/packages/ui/src/components/status/
 
 | Doc                                                                           | Why                                                                          |
 | ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md) | Decides names when Figma and code disagree.                                  |
+| [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx) | Decides names when Figma and code disagree.                                  |
 | [Component building workflow (V2)](./component-building-v2.md)                | The conventions every component must follow (files, states, stress stories). |
 | [Figma variables ↔ code handoff](./figma-variables-code-handoff.md)           | How Figma variables map to `--shk-` tokens.                                  |
 | `kit/packages/tokens/dist/tokens.css`                                         | The real token names and values.                                             |

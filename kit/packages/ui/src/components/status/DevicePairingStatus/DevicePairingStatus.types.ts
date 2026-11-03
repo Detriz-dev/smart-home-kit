@@ -1,4 +1,4 @@
-/** Does this Device belong to the Account? See docs/architecture/domain-model/device-lifecycle.md. */
+/** Does this Device belong to the Account? See kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx. */
 export type PairingStatus = "unpaired" | "pairing" | "paired";
 
 export interface DevicePairingStatusProps {

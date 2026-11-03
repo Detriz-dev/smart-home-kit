@@ -4,7 +4,7 @@
 
 A **domain event** is a record of something that happened in the domain, which other parts of the system may care about. "Device Paired" and "Reading Recorded" are domain events.
 
-This document lists the events of DeTriz Smart Home KIT, grouped by the [bounded context](./context-map.md) that publishes them. It builds on the [Ubiquitous Language](./ubiquitous-language.md), the [Device Lifecycle](./device-lifecycle.md) and the [Context Map](./context-map.md).
+This document lists the events of DeTriz Smart Home KIT, grouped by the [bounded context](./context-map.md) that publishes them. It builds on the [Glossary](../../../kit/apps/docs-site/docs/domain-model/glossary.mdx), the [Device lifecycle](../../../kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx) and the [Context Map](./context-map.md).
 
 All event and command names here are _(proposed)_. They aren't part of the Ubiquitous Language until they are added to the glossary.
 
@@ -134,7 +134,7 @@ Each table lists the events one context publishes. **Consumers** are the context
 
 ### Device Management
 
-Lifecycle events are explained with diagrams in [Device Lifecycle](./device-lifecycle.md).
+Lifecycle events are explained with diagrams in [Device lifecycle](../../../kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx).
 
 | Event | What happened | Key payload | Consumers | Public |
 | --- | --- | --- | --- | --- |
@@ -254,7 +254,6 @@ Events sent to the client are part of the **Published Language**, so they must b
 ## Open questions
 
 - **One event per Reading, or per batch?** The Hub agent sends Readings in batches. Publishing Reading Recorded for each one is simplest, but a **Readings Ingested** batch event may be needed at higher volume.
-- **Do late Readings count for staleness?** A buffered Reading with an old `occurredAt` arrives after a Wi-Fi drop. Should it move a Device from Stale back to Connected? (Also open in [Device Lifecycle](./device-lifecycle.md#open-questions).)
 - **Who publishes Device Went Stale?** Here it's Telemetry, matching the [Context Map](./context-map.md#open-questions). If Device Management runs the Staleness Policy instead, the event moves there.
 - **Store events, or just publish them?** Saving every event (event sourcing) gives a full history but adds complexity. For the POC, publishing events and storing only current statuses and Readings is enough. Worth an ADR if this changes.
 - **AsyncAPI or OpenAPI for the stream?** OpenAPI describes REST well but WebSocket messages poorly. AsyncAPI is the usual companion format for events.

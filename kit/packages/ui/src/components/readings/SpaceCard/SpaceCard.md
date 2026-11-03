@@ -14,7 +14,7 @@ Figma: `SpaceCard` component set in _DeTriz - Smart Home Kit_ (node `402:246`), 
 
 Category: **Readings** ("What is it right now?"). Most of the card is current values.
 
-It shows these terms from the [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md):
+It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx):
 
 | Part   | Domain term           | Example            | Shown by                 |
 | ------ | --------------------- | ------------------ | ------------------------ |
@@ -29,7 +29,6 @@ Domain rules behind it:
 
 - **A Space has no status.** Only Devices do, and a Space can hold zero or more Hubs, so one status for the whole card would be invented. Each row carries the Connection Status of the Module its Reading comes from.
 - **No averages.** An average isn't a Reading. If a Space has two Modules measuring the same Metric, the parent decides which one to show (see Open questions).
-- **No Switch.** On / Off belongs to `ModuleCard`.
 
 What it does **not** show, and why:
 

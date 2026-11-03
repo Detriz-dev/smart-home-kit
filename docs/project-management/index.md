@@ -14,9 +14,9 @@
 - [x] Dependencies 
 
 #### Product architecture
-- [x] [Ubiquitous language](/docs/architecture/domain-model/ubiquitous-language.md)
+- [x] [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx)
 - [x] [UI Component conventions](/docs/architecture/design-system/ds-conventions-and-structure.md)
-- [x] [Relationship and cardinality](/docs/architecture/domain-model/relationship-and-cardinality.md) **
+- [x] [Data model](/kit/apps/docs-site/docs/domain-model/data-model.mdx) **
 
 
 #### Style guide

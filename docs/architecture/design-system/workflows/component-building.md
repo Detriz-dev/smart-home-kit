@@ -30,9 +30,9 @@ Worked examples in the repo: [`DeviceConnectionStatus`](/kit/packages/ui/src/com
 
 | Doc                                                                                             | Why                                                            |
 | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md)                   | The only words allowed in props, labels, type names and docs.  |
-| [Device lifecycle](/docs/architecture/domain-model/device-lifecycle.md)                         | Which statuses exist and how a Device moves between them.      |
-| [Relationship and cardinality](/docs/architecture/domain-model/relationship-and-cardinality.md) | How Site, Space, Hub, Module, Sensor relate.                   |
+| [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx)                   | The only words allowed in props, labels, type names and docs.  |
+| [Device lifecycle](/kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx)                         | Which statuses exist and how a Device moves between them.      |
+| [Data model](/kit/apps/docs-site/docs/domain-model/data-model.mdx) | How Site, Space, Hub, Module, Sensor relate.                   |
 | [Conventions and structure](/docs/architecture/design-system/ds-conventions-and-structure.md)   | Naming rules, folders, the import chain, component categories. |
 | [Figma variables → code](figma-variables-code-handoff.md)                                       | How a Figma variable becomes a `--shk-…` token.                |
 | [Add an icon](add-icon-to-design-system-workflow.md)                                            | How icons get into the `Icon` component.                       |
@@ -119,7 +119,7 @@ Then in Figma select the **component set**, right-click → **Copy link to selec
 
 | Area          | Check                                                                                                                                                                                                                                    |
 | ------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Domain words  | Component name, prop names, prop values and labels use [Ubiquitous Language](/docs/architecture/domain-model/ubiquitous-language.md) terms exactly. No synonyms ("online" for Connected, "device" for a Sensor).                         |
+| Domain words  | Component name, prop names, prop values and labels use [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx) terms exactly. No synonyms ("online" for Connected, "device" for a Sensor).                         |
 | Domain rules  | States match the lifecycle docs. Device Status fields stay separate: Pairing Status, Connection Status and Fault are never mixed in one prop.                                                                                            |
 | Naming        | Follows the [naming table](/docs/architecture/design-system/ds-conventions-and-structure.md#1-naming-convention): PascalCase component, lowercase union values, `is/has` booleans, `on<Event>` handlers, unit suffixes (`temperatureC`). |
 | Spec ↔ Figma  | Every state in the spec is a variant, and every variant is in the spec. Variant property and values match the prop and its values. Layer names match the anatomy.                                                                        |

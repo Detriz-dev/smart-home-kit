@@ -16,7 +16,7 @@ Figma: `ReadingValue` component set in _DeTriz - Smart Home Kit_ (node `197:31`)
 
 Category: **Readings** ("What is it right now?"). The value changes every time a new Reading arrives.
 
-It shows one part of a [Reading](/docs/architecture/domain-model/ubiquitous-language.md#what-is-tracked):
+It shows one part of a [Reading](/kit/apps/docs-site/docs/domain-model/glossary.mdx#what-is-tracked):
 
 | Part  | Domain term | Example | Rule                                                                                                       |
 | ----- | ----------- | ------- | ---------------------------------------------------------------------------------------------------------- |
@@ -71,7 +71,7 @@ Target states:
 | loading      | yes      | The `loading` state.                                                                                                                    |
 | Connected    | yes      | The `default` state: the latest value.                                                                                                  |
 | Stale        | no       | Shown by `DeviceConnectionStatus`. The number stays as it is.                                                                        |
-| Disconnected | yes      | The `disconnected` state. The last value is **hidden**, as the [glossary](/docs/architecture/domain-model/ubiquitous-language.md) says. |
+| Disconnected | yes      | The `disconnected` state. The last value is **hidden**, as the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx) says. |
 | Fault        | no       | Shown by a Status component.                                                                                                            |
 
 **Connecting** (a Device re-establishing its link) has no state of its own. The parent decides: pass the last value to keep showing it, or `null` to show `loading`.

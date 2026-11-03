@@ -7,7 +7,7 @@ A small status indicator that shows a Device's connection status.
 ### Component in domain model context
 
 This component covers the Connection Status from the domain model
-[device lifecycle](/docs/architecture/domain-model/device-lifecycle.md)
+[device lifecycle](/kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx)
 
 ### Anatomy of component
 

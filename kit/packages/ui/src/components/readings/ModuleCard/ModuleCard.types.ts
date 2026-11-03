@@ -22,10 +22,6 @@ export interface ModuleCardProps {
   sensors: ModuleCardSensor[];
   /** The Module's current Connection Status. */
   connectionStatus: ConnectionStatus;
-  /** The Module's current Fault. Leave it out when there is none. */
-  fault?: DeviceFaultStatusProps;
-  /** Whether the Module is turned on. The parent owns this value. */
-  isOn: boolean;
-  /** Called with the new value when the user flips the Switch. */
-  onToggle: (isOn: boolean) => void;
+  /** The Module's current Faults, one per Fault Code. A Module can report several at once. Leave it out, or pass an empty list, when there are none. */
+  faults?: DeviceFaultStatusProps[];
 }

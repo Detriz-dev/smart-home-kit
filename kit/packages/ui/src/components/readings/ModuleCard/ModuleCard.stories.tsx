@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { useState } from "react";
 import { ModuleCard } from "./ModuleCard";
 import type { ModuleCardSensor } from "./ModuleCard.types";
 
@@ -22,8 +21,6 @@ const meta = {
     name: "Climate Module",
     sensors: CLIMATE_SENSORS,
     connectionStatus: "connected",
-    isOn: true,
-    onToggle: () => {},
   },
   // Show `connectionStatus` as a dropdown of the four Connection Statuses in the Controls panel.
   argTypes: {
@@ -47,21 +44,6 @@ const meta = {
       </div>
     ),
   ],
-  // Storybook doesn't keep the value, so this wrapper does: clicking the Switch really flips it.
-  render: function Render(args) {
-    const [isOn, setIsOn] = useState(args.isOn);
-    // A Module turned back on in the Off story reconnects, like the real thing.
-    const connectionStatus =
-      isOn && !args.isOn ? "connected" : args.connectionStatus;
-    return (
-      <ModuleCard
-        {...args}
-        isOn={isOn}
-        connectionStatus={connectionStatus}
-        onToggle={setIsOn}
-      />
-    );
-  },
 } satisfies Meta<typeof ModuleCard>;
 
 export default meta;
@@ -87,14 +69,9 @@ export const Stale: Story = {
   },
 };
 
-// The Module is On but lost, so the Switch is greyed out.
+// The Module can't be reached, for example it was unplugged: the values are hidden.
 export const Disconnected: Story = {
   args: { connectionStatus: "disconnected" },
-};
-
-// The user turned the Module off, so the Switch stays usable. Flip it to turn the Module back on.
-export const Off: Story = {
-  args: { connectionStatus: "disconnected", isOn: false },
 };
 
 // A Fault sits on top of any state: the value still shows.
@@ -102,8 +79,21 @@ export const Fault: Story = {
   args: {
     name: "Air Quality Module",
     sensors: AIR_QUALITY_SENSORS.slice(0, 1),
-    fault: { faultCode: "sensor_failure", metric: "co2" },
+    faults: [{ faultCode: "sensor_failure", metric: "co2" }],
   },
+};
+
+// A Module can report several Faults at once: one DeviceFaultStatus per Fault.
+export const SeveralFaults: Story = {
+  args: {
+    name: "Air Quality Module",
+    sensors: AIR_QUALITY_SENSORS,
+    faults: [
+      { faultCode: "sensor_failure", metric: "co2" },
+      { faultCode: "calibration_required", metric: "voc" },
+    ],
+  },
+  parameters: { width: "536px" },
 };
 
 // Three Sensors need a wider card to sit in one row.

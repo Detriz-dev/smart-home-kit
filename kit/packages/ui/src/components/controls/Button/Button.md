@@ -16,7 +16,7 @@ Storybook: `Controls/Button`.
 
 A `Button` shows no domain data. It doesn't know about Sites, Spaces, Devices or Readings. Its text comes from the parent, and when it answers a clarifying question that text is a domain name, like a Space name ("Living room").
 
-It is not a Device command. Turning a Module on or off is the `Switch`'s job.
+It is not a Device command.
 
 ### Visual idea
 

@@ -22,8 +22,6 @@ const climateCard = (
     name="Climate Module"
     sensors={CLIMATE_SENSORS}
     connectionStatus="connected"
-    isOn
-    onToggle={() => {}}
   />
 );
 
@@ -32,8 +30,6 @@ const lightCard = (
     name="Light Module"
     sensors={LIGHT_SENSORS}
     connectionStatus="connected"
-    isOn
-    onToggle={() => {}}
   />
 );
 
@@ -42,8 +38,6 @@ const airQualityCard = (
     name="Air Quality Module"
     sensors={AIR_QUALITY_SENSORS}
     connectionStatus="connected"
-    isOn
-    onToggle={() => {}}
   />
 );
 
@@ -52,8 +46,6 @@ const longNameCard = (
     name="Bedroom ceiling Air Quality Module near the window"
     sensors={AIR_QUALITY_SENSORS}
     connectionStatus="connected"
-    isOn
-    onToggle={() => {}}
   />
 );
 
