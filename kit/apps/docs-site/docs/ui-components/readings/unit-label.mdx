@@ -1,0 +1,252 @@
+---
+sidebar_position: 2
+sidebar_label: UnitLabel
+description: Shows the Unit of a Reading as a short symbol, like °C or ppm.
+---
+
+# UnitLabel
+
+Shows the Unit of a Reading as a short symbol, like °C, %RH or ppm. Put it next to a value, so people know what the number means.
+
+```jsx live
+<UnitLabel unit="celsius" />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { UnitLabel } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Unit:
+
+```tsx
+import { UnitLabel } from "@detriz-sh-kit/ui";
+
+<UnitLabel unit="percent-rh" />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use UnitLabel:
+
+- **next to a value**, with `ReadingValue` (see [Pairing with ReadingValue](#pairing-with-readingvalue))
+- **where there is no number**: chart axis labels, table headers, settings
+
+Don't use it for:
+
+- **A full Reading.** To show the Metric name, the value and the Unit together, use `SensorReading`. It already includes UnitLabel and lines it up for you.
+- **The value.** Use `ReadingValue`.
+- **What is measured** ("Temperature"). Use [`SensorLabel`](../context/sensor-label.mdx).
+
+UnitLabel looks the same while the value is loading and when the Device is Disconnected. That way people still know _what_ was measured when the number is hidden.
+
+## Variants
+
+UnitLabel changes in two ways: the **Unit** it shows and its **size**.
+
+### Units
+
+The Units come from a fixed list, so every screen writes them the same way. Each one also has a spoken name for screen readers.
+
+| `unit`       | Shows | Screen readers say         | Used for (Metric)          |
+| ------------ | ----- | -------------------------- | -------------------------- |
+| `celsius`    | °C    | degrees Celsius            | Temperature                |
+| `fahrenheit` | °F    | degrees Fahrenheit         | Temperature (display Unit) |
+| `percent-rh` | %RH   | percent relative humidity  | Humidity                   |
+| `lux`        | lx    | lux                        | Illuminance                |
+| `ppm`        | ppm   | parts per million          | CO₂                        |
+| `ppb`        | ppb   | parts per billion          | VOC                        |
+| `ug-m3`      | µg/m³ | micrograms per cubic metre | PM2.5                      |
+
+```jsx live
+<StackLayout>
+  <UnitLabel unit="celsius" size="md" />
+  <UnitLabel unit="fahrenheit" size="md" />
+  <UnitLabel unit="percent-rh" size="md" />
+  <UnitLabel unit="lux" size="md" />
+  <UnitLabel unit="ppm" size="md" />
+  <UnitLabel unit="ppb" size="md" />
+  <UnitLabel unit="ug-m3" size="md" />
+</StackLayout>
+```
+
+### Sizes
+
+Use the `size` prop. The default is `lg`. The sizes have the same names as `ReadingValue`'s, so you can pass one `size` to both.
+
+| `size` | Text | Next to a value of | Use it for                   |
+| ------ | ---- | ------------------ | ---------------------------- |
+| `lg`   | 32px | 48px               | Hero spot, detail view       |
+| `md`   | 20px | 32px               | Reading card                 |
+| `sm`   | 14px | 20px               | List rows, compact cards     |
+| `xs`   | 14px | 14px               | Tables, inline in a sentence |
+
+The Unit is one step smaller than the value next to it, so the number stays the first thing people see. `sm` and `xs` look the same: `xs` has no smaller step, and "22.4 °C" in a sentence reads best at one size.
+
+```jsx live
+<StackLayout>
+  <UnitLabel unit="celsius" size="lg" />
+  <UnitLabel unit="celsius" size="md" />
+  <UnitLabel unit="celsius" size="sm" />
+  <UnitLabel unit="celsius" size="xs" />
+</StackLayout>
+```
+
+## Pairing with ReadingValue
+
+UnitLabel has no spacing of its own. When you put it next to a `ReadingValue`, the parent element lines them up:
+
+- the value first, then the Unit
+- on the same text **baseline** (`align-items: baseline`)
+- a 4px gap (`--shk-space-1`)
+- the **same `size`** for both
+
+```jsx live
+<span
+  style={{
+    display: "inline-flex",
+    alignItems: "baseline",
+    gap: "var(--shk-space-1)",
+  }}
+>
+  <ReadingValue value={22.4} size="lg" />
+  <UnitLabel unit="celsius" size="lg" />
+</span>
+```
+
+The Unit stays visible when `ReadingValue` shows its loading or disconnected icon instead of the number:
+
+```jsx live
+<StackLayout>
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "baseline",
+      gap: "var(--shk-space-1)",
+    }}
+  >
+    {/* Loading: the first Reading hasn't arrived yet */}
+    <ReadingValue value={null} size="md" />
+    <UnitLabel unit="percent-rh" size="md" />
+  </span>
+  <span
+    style={{
+      display: "inline-flex",
+      alignItems: "baseline",
+      gap: "var(--shk-space-1)",
+    }}
+  >
+    {/* Disconnected: the value is hidden */}
+    <ReadingValue value={48} isDisconnected size="md" />
+    <UnitLabel unit="percent-rh" size="md" />
+  </span>
+</StackLayout>
+```
+
+:::note
+
+`SensorReading` does all of this for you. Pair UnitLabel and ReadingValue by hand only when you need a layout `SensorReading` doesn't offer.
+
+:::
+
+## Mapping your data
+
+Pass the [Unit](/docs/domain-model/glossary#what-is-tracked) of the Reading as `unit`.
+
+| Prop   | Domain term                                         | Example   |
+| ------ | --------------------------------------------------- | --------- |
+| `unit` | [Unit](/docs/domain-model/glossary#what-is-tracked) | `celsius` |
+
+A few rules from the domain model:
+
+- **You pick the display Unit.** Each Metric has one Unit in the data. Showing Temperature in °F instead of °C is a formatting choice. UnitLabel shows the Unit it is given: converting the value and remembering what the user prefers is up to your app.
+- **A fixed list.** `unit` only accepts the seven Units above, so nobody types "°c" or "C°". TypeScript tells you if you pass anything else.
+- **VOC uses ppb for now.** This may change when the supported Air Quality board is chosen (see the [Glossary](/docs/domain-model/glossary#what-is-tracked)).
+
+## Props
+
+| Prop   | Type                                                                              | Default | Description                                                                    |
+| ------ | --------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------ |
+| `unit` | `"celsius" \| "fahrenheit" \| "percent-rh" \| "lux" \| "ppm" \| "ppb" \| "ug-m3"` | –       | **Required.** Which Unit to show, for example `celsius` for °C.                |
+| `size` | `"xs" \| "sm" \| "md" \| "lg"`                                                    | `"lg"`  | How big the Unit is drawn. Use the same size as the `ReadingValue` next to it. |
+
+The types `UnitLabelProps`, `UnitLabelUnit` and `UnitLabelSize` are exported too:
+
+```tsx
+import type {
+  UnitLabelProps,
+  UnitLabelUnit,
+  UnitLabelSize,
+} from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+UnitLabel never wraps and is never shortened, so "%RH" never breaks into "%" and "RH" or becomes "%R…". If its container is too narrow, the symbol sticks out of it. Leave enough room for it.
+
+```jsx live
+<div
+  style={{ maxWidth: 40, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <UnitLabel unit="percent-rh" size="lg" />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- Screen readers say the spoken name ("degrees Celsius"), not the symbol, so "°C" sounds the same in every screen reader.
+- Next to a `ReadingValue` and a `SensorLabel`, the group reads as "Temperature 22.4 degrees Celsius".
+- The Unit is told apart by its text, not by colour. The lighter colour only makes it quieter than the number.
+- The text colour meets the WCAG AA contrast ratio (4.5:1) on light backgrounds, also at 14px.
+
+What's up to you:
+
+- **No extra label.** Don't add an `aria-label` or your own hidden text for the Unit. It is already read out.
+- Check the contrast if you place it on a dark or coloured background.
+
+## Styling
+
+UnitLabel uses the kit's design tokens (CSS variables starting with `--shk-`):
+
+| What        | Token                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------- |
+| Text colour | `--shk-color-text-secondary`                                                          |
+| Text style  | `lg` readout, `md` readout-sm, `sm` and `xs` readout-xs (`--shk-typography-readout…`) |
+
+UnitLabel has no padding, gap or background: the space around it belongs to the parent.
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only UnitLabel:
+
+```css
+.my-reading {
+  --shk-color-text-secondary: var(--shk-palette-gray-600);
+}
+```
+
+## Related components
+
+- `SensorReading`: the Metric name, the value and the Unit together. Uses UnitLabel inside.
+- `ReadingValue`: the value next to the Unit.
+- [`SensorLabel`](../context/sensor-label.mdx): says what is measured.

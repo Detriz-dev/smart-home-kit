@@ -55,7 +55,7 @@ Use SensorLabel in:
 
 Don't use it for:
 
-- **The value and the Unit** ("22.4 °C"). Use `ReadingValue` and `UnitLabel`. To show the label, value and Unit together, use `SensorReading`: it already includes a SensorLabel.
+- **The value and the Unit** ("22.4 °C"). Use `ReadingValue` and [`UnitLabel`](../readings/unit-label.mdx). To show the label, value and Unit together, use `SensorReading`: it already includes a SensorLabel.
 - **Where the Sensor is.** Use [`LocationPath`](./location-path.mdx). A Sensor has no location of its own: it uses its Module's.
 - **Status.** Connection Status and Fault belong to the Device, not the Sensor. Use `DeviceConnectionStatus` or `DeviceFaultStatus`.
 
@@ -201,5 +201,5 @@ To change how it looks, set a token on a parent element. The change applies to e
 
 - `SensorReading`: the label, the value and the Unit together. Uses SensorLabel inside.
 - `ReadingValue`: the value of a Reading.
-- `UnitLabel`: the Unit next to a value.
+- [`UnitLabel`](../readings/unit-label.mdx): the Unit next to a value.
 - [`LocationPath`](./location-path.mdx): where the Device is. Sits well next to SensorLabel in a card header.
