@@ -7,7 +7,7 @@ const meta = {
   title: "Controls/Switch",
   component: Switch,
   args: {
-    ariaLabel: "Heating",
+    ariaLabel: "Show temperature in °F",
     isOn: false,
     isDisabled: false,
     onChange: () => {},
@@ -39,7 +39,9 @@ export const DisabledOn: Story = {
 
 // The longer text ("Off") in a narrow frame: the text stays on one line. The screen-reader name is long on purpose.
 export const LongText: Story = {
-  args: { ariaLabel: "Underfloor heating in the kitchen and dining area" },
+  args: {
+    ariaLabel: "Show temperatures in degrees Fahrenheit on every screen",
+  },
   decorators: [
     (Story) => (
       <div style={{ inlineSize: "var(--shk-size-20)" }}>
@@ -51,5 +53,5 @@ export const LongText: Story = {
 
 // The smallest case: only the required props.
 export const Minimal: Story = {
-  args: { isOn: true, ariaLabel: "Light" },
+  args: { isOn: true, ariaLabel: "Notifications" },
 };

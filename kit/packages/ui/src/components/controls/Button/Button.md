@@ -1,8 +1,10 @@
 # Button
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/controls/button.mdx). Props are defined in [`Button.types.ts`](./Button.types.ts).
+
 ### Purpose
 
-The kit's first general action. Studio uses it around the generated screen: to send a prompt, retry, undo, and answer a clarifying question such as "Which Space?", where each option is its own `Button` (so no separate chip component is needed yet).
+The kit's first general action. Apps use it around a generated screen (Generative UI): to send a prompt, retry, undo, and answer a clarifying question such as "Which Space?", where each option is its own `Button` (so no separate chip component is needed yet). Apps can use it for any other action too. (This used to say "Studio uses it"; Live Studio was dropped from the scope.)
 
 It is presentational only. It shows a text and calls `onClick`. The parent decides what the click does.
 
@@ -70,20 +72,14 @@ The 1px outline doesn't change the size: in Figma the stroke sits inside and isn
 
 ### API
 
-```ts
-type ButtonVariant = "primary" | "secondary";
+The props are defined in [`Button.types.ts`](./Button.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface ButtonProps {
-  /** The text on the button, e.g. "Send prompt" or a Space name. */
-  children: ReactNode;
-  /** Called when the button is clicked or activated with the keyboard. */
-  onClick: () => void;
-  /** How much weight the action has. Defaults to "secondary". */
-  variant?: ButtonVariant;
-  /** Greys the button out and ignores clicks. Defaults to false. */
-  isDisabled?: boolean;
-}
-```
+The decisions behind them:
+
+- `children` is the text, not a `label` prop, so it reads like HTML. Figma calls it `label`, because designers read that more easily.
+- `variant` defaults to `secondary`: most buttons in a place are not the main action.
+- Only `disabled` has a prop. Hover, pressed and focus come from the browser.
+- No `type` prop: always `type="button"` (see Open questions).
 
 ### Example values
 
@@ -129,4 +125,4 @@ Existing tokens: `--shk-size-11` (height), `--shk-space-4` (side padding), `--sh
 
 ### Open questions
 
-- `type="submit"`: "Send prompt" might sit in a `<form>` with the `TextArea`. For now the button is always `type="button"` and the parent calls submit from `onClick`. Add a `type` prop if Studio needs a real form.
+- `type="submit"`: "Send prompt" might sit in a `<form>` with the `TextArea`. For now the button is always `type="button"` and the parent calls submit from `onClick`. Add a `type` prop if an app needs a real form.

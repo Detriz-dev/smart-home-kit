@@ -1,0 +1,229 @@
+---
+sidebar_position: 1
+sidebar_label: Switch
+description: An on/off control for a setting in your app, with "On" or "Off" next to it.
+---
+
+# Switch
+
+An on/off control for a setting in your app, like "Show temperature in °F" or "Notifications". It shows "On" or "Off" next to it.
+
+```jsx live
+function Example() {
+  const [isOn, setIsOn] = useState(false);
+  return <Switch isOn={isOn} onChange={setIsOn} ariaLabel="Notifications" />;
+}
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { Switch } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Switch doesn't keep its own value. Keep it in your app's state, pass it as `isOn`, and store the new value in `onChange`:
+
+```tsx
+import { useState } from "react";
+import { Switch } from "@detriz-sh-kit/ui";
+
+function NotificationsSetting() {
+  const [isOn, setIsOn] = useState(true);
+  return <Switch isOn={isOn} onChange={setIsOn} ariaLabel="Notifications" />;
+}
+```
+
+The examples below leave out the `import` lines. In your app, you need them.
+
+## When to use it
+
+Use Switch for **a setting in your app that is on or off**, and that takes effect straight away:
+
+- showing temperatures in °F instead of °C
+- turning notifications on or off
+- showing or hiding a part of a screen
+
+Don't use it for:
+
+- **Controlling a Device.** The kit reads Sensors: it has no command to turn a Device or anything in the home on or off.
+- **An action** like "Add" or "Remove Device". Use [`Button`](./button.mdx).
+- **A choice between more than two options.** A Switch is only on or off.
+
+## A setting with its name
+
+Switch doesn't show what it switches. Put the setting's name next to it with your own text, and pass **the same name** as `ariaLabel`, so screen readers hear what people see.
+
+Here the setting changes how a Reading is shown:
+
+```jsx live
+function TemperatureSetting() {
+  const [isFahrenheit, setIsFahrenheit] = useState(false);
+  const celsius = 22.4;
+  const value = isFahrenheit ? (celsius * 9) / 5 + 32 : celsius;
+
+  return (
+    <div style={{ maxWidth: 320 }}>
+      <StackLayout>
+        <span
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: "var(--shk-space-2)",
+          }}
+        >
+          <span>Show temperature in °F</span>
+          <Switch
+            isOn={isFahrenheit}
+            onChange={setIsFahrenheit}
+            ariaLabel="Show temperature in °F"
+          />
+        </span>
+        <SensorReading
+          metric="temperature"
+          value={value}
+          unit={isFahrenheit ? "fahrenheit" : "celsius"}
+        />
+      </StackLayout>
+    </div>
+  );
+}
+```
+
+Converting the value is up to your app: `UnitLabel` shows the Unit it is given, and the Glossary calls the display Unit "a formatting choice".
+
+## States
+
+| State    | Props                    | Looks like                                          |
+| -------- | ------------------------ | --------------------------------------------------- |
+| Off      | `isOn={false}`           | Grey track, circle on the left, "Off"               |
+| On       | `isOn={true}`            | Blue track, circle on the right, "On"               |
+| Disabled | `isDisabled` (on or off) | Light grey track and grey text. Clicks are ignored. |
+
+When it's reached with the keyboard, a blue focus ring shows around the track.
+
+### Off
+
+```jsx live
+<Switch isOn={false} onChange={() => {}} ariaLabel="Notifications" />
+```
+
+### On
+
+```jsx live
+<Switch isOn={true} onChange={() => {}} ariaLabel="Notifications" />
+```
+
+### Disabled
+
+Disable the Switch while the setting's value is still loading, or when the setting can't be changed right now. Tell people why next to it.
+
+```jsx live
+<StackLayout gap="sm">
+  <Switch
+    isOn={false}
+    isDisabled
+    onChange={() => {}}
+    ariaLabel="Notifications"
+  />
+  <Switch
+    isOn={true}
+    isDisabled
+    onChange={() => {}}
+    ariaLabel="Notifications"
+  />
+</StackLayout>
+```
+
+## Props
+
+| Prop         | Type                      | Default | Description                                                                                                               |
+| ------------ | ------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `isOn`       | `boolean`                 | –       | **Required.** Whether the switch is on. Your app owns this value.                                                         |
+| `onChange`   | `(isOn: boolean) => void` | –       | **Required.** Called with the **new** value when the switch is flipped, so you can store it as it is.                     |
+| `ariaLabel`  | `string`                  | –       | **Required.** The name screen readers say, like "Show temperature in °F". Not shown: show the same name as your own text. |
+| `isDisabled` | `boolean`                 | `false` | Greys the switch out and ignores clicks.                                                                                  |
+
+The type `SwitchProps` is exported too:
+
+```tsx
+import type { SwitchProps } from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+The Switch's own text is only "On" or "Off", and it never wraps. A long setting name is your own text, so it wraps the way your layout allows. Leave room for the Switch next to it:
+
+```jsx live
+<div
+  style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <span
+    style={{
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "space-between",
+      gap: "var(--shk-space-2)",
+    }}
+  >
+    <span>Show temperatures in degrees Fahrenheit on every screen</span>
+    <Switch
+      isOn={false}
+      onChange={() => {}}
+      ariaLabel="Show temperatures in degrees Fahrenheit on every screen"
+    />
+  </span>
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- It's a real switch (`role="switch"`), so screen readers say "Show temperature in °F, switch, off".
+- **Keyboard:** Tab reaches it, Space or Enter flips it, and a focus ring shows.
+- Clicking the "On" / "Off" text flips it too. Screen readers skip that text, because they already say on or off.
+- **Not colour alone:** the circle's position and the "On" / "Off" text both show the value.
+- The track colours meet the 3:1 contrast ratio controls need, on light backgrounds.
+
+What's up to you:
+
+- **A name.** `ariaLabel` is required. Use the same words as the name people see next to the Switch, so what they hear matches what they see.
+- **Take effect straight away.** People expect a switch to work as soon as it's flipped. If a setting needs a Save step, use something else.
+- **Say why it's disabled.** A greyed-out Switch doesn't explain itself. Add a short note next to it.
+
+## Styling
+
+| What                      | Token                                                         |
+| ------------------------- | ------------------------------------------------------------- |
+| Track, off                | `--shk-status-neutral-border`                                 |
+| Track, on, and focus ring | `--shk-status-progress-border`                                |
+| Track and text, disabled  | `--shk-color-text-disabled`                                   |
+| Circle                    | `--shk-surface-default`                                       |
+| "On" / "Off" text         | `--shk-typography-label-*` (14px), `--shk-color-text-primary` |
+| Size                      | `--shk-size-10` × `--shk-size-6` (40 × 24px)                  |
+
+The status colours are shared by every Status component, so change them for the whole app, not one screen.
+
+## Related components
+
+- [`Button`](./button.mdx): for actions, like "Add" or "Remove Device".
+- [`UnitLabel`](../readings/unit-label.mdx): shows the display Unit a °C / °F setting chooses.
+- [`StackLayout`](../layout/stack-layout.mdx): to stack several settings.

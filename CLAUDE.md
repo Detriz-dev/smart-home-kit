@@ -68,7 +68,7 @@ Dependency rules (see "Dependency rules" in the overview):
 
 ### Docs site
 
-`kit/apps/docs-site` is the public documentation site, built with **Docusaurus 3** (React, TypeScript). Its information architecture is planned in `docs/architecture/docs-site/information-architecture.md`.
+`kit/apps/docs-site` is the public documentation site, built with **Docusaurus 3** (React, TypeScript). Its information architecture will be planned in `docs/architecture/design-system/information-architecture.md` (empty for now). What still needs documenting is tracked in `docs/architecture/design-system/documentation-implementation-plan.md`.
 
 - It documents `kit/` only, for people using the kit. Internal specs stay in `<Name>.md` next to each component; site pages are written for users (no Figma node IDs or open questions).
 - `src/pages/index.tsx` is the landing page at `/`. Clicking the site title opens it.
