@@ -11,6 +11,7 @@
     "build": "turbo run build",
     "dev": "turbo run dev",
     "storybook": "turbo run dev --filter=storybook",
+    "docs-site": "turbo run dev --filter=docs-site",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",

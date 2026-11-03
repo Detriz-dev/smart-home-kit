@@ -1,0 +1,45 @@
+/* Uses Docusaurus's own variables (--ifm-…) for now.
+   Step 2 of the plan connects our tokens and switches this to var(--shk-…). */
+
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: calc(var(--ifm-spacing-horizontal) * 4);
+  align-items: center;
+  max-width: var(--ifm-container-width-xl);
+  margin: 0 auto;
+  padding: calc(var(--ifm-spacing-vertical) * 6) var(--ifm-spacing-horizontal);
+}
+
+.visual {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 4 / 3;
+  border: 2px dashed var(--ifm-color-emphasis-300);
+  border-radius: var(--ifm-global-radius);
+  color: var(--ifm-color-emphasis-600);
+}
+
+.title {
+  font-size: 3rem;
+  line-height: 1.1;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ifm-spacing-horizontal);
+  margin-top: calc(var(--ifm-spacing-vertical) * 2);
+}
+
+/* Phone and small tablet: one column, text first. */
+@media (max-width: 996px) {
+  .hero {
+    grid-template-columns: 1fr;
+    padding-top: calc(var(--ifm-spacing-vertical) * 3);
+  }
+
+  .visual {
+    order: 2;
+  }
+}
