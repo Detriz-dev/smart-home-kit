@@ -32,7 +32,7 @@ This means each component must work safely in any arrangement the model chooses.
 ## Checklist
 
 - [x] 1. `StackLayout`
-- [ ] 2. `ColumnLayout`
+- [x] 2. `ColumnLayout`
 - [ ] 3. `ContentSection`
 - [ ] 4. `ModuleCard` update
 - [ ] 5. `SpaceCard`
