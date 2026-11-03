@@ -1,0 +1,267 @@
+---
+sidebar_position: 1
+sidebar_label: ReadingValue
+description: Shows the latest value of a Reading as an easy-to-read number.
+---
+
+# ReadingValue
+
+Shows the latest value of a Reading as an easy-to-read number, like 22.4. It's the number people look at first, in a reading card, a Space overview or a detail view.
+
+```jsx live
+<ReadingValue value={22.4} />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { ReadingValue } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the value as a number:
+
+```tsx
+import { ReadingValue } from "@detriz-sh-kit/ui";
+
+<ReadingValue value={22.4} />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use ReadingValue to show **one value**, the latest one, of one Metric.
+
+Don't use it for:
+
+- **A full Reading.** To show the Metric name, the value and the Unit together, use `SensorReading`. It already includes ReadingValue.
+- **The Unit** ("°C"). Use [`UnitLabel`](./unit-label.mdx) next to it.
+- **Connection Status as a label** ("Stale", "Disconnected"). Use `DeviceConnectionStatus`. ReadingValue only reacts to Disconnected.
+- **Several values or a trend.** ReadingValue shows one value. Comparison and History components are planned for that.
+
+## States
+
+ReadingValue has three states. There is no `state` prop: the component picks the state from `value` and `isDisconnected`.
+
+| State        | When                                                    | Shows                              | Screen readers say |
+| ------------ | ------------------------------------------------------- | ---------------------------------- | ------------------ |
+| Connected    | `value` is a number                                     | The number                         | the number         |
+| Loading      | `value` is `null`: the first Reading hasn't arrived yet | A spinning loading icon, no number | "Loading"          |
+| Disconnected | `isDisconnected` is `true`                              | A disconnected icon, no number     | "Disconnected"     |
+
+If both apply, **Disconnected wins**: with `isDisconnected`, the icon shows even when you pass a value. So the component never shows two states at once.
+
+All three states have the same height, so nothing moves on the screen when the state changes.
+
+### Connected
+
+```jsx live
+<ReadingValue value={22.4} />
+```
+
+### Loading
+
+```jsx live
+<ReadingValue value={null} />
+```
+
+### Disconnected
+
+```jsx live
+<ReadingValue value={22.4} isDisconnected />
+```
+
+The last value is hidden on purpose: a number from a Device that can't be reached would look up to date when it isn't.
+
+## Sizes
+
+Use the `size` prop. The default is `lg`. The sizes have the same names as [`UnitLabel`](./unit-label.mdx)'s, so you can pass one `size` to both.
+
+| `size` | Number | Icon | Use it for                   |
+| ------ | ------ | ---- | ---------------------------- |
+| `lg`   | 48px   | 32px | Hero spot, detail view       |
+| `md`   | 32px   | 24px | Reading card                 |
+| `sm`   | 20px   | 20px | List rows, compact cards     |
+| `xs`   | 14px   | 16px | Tables, inline in a sentence |
+
+```jsx live
+<StackLayout>
+  <ReadingValue value={22.4} size="lg" />
+  <ReadingValue value={22.4} size="md" />
+  <ReadingValue value={22.4} size="sm" />
+  <ReadingValue value={22.4} size="xs" />
+</StackLayout>
+```
+
+## Formatting numbers
+
+You pass a number, not a string. ReadingValue formats it for you:
+
+- **Decimal places** come from `fractionDigits`. The default is `1`.
+- **The decimal mark and thousands separator** follow the browser's language. In English 1250 shows as "1,250", in Polish as "1250". 22.4 shows as "22,4" in Polish.
+- **Every digit is the same width**, so the layout doesn't jump when 19.9 becomes 20.0.
+
+Set `fractionDigits` for each Metric, so each one shows its natural precision:
+
+| Metric      | `fractionDigits` | Example value | Shows (English) |
+| ----------- | ---------------- | ------------- | --------------- |
+| Temperature | `1` (default)    | `22.4`        | 22.4            |
+| Temperature | `1`              | `-3.5`        | -3.5            |
+| Humidity    | `0`              | `48`          | 48              |
+| CO₂         | `0`              | `1250`        | 1,250           |
+| Illuminance | `0`              | `320`         | 320             |
+
+```jsx live
+<StackLayout>
+  <ReadingValue value={22.4} size="md" />
+  <ReadingValue value={-3.5} size="md" />
+  <ReadingValue value={48} fractionDigits={0} size="md" />
+  <ReadingValue value={1250} fractionDigits={0} size="md" />
+</StackLayout>
+```
+
+The examples above use your browser's language, so they may look different from the table.
+
+### Live values
+
+When new Readings arrive, pass the new value. Watch the digits: they stay in place while the number changes.
+
+```jsx live
+function LiveTemperature() {
+  const [value, setValue] = useState(19.6);
+
+  useEffect(() => {
+    // A new Reading every second, for the example.
+    const timer = setInterval(() => {
+      setValue((v) => Math.round((v + 0.1) * 10) / 10);
+    }, 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+  return <ReadingValue value={value} />;
+}
+```
+
+## Pairing with UnitLabel
+
+ReadingValue shows the number only. Put a [`UnitLabel`](./unit-label.mdx) next to it, inside a parent that lines them up on the same baseline, with a 4px gap and the same `size`:
+
+```jsx live
+<span
+  style={{
+    display: "inline-flex",
+    alignItems: "baseline",
+    gap: "var(--shk-space-1)",
+  }}
+>
+  <ReadingValue value={1250} fractionDigits={0} size="lg" />
+  <UnitLabel unit="ppm" size="lg" />
+</span>
+```
+
+The Unit stays visible in the Loading and Disconnected states, so people still know what was measured. See [Pairing with ReadingValue](./unit-label.mdx#pairing-with-readingvalue) on the UnitLabel page for the details, or use `SensorReading`, which does this for you.
+
+## Mapping your data
+
+| Prop             | Comes from                                                                                                     | Example                               |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `value`          | The value of the latest [Reading](/docs/domain-model/glossary#what-is-tracked), or `null` before the first one | `22.4`                                |
+| `isDisconnected` | The Device's [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected                | `connectionStatus === "disconnected"` |
+| `fractionDigits` | The Metric                                                                                                     | `1` for Temperature, `0` for CO₂      |
+
+A few rules from the domain model:
+
+- **Stale:** the Device is still Connected but late, so keep passing the last value. Show that it is late with `DeviceConnectionStatus` next to it.
+- **Connecting:** the Device is getting its connection back. You decide: pass the last value to keep showing it, or `null` to show Loading.
+- **Fault:** ReadingValue doesn't change for a Fault. Show it with `DeviceFaultStatus`.
+- **Not paired:** a Device that isn't Paired sends no Readings, so there is nothing to show. Don't render ReadingValue for it.
+
+See [Device lifecycle](/docs/domain-model/device-lifecycle#connection-status) for how a Device moves between these statuses.
+
+## Props
+
+| Prop             | Type                           | Default | Description                                                                                                |
+| ---------------- | ------------------------------ | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `value`          | `number \| null`               | –       | **Required.** The latest value of the Reading. `null` while it is loading.                                 |
+| `isDisconnected` | `boolean`                      | `false` | True when the Device's Connection Status is Disconnected. Hides the value and shows the disconnected icon. |
+| `fractionDigits` | `number`                       | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                                 |
+| `size`           | `"xs" \| "sm" \| "md" \| "lg"` | `"lg"`  | How big the number is drawn.                                                                               |
+
+The types `ReadingValueProps` and `ReadingValueSize` are exported too:
+
+```tsx
+import type { ReadingValueProps, ReadingValueSize } from "@detriz-sh-kit/ui";
+```
+
+## Long numbers
+
+A number is never wrapped or shortened: a cut-off number would show the wrong value. If its container is too narrow, the number sticks out of it, so leave enough room for the largest value you expect.
+
+```jsx live
+<div
+  style={{ maxWidth: 120, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <ReadingValue value={100000} fractionDigits={0} size="lg" />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The Loading and Disconnected icons have labels, so screen readers say "Loading" or "Disconnected" instead of nothing.
+- Disconnected is told apart by its own icon shape, not by colour.
+- The loading icon stops spinning when the user has asked for reduced motion. It still shows, so loading is still visible.
+- The number and the icons meet the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Give the value its context.** "22.4" on its own means little to a screen reader. Show it together with the Metric name and the Unit, so the group reads as "Temperature 22.4 degrees Celsius". `SensorReading` does this for you.
+- **Announcing changes.** ReadingValue has no live region, because Readings can arrive every few seconds and would keep interrupting. If a screen needs to announce a change, decide in your app how often, and don't put `aria-live` on a value that updates constantly.
+- Check the contrast if you place it on a dark or coloured background.
+
+## Styling
+
+ReadingValue uses the kit's design tokens (CSS variables starting with `--shk-`):
+
+| What               | Token                                                                                         |
+| ------------------ | --------------------------------------------------------------------------------------------- |
+| Number colour      | `--shk-color-text-primary`                                                                    |
+| Icon colour        | `--shk-color-text-secondary`                                                                  |
+| Number text style  | `lg` readout-lg, `md` readout, `sm` readout-sm, `xs` readout-xs (`--shk-typography-readout…`) |
+| Loading spin speed | `--shk-motion-duration-spin` (1 second per turn)                                              |
+
+ReadingValue has no padding or background: the space around it belongs to the parent.
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only ReadingValue:
+
+```css
+.my-reading {
+  --shk-color-text-primary: var(--shk-palette-gray-800);
+}
+```
+
+## Related components
+
+- `SensorReading`: the Metric name, the value and the Unit together. Uses ReadingValue inside.
+- [`UnitLabel`](./unit-label.mdx): the Unit next to the value.
+- [`SensorLabel`](../context/sensor-label.mdx): says what is measured.
+- `DeviceConnectionStatus`: shows Stale, Connecting and the other Connection Statuses.
+- `DeviceFaultStatus`: shows a Device's Fault.

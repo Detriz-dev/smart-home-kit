@@ -49,13 +49,13 @@ The examples below leave out the `import` line. In your app, you need it.
 
 Use UnitLabel:
 
-- **next to a value**, with `ReadingValue` (see [Pairing with ReadingValue](#pairing-with-readingvalue))
+- **next to a value**, with [`ReadingValue`](./reading-value.mdx) (see [Pairing with ReadingValue](#pairing-with-readingvalue))
 - **where there is no number**: chart axis labels, table headers, settings
 
 Don't use it for:
 
 - **A full Reading.** To show the Metric name, the value and the Unit together, use `SensorReading`. It already includes UnitLabel and lines it up for you.
-- **The value.** Use `ReadingValue`.
+- **The value.** Use [`ReadingValue`](./reading-value.mdx).
 - **What is measured** ("Temperature"). Use [`SensorLabel`](../context/sensor-label.mdx).
 
 UnitLabel looks the same while the value is loading and when the Device is Disconnected. That way people still know _what_ was measured when the number is hidden.
@@ -248,5 +248,5 @@ To change how it looks, set a token on a parent element. The change applies to e
 ## Related components
 
 - `SensorReading`: the Metric name, the value and the Unit together. Uses UnitLabel inside.
-- `ReadingValue`: the value next to the Unit.
+- [`ReadingValue`](./reading-value.mdx): the value next to the Unit.
 - [`SensorLabel`](../context/sensor-label.mdx): says what is measured.
