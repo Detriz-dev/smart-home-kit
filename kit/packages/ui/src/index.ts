@@ -46,6 +46,11 @@ export type {
   ModuleCardProps,
   ModuleCardSensor,
 } from "./components/readings/ModuleCard";
+export { SpaceCard } from "./components/readings/SpaceCard";
+export type {
+  SpaceCardProps,
+  SpaceCardReading,
+} from "./components/readings/SpaceCard";
 export type { Metric } from "./types/metric";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
