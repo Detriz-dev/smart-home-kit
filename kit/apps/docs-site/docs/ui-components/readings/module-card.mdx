@@ -1,0 +1,325 @@
+---
+sidebar_position: 4
+sidebar_label: ModuleCard
+description: Shows one Module as a card, with its name, Connection Status, Faults and the latest Reading of each Sensor.
+---
+
+# ModuleCard
+
+Shows one Module as a card: its name, its Connection Status, any Faults, and the latest Reading of each of its Sensors. Use it wherever people look at their Modules, for example a Space overview.
+
+```jsx live
+<ModuleCard
+  name="Climate Module"
+  connectionStatus="connected"
+  sensors={[
+    { metric: "temperature", value: 22.4, unit: "celsius" },
+    { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+  ]}
+/>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+ModuleCard puts components you may already know together: one [`SensorReading`](./sensor-reading.mdx) per Sensor, a [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and one [`DeviceFaultStatus`](../status/device-fault-status.mdx) per Fault. It passes the Module's status down to them and arranges them to fit its width.
+
+## Import
+
+```tsx
+import { ModuleCard } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Module's name, its Connection Status and a list of its Sensors:
+
+```tsx
+import { ModuleCard } from "@detriz-sh-kit/ui";
+
+<ModuleCard
+  name="Light Module"
+  connectionStatus="connected"
+  sensors={[
+    { metric: "illuminance", value: 320, unit: "lux", fractionDigits: 0 },
+  ]}
+/>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use ModuleCard for **one Paired Module** and its latest Readings.
+
+Don't use it for:
+
+- **A Module that isn't Paired** ("New module found"). It has no Connection Status yet. Show its name with [`DevicePairingStatus`](../status/device-pairing-status.mdx) instead.
+- **A whole Space at a glance.** Use `SpaceCard`: one row per Metric for the whole Space, instead of one card per Module.
+- **One Reading on its own.** Use [`SensorReading`](./sensor-reading.mdx).
+- **Several Modules side by side.** ModuleCard shows one Module. Place several cards with a layout component such as `ColumnLayout` or `StackLayout`.
+
+## Layouts
+
+ModuleCard has no `layout` prop. It fills the width its parent gives it and arranges itself by **its own width, not the screen's**. That way it also works in a narrow column on a big screen.
+
+| Card width   | Header                         | Two Sensors | Three Sensors |
+| ------------ | ------------------------------ | ----------- | ------------- |
+| Under 364px  | Name, with the status below it | Stacked     | Stacked       |
+| 364 to 535px | Name left, status right        | In one row  | Stacked       |
+| 536px and up | Name left, status right        | In one row  | In one row    |
+
+A Sensor is never narrower than 160px. Above that, the Sensors share the row equally. Three Sensors are never split over two rows: they're all in one row, or all stacked.
+
+Drag the slider to change the card's width:
+
+```jsx live
+function ResizeCard() {
+  const [width, setWidth] = useState(560);
+
+  return (
+    <StackLayout>
+      <label>
+        Width: {width}px{" "}
+        <input
+          type="range"
+          min="200"
+          max="640"
+          value={width}
+          onChange={(e) => setWidth(Number(e.target.value))}
+        />
+      </label>
+      <div style={{ width }}>
+        <ModuleCard
+          name="Air Quality Module"
+          connectionStatus="connected"
+          sensors={[
+            { metric: "co2", value: 1250, unit: "ppm", fractionDigits: 0 },
+            { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
+            { metric: "pm25", value: 12, unit: "ug-m3", fractionDigits: 0 },
+          ]}
+        />
+      </div>
+    </StackLayout>
+  );
+}
+```
+
+The card gets its width from its parent, not from its content, so put it in something that has a width: a block, a grid cell or a layout component.
+
+## States
+
+ModuleCard has no `state` prop. It follows `connectionStatus`, and each Sensor shows Loading on its own when its `value` is `null`.
+
+| State        | You pass                                       | Status label | Sensors                          |
+| ------------ | ---------------------------------------------- | ------------ | -------------------------------- |
+| Loading      | `connectionStatus="connecting"`, values `null` | Connecting   | A loading icon in each Sensor    |
+| Connected    | `connectionStatus="connected"`                 | Connected    | The values                       |
+| Stale        | `connectionStatus="stale"`                     | Stale        | The last values, unchanged       |
+| Disconnected | `connectionStatus="disconnected"`              | Disconnected | Hidden, with a disconnected icon |
+
+### Loading
+
+```jsx live
+<ModuleCard
+  name="Climate Module"
+  connectionStatus="connecting"
+  sensors={[
+    { metric: "temperature", value: null, unit: "celsius" },
+    { metric: "humidity", value: null, unit: "percent-rh", fractionDigits: 0 },
+  ]}
+/>
+```
+
+### Connected
+
+```jsx live
+<ModuleCard
+  name="Climate Module"
+  connectionStatus="connected"
+  sensors={[
+    { metric: "temperature", value: 22.4, unit: "celsius" },
+    { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+  ]}
+/>
+```
+
+### Stale
+
+```jsx live
+<ModuleCard
+  name="Light Module"
+  connectionStatus="stale"
+  sensors={[
+    { metric: "illuminance", value: 320, unit: "lux", fractionDigits: 0 },
+  ]}
+/>
+```
+
+### Disconnected
+
+You can keep passing the last values: the card hides them while the Module is Disconnected.
+
+```jsx live
+<ModuleCard
+  name="Climate Module"
+  connectionStatus="disconnected"
+  sensors={[
+    { metric: "temperature", value: 22.4, unit: "celsius" },
+    { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+  ]}
+/>
+```
+
+## Faults
+
+A Fault isn't a state of its own: a Module can be Connected **and** have Faults. Pass them in `faults`, and the card shows one message per Fault under the header. The values stay visible.
+
+```jsx live
+<ModuleCard
+  name="Air Quality Module"
+  connectionStatus="connected"
+  faults={[
+    { faultCode: "sensor_failure", metric: "co2" },
+    { faultCode: "calibration_required", metric: "voc" },
+  ]}
+  sensors={[
+    { metric: "co2", value: 1250, unit: "ppm", fractionDigits: 0 },
+    { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
+    { metric: "pm25", value: 12, unit: "ug-m3", fractionDigits: 0 },
+  ]}
+/>
+```
+
+Faults stay on the card when the Module is Disconnected: a Fault lasts until the Module reports it cleared.
+
+## Mapping your data
+
+| Prop               | Comes from                                                                      | Example                                            |
+| ------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------- |
+| `name`             | The [Module Name](/docs/domain-model/glossary#how-is-tracked)                   | `"Kitchen climate"`                                |
+| `connectionStatus` | The Module's [Connection Status](/docs/domain-model/glossary#connection-status) | `"connected"`                                      |
+| `faults`           | The Module's current [Faults](/docs/domain-model/glossary#fault)                | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
+| `sensors`          | The Module's Sensors, each with its Metric and its latest Reading               | see below                                          |
+
+Each item in `sensors` has the same fields as [`SensorReading`](./sensor-reading.mdx#mapping-your-data):
+
+| Field            | Comes from                                                      | Example         |
+| ---------------- | --------------------------------------------------------------- | --------------- |
+| `metric`         | The Sensor's Metric                                             | `"temperature"` |
+| `value`          | The value of its latest Reading, or `null` before the first one | `22.4`          |
+| `unit`           | The display Unit you chose for the Metric                       | `"celsius"`     |
+| `fractionDigits` | The Metric (optional, default `1`)                              | `0` for CO₂     |
+
+Each item in `faults` has the same fields as [`DeviceFaultStatus`](../status/device-fault-status.mdx#mapping-your-data): `faultCode` and an optional `metric`.
+
+A few rules:
+
+- **Paired Modules only.** Only a Paired Module has a Connection Status, so only a Paired Module gets a ModuleCard.
+- **The Module Name can change.** It starts as the Module Type's name and the user can rename it. Pass the current name, not the type. A long name is shortened with `…`, and the full name shows on hover.
+- **One to three Sensors, each with a different Metric.** The card uses the Metric to tell Sensors apart, so two Sensors with the same Metric in one card aren't supported. The layouts are designed for one to three Sensors.
+- **The order is yours.** Sensors show in the order of the list.
+- **Before the first Readings,** pass `connectionStatus="connecting"` and `null` values.
+- **One Fault per Fault Code.** Leave `faults` out, or pass an empty list, when there are none.
+
+## Props
+
+| Prop               | Type                                                       | Default | Description                                                                                                |
+| ------------------ | ---------------------------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `name`             | `string`                                                   | –       | **Required.** The Module Name, for example "Climate Module". The user can rename it, so you pass it in.    |
+| `sensors`          | `ModuleCardSensor[]`                                       | –       | **Required.** The Module's Sensors, one to three.                                                          |
+| `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** The Module's current Connection Status.                                                      |
+| `faults`           | `DeviceFaultStatusProps[]`                                 | `[]`    | The Module's current Faults, one per Fault Code. Leave it out, or pass an empty list, when there are none. |
+
+`ModuleCardSensor`:
+
+| Field            | Type                                                   | Default | Description                                                                                  |
+| ---------------- | ------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
+| `metric`         | `SensorLabelMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Metric the Sensor measures. Also tells the Sensors apart.                  |
+| `value`          | `number \| null`                                       | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way. |
+| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)       | –       | **Required.** The Unit to show. You pick it, so you can choose the display Unit (°C or °F).  |
+| `fractionDigits` | `number`                                               | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                   |
+
+The types `ModuleCardProps` and `ModuleCardSensor` are exported too:
+
+```tsx
+import type { ModuleCardProps, ModuleCardSensor } from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+- **The Module Name** stays on one line and ends with `…`. The full name shows on hover.
+- **The status label** is never shortened.
+- **The values and Units** are never shortened or wrapped (the rule from `SensorReading`).
+
+```jsx live
+<div style={{ maxWidth: 240 }}>
+  <ModuleCard
+    name="Living room air quality by the window"
+    connectionStatus="connected"
+    sensors={[
+      { metric: "temperature", value: 22.4, unit: "celsius" },
+      { metric: "illuminance", value: 100000, unit: "lux", fractionDigits: 0 },
+    ]}
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The card is a group named by the Module's name, so screen readers announce "Climate Module" first.
+- The reading order is always the same, in both layouts: name, status, Faults, Sensors.
+- The Sensors are a real list, so screen readers say how many there are.
+- Each Sensor keeps its own spoken name ("Temperature, 22.4 degrees Celsius").
+- Connection Status changes and new Faults are announced (their components are live regions). New Readings are not, so the card doesn't keep interrupting.
+- Not colour alone: the status has a text label, and Disconnected has its own icon.
+
+What's up to you:
+
+- **Headings.** The Module name is not a heading. If your screen needs headings for navigation, add one around or above the card.
+- **Don't add another live region** around the card. The status and Faults already announce their changes.
+
+## Styling
+
+The parts bring their own tokens (see their pages). ModuleCard adds the card:
+
+| What                                  | Token                                                        |
+| ------------------------------------- | ------------------------------------------------------------ |
+| Background                            | `--shk-surface-default`                                      |
+| Outline                               | `--shk-color-border-subtle`, `--shk-border-width-thin` (1px) |
+| Corner radius                         | `--shk-radius-16` (16px)                                     |
+| Padding                               | `--shk-space-4` (16px)                                       |
+| Gap between parts and between Sensors | `--shk-space-3` (12px)                                       |
+| Module name                           | `--shk-typography-h4-*`, `--shk-color-text-primary`          |
+
+The layout widths (364px and 536px) are fixed. They follow from the 160px minimum width of a Sensor, and CSS doesn't allow them to be tokens.
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only ModuleCard:
+
+```css
+.my-overview {
+  --shk-surface-default: var(--shk-palette-gray-50);
+}
+```
+
+## Related components
+
+- [`SensorReading`](./sensor-reading.mdx): one Sensor's Reading. The card shows one per Sensor.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx): the Module's status and Faults.
+- [`DevicePairingStatus`](../status/device-pairing-status.mdx): for Modules that aren't Paired yet.
+- `SpaceCard`: one Space at a glance, for whole-home screens.
+- `ColumnLayout`, `StackLayout`: place several ModuleCards side by side or in a column.
