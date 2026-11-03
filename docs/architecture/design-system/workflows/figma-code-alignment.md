@@ -2,7 +2,7 @@
 
 How to check that a component in Figma and the same component in code match, and how to fix them when they don't. People and AI agents follow the same steps.
 
-Use it for components that **already exist** in both places. To build a new component, use [Component building workflow (V2)](./component-building-v2.md).
+Use it for components that **already exist** in both places. To build a new component, use [Component building workflow](./component-building.md).
 
 ```
 1. Gather → 2. Compare (8 checks) → 3. Report → 4. Decide → 5. Fix code → 6. Fix Figma → 7. Verify
@@ -26,12 +26,12 @@ Worked examples: [`DevicePairingStatus`](/kit/packages/ui/src/components/status/
 
 ## Read first
 
-| Doc                                                                           | Why                                                                          |
-| ----------------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
-| [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx) | Decides names when Figma and code disagree.                                  |
-| [Component building workflow (V2)](./component-building-v2.md)                | The conventions every component must follow (files, states, stress stories). |
-| [Figma variables ↔ code handoff](./figma-variables-code-handoff.md)           | How Figma variables map to `--shk-` tokens.                                  |
-| `kit/packages/tokens/dist/tokens.css`                                         | The real token names and values.                                             |
+| Doc                                                                 | Why                                                                          |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx)      | Decides names when Figma and code disagree.                                  |
+| [Component building workflow](./component-building.md)              | The conventions every component must follow (files, states, stress stories). |
+| [Figma variables ↔ code handoff](./figma-variables-code-handoff.md) | How Figma variables map to `--shk-` tokens.                                  |
+| `kit/packages/tokens/dist/tokens.css`                               | The real token names and values.                                             |
 
 ## Which side wins
 

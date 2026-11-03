@@ -1,5 +1,7 @@
 # LocationPath
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/context/location-path.mdx). Props are defined in [`LocationPath.types.ts`](./LocationPath.types.ts).
+
 ### Purpose
 
 Shows where a Device is: its Site, Floor, Space and the Device itself, each with an icon. It is used in card headers, detail views and lists, so the user knows which Device they are looking at without opening anything.
@@ -94,23 +96,12 @@ Long names: the label shrinks and ends with `…`.
 
 ### API
 
-```ts
-/** How the parts of the path are arranged. */
-type LocationPathLayout = "inline" | "grid" | "stack";
+The props are defined in [`LocationPath.types.ts`](./LocationPath.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface LocationPathProps {
-  /** Name of the Site, the top of the path. Leave out if the screen already shows it. */
-  siteName?: string;
-  /** Name of the Floor. Leave out if the Site doesn't use Floors. */
-  floorName?: string;
-  /** Name of the Space. Leave out if the Device has no Space yet. */
-  spaceName?: string;
-  /** Name of the Device (Hub or Module) the path points to. */
-  deviceName?: string;
-  /** How the parts are arranged. Defaults to `inline`. */
-  layout?: LocationPathLayout;
-}
-```
+The decisions behind them:
+
+- One optional `…Name` string per part (`siteName`, `floorName`, `spaceName`, `deviceName`), not booleans like in Figma: a part is shown when its name is given.
+- `layout` is `"inline" | "grid" | "stack"`, default `inline`, matching the Figma `layout` variant values.
 
 ### Tokens
 
@@ -131,7 +122,8 @@ The same tokens are bound in Figma.
 
 - Markup: an ordered list (`<ol>`) with `aria-label="Location"`, one `<li>` per part, because the order has meaning.
 - The icon is the only thing that says what kind of part a label is (a lone "Level 2" in `stack` could be anything). So the icon is hidden from screen readers and each label gets a visually hidden prefix: "Site: My flat", "Floor: Level 2", "Space: Bedroom", "Device: Climate Module".
-- When a name is truncated, the full name is still available (for example in a `title`).
+- When a name is truncated, the full name is still available in a `title`, so it shows on hover.
+- The list already has the accessible name "Location", so apps shouldn't add their own "Location" label right next to it: screen readers would announce it twice. The user docs page tells developers this.
 - Contrast: `--shk-color-text-primary` (gray 900) on a light surface is well above 4.5:1.
 
 ### Open questions

@@ -75,11 +75,11 @@ Dependency rules (see "Dependency rules" in the overview):
 - Docs live under `/docs`, in three top-bar sections with their own sidebars (`sidebars.ts`, generated from the folders): **Get Started** in `docs/get-started/` (installation; says "Coming soon" until the packages are published), **Domain Model** in `docs/domain-model/` (the smart home model: Glossary, Data model and Device lifecycle; open questions about them stay in `docs/architecture/domain-model/open-questions.md`) and **UI Components** in `docs/ui-components/` (one page per component, grouped by category).
 - It builds into `dist/` (`docusaurus build --out-dir dist`), not Docusaurus's default `build/`, so the existing ignore and Turbo rules cover it. Don't add `build/` to `.gitignore`: it would also hide `kit/packages/tokens/build/config.json`. `.docusaurus/` is its cache.
 - `docusaurus.config.ts` and `sidebars.ts` run in Node, not in the browser: no JSX or browser APIs there.
-- Not yet connected to the kit: the tokens, fonts and `ui` components are not loaded, and the landing page still uses Docusaurus's `--ifm-` variables. Once connected, the site imports the kit by package name (`@detriz-sh-kit/ui`), uses the **built** `ui` (`dist/`), so rebuild `ui` to see component changes, and needs Docusaurus's CSS in cascade layers below `@layer detriz`, because unlayered CSS always wins.
+- Connected to the kit: `src/kit-styles.ts` loads the fonts, tokens and `ui` CSS on every page, and component pages show the real components in ` ```jsx live ` code blocks (`@docusaurus/theme-live-codeblock`; every `ui` export is in scope via `src/theme/ReactLiveScope`). The site uses the **built** `ui` (`dist/`), so rebuild `ui` to see component changes. `future.v4: true` puts Docusaurus's CSS in cascade layers below `@layer detriz`; don't remove it, because unlayered CSS always wins. The landing page still uses Docusaurus's `--ifm-` variables. How to write a component page: `docs/architecture/design-system/workflows/component-documentation.md`.
 
 ### Component conventions
 
-Full workflow: `docs/architecture/design-system/workflows/component-building-v2.md` (the checklist is at the end).
+Full workflow: `docs/architecture/design-system/workflows/component-building.md` (the checklist is at the end).
 
 - One folder per component: `kit/packages/ui/src/components/<category>/<Name>/` with `<Name>.md`, `<Name>.types.ts`, `<Name>.tsx`, `<Name>.module.css`, `<Name>.stories.tsx` and `index.ts`. Reference examples: `status/DeviceConnectionStatus` (states) and `context/LocationPath` (variants).
 - An exported `<Name>Props` interface with a `/** */` comment on every prop. Use semantic HTML.

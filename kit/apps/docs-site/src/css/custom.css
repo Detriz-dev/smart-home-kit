@@ -28,3 +28,10 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+/* Live code block results sit on the kit's own surface, in light and dark mode,
+   because the kit has no dark theme yet. The class name comes from
+   @docusaurus/theme-live-codeblock (a CSS Module), so it is matched by its start. */
+[class*="playgroundPreview"] {
+  background-color: var(--shk-surface-default);
+}
