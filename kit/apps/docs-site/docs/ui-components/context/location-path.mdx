@@ -66,7 +66,7 @@ Use LocationPath in:
 Don't use it for:
 
 - **Navigation.** LocationPath is read-only. Clicking a part does nothing.
-- **Device Status.** The path is a fixed fact and doesn't change when a Device disconnects or has a Fault. Put `DeviceConnectionStatus`, `DevicePairingStatus` or `DeviceFaultStatus` next to it instead.
+- **Device Status.** The path is a fixed fact and doesn't change when a Device disconnects or has a Fault. Put [`DeviceConnectionStatus`](../status/device-connection-status.mdx), [`DevicePairingStatus`](../status/device-pairing-status.mdx) or `DeviceFaultStatus` next to it instead.
 - **Sensors and Metrics.** A Sensor is not a Device and has no location of its own. Use [`SensorLabel`](./sensor-label.mdx) to say what a Sensor measures.
 
 ## Layouts
@@ -223,7 +223,7 @@ To change how it looks, set a token on a parent element. The change applies to e
 
 ## Related components
 
-- `DeviceConnectionStatus`: shows whether the Device is Connecting, Connected, Stale or Disconnected.
-- `DevicePairingStatus`: shows whether the Device is Paired.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx): shows whether the Device is Connecting, Connected, Stale or Disconnected.
+- [`DevicePairingStatus`](../status/device-pairing-status.mdx): shows whether the Device is Paired.
 - `DeviceFaultStatus`: shows a Device's Fault.
 - [`SensorLabel`](./sensor-label.mdx): says what a Sensor measures. Sits well next to LocationPath in a card header.

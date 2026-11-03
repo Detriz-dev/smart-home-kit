@@ -153,7 +153,7 @@ Rules:
 - **No `import` lines.** Every `ui` export is already available. Only the Basic usage block (a normal `tsx` block) shows the import.
 - **Use only exported components.** To show several cases in one example, wrap them in kit components such as `<StackLayout>`, and add a `{/* comment */}` above each one saying which case it is.
 - **Use realistic example values**, the same ones as in the spec and the stories ("My flat", "Bedroom", "Climate Module").
-- **Containers with a width.** Inline styles are fine only to give an example a width: a narrow container for the long-text example (`<div style={{ maxWidth: 320 }}>…</div>`), or a realistic width for a component that fills its parent, like a card. They belong to the reader's page, not the component. Say once on the page why the examples have a wrapper.
+- **Containers with a width.** Inline styles are fine only to give an example a width: a narrow container for the long-text example (`<div style={{ maxWidth: 320 }}>…</div>`), or a realistic width for a component that fills its parent, like a card. The one other case: a section that explains how the parent lays the component out (for example "Pairing with ReadingValue"), where the inline style **is** the lesson. They belong to the reader's page, not the component. Say once on the page why the examples have a wrapper.
 - **One live example per variant or state**, plus the intro, the behaviour section and long text. Don't repeat the same example twice.
 
 ## Step 4. Check in the browser

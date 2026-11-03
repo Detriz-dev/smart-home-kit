@@ -67,7 +67,7 @@ Don't use it for:
 
 - **A whole Module.** Use `ModuleCard`. It shows one SensorReading per Sensor, plus the Module's name and status.
 - **A list row or a table cell.** The card only comes in two large sizes. Put [`ReadingValue`](./reading-value.mdx) and [`UnitLabel`](./unit-label.mdx) in your row instead, at `sm` or `xs`.
-- **Connection Status or Fault.** These belong to the Device, not the Sensor. Show them once for the Module, with `DeviceConnectionStatus` and `DeviceFaultStatus`. `ModuleCard` does this for you.
+- **Connection Status or Fault.** These belong to the Device, not the Sensor. Show them once for the Module, with [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and `DeviceFaultStatus`. `ModuleCard` does this for you.
 
 ## States
 
@@ -167,7 +167,7 @@ A few rules from the domain model:
 
 - **The status comes from the Module.** A Sensor is not a Device and has no Connection Status of its own. Pass the Connection Status of the Module the Sensor belongs to.
 - **`metric` and `unit` are separate.** One Metric can have more than one display Unit (Temperature in °C or °F). You choose the Unit, and you convert the value to match it.
-- **Stale:** keep passing the last value, and show "Stale" once for the Module with `DeviceConnectionStatus`.
+- **Stale:** keep passing the last value, and show "Stale" once for the Module with [`DeviceConnectionStatus`](../status/device-connection-status.mdx).
 - **Connecting:** you decide: pass the last value to keep showing it, or `null` to show Loading.
 - **Not paired:** an unpaired Module sends no Readings, so there is no SensorReading to show.
 
@@ -250,4 +250,4 @@ To change how it looks, set a token on a parent element. The change applies to e
 - `ModuleCard`: one SensorReading per Sensor of a Module, with the Module's status.
 - [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx), [`UnitLabel`](./unit-label.mdx): the parts SensorReading is built from. Use them on their own for list rows and tables.
 - `ColumnLayout`, `StackLayout`: place several SensorReadings side by side or in a column.
-- `DeviceConnectionStatus`, `DeviceFaultStatus`: the Module's status, shown once next to its Readings.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx), `DeviceFaultStatus`: the Module's status, shown once next to its Readings.

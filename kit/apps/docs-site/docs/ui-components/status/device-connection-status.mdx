@@ -1,0 +1,222 @@
+---
+sidebar_position: 1
+sidebar_label: DeviceConnectionStatus
+description: Shows whether a Device can be reached right now, as a short label with a coloured dot.
+---
+
+# DeviceConnectionStatus
+
+Shows a Device's Connection Status as a short label with a coloured dot: Connecting, Connected, Stale or Disconnected. Use it next to a Device's name or its Readings, so people know whether the Device can be reached right now.
+
+```jsx live
+<DeviceConnectionStatus status="connected" />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { DeviceConnectionStatus } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Device's Connection Status:
+
+```tsx
+import { DeviceConnectionStatus } from "@detriz-sh-kit/ui";
+
+<DeviceConnectionStatus status="stale" />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use DeviceConnectionStatus:
+
+- **in card headers**, next to the Device's name
+- **in list rows**, so people can scan which Devices are reachable
+- **next to Readings**, to say that a value is Stale
+
+Don't use it for:
+
+- **Pairing Status** (Paired or not). Use [`DevicePairingStatus`](./device-pairing-status.mdx).
+- **Faults** ("Sensor failure"). Use `DeviceFaultStatus`. A Device can be Connected and have a Fault at the same time, so show both when you need both.
+- **Sensors.** A Sensor is not a Device and has no Connection Status. Show the status of the Module the Sensor belongs to.
+- **Hiding a value.** When a Device is Disconnected, its values must be hidden. That's done by [`ReadingValue`](../readings/reading-value.mdx) and [`SensorReading`](../readings/sensor-reading.mdx) with `isDisconnected`, not by this component.
+
+## States
+
+One state per Connection Status. Each has its own label and dot colour.
+
+| `status`       | Label        | Dot   | Means                                                                                 |
+| -------------- | ------------ | ----- | ------------------------------------------------------------------------------------- |
+| `connecting`   | Connecting   | blue  | The Device is getting its connection back, after a power-up, restart or dropped link. |
+| `connected`    | Connected    | green | The Device can be reached and is sending Readings.                                    |
+| `stale`        | Stale        | amber | Still connected, but no Reading arrived within its Expected Interval.                 |
+| `disconnected` | Disconnected | grey  | The Device can't be reached.                                                          |
+
+Disconnected is grey, not red. Red is kept for Faults, so "unplugged" and "broken" never look the same.
+
+### Connecting
+
+```jsx live
+<DeviceConnectionStatus status="connecting" />
+```
+
+### Connected
+
+```jsx live
+<DeviceConnectionStatus status="connected" />
+```
+
+### Stale
+
+```jsx live
+<DeviceConnectionStatus status="stale" />
+```
+
+### Disconnected
+
+```jsx live
+<DeviceConnectionStatus status="disconnected" />
+```
+
+### When the status changes
+
+Pass the new status whenever it changes. The component updates and screen readers announce the new label (see [Accessibility](#accessibility)).
+
+```jsx live
+function ChangingStatus() {
+  const statuses = ["connecting", "connected", "stale", "disconnected"];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    // A new status every two seconds, for the example.
+    const timer = setInterval(
+      () => setIndex((i) => (i + 1) % statuses.length),
+      2000,
+    );
+    return () => clearInterval(timer);
+  }, []);
+
+  return <DeviceConnectionStatus status={statuses[index]} />;
+}
+```
+
+## Next to a Device's name
+
+The label only says the status ("Stale"). Which Device it belongs to comes from what's next to it, so always place it beside the Device's name or inside the Device's card:
+
+```jsx live
+<span
+  style={{
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "var(--shk-space-2)",
+  }}
+>
+  <LocationPath spaceName="Kitchen" deviceName="Kitchen Hub" />
+  <DeviceConnectionStatus status="connected" />
+</span>
+```
+
+`ModuleCard` and `SpaceCard` already place it for you.
+
+## Mapping your data
+
+| Prop     | Comes from                                                                      | Example   |
+| -------- | ------------------------------------------------------------------------------- | --------- |
+| `status` | The Device's [Connection Status](/docs/domain-model/glossary#connection-status) | `"stale"` |
+
+A few rules from the domain model:
+
+- **Paired Devices only.** Only a Paired Device has a Connection Status. For a Device that isn't Paired, don't render this component: show [`DevicePairingStatus`](./device-pairing-status.mdx) instead.
+- **Before the first status arrives,** pass `connecting`. A Device is always Connecting after it powers up, so this is true, and there is no separate "unknown" or loading state.
+- **Stale depends on the Expected Interval.** A Device is Stale when no Reading arrived within the interval the user set for it. Work this out in your app (or let the API do it) and pass `stale`.
+- **It's one of three fields.** Pairing Status, Connection Status and Fault are independent. See [Device lifecycle](/docs/domain-model/device-lifecycle#connection-status) for how a Device moves between Connection Statuses.
+
+## Props
+
+| Prop     | Type                                                       | Default | Description                                           |
+| -------- | ---------------------------------------------------------- | ------- | ----------------------------------------------------- |
+| `status` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** The Device's current Connection Status. |
+
+The types `DeviceConnectionStatusProps` and `ConnectionStatus` are exported too. Use `ConnectionStatus` for the status in your own data, so it always matches what the component accepts:
+
+```tsx
+import type {
+  ConnectionStatus,
+  DeviceConnectionStatusProps,
+} from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+The labels are short and fixed, so they never wrap or get shortened. The longest, "Disconnected", fits a 96px container, and the dot keeps its size:
+
+```jsx live
+<div
+  style={{ maxWidth: 96, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <DeviceConnectionStatus status="disconnected" />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- **Not colour alone.** The label says the status in words. The dot only repeats it, and screen readers skip it.
+- **Changes are announced.** The component is a polite live region (`role="status"`), so when the status changes, screen readers read the new label without moving focus. A change in Connection Status matters, and it happens far less often than new Readings.
+- The label meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Say which Device it is.** Place it next to the Device's name, or in the Device's card, so "Stale" is never read without its Device.
+- **Don't add another live region** around it. It already announces its changes, and a second one would announce them twice.
+- **Many Devices at once.** Every instance announces its own changes. On a screen with many Devices, several can go Stale together and each one is read out.
+
+## Styling
+
+DeviceConnectionStatus uses the kit's design tokens (CSS variables starting with `--shk-`):
+
+| What                   | Token                                                                                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Label colour           | `--shk-color-text-primary`                                                                                                                                              |
+| Label text style       | `--shk-typography-caption-*` (12px)                                                                                                                                     |
+| Background             | `--shk-surface-default`                                                                                                                                                 |
+| Gap and inline padding | `--shk-space-1` (4px)                                                                                                                                                   |
+| Dot size               | `--shk-size-3` (12px)                                                                                                                                                   |
+| Dot colour             | `connecting` `--shk-status-progress-solid`, `connected` `--shk-status-success-solid`, `stale` `--shk-status-warning-solid`, `disconnected` `--shk-status-neutral-solid` |
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only DeviceConnectionStatus. The status colours are shared by every Status component, so change them for the whole app, not one screen:
+
+```css
+:root {
+  --shk-status-success-solid: var(--shk-palette-green-500);
+}
+```
+
+## Related components
+
+- [`DevicePairingStatus`](./device-pairing-status.mdx): whether the Device is Paired.
+- `DeviceFaultStatus`: the Device's Fault, if it has one.
+- [`ReadingValue`](../readings/reading-value.mdx) and [`SensorReading`](../readings/sensor-reading.mdx): hide the value when the Device is Disconnected, with `isDisconnected`.
+- [`LocationPath`](../context/location-path.mdx): the Device's name and where it is. Sits well next to the status.
+- `ModuleCard`, `SpaceCard`: cards that already include the status.

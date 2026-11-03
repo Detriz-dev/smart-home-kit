@@ -53,7 +53,7 @@ Don't use it for:
 
 - **A full Reading.** To show the Metric name, the value and the Unit together, use [`SensorReading`](./sensor-reading.mdx). It already includes ReadingValue.
 - **The Unit** ("°C"). Use [`UnitLabel`](./unit-label.mdx) next to it.
-- **Connection Status as a label** ("Stale", "Disconnected"). Use `DeviceConnectionStatus`. ReadingValue only reacts to Disconnected.
+- **Connection Status as a label** ("Stale", "Disconnected"). Use [`DeviceConnectionStatus`](../status/device-connection-status.mdx). ReadingValue only reacts to Disconnected.
 - **Several values or a trend.** ReadingValue shows one value. Comparison and History components are planned for that.
 
 ## States
@@ -188,7 +188,7 @@ The Unit stays visible in the Loading and Disconnected states, so people still k
 
 A few rules from the domain model:
 
-- **Stale:** the Device is still Connected but late, so keep passing the last value. Show that it is late with `DeviceConnectionStatus` next to it.
+- **Stale:** the Device is still Connected but late, so keep passing the last value. Show that it is late with [`DeviceConnectionStatus`](../status/device-connection-status.mdx) next to it.
 - **Connecting:** the Device is getting its connection back. You decide: pass the last value to keep showing it, or `null` to show Loading.
 - **Fault:** ReadingValue doesn't change for a Fault. Show it with `DeviceFaultStatus`.
 - **Not paired:** a Device that isn't Paired sends no Readings, so there is nothing to show. Don't render ReadingValue for it.
@@ -263,5 +263,5 @@ To change how it looks, set a token on a parent element. The change applies to e
 - [`SensorReading`](./sensor-reading.mdx): the Metric name, the value and the Unit together. Uses ReadingValue inside.
 - [`UnitLabel`](./unit-label.mdx): the Unit next to the value.
 - [`SensorLabel`](../context/sensor-label.mdx): says what is measured.
-- `DeviceConnectionStatus`: shows Stale, Connecting and the other Connection Statuses.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx): shows Stale, Connecting and the other Connection Statuses.
 - `DeviceFaultStatus`: shows a Device's Fault.
