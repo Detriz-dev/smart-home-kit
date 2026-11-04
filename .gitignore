@@ -22,3 +22,22 @@ storybook-static/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
+.idea/
+Thumbs.db
+*.swp
+
+# Secrets and keys
+*.pem
+*.key
+# Can hold an npm publish token once packages are published
+.npmrc
+
+# Claude Code personal settings (the shared .claude/settings.json stays committed)
+.claude/settings.local.json
+
+# Test coverage
+coverage/
+
+# Internal project docs (product, architecture, retros). Kept locally, not public.
+# The leading slash means only the root docs/ folder, not kit/apps/docs-site/docs/.
+/docs/
