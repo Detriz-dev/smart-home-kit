@@ -1,0 +1,89 @@
+/* The editor part of a live code block. Figma "SHK – Landing", node 24:410.
+   Values the kit has no token for are set once, on the bar, and used below. */
+
+/* The white bar between the preview and the code: "Live editor" on the left, Reset on the right.
+   It stays light in dark mode, like the preview above it. */
+.bar {
+  --bar-height: 30px;
+  --bar-padding-start: 22px; /* Same left edge as the preview content. */
+  --bar-padding-end: 26px;
+  --bar-padding-top: 3px; /* Reset sits 3px from the top of the bar. */
+  --reset-width: 68px;
+  --reset-height: 22px;
+  --reset-border-color: #e2e2e2;
+  --reset-icon-size: 18px;
+  --reset-icon-gap: 1px;
+
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  box-sizing: border-box;
+  block-size: var(--bar-height);
+  padding: var(--bar-padding-top) var(--bar-padding-end) 0
+    var(--bar-padding-start);
+  background-color: var(--shk-surface-default);
+  color: var(--shk-color-text-primary);
+}
+
+.label {
+  /* Centred on the whole bar, not just below its 3px top padding. */
+  align-self: center;
+  margin-block-start: calc(-1 * var(--bar-padding-top));
+  font-size: var(--shk-font-size-12);
+  font-weight: var(--shk-font-weight-semibold);
+  line-height: var(--shk-size-4); /* 16px */
+}
+
+.reset {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--reset-icon-gap);
+  box-sizing: border-box;
+  min-inline-size: var(--reset-width);
+  block-size: var(--reset-height);
+  padding: 0 var(--shk-space-1);
+  border: var(--shk-border-width-thin) solid var(--reset-border-color);
+  border-radius: var(--site-radius);
+  background-color: var(--shk-surface-default);
+  color: inherit;
+  font: inherit;
+  font-size: var(--shk-font-size-12);
+  font-weight: var(--shk-font-weight-regular);
+  line-height: var(--shk-font-size-12);
+  cursor: pointer;
+}
+
+/* The refresh icon: Material Symbols, Rounded, Light (weight 300), as in Figma.
+   From @material-symbols/svg-300 (the navbar icons use svg-400, Regular). */
+.reset::before {
+  content: "";
+  flex: none;
+  inline-size: var(--reset-icon-size);
+  block-size: var(--reset-icon-size);
+  background-color: currentColor;
+  mask: url("@material-symbols/svg-300/rounded/refresh.svg") center / contain
+    no-repeat;
+}
+
+.reset:hover {
+  background-color: var(--shk-surface-page);
+}
+
+.reset:focus-visible {
+  outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+  outline-offset: var(--shk-border-width-medium);
+}
+
+/* The code. Its colours and background come from the code theme (prism) in docusaurus.config.ts. */
+.editor {
+  font: var(--ifm-code-font-size) / var(--ifm-pre-line-height)
+    var(--ifm-font-family-monospace) !important;
+  direction: ltr;
+}
+
+/* react-live puts `padding: 10px` inline on the <pre>, so !important is needed to change it.
+   The code starts at the same left edge as the preview and the "Live editor" label. */
+.editor pre {
+  padding: var(--shk-space-4) 22px !important;
+  border-radius: 0;
+}

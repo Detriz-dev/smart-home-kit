@@ -173,7 +173,12 @@ pnpm --filter docs-site docusaurus swizzle @docusaurus/theme-classic Footer --wr
 pnpm --filter docs-site docusaurus swizzle @docusaurus/theme-classic Footer --eject
 ```
 
-Try CSS first; swizzle only when you must. `src/theme/ReactLiveScope` is already a swizzled component (it lists the kit components the live examples can use).
+Try CSS first; swizzle only when you must. Already swizzled:
+
+- `src/theme/ReactLiveScope`: lists the kit components the live examples can use.
+- `src/theme/Playground/` (`Container`, `Preview`, `Editor`): the live code block card, ejected to match the Figma design (no "Result" header, a "Live editor" bar with a Reset button). After a Docusaurus upgrade, compare them with the originals in `@docusaurus/theme-live-codeblock`.
+
+The dark background of every code block comes from the code theme in `docusaurus.config.ts` (`codeTheme`), which reads `--site-code-background` from `custom.css`.
 
 ## The workflow
 

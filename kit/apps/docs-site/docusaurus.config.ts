@@ -4,6 +4,17 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 // This file runs in Node.js, not in the browser: no JSX or browser APIs here.
 
+// Code theme for every code block and the live editor, in light and dark mode: VS Code's dark
+// colours on our own background. The value is a CSS variable, so the colour itself lives in
+// src/css/custom.css (--site-code-background) and the browser fills it in.
+const codeTheme = {
+  ...prismThemes.vsDark,
+  plain: {
+    ...prismThemes.vsDark.plain,
+    backgroundColor: "var(--site-code-background)",
+  },
+};
+
 const config: Config = {
   title: "DeTriz Smart Home Kit",
   tagline: "Design system and SDK for prototyping with live sensor data",
@@ -93,8 +104,8 @@ const config: Config = {
       playgroundPosition: "top",
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: codeTheme,
+      darkTheme: codeTheme,
     },
   } satisfies Preset.ThemeConfig,
 };
