@@ -6,13 +6,23 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  /* Brand colour: links, the selected navbar link, the selected sidebar item, buttons.
+     Figma "SHK – Landing" (node 8:3): #017bab, the kit's blue-600. Docusaurus uses the
+     darker shades for hover and pressed, and the lighter ones for subtle backgrounds. */
+  --ifm-color-primary: var(--shk-palette-blue-600);
+  --ifm-color-primary-dark: var(--shk-palette-blue-700);
+  --ifm-color-primary-darker: var(--shk-palette-blue-700);
+  --ifm-color-primary-darkest: var(--shk-palette-blue-800);
+  --ifm-color-primary-light: var(--shk-palette-blue-500);
+  --ifm-color-primary-lighter: var(--shk-palette-blue-500);
+  --ifm-color-primary-lightest: var(--shk-palette-blue-400);
+
+  /* Lines between the navbar, the left sidebar, the page and the table of contents on the right.
+     Figma: #95d7fe, the kit's blue-300. Docusaurus draws the sidebar's and the table of contents'
+     borders with --ifm-toc-border-color; the navbar's border is in the Navbar section below. */
+  --site-border-color: var(--shk-palette-blue-300);
+  --ifm-toc-border-color: var(--site-border-color);
+
   --ifm-code-font-size: 95%;
   /* Code is always on a dark background (see --site-code-background), so a light highlight. */
   --docusaurus-highlighted-code-line-bg: rgb(255 255 255 / 0.1);
@@ -31,15 +41,16 @@
   --site-code-background: #181818;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* Dark mode isn't designed yet. Lighter blues from the same scale, so links stay readable
+   on a dark background. */
 [data-theme="dark"] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --ifm-color-primary: var(--shk-palette-blue-400);
+  --ifm-color-primary-dark: var(--shk-palette-blue-500);
+  --ifm-color-primary-darker: var(--shk-palette-blue-500);
+  --ifm-color-primary-darkest: var(--shk-palette-blue-600);
+  --ifm-color-primary-light: var(--shk-palette-blue-300);
+  --ifm-color-primary-lighter: var(--shk-palette-blue-300);
+  --ifm-color-primary-lightest: var(--shk-palette-blue-200);
 }
 
 /* Navbar
@@ -63,6 +74,13 @@
 [data-theme="light"] {
   --ifm-navbar-background-color: var(--shk-surface-page);
   --ifm-navbar-link-color: var(--shk-color-text-primary);
+  /* The footer matches the page background (the landing page and navbar use the same colour). */
+  --ifm-footer-background-color: var(--shk-surface-page);
+}
+
+/* A 1px line under the navbar, the same colour as the sidebar borders. */
+.navbar {
+  border-block-end: var(--shk-border-width-thin) solid var(--site-border-color);
 }
 
 .navbar__brand {
@@ -93,7 +111,7 @@
 .site-nav-link {
   align-items: center;
   gap: var(--site-nav-icon-gap);
-  font-size: var(--shk-font-size-18);
+  font-size: var(--shk-font-size-16);
   font-weight: var(--shk-font-weight-regular);
 }
 

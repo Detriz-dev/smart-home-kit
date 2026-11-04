@@ -4,9 +4,8 @@
 
 .page {
   --hero-max-width: 1080px;
-  --hero-title-line-height: 64px; /* 48px text */
+  --hero-title-line-height: 56px; /* 48px text */
   --hero-intro-line-height: 40px; /* 24px text */
-  --hero-cta-font-size: 22px;
 
   background-color: var(--shk-surface-page);
   color: var(--shk-color-text-primary);
@@ -45,6 +44,11 @@
   color: inherit;
 }
 
+/* "Rapid prototyping" in bold; the rest of the heading stays light. */
+.title strong {
+  font-weight: var(--shk-font-weight-bold);
+}
+
 .intro {
   margin: 0;
   font-size: var(--shk-font-size-24);
@@ -62,11 +66,9 @@
   border-radius: var(--site-radius);
   background-color: var(--shk-palette-gray-900);
   color: var(--shk-color-text-inverse);
-  font-size: var(--hero-cta-font-size);
+  font-size: var(--shk-font-size-18);
   font-weight: var(--shk-font-weight-regular);
-  line-height: var(
-    --shk-line-height-tight
-  ); /* 40px tall, as in the design (41px) */
+  line-height: var(--shk-line-height-tight); /* About 36px tall with the padding */
   text-decoration: none;
 }
 
@@ -81,10 +83,17 @@
   outline-offset: var(--shk-space-1);
 }
 
-/* Placeholder for the picture: a white box, 508 × 443 in the design. */
+/* The picture: static/img/heroSection.png (a SpaceCard, its props and the domain model). */
 .picture {
-  aspect-ratio: 8 / 7;
-  background-color: var(--shk-surface-default);
+  display: flex;
+  justify-content: center;
+}
+
+/* Never wider than its column; the height follows, so it keeps its shape. */
+.illustration {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
 }
 
 /* Phone and small tablet: one column, text first, picture below. */
