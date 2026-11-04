@@ -1,0 +1,237 @@
+---
+sidebar_position: 1
+sidebar_label: StackLayout
+description: Places components in one column, with an even gap between them.
+---
+
+# StackLayout
+
+Places components in one column, top to bottom, with an even gap between them. Use it to build a screen from the kit's components, for example a `LocationPath` above a few cards.
+
+```jsx live
+<StackLayout gap="sm">
+  <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
+  <ModuleCard
+    name="Climate Module"
+    connectionStatus="connected"
+    sensors={[
+      { metric: "temperature", value: 22.4, unit: "celsius" },
+      { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+    ]}
+  />
+</StackLayout>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+StackLayout only adds space between its children. It has no background, border or padding, so you never see it, and you can put it inside any other component, including another StackLayout.
+
+## Import
+
+```tsx
+import { StackLayout } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Put the components you want to stack inside it:
+
+```tsx
+import { StackLayout, SensorLabel } from "@detriz-sh-kit/ui";
+
+<StackLayout>
+  <SensorLabel metric="temperature" />
+  <SensorLabel metric="humidity" />
+</StackLayout>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use StackLayout:
+
+- **as the root of a screen**, to stack its sections and cards
+- **for a list of cards**, like the ModuleCards of a Space
+- **inside a card or section**, to space out a few smaller components
+
+Don't use it for:
+
+- **Components side by side.** Use [`ColumnLayout`](./column-layout.mdx).
+- **A group with a heading.** Use [`ContentSection`](./content-section.mdx).
+- **Padding or a background.** StackLayout adds neither. The screen or the card around it owns those, so nested stacks never add up extra space.
+
+## Gaps
+
+Use the `gap` prop. The default is `md`. The gaps are names, not pixels, so every screen uses the same tested spacing. Each step is double the one before, so nested stacks stay easy to tell apart.
+
+| `gap` | Size | Use it when                                                               |
+| ----- | ---- | ------------------------------------------------------------------------- |
+| `sm`  | 8px  | The children belong closely together, like a `LocationPath` and its card. |
+| `md`  | 16px | Default. Most lists of cards.                                             |
+| `lg`  | 32px | The children are separate groups, like two `ContentSection`s.             |
+
+### sm
+
+```jsx live
+<StackLayout gap="sm">
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  <SensorReading
+    metric="humidity"
+    value={48}
+    unit="percent-rh"
+    fractionDigits={0}
+    size="md"
+  />
+</StackLayout>
+```
+
+### md
+
+```jsx live
+<StackLayout gap="md">
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  <SensorReading
+    metric="humidity"
+    value={48}
+    unit="percent-rh"
+    fractionDigits={0}
+    size="md"
+  />
+</StackLayout>
+```
+
+### lg
+
+```jsx live
+<StackLayout gap="lg">
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  <SensorReading
+    metric="humidity"
+    value={48}
+    unit="percent-rh"
+    fractionDigits={0}
+    size="md"
+  />
+</StackLayout>
+```
+
+There's no gap above the first child or below the last one.
+
+## Nesting stacks
+
+Put a stack inside a stack to group things. Use a bigger gap outside and a smaller one inside, so the groups are easy to see:
+
+```jsx live
+<StackLayout gap="lg">
+  <StackLayout gap="sm">
+    <LocationPath spaceName="Bedroom" />
+    <ModuleCard
+      name="Climate Module"
+      connectionStatus="connected"
+      sensors={[{ metric: "temperature", value: 21.5, unit: "celsius" }]}
+    />
+  </StackLayout>
+  <StackLayout gap="sm">
+    <LocationPath spaceName="Kitchen" />
+    <ModuleCard
+      name="Light Module"
+      connectionStatus="stale"
+      sensors={[
+        { metric: "illuminance", value: 320, unit: "lux", fractionDigits: 0 },
+      ]}
+    />
+  </StackLayout>
+</StackLayout>
+```
+
+## Width
+
+StackLayout fills the width of its parent, and so does **every child**. A long child can't push the stack wider than its parent.
+
+Most of the kit's components are meant to fill the width they get, so this is usually what you want. To keep a child at its own width, like a [`Button`](../controls/button.mdx), wrap it in a `<div>`:
+
+```jsx live
+<StackLayout gap="sm">
+  {/* Fills the stack */}
+  <Button onClick={() => {}}>Full width</Button>
+  {/* Keeps its own width */}
+  <div>
+    <Button onClick={() => {}}>Own width</Button>
+  </div>
+</StackLayout>
+```
+
+## Props
+
+| Prop       | Type                   | Default | Description                                                         |
+| ---------- | ---------------------- | ------- | ------------------------------------------------------------------- |
+| `children` | `ReactNode`            | –       | **Required.** The components to place in one column, top to bottom. |
+| `gap`      | `"sm" \| "md" \| "lg"` | `"md"`  | The space between the children: 8px, 16px or 32px.                  |
+
+The types `StackLayoutProps` and `StackLayoutGap` are exported too:
+
+```tsx
+import type { StackLayoutProps, StackLayoutGap } from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+StackLayout has no text of its own. Long content in a child stays inside the stack: each child handles its own long text (see its page). Here a long `LocationPath` is shortened with `…` instead of pushing the stack wider:
+
+```jsx live
+<div
+  style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <StackLayout gap="sm">
+    <LocationPath
+      siteName="Grandparents' summer house by the lake"
+      spaceName="Kitchen and dining area on the ground floor"
+    />
+    <ModuleCard
+      name="Climate Module"
+      connectionStatus="connected"
+      sensors={[{ metric: "temperature", value: 22.4, unit: "celsius" }]}
+    />
+  </StackLayout>
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- StackLayout is a plain `<div>` with no role, because a stack has no meaning of its own. Screen readers go straight to its children.
+- The reading order is the order of the children, so what people hear matches what they see.
+
+What's up to you:
+
+- **Order.** Put the children in the order people should read them. Don't reorder them with CSS.
+- **Meaning.** If the children are a list or a group with a name, StackLayout won't say so. Use a component that does, like [`ContentSection`](./content-section.mdx) for a group with a heading.
+
+## Styling
+
+| What                 | Token                                                                                |
+| -------------------- | ------------------------------------------------------------------------------------ |
+| Gap between children | `sm` `--shk-space-2` (8px), `md` `--shk-space-4` (16px), `lg` `--shk-space-8` (32px) |
+
+StackLayout has nothing else to style. The space tokens are shared by the whole kit, so changing one changes spacing everywhere.
+
+## Related components
+
+- [`ColumnLayout`](./column-layout.mdx): places components side by side.
+- [`ContentSection`](./content-section.mdx): a group of components with a heading.
+- [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that are often stacked.

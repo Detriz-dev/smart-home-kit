@@ -1,0 +1,241 @@
+---
+sidebar_position: 3
+sidebar_label: ContentSection
+description: A group of components with a heading, so people can scan a screen and jump between its parts.
+---
+
+# ContentSection
+
+A group of components with a heading, like "Air quality" or "Comfort". Use it to give a screen its title and split it into named groups. The heading helps people scan the page, and because it's a real heading, screen reader users can jump from group to group.
+
+```jsx live
+<ContentSection title="Bedroom">
+  <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
+  <ModuleCard
+    name="Climate Module"
+    connectionStatus="connected"
+    sensors={[
+      { metric: "temperature", value: 21.5, unit: "celsius" },
+      { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+    ]}
+  />
+</ContentSection>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+ContentSection adds a heading and the space below it. It has no background, border or padding, so you can put it inside any other component, including another ContentSection.
+
+## Import
+
+```tsx
+import { ContentSection } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass a title and put the section's components inside it:
+
+```tsx
+import { ContentSection, ModuleCard } from "@detriz-sh-kit/ui";
+
+<ContentSection title="Air quality" headingLevel={3}>
+  <ModuleCard
+    name="Air Quality Module"
+    connectionStatus="connected"
+    sensors={sensors}
+  />
+</ContentSection>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use ContentSection:
+
+- **for the title of a screen**, like the Space's name
+- **for the groups on a screen**, like "Air quality" and "Comfort"
+
+Don't use it for:
+
+- **Spacing without a heading.** Use [`StackLayout`](./stack-layout.mdx).
+- **Components side by side.** Put a [`ColumnLayout`](./column-layout.mdx) inside the section.
+- **A card's own name.** `ModuleCard` and `SpaceCard` show their names themselves.
+
+## Heading levels
+
+Use the `headingLevel` prop. The default is `2`. The level decides both the HTML element and the text size, so what people see always matches what screen readers announce.
+
+| `headingLevel` | Element | Text size | Use it for                                                  |
+| -------------- | ------- | --------- | ----------------------------------------------------------- |
+| `2`            | `<h2>`  | 32px      | The title of the whole screen, like "Bedroom".              |
+| `3`            | `<h3>`  | 24px      | A group on that screen, like "Air quality".                 |
+| `4`            | `<h4>`  | 20px      | A group inside a group. Rare: most screens need two levels. |
+
+There is no level `1`. Your page owns its one `<h1>`, and the sections sit under it.
+
+### 2
+
+```jsx live
+<ContentSection title="Bedroom" headingLevel={2}>
+  <SensorReading metric="temperature" value={21.5} unit="celsius" size="md" />
+</ContentSection>
+```
+
+### 3
+
+```jsx live
+<ContentSection title="Air quality" headingLevel={3}>
+  <SensorReading
+    metric="co2"
+    value={840}
+    unit="ppm"
+    fractionDigits={0}
+    size="md"
+  />
+</ContentSection>
+```
+
+### 4
+
+```jsx live
+<ContentSection title="Comfort" headingLevel={4}>
+  <SensorReading
+    metric="humidity"
+    value={48}
+    unit="percent-rh"
+    fractionDigits={0}
+    size="md"
+  />
+</ContentSection>
+```
+
+## Nesting sections
+
+Set the level from how deep the section is: `2` for the screen, `3` for its groups, `4` for groups inside those. Never skip a level. Put a [`StackLayout`](./stack-layout.mdx) with `gap="lg"` around sibling sections to separate them:
+
+```jsx live
+<ContentSection title="Bedroom" headingLevel={2}>
+  <StackLayout gap="lg">
+    <ContentSection title="Air quality" headingLevel={3}>
+      <ModuleCard
+        name="Air Quality Module"
+        connectionStatus="connected"
+        sensors={[
+          { metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 },
+        ]}
+      />
+    </ContentSection>
+    <ContentSection title="Comfort" headingLevel={3}>
+      <ModuleCard
+        name="Climate Module"
+        connectionStatus="connected"
+        sensors={[
+          { metric: "temperature", value: 21.5, unit: "celsius" },
+          {
+            metric: "humidity",
+            value: 48,
+            unit: "percent-rh",
+            fractionDigits: 0,
+          },
+        ]}
+      />
+    </ContentSection>
+  </StackLayout>
+</ContentSection>
+```
+
+## Spacing
+
+The heading and each child are 16px apart, and every child fills the full width. There's no space above the heading or below the last child. The spacing is fixed: for a different gap between the children, put a [`StackLayout`](./stack-layout.mdx) inside the section.
+
+## Writing the title
+
+- **Short and plain.** A Space name ("Bedroom") or a topic ("Air quality").
+- **Plain text only.** The title is shown as text, never as HTML, so links, bold and line breaks don't work.
+- **Use the Glossary's words** for things in the home: Space, Module, Sensor. See the [Glossary](/docs/domain-model/glossary).
+
+## Props
+
+| Prop           | Type          | Default | Description                                                                              |
+| -------------- | ------------- | ------- | ---------------------------------------------------------------------------------------- |
+| `title`        | `string`      | –       | **Required.** The section's name, shown as a heading. Plain text, such as "Air quality". |
+| `headingLevel` | `2 \| 3 \| 4` | `2`     | Which heading element to use, from how deep the section is. Also sets the text size.     |
+| `children`     | `ReactNode`   | –       | **Required.** The components that belong to this section, top to bottom.                 |
+
+The types `ContentSectionProps` and `ContentSectionHeadingLevel` are exported too:
+
+```tsx
+import type {
+  ContentSectionProps,
+  ContentSectionHeadingLevel,
+} from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+A long title wraps onto more lines. It's never shortened, so the whole name is always readable. A very long word breaks instead of sticking out.
+
+```jsx live
+<div
+  style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <ContentSection
+    title="Air quality and comfort in the kitchen and dining area"
+    headingLevel={3}
+  >
+    <SensorReading
+      metric="co2"
+      value={840}
+      unit="ppm"
+      fractionDigits={0}
+      size="md"
+    />
+  </ContentSection>
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The section is a `<section>` named by its heading, so screen readers can list the groups and announce the name when entering one.
+- The heading is a real `<h2>`, `<h3>` or `<h4>`, so people can jump between groups with their screen reader's heading shortcut.
+- The title is always shown as text, never as HTML.
+- The heading meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Heading order.** Set `headingLevel` from how deep the section is, and never skip a level. A `4` directly under a `2` confuses screen reader users.
+- **One `<h1>` on the page.** It's yours: put it above the sections.
+- **Order.** Put the children in the order people should read them.
+
+## Styling
+
+| What                             | Token                                                                                 |
+| -------------------------------- | ------------------------------------------------------------------------------------- |
+| Heading colour                   | `--shk-color-text-primary`                                                            |
+| Heading text style               | `2` `--shk-typography-h2-*`, `3` `--shk-typography-h3-*`, `4` `--shk-typography-h4-*` |
+| Gap between heading and children | `--shk-space-4` (16px)                                                                |
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only ContentSection.
+
+## Related components
+
+- [`StackLayout`](./stack-layout.mdx): spacing without a heading. Also separates sibling sections.
+- [`ColumnLayout`](./column-layout.mdx): places components side by side inside a section.
+- [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that often sit in a section.

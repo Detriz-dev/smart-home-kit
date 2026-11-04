@@ -1,0 +1,205 @@
+---
+sidebar_position: 4
+sidebar_label: SensorLabel
+description: Says what a Sensor measures, with an icon and the name of its Metric.
+---
+
+# SensorLabel
+
+Says what a Sensor measures: an icon and the name of its Metric, like Temperature. Use it above a value, in list rows and in table headers, so people know what the number next to it is about.
+
+```jsx live
+<SensorLabel metric="temperature" />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { SensorLabel } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Metric. The label text and the icon follow from it:
+
+```tsx
+import { SensorLabel } from "@detriz-sh-kit/ui";
+
+<SensorLabel metric="humidity" />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use SensorLabel in:
+
+- **card headers**, above the value of a Reading
+- **list rows and table headers**, to name the column or the row
+- **detail views**, as the heading of a Sensor's page
+
+Don't use it for:
+
+- **The value and the Unit** ("22.4 °C"). Use [`ReadingValue`](../readings/reading-value.mdx) and [`UnitLabel`](../readings/unit-label.mdx). To show the label, value and Unit together, use [`SensorReading`](../readings/sensor-reading.mdx): it already includes a SensorLabel.
+- **Where the Sensor is.** Use [`LocationPath`](./location-path.mdx). A Sensor has no location of its own: it uses its Module's.
+- **Status.** Connection Status and Fault belong to the Device, not the Sensor. Use [`DeviceConnectionStatus`](../status/device-connection-status.mdx) or [`DeviceFaultStatus`](../status/device-fault-status.mdx).
+
+SensorLabel looks the same while the value is loading and when the Device is Disconnected. That way people still know _what_ was measured when the number is hidden.
+
+## Variants
+
+SensorLabel changes in two ways: the **Metric** it names and its **size**.
+
+### Metrics
+
+Each Metric has a fixed label and icon. You can't change them, so a Metric looks the same everywhere in your app.
+
+| `metric`      | Label       | Screen readers say |
+| ------------- | ----------- | ------------------ |
+| `temperature` | Temperature | Temperature        |
+| `humidity`    | Humidity    | Humidity           |
+| `illuminance` | Illuminance | Illuminance        |
+| `co2`         | CO₂         | carbon dioxide     |
+| `voc`         | VOC         | VOC                |
+| `pm25`        | PM2.5       | PM 2.5             |
+
+```jsx live
+<StackLayout>
+  <SensorLabel metric="temperature" />
+  <SensorLabel metric="humidity" />
+  <SensorLabel metric="illuminance" />
+  <SensorLabel metric="co2" />
+  <SensorLabel metric="voc" />
+  <SensorLabel metric="pm25" />
+</StackLayout>
+```
+
+### Sizes
+
+Use the `size` prop. The default is `xs`, the same size as `LocationPath`, so the two sit well together in a card header.
+
+| `size` | Text | Icon | Use it when                        |
+| ------ | ---- | ---- | ---------------------------------- |
+| `xs`   | 12px | 16px | Card headers, list rows. Default.  |
+| `sm`   | 14px | 20px | Table headers, roomier cards.      |
+| `md`   | 16px | 24px | Detail views.                      |
+| `lg`   | 18px | 24px | The main heading of a detail view. |
+
+```jsx live
+<StackLayout>
+  <SensorLabel metric="temperature" size="xs" />
+  <SensorLabel metric="temperature" size="sm" />
+  <SensorLabel metric="temperature" size="md" />
+  <SensorLabel metric="temperature" size="lg" />
+</StackLayout>
+```
+
+## Mapping your data
+
+Pass the [Metric](/docs/domain-model/glossary#what-is-tracked) of the Sensor as `metric`.
+
+| Prop     | Domain term                                           | Example       |
+| -------- | ----------------------------------------------------- | ------------- |
+| `metric` | [Metric](/docs/domain-model/glossary#what-is-tracked) | `temperature` |
+
+A few rules from the domain model:
+
+- **One Sensor, one Metric.** A Sensor produces Readings for exactly one Metric, so naming the Metric names the Sensor. There is no separate Sensor name.
+- **A fixed list.** `metric` only accepts the six Metrics above. TypeScript tells you if you pass anything else. The list is exported as the [`Metric` type](../foundations/shared-types.mdx#metric), so you can use it in your own data:
+
+  ```tsx
+  import type { Metric } from "@detriz-sh-kit/ui";
+  ```
+
+- **Not the Subject.** What a Reading is about ("Bedroom", "Kitchen tap") is not shown. SensorLabel only says what is measured.
+
+## Props
+
+| Prop     | Type                                                                       | Default | Description                                                                               |
+| -------- | -------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------- |
+| `metric` | `"temperature" \| "humidity" \| "illuminance" \| "co2" \| "voc" \| "pm25"` | –       | **Required.** The Metric the Sensor measures. The label text and the icon follow from it. |
+| `size`   | `"xs" \| "sm" \| "md" \| "lg"`                                             | `"xs"`  | How big the label is drawn.                                                               |
+
+The types `SensorLabelProps`, `SensorLabelMetric` and `SensorLabelSize` are exported too:
+
+```tsx
+import type {
+  SensorLabelProps,
+  SensorLabelMetric,
+  SensorLabelSize,
+} from "@detriz-sh-kit/ui";
+```
+
+## Long names
+
+SensorLabel never wraps or overflows its container. When there isn't enough room, the name is shortened with `…` and the icon stays whole. The full name shows as a tooltip when you hover over it.
+
+```jsx live
+<div style={{ maxWidth: 100 }}>
+  <SensorLabel metric="illuminance" size="lg" />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The icon is hidden from screen readers. The label already says the same thing.
+- Labels that screen readers read oddly are spoken in full: "CO₂" is read as "carbon dioxide" and "PM2.5" as "PM 2.5".
+- The Metric is told apart by its text and its icon shape, not by colour alone.
+- The text colour meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Headings.** SensorLabel is a plain `<span>`, because it doesn't know where it sits. When it is the heading of a card or a page, wrap it in a heading element:
+
+  ```tsx
+  <h3>
+    <SensorLabel metric="co2" />
+  </h3>
+  ```
+
+- **No extra label.** Don't add an `aria-label` or a visually hidden "Metric:" text. The label is already read out.
+- Check the contrast if you place it on a dark or coloured background.
+
+## Styling
+
+SensorLabel uses the kit's [design tokens](../foundations/design-tokens.mdx) (CSS variables starting with `--shk-`):
+
+| What                      | Token                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| Text and icon colour      | `--shk-color-text-primary`                                                       |
+| Text style                | `xs` caption, `sm` body-sm, `md` body, `lg` body-lg (`--shk-typography-…`)       |
+| Gap between icon and name | `--shk-space-1` (4px) for `xs` and `sm`, `--shk-space-2` (8px) for `md` and `lg` |
+
+SensorLabel has no padding or background: the space around it belongs to the parent.
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only SensorLabel:
+
+```css
+.my-card-header {
+  --shk-color-text-primary: var(--shk-palette-gray-700);
+}
+```
+
+## Related components
+
+- [`SensorReading`](../readings/sensor-reading.mdx): the label, the value and the Unit together. Uses SensorLabel inside.
+- [`ReadingValue`](../readings/reading-value.mdx): the value of a Reading.
+- [`UnitLabel`](../readings/unit-label.mdx): the Unit next to a value.
+- [`LocationPath`](./location-path.mdx): where the Device is. Sits well next to SensorLabel in a card header.

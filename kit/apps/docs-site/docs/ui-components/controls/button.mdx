@@ -1,0 +1,243 @@
+---
+sidebar_position: 2
+sidebar_label: Button
+description: A text button for an action, like "Send prompt", "Retry" or "Add".
+---
+
+# Button
+
+A text button for an action, like "Send prompt", "Retry" or "Add". It shows a text and calls `onClick`: your app decides what the click does.
+
+```jsx live
+<Button variant="primary" onClick={() => {}}>
+  Send prompt
+</Button>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { Button } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the text as children and what should happen as `onClick`:
+
+```tsx
+import { Button } from "@detriz-sh-kit/ui";
+
+<Button onClick={() => retry()}>Retry</Button>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use Button for **an action** that happens when it's clicked:
+
+- sending a prompt, retrying, undoing
+- answering a question with one of a few options, like "Which Space?"
+- starting a step in your app, like adding a Device
+
+Don't use it for:
+
+- **A setting that is on or off.** Use [`Switch`](./switch.mdx).
+- **Going to another page.** Use a link: a Button doesn't navigate.
+
+A Button never talks to a Device by itself. If a click should send a command, like Pair Device, your app sends it in `onClick`.
+
+## Variants
+
+Use the `variant` prop. The default is `secondary`.
+
+| `variant`   | Looks like                          | Use it for                                                          |
+| ----------- | ----------------------------------- | ------------------------------------------------------------------- |
+| `primary`   | Blue fill, white text               | **The one main action** in a place, like "Send prompt".             |
+| `secondary` | White fill, grey outline, dark text | Every other action, like "Retry", "Undo" and answers to a question. |
+
+Use only one primary Button in a place, so the main action is easy to find.
+
+### primary
+
+```jsx live
+<Button variant="primary" onClick={() => {}}>
+  Send prompt
+</Button>
+```
+
+### secondary
+
+```jsx live
+<Button variant="secondary" onClick={() => {}}>
+  Retry
+</Button>
+```
+
+## States
+
+Hover, pressed and focus come from the browser: you don't set them. Only disabled has a prop.
+
+| State    | How it happens                 | primary                    | secondary                                 |
+| -------- | ------------------------------ | -------------------------- | ----------------------------------------- |
+| Hover    | The pointer is over it         | Darker blue                | Light grey fill                           |
+| Pressed  | It's being clicked             | Darkest blue               | Grey fill                                 |
+| Focus    | It's reached with the keyboard | + a blue ring around it    | + a blue ring around it                   |
+| Disabled | `isDisabled`                   | Light grey fill, grey text | Light grey fill, faint outline, grey text |
+
+Hover over the buttons, click them, or press Tab to see the states. The counter shows that clicks reach `onClick`:
+
+```jsx live
+function States() {
+  const [clicks, setClicks] = useState(0);
+  return (
+    <StackLayout gap="sm">
+      <span>Clicked {clicks} times</span>
+      <div
+        style={{ display: "flex", flexWrap: "wrap", gap: "var(--shk-space-2)" }}
+      >
+        <Button variant="primary" onClick={() => setClicks((c) => c + 1)}>
+          Primary
+        </Button>
+        <Button onClick={() => setClicks((c) => c + 1)}>Secondary</Button>
+      </div>
+    </StackLayout>
+  );
+}
+```
+
+### Disabled
+
+Disable a Button when its action can't run right now, for example "Send prompt" while a screen is being built. A disabled Button ignores clicks and is skipped by Tab.
+
+```jsx live
+<div style={{ display: "flex", flexWrap: "wrap", gap: "var(--shk-space-2)" }}>
+  <Button variant="primary" isDisabled onClick={() => {}}>
+    Send prompt
+  </Button>
+  <Button isDisabled onClick={() => {}}>
+    Retry
+  </Button>
+</div>
+```
+
+## Answering a question
+
+To let people pick one of a few answers, show one secondary Button per answer. When the answers are things in the home, use their names as they are, like Space names:
+
+```jsx live
+function WhichSpace() {
+  const [space, setSpace] = useState(null);
+  const spaces = ["Living room", "Bedroom", "Kitchen"];
+
+  return (
+    <StackLayout gap="sm">
+      <span>{space ? `You picked: ${space}` : "Which Space?"}</span>
+      <div
+        style={{ display: "flex", flexWrap: "wrap", gap: "var(--shk-space-2)" }}
+      >
+        {spaces.map((name) => (
+          <Button key={name} onClick={() => setSpace(name)}>
+            {name}
+          </Button>
+        ))}
+      </div>
+    </StackLayout>
+  );
+}
+```
+
+## Width
+
+A Button is as wide as its text, at least 44px tall. Inside a [`StackLayout`](../layout/stack-layout.mdx) it fills the full width, like every child of a stack. Wrap it in a `<div>` to keep its own width (see [Width](../layout/stack-layout.mdx#width) on the StackLayout page).
+
+## Props
+
+| Prop         | Type                       | Default       | Description                                                                                                   |
+| ------------ | -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------- |
+| `children`   | `ReactNode`                | –             | **Required.** The text on the button, like "Send prompt" or a Space name.                                     |
+| `onClick`    | `() => void`               | –             | **Required.** Called when the button is clicked, or activated with Enter or Space. Not called while disabled. |
+| `variant`    | `"primary" \| "secondary"` | `"secondary"` | How much weight the action has.                                                                               |
+| `isDisabled` | `boolean`                  | `false`       | Greys the button out and ignores clicks.                                                                      |
+
+The types `ButtonProps` and `ButtonVariant` are exported too:
+
+```tsx
+import type { ButtonProps, ButtonVariant } from "@detriz-sh-kit/ui";
+```
+
+The button always has `type="button"`, so it never submits a form by accident. To submit a form, call it from `onClick`.
+
+## Long text
+
+A long text wraps onto a second line instead of being cut off, and the button gets taller:
+
+```jsx live
+<div
+  style={{ maxWidth: 120, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <Button onClick={() => {}}>Open-plan desk zone</Button>
+</div>
+```
+
+Keep button texts short: a verb for an action ("Retry"), or the name of the answer ("Kitchen").
+
+## Accessibility
+
+What you get without doing anything:
+
+- It's a real `<button>`: Tab reaches it, and Enter or Space activates it.
+- **Focus** shows a blue ring, only when the button is reached with the keyboard.
+- **Disabled** uses the browser's own `disabled`, so the button leaves the Tab order and screen readers say it's unavailable.
+- At least **44px tall**, so it's easy to hit on a touch screen.
+- **Contrast:** white on the primary blue is about 4.7:1, and dark text on the secondary fill is above 4.5:1. Primary and secondary differ by fill and outline, not by colour alone.
+
+What's up to you:
+
+- **Clear text.** The text is the button's name for screen readers too, so it must make sense on its own. "Retry" is clear; "Click here" isn't.
+- **Say why it's disabled.** A greyed-out button doesn't explain itself. Add a short note next to it when the reason isn't obvious.
+- **One primary per place.** More than one makes it hard to see the main action.
+
+## Styling
+
+Button uses the kit's `action` tokens:
+
+| What                    | Token                                                                                  |
+| ----------------------- | -------------------------------------------------------------------------------------- |
+| Primary fill            | `--shk-action-primary-bg`, `-bg-hover`, `-bg-pressed`                                  |
+| Primary text            | `--shk-action-primary-fg`                                                              |
+| Secondary fill          | `--shk-action-secondary-bg`, `-bg-hover`, `-bg-pressed`                                |
+| Secondary outline, text | `--shk-action-secondary-border`, `--shk-action-secondary-fg`                           |
+| Disabled                | `--shk-action-disabled-bg`, `--shk-action-disabled-border`, `--shk-action-disabled-fg` |
+| Focus ring              | `--shk-action-focus`                                                                   |
+| Text style              | `--shk-typography-label-*` (14px, medium)                                              |
+| Height, padding, radius | `--shk-size-11` (44px), `--shk-space-4` (16px), `--shk-radius-8` (8px)                 |
+
+The `action` tokens are shared by every Button, so change them for the whole app:
+
+```css
+:root {
+  --shk-action-primary-bg: var(--shk-palette-blue-700);
+}
+```
+
+## Related components
+
+- [`Switch`](./switch.mdx): for a setting that is on or off.
+- [`StackLayout`](../layout/stack-layout.mdx): stacks Buttons under each other, at full width.
+- [`DevicePairingStatus`](../status/device-pairing-status.mdx): its example uses a Button to add a Module.

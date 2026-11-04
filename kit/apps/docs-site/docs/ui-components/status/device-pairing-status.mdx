@@ -1,0 +1,205 @@
+---
+sidebar_position: 2
+sidebar_label: DevicePairingStatus
+description: Shows whether a Device belongs to the Account, as a short label with a coloured dot.
+---
+
+# DevicePairingStatus
+
+Shows a Device's Pairing Status as a short label with a coloured dot: Unpaired, Pairing or Paired. Use it while people add Devices to their Account, so they can see which Devices are new, which are being set up and which are done.
+
+```jsx live
+<DevicePairingStatus status="paired" />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { DevicePairingStatus } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Device's Pairing Status:
+
+```tsx
+import { DevicePairingStatus } from "@detriz-sh-kit/ui";
+
+<DevicePairingStatus status="unpaired" />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use DevicePairingStatus:
+
+- **in a setup flow**, while a Hub or Module is being added
+- **in a list of detected Devices**, like "New module found" in a Hub's settings
+
+Don't use it for:
+
+- **Whether a Paired Device can be reached.** Use [`DeviceConnectionStatus`](./device-connection-status.mdx). Once a Device is Paired, that's usually what people want to see.
+- **Faults.** Use [`DeviceFaultStatus`](./device-fault-status.mdx).
+- **Why pairing failed.** A failed pairing goes back to Unpaired. Tell people what went wrong with a message next to it.
+
+## States
+
+One state per Pairing Status. Each has its own label and dot colour.
+
+| `status`   | Label    | Dot   | Means                                                                          |
+| ---------- | -------- | ----- | ------------------------------------------------------------------------------ |
+| `unpaired` | Unpaired | grey  | The Device has been detected, but the user hasn't added it to the Account yet. |
+| `pairing`  | Pairing  | blue  | First-time setup is running: the Device is joining the Account.                |
+| `paired`   | Paired   | green | The Device belongs to the Account. From now on it has a Connection Status.     |
+
+The colours mean the same as in `DeviceConnectionStatus`: grey for "not active", blue for "in progress", green for "done".
+
+### Unpaired
+
+```jsx live
+<DevicePairingStatus status="unpaired" />
+```
+
+### Pairing
+
+```jsx live
+<DevicePairingStatus status="pairing" />
+```
+
+### Paired
+
+```jsx live
+<DevicePairingStatus status="paired" />
+```
+
+### When pairing finishes
+
+Pass the new status when it changes. The component updates and screen readers announce the new label (see [Accessibility](#accessibility)). Press **Add** to try it:
+
+```jsx live
+function AddModule() {
+  const [status, setStatus] = useState("unpaired");
+
+  function add() {
+    setStatus("pairing");
+    // Setup takes a few seconds, for the example.
+    setTimeout(() => setStatus("paired"), 2000);
+  }
+
+  return (
+    <div style={{ maxWidth: 240 }}>
+      <StackLayout>
+        <span
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "var(--shk-space-2)",
+          }}
+        >
+          <LocationPath deviceName="Climate Module" />
+          <DevicePairingStatus status={status} />
+        </span>
+        {status === "unpaired" && <Button onClick={add}>Add</Button>}
+      </StackLayout>
+    </div>
+  );
+}
+```
+
+## Mapping your data
+
+| Prop     | Comes from                                                                | Example      |
+| -------- | ------------------------------------------------------------------------- | ------------ |
+| `status` | The Device's [Pairing Status](/docs/domain-model/glossary#pairing-status) | `"unpaired"` |
+
+A few rules from the domain model:
+
+- **Hubs and Modules** both have a Pairing Status.
+- **A detected Device starts as Unpaired,** so there is always a status to pass. There is no loading state.
+- **Pairing Failed goes back to Unpaired.** There is no "failed" status.
+- **Only Paired Devices have a Connection Status.** Show `DeviceConnectionStatus` only after the Device is Paired.
+- **It's one of three fields.** Pairing Status, Connection Status and Fault are independent. See [Device lifecycle](/docs/domain-model/device-lifecycle#pairing-status) for how a Device moves between Pairing Statuses.
+
+## Props
+
+| Prop     | Type                                  | Default | Description                                        |
+| -------- | ------------------------------------- | ------- | -------------------------------------------------- |
+| `status` | `"unpaired" \| "pairing" \| "paired"` | –       | **Required.** The Device's current Pairing Status. |
+
+The types `DevicePairingStatusProps` and `PairingStatus` are exported too. Use `PairingStatus` for the status in your own data, so it always matches what the component accepts:
+
+```tsx
+import type {
+  DevicePairingStatusProps,
+  PairingStatus,
+} from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+The labels are short and fixed, so they never wrap or get shortened. The longest, "Unpaired", fits a 96px container, and the dot keeps its size:
+
+```jsx live
+<div
+  style={{ maxWidth: 96, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <DevicePairingStatus status="unpaired" />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- **Not colour alone.** The label says the status in words. The dot only repeats it, and screen readers skip it.
+- **Changes are announced.** The component is a polite live region (`role="status"`), so when pairing finishes, screen readers read "Paired" without moving focus.
+- The label meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Say which Device it is.** Place it next to the Device's name, so "Paired" is never read without its Device.
+- **Don't add another live region** around it. It already announces its changes, and a second one would announce them twice.
+- **Explain failures.** If pairing fails, the status goes back to "Unpaired". Add a message that says what happened, so people don't miss it.
+
+## Styling
+
+DevicePairingStatus uses the same tokens as `DeviceConnectionStatus` (CSS variables starting with `--shk-`):
+
+| What                   | Token                                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| Label colour           | `--shk-color-text-primary`                                                                                              |
+| Label text style       | `--shk-typography-caption-*` (12px)                                                                                     |
+| Background             | `--shk-surface-default`                                                                                                 |
+| Gap and inline padding | `--shk-space-1` (4px)                                                                                                   |
+| Dot size               | `--shk-size-3` (12px)                                                                                                   |
+| Dot colour             | `unpaired` `--shk-status-neutral-solid`, `pairing` `--shk-status-progress-solid`, `paired` `--shk-status-success-solid` |
+
+The status colours are shared by every Status component, so change them for the whole app, not one screen:
+
+```css
+:root {
+  --shk-status-progress-solid: var(--shk-palette-blue-500);
+}
+```
+
+## Related components
+
+- [`DeviceConnectionStatus`](./device-connection-status.mdx): whether a Paired Device can be reached right now.
+- [`DeviceFaultStatus`](./device-fault-status.mdx): the Device's Fault, if it has one.
+- [`LocationPath`](../context/location-path.mdx): the Device's name and where it is. Sits well next to the status.

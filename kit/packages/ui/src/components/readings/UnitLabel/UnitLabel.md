@@ -1,5 +1,7 @@
 # UnitLabel
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/readings/unit-label.mdx). Props are defined in [`UnitLabel.types.ts`](./UnitLabel.types.ts).
+
 ### Purpose
 
 Shows the Unit of a Metric as a short symbol: "°C", "%RH", "ppm". It sits next to `ReadingValue` so the user knows what the number means: **22.4** °C.
@@ -124,26 +126,13 @@ Long text never wraps and never truncates: `white-space: nowrap`, so "%RH" never
 
 ### API
 
-```ts
-/** Which Unit to show. One value per Unit in the fixed list. */
-type UnitLabelUnit =
-  "celsius" | "fahrenheit" | "percent-rh" | "lux" | "ppm" | "ppb" | "ug-m3";
+The props are defined in [`UnitLabel.types.ts`](./UnitLabel.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-/** How big the Unit is drawn. Same names as ReadingValue's sizes. */
-type UnitLabelSize = "xs" | "sm" | "md" | "lg";
-
-interface UnitLabelProps {
-  /** Which Unit to show, e.g. `celsius` for °C. */
-  unit: UnitLabelUnit;
-  /** How big the Unit is drawn. Use the same size as the ReadingValue next to it. Defaults to `lg`. */
-  size?: UnitLabelSize;
-}
-```
-
-Notes:
+The decisions behind them:
 
 - `unit` is required: there is no sensible default Unit.
-- The symbol and the spoken name live in one place inside the component (one entry per Unit), so adding a Unit means adding one line, plus the Figma variants.
+- `size` is `"xs" | "sm" | "md" | "lg"`, default `lg`, the same names as `ReadingValue`'s sizes, so a parent can pass one `size` to both.
+- The symbol and the spoken name live in one place inside the component (`UNITS` in `UnitLabel.tsx`, one entry per Unit), so adding a Unit means adding one line, plus the Figma variants.
 - The values match the Figma variant values exactly, so a designer and a developer use the same words.
 - There is no `value` prop and no status prop. UnitLabel looks the same in every Connection Status.
 
@@ -195,6 +184,7 @@ Every value is bound to a Figma variable. No new tokens are needed.
 
 - The screen reader hears the spoken name ("degrees Celsius"), not the symbol. Together with `ReadingValue` and the Metric label, the parent's group reads "Temperature 22.4 degrees Celsius".
 - No live region: the Unit never changes on its own.
+- Apps shouldn't add an `aria-label` or their own hidden text for the Unit: the spoken name is already read out, so it would be announced twice. The user docs page tells developers this.
 - Not colour alone: the Unit is told apart by its text. The secondary colour only lowers its weight next to the number.
 - Contrast: gray 700 (`--shk-color-text-secondary`) on a light surface is above 4.5:1, also at 14px.
 - No motion.

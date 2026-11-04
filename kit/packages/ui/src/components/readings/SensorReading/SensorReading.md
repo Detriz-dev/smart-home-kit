@@ -1,5 +1,7 @@
 # SensorReading
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/readings/sensor-reading.mdx). Props are defined in [`SensorReading.types.ts`](./SensorReading.types.ts).
+
 ### Purpose
 
 Shows the latest Reading of one Sensor as a small card: what is measured on top ("Temperature"), the value and its Unit below ("22.4 °C"). It is the building block of a Module overview: `ModuleCard` shows one SensorReading per Sensor in the Module. It can also stand on its own, for example in a Space overview.
@@ -16,11 +18,11 @@ Category: **Readings** ("What is it right now?"). A composite keeps the category
 
 It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx):
 
-| Part  | Domain term                                                                                            | Example     | Shown by       |
-| ----- | ------------------------------------------------------------------------------------------------------ | ----------- | -------------- |
+| Part  | Domain term                                                                                        | Example     | Shown by       |
+| ----- | -------------------------------------------------------------------------------------------------- | ----------- | -------------- |
 | label | **Metric** (names the [Sensor](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked)) | Temperature | `SensorLabel`  |
-| value | **Reading** (its value)                                                                                | 22.4        | `ReadingValue` |
-| unit  | **Unit**                                                                                               | °C          | `UnitLabel`    |
+| value | **Reading** (its value)                                                                            | 22.4        | `ReadingValue` |
+| unit  | **Unit**                                                                                           | °C          | `UnitLabel`    |
 
 A Sensor measures exactly one Metric, so the Metric name is enough to name the Sensor (same reasoning as in `SensorLabel`).
 
@@ -122,27 +124,9 @@ Figma layer names follow this anatomy: the value row is called `reading`. The ne
 
 ### API
 
-```ts
-/** How big the value and the Unit are drawn. Passed to ReadingValue and UnitLabel. */
-type SensorReadingSize = "lg" | "md";
+The props are defined in [`SensorReading.types.ts`](./SensorReading.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface SensorReadingProps {
-  /** The Metric the Sensor measures, e.g. `temperature`. Decides the label and its icon. */
-  metric: SensorLabelMetric;
-  /** The latest value of the Reading. `null` while the first Reading is on its way. */
-  value: number | null;
-  /** The Unit to show, e.g. `celsius`. The parent picks it, so it can choose the display Unit (°C or °F). */
-  unit: UnitLabelUnit;
-  /** True when the Module's Connection Status is Disconnected. Hides the value and shows the disconnected icon. */
-  isDisconnected?: boolean;
-  /** How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0). Defaults to 1. */
-  fractionDigits?: number;
-  /** How big the value and the Unit are drawn. Defaults to `lg`. */
-  size?: SensorReadingSize;
-}
-```
-
-Notes:
+The decisions behind them:
 
 - `metric`, `unit`, `value`, `isDisconnected` and `fractionDigits` are passed on unchanged, with the same names and types as in `SensorLabel`, `UnitLabel` and `ReadingValue`. Someone who knows those components already knows this one.
 - `unit` is separate from `metric` because one Metric can have more than one display Unit (Temperature: °C or °F). The glossary calls the display Unit "a formatting choice", and formatting choices belong to the parent.

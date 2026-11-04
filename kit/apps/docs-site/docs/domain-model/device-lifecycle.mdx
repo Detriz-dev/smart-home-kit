@@ -7,7 +7,7 @@ sidebar_label: Device lifecycle
 
 This page describes how a **Device** (a Hub or a Module) moves through its life: from being detected, through pairing and day-to-day connection, to being removed. It builds on the [Glossary](./glossary.mdx) and the [Data model](./data-model.mdx). Simulated Devices from the API Simulator go through exactly the same lifecycle.
 
-The statuses (Unpaired, Connected, …) come from the glossary. The **events** that move a Device between statuses (Device Paired, Device Went Stale, …) are _(proposed)_: they aren't part of the glossary yet.
+The statuses (Unpaired, Connected, …) come from the glossary. The **events** that move a Device between statuses (Device Paired, Device Went Stale, …) are _(proposed)_: they aren't part of the glossary yet. They are listed, with the commands, on [Events and commands](./events-and-commands.mdx).
 
 ## How to read the diagrams
 
@@ -239,41 +239,11 @@ sequenceDiagram
 
 ## Events and commands
 
-A **command** is a request that can be refused. An **event** is a fact: it already happened. All names below are _(proposed)_.
-
-### Events
-
-| Event | Field it changes | Raised by |
-| --- | --- | --- |
-| **Device Detected** | Pairing → Unpaired | Hub software (Module) or API (Hub) |
-| **Pairing Started** | Pairing → Pairing | API, after the Pair Device command |
-| **Device Paired** | Pairing → Paired; Connection starts at Connecting | Hub software |
-| **Pairing Failed** | Pairing → Unpaired | Hub software |
-| **Device Dismissed** | Leaves the lifecycle | API, after the Dismiss Device command |
-| **Device Removed** | Leaves the lifecycle | API, after the Remove Device command |
-| **Device Connected** | Connection → Connected | Hub software or API |
-| **Device Went Stale** | Connection → Stale | Staleness Policy (Telemetry) |
-| **Device Disconnected** | Connection → Disconnected | API (link lost) or Hub software (Module unplugged) |
-| **Connection Timed Out** | Connection → Disconnected | API |
-| **Reconnect Started** | Connection → Connecting | Hub software or API |
-| **Reading Recorded** | Connection Stale → Connected | Telemetry |
-| **Fault Raised** / **Fault Cleared** | Fault | Hub software (the Device reports it) |
-| **Hub Placed** | Hub placement | API, after the Place Hub command |
-
-### Commands
-
-| Command | Who sends it | Refused when |
-| --- | --- | --- |
-| **Pair Device** | User | The Device isn't Unpaired, or it's a Module whose Hub isn't Paired |
-| **Dismiss Device** | User | The Device isn't Unpaired |
-| **Remove Device** | User | The Device isn't Paired |
-| **Place Hub** | User | The Hub isn't Paired, or the Space is in a Site the user doesn't own |
-
-Only a Site's owner can send these commands for its Devices. Accounts the Site is shared with can only view it.
+The events that move a Device between these statuses, and the commands a user can send (Pair Device, Remove Device…), are listed on their own page: [Events and commands](./events-and-commands.mdx). Each event there links back to the rules below that it follows.
 
 ## Rules
 
-These add to the [rules in the Data model](./data-model.mdx#rules-the-diagrams-cant-show).
+These add to the [rules in the Data model](./data-model.mdx#rules-the-diagrams-cant-show). [Events and commands](./events-and-commands.mdx) shows which events and commands follow which rule.
 
 1. **Connection Status exists only while Paired.** (Already invariant 8.)
 2. **A Paired Device always starts at Connecting**, never straight at Connected.

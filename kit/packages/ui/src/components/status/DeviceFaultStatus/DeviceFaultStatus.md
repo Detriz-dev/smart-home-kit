@@ -1,5 +1,7 @@
 # DeviceFaultStatus
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/status/device-fault-status.mdx). Props are defined in [`DeviceFaultStatus.types.ts`](./DeviceFaultStatus.types.ts).
+
 ### Purpose
 
 A small indicator that shows a Device has a Fault: a danger icon and a short message, for example "CO₂ sensor failure". It tells the user the hardware has a problem, so they don't mistake a broken Sensor for a normal value.
@@ -83,19 +85,9 @@ root           <span role="status">   icon and message in one row
 
 ### API
 
-```ts
-/** Which hardware problem the Device reports. See kit/apps/docs-site/docs/domain-model/glossary.mdx. */
-type FaultCode = "sensor_failure" | "calibration_required";
+The props are defined in [`DeviceFaultStatus.types.ts`](./DeviceFaultStatus.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface DeviceFaultStatusProps {
-  /** The Fault Code of the Device's current Fault. Decides the message. */
-  faultCode: FaultCode;
-  /** The Metric of the affected Sensor, when the Fault is about one Sensor. Adds it to the message. */
-  metric?: Metric;
-}
-```
-
-Notes:
+The decisions behind them:
 
 - The Metric's name comes from `METRIC_NAMES` in `utils/metricNames.ts`, the same list `SensorLabel` uses.
 - `metric`, not `sensorId`: **Fault Raised** carries an optional `sensorId`, but this component takes props only and can't look it up. The parent finds the Sensor's Metric and passes it.
@@ -124,7 +116,7 @@ Stories: `SensorFailure`, `CalibrationRequired`, `LongText`, `Minimal`.
 
 ### Accessibility
 
-- `root` has `role="status"`, like `DeviceConnectionStatus`, so a new Fault is announced without interrupting.
+- `root` has `role="status"`, like `DeviceConnectionStatus`, so a new Fault is announced without interrupting. Apps shouldn't wrap it in another live region: it would be announced twice. The user docs page tells developers this.
 - The icon has no label, because the text says the same thing.
 - Not colour alone: the icon shape and the text both carry the meaning.
 - `metric` needs the spoken name from `SensorLabel`, so a screen reader says "carbon dioxide sensor failure".

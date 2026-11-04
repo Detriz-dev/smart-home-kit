@@ -1,0 +1,456 @@
+---
+sidebar_position: 5
+sidebar_label: SpaceCard
+description: Shows one Space at a glance, with its name, its Faults and the latest Reading of each Metric.
+---
+
+# SpaceCard
+
+Shows one Space at a glance: its name, any Faults, and one row per Metric with the latest Reading. Use it for whole-home screens: one SpaceCard per Space, instead of a card for every Module.
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: 21.5,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+      {
+        metric: "humidity",
+        value: 48,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+      {
+        metric: "co2",
+        value: 840,
+        unit: "ppm",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+      {
+        metric: "illuminance",
+        value: 120,
+        unit: "lux",
+        fractionDigits: 0,
+        connectionStatus: "stale",
+      },
+    ]}
+  />
+</div>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+SpaceCard puts components you may already know together: [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx) and [`UnitLabel`](./unit-label.mdx) in each row, [`DeviceConnectionStatus`](../status/device-connection-status.mdx) when a row is Stale, and [`DeviceFaultStatus`](../status/device-fault-status.mdx) for each Fault. It adds the card, the rows and the Space name. It takes props only and calculates nothing.
+
+## Import
+
+```tsx
+import { SpaceCard } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Space's name and one Reading per Metric. Each Reading also carries the Connection Status of the Module it comes from:
+
+```tsx
+import { SpaceCard } from "@detriz-sh-kit/ui";
+
+<SpaceCard
+  name="Kitchen"
+  readings={[
+    {
+      metric: "temperature",
+      value: 22.4,
+      unit: "celsius",
+      connectionStatus: "connected",
+    },
+  ]}
+/>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+The card fills the width its parent gives it. The examples wrap it in a `<div>` with a `maxWidth` so it has a realistic width on this page.
+
+## When to use it
+
+Use SpaceCard:
+
+- **on a Site overview**, one card per Space
+- **to answer one question across Spaces**, like "the temperature in every room", by passing only that Metric
+
+Don't use it for:
+
+- **One Module and its Sensors.** Use [`ModuleCard`](./module-card.mdx). SpaceCard is about the Space and doesn't name its Modules.
+- **One Reading on its own.** Use [`SensorReading`](./sensor-reading.mdx).
+- **A Space with no Readings.** The card needs at least one row. For a Space with no Paired Modules, show a message instead.
+
+## States
+
+SpaceCard has no `state` prop, and there is no status for the whole card. A Space has no Connection Status of its own: only Devices do. So **each row** works out its own state from its `connectionStatus` and `value`, and one card can mix row states.
+
+| Row state    | When (first match wins)                | Row shows                            | Screen readers say                         |
+| ------------ | -------------------------------------- | ------------------------------------ | ------------------------------------------ |
+| Disconnected | `connectionStatus` is `"disconnected"` | Temperature · disconnected icon · °C | "Temperature, Disconnected"                |
+| Loading      | `value` is `null`                      | Temperature · loading icon · °C      | "Temperature, Loading"                     |
+| Stale        | `connectionStatus` is `"stale"`        | Temperature · Stale ● · 21.5 °C      | "Temperature, Stale, 21.5 degrees Celsius" |
+| Connected    | anything else                          | Temperature · 21.5 °C                | "Temperature, 21.5 degrees Celsius"        |
+
+A Stale row keeps its last value and shows "Stale" next to it. A Disconnected row hides its value, even if you pass one.
+
+### Connected
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: 21.5,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+      {
+        metric: "humidity",
+        value: 48,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+</div>
+```
+
+### Loading
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: null,
+        unit: "celsius",
+        connectionStatus: "connecting",
+      },
+      {
+        metric: "humidity",
+        value: null,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "connecting",
+      },
+    ]}
+  />
+</div>
+```
+
+### Stale
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: 21.5,
+        unit: "celsius",
+        connectionStatus: "stale",
+      },
+      {
+        metric: "humidity",
+        value: 48,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "stale",
+      },
+    ]}
+  />
+</div>
+```
+
+### Disconnected
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: 21.5,
+        unit: "celsius",
+        connectionStatus: "disconnected",
+      },
+      {
+        metric: "humidity",
+        value: 48,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "disconnected",
+      },
+    ]}
+  />
+</div>
+```
+
+### Mixed rows
+
+In a real Space the rows often come from different Modules, so they can be in different states. Here the Light Module is Disconnected while the Climate Module is Connected:
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Living room"
+    readings={[
+      {
+        metric: "temperature",
+        value: 22.4,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+      {
+        metric: "humidity",
+        value: 51,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+      {
+        metric: "illuminance",
+        value: 320,
+        unit: "lux",
+        fractionDigits: 0,
+        connectionStatus: "disconnected",
+      },
+    ]}
+  />
+</div>
+```
+
+## Faults
+
+Pass the Faults of the Space's Modules in `faults`. The card shows one message per Fault under the name, on top of any row state.
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Living room"
+    faults={[{ faultCode: "sensor_failure", metric: "co2" }]}
+    readings={[
+      {
+        metric: "temperature",
+        value: 22.4,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+      {
+        metric: "co2",
+        value: 1250,
+        unit: "ppm",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+</div>
+```
+
+SpaceCard doesn't name Modules, so pass `metric` with each Fault when you can. "CO₂ sensor failure" tells people which Sensor; "Sensor failure" alone doesn't, in a Space with several Modules.
+
+## One Metric across Spaces
+
+Pass only the Metrics a screen needs. For "the temperature in every room", give each Space one row:
+
+```jsx live
+<ColumnLayout>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: 21.5,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+  <SpaceCard
+    name="Kitchen"
+    readings={[
+      {
+        metric: "temperature",
+        value: 23.1,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+  <SpaceCard
+    name="Hall"
+    readings={[
+      {
+        metric: "temperature",
+        value: 19.8,
+        unit: "celsius",
+        connectionStatus: "stale",
+      },
+    ]}
+  />
+</ColumnLayout>
+```
+
+## Mapping your data
+
+| Prop       | Comes from                                                                     | Example                                            |
+| ---------- | ------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `name`     | The [Space](/docs/domain-model/glossary#where-things-are)'s name               | `"Bedroom"`                                        |
+| `readings` | One latest Reading per Metric, from the Space's Modules                        | see below                                          |
+| `faults`   | The current [Faults](/docs/domain-model/glossary#fault) of the Space's Modules | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
+
+Each item in `readings`:
+
+| Field              | Comes from                                                                                                       | Example         |
+| ------------------ | ---------------------------------------------------------------------------------------------------------------- | --------------- |
+| `metric`           | The Sensor's [Metric](/docs/domain-model/glossary#what-is-tracked)                                               | `"temperature"` |
+| `value`            | The value of its latest Reading, or `null` before the first one                                                  | `21.5`          |
+| `unit`             | The display Unit you chose for the Metric                                                                        | `"celsius"`     |
+| `fractionDigits`   | The Metric (optional, default `1`)                                                                               | `0` for CO₂     |
+| `connectionStatus` | The [Connection Status](/docs/domain-model/glossary#connection-status) of the **Module** this Reading comes from | `"stale"`       |
+
+Each item in `faults` has the same fields as [`DeviceFaultStatus`](../status/device-fault-status.mdx#mapping-your-data): `faultCode` and an optional `metric`.
+
+A few rules:
+
+- **The status belongs to each row.** A Space has no Connection Status, and it can hold several Modules. Pass each Reading with the status of the Module it comes from.
+- **One row per Metric.** The card uses the Metric to tell rows apart, so pass each Metric once.
+- **Two Modules measuring the same Metric?** You choose which Reading to pass. The card shows what it gets and never averages: an average isn't a Reading.
+- **The order is yours.** Rows show in the order of the list.
+- **At least one row.** For a Space with no Paired Modules, show a message instead of the card.
+- **Before the first Readings,** pass `connectionStatus: "connecting"` and `null` values.
+
+## Props
+
+| Prop       | Type                       | Default | Description                                                               |
+| ---------- | -------------------------- | ------- | ------------------------------------------------------------------------- |
+| `name`     | `string`                   | –       | **Required.** The Space name, for example "Bedroom".                      |
+| `readings` | `SpaceCardReading[]`       | –       | **Required.** One row per Metric, in display order. At least one.         |
+| `faults`   | `DeviceFaultStatusProps[]` | none    | Current Faults in this Space's Modules. Leave it out when there are none. |
+
+`SpaceCardReading`:
+
+| Field              | Type                                                       | Default | Description                                                                   |
+| ------------------ | ---------------------------------------------------------- | ------- | ----------------------------------------------------------------------------- |
+| `metric`           | `Metric` (`"temperature"`, `"humidity"`, …)                | –       | **Required.** The Metric the Sensor measures. Also tells the rows apart.      |
+| `value`            | `number \| null`                                           | –       | **Required.** The latest value. `null` while the first Reading is on its way. |
+| `unit`             | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)           | –       | **Required.** The Unit to show. You pick it, so you can choose °C or °F.      |
+| `fractionDigits`   | `number`                                                   | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).    |
+| `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** Connection Status of the Module this Reading comes from.        |
+
+The types `SpaceCardProps` and `SpaceCardReading` are exported too:
+
+```tsx
+import type { SpaceCardProps, SpaceCardReading } from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+- **The Space name** stays on one line and ends with `…`. The full name shows on hover.
+- **The value, Unit and status** are never shortened. When a row has no room for the label and the reading side by side, the reading moves onto its own line below the label.
+
+```jsx live
+<div style={{ maxWidth: 240 }}>
+  <SpaceCard
+    name="Living room by the garden window"
+    faults={[{ faultCode: "calibration_required", metric: "co2" }]}
+    readings={[
+      {
+        metric: "illuminance",
+        value: 100000,
+        unit: "lux",
+        fractionDigits: 0,
+        connectionStatus: "stale",
+      },
+      {
+        metric: "pm25",
+        value: 12,
+        unit: "ug-m3",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+</div>
+```
+
+A row that loses its value (Loading or Disconnected) is 2px taller than one that shows a value, so a card can grow slightly when its Modules disconnect.
+
+## Accessibility
+
+What you get without doing anything:
+
+- The card is a group named by the Space name, so screen readers announce "Bedroom" first.
+- The Faults and the rows are real lists, so screen readers say how many there are.
+- Each row reads label first, then the status when Stale, then the value: "Temperature, Stale, 21.5 degrees Celsius".
+- Not colour alone: Stale has a text label, Disconnected its own icon, and a Fault its icon and message.
+- A row going Stale is announced (the Stale label is a live region). New Readings are not, so the card doesn't keep interrupting.
+
+What's up to you:
+
+- **Headings.** The Space name is not a heading. If your screen needs headings for navigation, add one around or above the card.
+- **Many cards at once.** Every Stale row announces itself. On a Site screen, several rows can go Stale together and each one is read out.
+- **Don't add another live region** around the card.
+
+## Styling
+
+The parts bring their own tokens (see their pages). SpaceCard adds the same card as [`ModuleCard`](./module-card.mdx#styling):
+
+| What                              | Token                                                        |
+| --------------------------------- | ------------------------------------------------------------ |
+| Background                        | `--shk-surface-default`                                      |
+| Outline                           | `--shk-color-border-subtle`, `--shk-border-width-thin` (1px) |
+| Corner radius                     | `--shk-radius-16` (16px)                                     |
+| Padding                           | `--shk-space-4` (16px)                                       |
+| Gap between name, Faults and rows | `--shk-space-3` (12px)                                       |
+| Gap between rows                  | `--shk-space-2` (8px)                                        |
+| Space name                        | `--shk-typography-h4-*`, `--shk-color-text-primary`          |
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only SpaceCard:
+
+```css
+.my-site-overview {
+  --shk-surface-default: var(--shk-palette-gray-50);
+}
+```
+
+## Related components
+
+- [`ModuleCard`](./module-card.mdx): one Module and its Sensors, with the Module's status.
+- [`SensorReading`](./sensor-reading.mdx): one Sensor's Reading as a card.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx): the statuses the rows and Faults use.
+- [`LocationPath`](../context/location-path.mdx): where the Space is (its Site and Floor).
+- [`ColumnLayout`](../layout/column-layout.mdx), [`StackLayout`](../layout/stack-layout.mdx): place several SpaceCards side by side or in a column.

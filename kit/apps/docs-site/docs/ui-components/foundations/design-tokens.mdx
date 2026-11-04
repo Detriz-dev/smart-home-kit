@@ -1,0 +1,208 @@
+---
+sidebar_position: 1
+sidebar_label: Design tokens
+description: The CSS variables every component is styled with, and how to change them.
+---
+
+# Design tokens
+
+Every colour, size and space in the kit's components comes from a **design token**: a named value, stored as a CSS variable that starts with `--shk-`. For example, `--shk-color-text-primary` is the colour of main text, and `--shk-space-4` is 16px of space.
+
+Because the components only use tokens, you can change the look of the whole kit by changing a few tokens, without touching the components.
+
+## Loading the tokens
+
+The tokens come in one CSS file. Load it once, at the root of your app, before the components' styles:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+You can then use the tokens in your own CSS too, so your screens match the kit:
+
+```css
+.my-panel {
+  padding: var(--shk-space-4);
+  background: var(--shk-surface-page);
+  color: var(--shk-color-text-primary);
+}
+```
+
+## Two kinds of tokens
+
+| Kind          | Says                      | Example                                                       | Use it?                                                  |
+| ------------- | ------------------------- | ------------------------------------------------------------- | -------------------------------------------------------- |
+| **Primitive** | A raw value               | `--shk-palette-gray-900` is `#272f34`                         | Rarely. Mostly to point a semantic token at a new value. |
+| **Semantic**  | What the value is **for** | `--shk-color-text-primary` points to `--shk-palette-gray-900` | Yes. This is what components use.                        |
+
+A semantic token points to a primitive one. Components use semantic tokens, so you can change what "primary text" means in one place, and every component follows.
+
+## Changing a token
+
+Set a token again in your own CSS. Where you set it decides how far the change reaches:
+
+- **On `:root`**: the whole app.
+- **On an element**: only that element and everything inside it.
+
+```jsx live
+<ColumnLayout>
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  {/* The same component, with two tokens changed for this part of the page only */}
+  <div
+    style={{
+      "--shk-surface-default": "var(--shk-palette-gray-50)",
+      "--shk-color-border-subtle": "var(--shk-palette-gray-300)",
+    }}
+  >
+    <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  </div>
+</ColumnLayout>
+```
+
+In a stylesheet, the same change looks like this:
+
+```css
+.my-overview {
+  --shk-surface-default: var(--shk-palette-gray-50);
+  --shk-color-border-subtle: var(--shk-palette-gray-300);
+}
+```
+
+Prefer pointing a token at another token, like `var(--shk-palette-gray-50)`, over a raw value like `#f6f9fb`. That keeps your colours in the same family as the kit's.
+
+:::note
+
+The kit has one theme for now, on light backgrounds. There is no dark theme yet. If you place components on a dark background, check the contrast yourself.
+
+:::
+
+## Your own CSS and the kit
+
+The components' styles are inside a CSS **cascade layer** called `detriz`. In CSS, styles outside a layer always win over styles inside one. So if your app has global styles that aren't in a layer, like a reset for every `button` or `ol`, they can change the kit's components.
+
+To keep the kit's components looking right, put your global styles in a layer that comes **before** `detriz`:
+
+```css
+@layer reset, detriz;
+
+@layer reset {
+  ol {
+    padding-left: 1.5rem;
+  }
+}
+```
+
+Changing tokens isn't affected by this: tokens are CSS variables, so setting them works anywhere.
+
+## Reference
+
+The semantic tokens, grouped. Each component page lists the tokens it uses under **Styling**.
+
+### Text colour
+
+| Token                        | Value    | For                                            |
+| ---------------------------- | -------- | ---------------------------------------------- |
+| `--shk-color-text-primary`   | gray 900 | Main text, values, names                       |
+| `--shk-color-text-secondary` | gray 700 | Quieter text, like Units and icons in Readings |
+| `--shk-color-text-disabled`  | gray 400 | Disabled controls                              |
+| `--shk-color-text-inverse`   | white    | Text on a dark fill                            |
+
+### Surfaces and borders
+
+| Token                       | Value    | For                         |
+| --------------------------- | -------- | --------------------------- |
+| `--shk-surface-page`        | gray 50  | The page behind the cards   |
+| `--shk-surface-default`     | white    | Cards and components        |
+| `--shk-surface-sunken`      | gray 100 | Areas set into a surface    |
+| `--shk-color-border-subtle` | gray 100 | The quiet outline of a card |
+
+```jsx live
+function Swatches() {
+  const tokens = [
+    "--shk-color-text-primary",
+    "--shk-color-text-secondary",
+    "--shk-color-text-disabled",
+    "--shk-surface-page",
+    "--shk-surface-default",
+    "--shk-surface-sunken",
+    "--shk-color-border-subtle",
+  ];
+  return (
+    <StackLayout gap="sm">
+      {tokens.map((token) => (
+        <span
+          key={token}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--shk-space-2)",
+          }}
+        >
+          <span
+            style={{
+              inlineSize: "var(--shk-size-8)",
+              blockSize: "var(--shk-size-8)",
+              borderRadius: "var(--shk-radius-8)",
+              border: "1px solid var(--shk-palette-gray-300)",
+              background: `var(${token})`,
+            }}
+          />
+          <code>{token}</code>
+        </span>
+      ))}
+    </StackLayout>
+  );
+}
+```
+
+### Status and action colours
+
+The Status components use `--shk-status-*` tokens, in five roles. Each role has five tokens: `-solid` (a strong fill, like the status dot), `-on-solid` (text on that fill), `-bg` (a light fill), `-border` and `-fg` (text and icons):
+
+| Role       | For                                | Used by                                                         |
+| ---------- | ---------------------------------- | --------------------------------------------------------------- |
+| `neutral`  | Not active: Disconnected, Unpaired | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (off) |
+| `progress` | In progress: Connecting, Pairing   | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (on)  |
+| `success`  | Done or fine: Connected, Paired    | `DeviceConnectionStatus`, `DevicePairingStatus`                 |
+| `warning`  | Needs attention soon: Stale        | `DeviceConnectionStatus`                                        |
+| `danger`   | A problem: Faults                  | `DeviceFaultStatus`                                             |
+
+Disconnected uses `neutral`, not `danger`: red is kept for Faults, so "unplugged" and "broken" never look the same.
+
+[`Button`](../controls/button.mdx) uses its own `--shk-action-*` tokens for its fills, text and focus ring.
+
+These colours are shared by many components, so change them on `:root`, for the whole app.
+
+### Space
+
+Gaps and padding. Most components use 4, 8, 12 and 16px.
+
+| Token           | Value |     | Token            | Value |
+| --------------- | ----- | --- | ---------------- | ----- |
+| `--shk-space-1` | 4px   |     | `--shk-space-8`  | 32px  |
+| `--shk-space-2` | 8px   |     | `--shk-space-10` | 40px  |
+| `--shk-space-3` | 12px  |     | `--shk-space-12` | 48px  |
+| `--shk-space-4` | 16px  |     | `--shk-space-16` | 64px  |
+| `--shk-space-5` | 20px  |     | `--shk-space-20` | 80px  |
+| `--shk-space-6` | 24px  |     | `--shk-space-24` | 96px  |
+
+`--shk-space-0` is 0. [`StackLayout`](../layout/stack-layout.mdx)'s gaps use names instead: `sm` is `--shk-space-2`, `md` is `--shk-space-4`, `lg` is `--shk-space-8`.
+
+### Sizes, radii and borders
+
+| Group         | Tokens                                                                                                                          |
+| ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| Size          | `--shk-size-3` (12px) up to `--shk-size-24` (96px). Icons use 4, 5, 6 and 8 (16–32px). Button height is `--shk-size-11` (44px). |
+| Corner radius | `--shk-radius-0`, `-4`, `-8`, `-12`, `-16`, `-24` (the number is the pixels), and `--shk-radius-full` for pills and circles.    |
+| Border width  | `--shk-border-width-0`, `-thin` (1px), `-medium` (2px, focus rings), `-thick` (4px).                                            |
+
+### Text and motion
+
+- **Text styles:** `--shk-typography-<style>-*`, five tokens per style. See [Typography](./typography.mdx).
+- **Motion:** `--shk-motion-duration-spin` (1 second), for the loading icon. It stops when the user asks for reduced motion.
+
+## Related
+
+- [Typography](./typography.mdx): the fonts and text styles.
+- [Icons](./icons.mdx): the icon set, sized with the size tokens.

@@ -1,0 +1,253 @@
+---
+sidebar_position: 3
+sidebar_label: SensorReading
+description: Shows the latest Reading of one Sensor as a small card, with the Metric, the value and the Unit.
+---
+
+# SensorReading
+
+Shows the latest Reading of one Sensor as a small card: what is measured on top ("Temperature"), the value and its Unit below ("22.4 °C"). Use it in a Space overview, or wherever one Sensor's Reading stands on its own.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <SensorReading metric="temperature" value={22.4} unit="celsius" />
+</div>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+SensorReading puts three components together for you: [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx) and [`UnitLabel`](./unit-label.mdx). It adds the card around them, keeps their sizes in step and gives the group one name for screen readers.
+
+## Import
+
+```tsx
+import { SensorReading } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Metric, the value and the Unit:
+
+```tsx
+import { SensorReading } from "@detriz-sh-kit/ui";
+
+<SensorReading
+  metric="humidity"
+  value={48}
+  unit="percent-rh"
+  fractionDigits={0}
+/>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+The card fills the width its parent gives it. The examples wrap it in a `<div>` with a `maxWidth` so it has a realistic width on this page.
+
+## When to use it
+
+Use SensorReading for **one Sensor's latest Reading** as a card:
+
+- in a Space overview, one card per Metric
+- on its own, for a single Sensor
+
+Don't use it for:
+
+- **A whole Module.** Use [`ModuleCard`](./module-card.mdx). It shows one SensorReading per Sensor, plus the Module's name and status.
+- **A list row or a table cell.** The card only comes in two large sizes. Put [`ReadingValue`](./reading-value.mdx) and [`UnitLabel`](./unit-label.mdx) in your row instead, at `sm` or `xs`.
+- **Connection Status or Fault.** These belong to the Device, not the Sensor. Show them once for the Module, with [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx). [`ModuleCard`](./module-card.mdx) does this for you.
+
+## States
+
+SensorReading has the same three states as `ReadingValue`. There is no `state` prop: the state comes from `value` and `isDisconnected`, and Disconnected wins if both apply.
+
+| State        | When                                                    | Shows                                | Screen readers say                  |
+| ------------ | ------------------------------------------------------- | ------------------------------------ | ----------------------------------- |
+| Connected    | `value` is a number                                     | Temperature · 22.4 °C                | "Temperature, 22.4 degrees Celsius" |
+| Loading      | `value` is `null`: the first Reading hasn't arrived yet | Temperature · loading icon · °C      | "Temperature, Loading"              |
+| Disconnected | `isDisconnected` is `true`                              | Temperature · disconnected icon · °C | "Temperature, Disconnected"         |
+
+The label and the Unit stay on screen in every state, so people still see what was measured when the value is hidden. All states have the same height, so nothing moves when the state changes.
+
+```jsx live
+<ColumnLayout>
+  {/* Connected */}
+  <SensorReading metric="temperature" value={22.4} unit="celsius" />
+  {/* Loading */}
+  <SensorReading metric="temperature" value={null} unit="celsius" />
+  {/* Disconnected */}
+  <SensorReading
+    metric="temperature"
+    value={22.4}
+    isDisconnected
+    unit="celsius"
+  />
+</ColumnLayout>
+```
+
+## Sizes
+
+Use the `size` prop. The default is `lg`. The size is passed to the value and the Unit. The label stays small in both sizes.
+
+| `size` | Value | Unit | Card height | Use it for                                       |
+| ------ | ----- | ---- | ----------- | ------------------------------------------------ |
+| `lg`   | 48px  | 32px | 91px        | On its own: Space overview, a single Sensor      |
+| `md`   | 32px  | 20px | 73px        | Tight spaces, like the columns of a `ModuleCard` |
+
+There is no `sm` or `xs`: at those sizes a value belongs in a list row or a table, not in a card. TypeScript stops you from passing them.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <StackLayout>
+    <SensorReading
+      metric="co2"
+      value={1250}
+      unit="ppm"
+      fractionDigits={0}
+      size="lg"
+    />
+    <SensorReading
+      metric="co2"
+      value={1250}
+      unit="ppm"
+      fractionDigits={0}
+      size="md"
+    />
+  </StackLayout>
+</div>
+```
+
+## Several Readings side by side
+
+Put one SensorReading per Metric in a layout component, such as [`ColumnLayout`](../layout/column-layout.mdx):
+
+```jsx live
+<ColumnLayout>
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  <SensorReading
+    metric="humidity"
+    value={48}
+    unit="percent-rh"
+    fractionDigits={0}
+    size="md"
+  />
+  <SensorReading
+    metric="co2"
+    value={1250}
+    unit="ppm"
+    fractionDigits={0}
+    size="md"
+  />
+</ColumnLayout>
+```
+
+## Mapping your data
+
+| Prop             | Comes from                                                                                                     | Example                               |
+| ---------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `metric`         | The Sensor's [Metric](/docs/domain-model/glossary#what-is-tracked)                                             | `temperature`                         |
+| `value`          | The value of the latest [Reading](/docs/domain-model/glossary#what-is-tracked), or `null` before the first one | `22.4`                                |
+| `unit`           | The display [Unit](/docs/domain-model/glossary#what-is-tracked) you chose for the Metric                       | `celsius`                             |
+| `isDisconnected` | The Module's [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected                | `connectionStatus === "disconnected"` |
+| `fractionDigits` | The Metric                                                                                                     | `1` for Temperature, `0` for CO₂      |
+
+A few rules from the domain model:
+
+- **The status comes from the Module.** A Sensor is not a Device and has no Connection Status of its own. Pass the Connection Status of the Module the Sensor belongs to.
+- **`metric` and `unit` are separate.** One Metric can have more than one display Unit (Temperature in °C or °F). You choose the Unit, and you convert the value to match it.
+- **Stale:** keep passing the last value, and show "Stale" once for the Module with [`DeviceConnectionStatus`](../status/device-connection-status.mdx).
+- **Connecting:** you decide: pass the last value to keep showing it, or `null` to show Loading.
+- **Not paired:** an unpaired Module sends no Readings, so there is no SensorReading to show.
+
+The props have the same names and types as in [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx) and [`UnitLabel`](./unit-label.mdx), and are passed to them unchanged. Those pages have the full lists of Metrics and Units, and the details on formatting numbers.
+
+## Props
+
+| Prop             | Type                                                   | Default | Description                                                                                                        |
+| ---------------- | ------------------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `metric`         | `SensorLabelMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Metric the Sensor measures, for example `temperature`. Decides the label and its icon.           |
+| `value`          | `number \| null`                                       | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way.                       |
+| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)       | –       | **Required.** The Unit to show, for example `celsius`. You pick it, so you can choose the display Unit (°C or °F). |
+| `isDisconnected` | `boolean`                                              | `false` | True when the Module's Connection Status is Disconnected. Hides the value and shows the disconnected icon.         |
+| `fractionDigits` | `number`                                               | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                                         |
+| `size`           | `"lg" \| "md"`                                         | `"lg"`  | How big the value and the Unit are drawn.                                                                          |
+
+The types `SensorReadingProps` and `SensorReadingSize` are exported too:
+
+```tsx
+import type { SensorReadingProps, SensorReadingSize } from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+- **The label** is shortened with `…` when the card is too narrow.
+- **The value and the Unit** are never wrapped or shortened: a cut-off number would show the wrong value. If the value doesn't fit, use `size="md"`.
+
+The longest realistic value, 100,000 lx, fits a 160px card at `md`:
+
+```jsx live
+<div style={{ maxWidth: 160 }}>
+  <SensorReading
+    metric="illuminance"
+    value={100000}
+    unit="lux"
+    fractionDigits={0}
+    size="md"
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The card is a group named by its Metric, so screen readers announce "Temperature" and then read "22.4 degrees Celsius". This is the context a value needs.
+- CO₂ and PM2.5 are spoken in full ("carbon dioxide"), like in `SensorLabel`.
+- In the Loading and Disconnected states, the group reads "Temperature, Loading" or "Temperature, Disconnected". The Unit is skipped, so it doesn't sound like a value ("Disconnected degrees Celsius").
+- Disconnected has its own icon shape, so it isn't told apart by colour alone. The card's outline stays visible in Windows High Contrast mode.
+- The loading icon stops spinning when the user has asked for reduced motion.
+- The text meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Headings.** SensorReading is not a heading. If your screen needs one per Metric for navigation, add headings around the cards.
+- **Announcing changes.** There is no live region, because Readings can arrive every few seconds. If a screen needs to announce a change, decide in your app how often, and don't put `aria-live` on a card that updates constantly.
+
+## Styling
+
+SensorLabel, ReadingValue and UnitLabel bring their own tokens (see their pages). SensorReading adds the card:
+
+| What                                                    | Token                                                        |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| Background                                              | `--shk-surface-default`                                      |
+| Outline                                                 | `--shk-color-border-subtle`, `--shk-border-width-thin` (1px) |
+| Corner radius                                           | `--shk-radius-12` (12px)                                     |
+| Padding                                                 | `--shk-space-2` (8px)                                        |
+| Gap between label and value, and between value and Unit | `--shk-space-1` (4px)                                        |
+
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only SensorReading:
+
+```css
+.my-overview {
+  --shk-color-border-subtle: var(--shk-palette-gray-200);
+}
+```
+
+## Related components
+
+- [`ModuleCard`](./module-card.mdx): one SensorReading per Sensor of a Module, with the Module's status.
+- [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx), [`UnitLabel`](./unit-label.mdx): the parts SensorReading is built from. Use them on their own for list rows and tables.
+- [`ColumnLayout`](../layout/column-layout.mdx), [`StackLayout`](../layout/stack-layout.mdx): place several SensorReadings side by side or in a column.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx), [`DeviceFaultStatus`](../status/device-fault-status.mdx): the Module's status, shown once next to its Readings.

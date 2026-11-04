@@ -1,0 +1,125 @@
+---
+sidebar_position: 4
+sidebar_label: Shared types
+description: The TypeScript types for Metrics, Units and Device statuses that several components share.
+---
+
+# Shared types
+
+Several components take the same kinds of values: a Metric, a Unit, a Connection Status. The kit exports one TypeScript type for each, named after its term in the [Glossary](/docs/domain-model/glossary). Use them in your own data, so your values always match what the components accept.
+
+```tsx
+import type {
+  Metric,
+  UnitLabelUnit,
+  ConnectionStatus,
+  PairingStatus,
+  FaultCode,
+} from "@detriz-sh-kit/ui";
+```
+
+## Metric
+
+What a Sensor measures. A fixed list from the Glossary.
+
+```ts
+type Metric =
+  "temperature" | "humidity" | "illuminance" | "co2" | "voc" | "pm25";
+```
+
+| Value         | Shows as    | Usual Unit (`UnitLabelUnit`) |
+| ------------- | ----------- | ---------------------------- |
+| `temperature` | Temperature | `celsius` or `fahrenheit`    |
+| `humidity`    | Humidity    | `percent-rh`                 |
+| `illuminance` | Illuminance | `lux`                        |
+| `co2`         | CO₂         | `ppm`                        |
+| `voc`         | VOC         | `ppb`                        |
+| `pm25`        | PM2.5       | `ug-m3`                      |
+
+**Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`), [`SensorReading`](../readings/sensor-reading.mdx), [`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) (each Sensor or row), and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). `SensorLabelMetric` is the same type under another name.
+
+## UnitLabelUnit
+
+How a Metric's value is shown. See [`UnitLabel`](../readings/unit-label.mdx#units) for the symbols and what screen readers say.
+
+```ts
+type UnitLabelUnit =
+  "celsius" | "fahrenheit" | "percent-rh" | "lux" | "ppm" | "ppb" | "ug-m3";
+```
+
+**Used by:** `UnitLabel` (`unit`), and every card's `unit` field. You choose the display Unit: for Temperature, `celsius` or `fahrenheit`.
+
+## ConnectionStatus
+
+Can a Paired Device be reached right now? See [`DeviceConnectionStatus`](../status/device-connection-status.mdx#states) for what each value means.
+
+```ts
+type ConnectionStatus = "connecting" | "connected" | "stale" | "disconnected";
+```
+
+**Used by:** `DeviceConnectionStatus` (`status`), `ModuleCard` (`connectionStatus`) and `SpaceCard` (each row's `connectionStatus`).
+
+## PairingStatus
+
+Does a Device belong to the Account? See [`DevicePairingStatus`](../status/device-pairing-status.mdx#states).
+
+```ts
+type PairingStatus = "unpaired" | "pairing" | "paired";
+```
+
+**Used by:** `DevicePairingStatus` (`status`).
+
+## FaultCode
+
+Which hardware problem a Device reports. It decides the message: the UI never shows the code itself. See [`DeviceFaultStatus`](../status/device-fault-status.mdx#states).
+
+```ts
+type FaultCode = "sensor_failure" | "calibration_required";
+```
+
+Fault Codes are written in `snake_case`, the way the Glossary and the API write them.
+
+**Used by:** `DeviceFaultStatus` (`faultCode`), and the `faults` lists of `ModuleCard` and `SpaceCard`.
+
+## Using them in your data
+
+Type your own data with these types, and TypeScript checks it against the components for you:
+
+```tsx
+import type {
+  ConnectionStatus,
+  FaultCode,
+  Metric,
+  UnitLabelUnit,
+} from "@detriz-sh-kit/ui";
+import { ModuleCard } from "@detriz-sh-kit/ui";
+
+interface MyModule {
+  name: string;
+  connectionStatus: ConnectionStatus;
+  faults: { faultCode: FaultCode; metric?: Metric }[];
+  sensors: { metric: Metric; value: number | null; unit: UnitLabelUnit }[];
+}
+
+function MyModuleCard({ module }: { module: MyModule }) {
+  return (
+    <ModuleCard
+      name={module.name}
+      connectionStatus={module.connectionStatus}
+      faults={module.faults}
+      sensors={module.sensors}
+    />
+  );
+}
+```
+
+If your data uses other words, for example an API that says `"online"` instead of `"connected"`, convert them once, where the data comes in, and keep the kit's types everywhere else.
+
+## Component types
+
+Every component also exports its own props type, named `<Component>Props`, like `ModuleCardProps`. Some export types for their parts too, like `ModuleCardSensor` and `SpaceCardReading`. Each component page lists them under **Props**.
+
+## Related
+
+- [Glossary](/docs/domain-model/glossary): what each term means.
+- [Device lifecycle](/docs/domain-model/device-lifecycle): how a Device moves between Pairing Statuses, Connection Statuses and Faults.

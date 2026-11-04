@@ -10,7 +10,9 @@ const config: Config = {
 
   // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Behave like the upcoming Docusaurus v4
+    // Behave like the upcoming Docusaurus v4. This also puts Docusaurus's own CSS in
+    // cascade layers, so the kit's CSS (in `@layer detriz`) wins over it.
+    v4: true,
   },
 
   // Placeholder. The real URL and baseUrl are set in the deploy step (GitHub Pages).
@@ -23,7 +25,12 @@ const config: Config = {
   markdown: {
     mermaid: true,
   },
-  themes: ["@docusaurus/theme-mermaid"],
+  // theme-live-codeblock turns ```jsx live code blocks into real, editable component previews.
+  // The components they can use are listed in src/theme/ReactLiveScope.
+  themes: ["@docusaurus/theme-mermaid", "@docusaurus/theme-live-codeblock"],
+
+  // Loads the kit's fonts, tokens and component styles once, for every page.
+  clientModules: ["./src/kit-styles.ts"],
 
   i18n: {
     defaultLocale: "en",
@@ -76,6 +83,10 @@ const config: Config = {
     },
     footer: {
       copyright: `© ${new Date().getFullYear()} DeTriz Smart Home Kit`,
+    },
+    // Live code blocks show the result first, then the code.
+    liveCodeBlock: {
+      playgroundPosition: "top",
     },
     prism: {
       theme: prismThemes.github,

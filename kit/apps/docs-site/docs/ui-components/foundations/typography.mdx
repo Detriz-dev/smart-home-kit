@@ -1,0 +1,148 @@
+---
+sidebar_position: 2
+sidebar_label: Typography
+description: The kit's two fonts, how to load them, and its 16 text styles.
+---
+
+# Typography
+
+The kit uses two fonts and 16 text styles. The components pick their text style themselves. Use the same styles in your own text, so your screens match the kit.
+
+## The fonts
+
+| Font              | Used for                                 | Weights the kit uses |
+| ----------------- | ---------------------------------------- | -------------------- |
+| **Space Grotesk** | Everything: headings, body text, numbers | 400, 500, 600, 700   |
+| **Space Mono**    | Code                                     | 400                  |
+
+## Loading the fonts
+
+The tokens only **name** the fonts: they don't include the font files. Your app has to load them, or the text falls back to the system font.
+
+The simplest way is the `@fontsource` packages:
+
+```sh
+pnpm add @fontsource/space-grotesk @fontsource/space-mono
+```
+
+Then import them once, at the root of your app, next to the kit's styles:
+
+```tsx
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
+import "@fontsource/space-mono/400.css";
+
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+Load each weight you need: a weight you don't load is faked by the browser and looks blurry.
+
+## Text styles
+
+Each style is five tokens: `--shk-typography-<style>-font-family`, `-font-size`, `-font-weight`, `-line-height` and `-letter-spacing`.
+
+| Style        | Size | Weight | Line height | Used by                                                      |
+| ------------ | ---- | ------ | ----------- | ------------------------------------------------------------ |
+| `display`    | 64px | 700    | 70px        | Big hero text                                                |
+| `h1`         | 40px | 700    | 44px        | Your page's main heading                                     |
+| `h2`         | 32px | 600    | 40px        | `ContentSection` level 2                                     |
+| `h3`         | 24px | 600    | 30px        | `ContentSection` level 3                                     |
+| `h4`         | 20px | 600    | 25px        | `ContentSection` level 4, `ModuleCard` and `SpaceCard` names |
+| `body-lg`    | 18px | 400    | 27px        | `SensorLabel` `lg`                                           |
+| `body`       | 16px | 400    | 24px        | Running text, `SensorLabel` `md`                             |
+| `body-sm`    | 14px | 400    | 21px        | `SensorLabel` `sm`                                           |
+| `label`      | 14px | 500    | 18px        | `Button`, `Switch`                                           |
+| `caption`    | 12px | 400    | 18px        | `LocationPath`, `SensorLabel` `xs`, the Status components    |
+| `overline`   | 12px | 500    | 18px        | Small labels above a heading                                 |
+| `readout-lg` | 48px | 500    | 53px        | `ReadingValue` `lg`                                          |
+| `readout`    | 32px | 500    | 35px        | `ReadingValue` `md`, `UnitLabel` `lg`                        |
+| `readout-sm` | 20px | 500    | 22px        | `ReadingValue` `sm`, `UnitLabel` `md`                        |
+| `readout-xs` | 14px | 500    | 15px        | `ReadingValue` `xs`, `UnitLabel` `sm` and `xs`               |
+| `code`       | 14px | 400    | 21px        | Code (Space Mono)                                            |
+
+The `readout` styles are for numbers: they have tight line heights, so a value and its Unit sit close together.
+
+```jsx live
+function TextStyles() {
+  const styles = [
+    "display",
+    "h1",
+    "h2",
+    "h3",
+    "h4",
+    "body-lg",
+    "body",
+    "body-sm",
+    "label",
+    "caption",
+    "overline",
+    "readout-lg",
+    "readout",
+    "readout-sm",
+    "readout-xs",
+    "code",
+  ];
+  const text = (name) => ({
+    fontFamily: `var(--shk-typography-${name}-font-family)`,
+    fontSize: `var(--shk-typography-${name}-font-size)`,
+    fontWeight: `var(--shk-typography-${name}-font-weight)`,
+    lineHeight: `var(--shk-typography-${name}-line-height)`,
+    letterSpacing: `var(--shk-typography-${name}-letter-spacing)`,
+    color: "var(--shk-color-text-primary)",
+  });
+
+  return (
+    <StackLayout gap="sm">
+      {styles.map((name) => (
+        <div
+          key={name}
+          style={{
+            display: "flex",
+            alignItems: "baseline",
+            gap: "var(--shk-space-4)",
+          }}
+        >
+          <code style={{ minInlineSize: "7rem" }}>{name}</code>
+          <span style={text(name)}>
+            {name.startsWith("readout") ? "22.4" : "Bedroom"}
+          </span>
+        </div>
+      ))}
+    </StackLayout>
+  );
+}
+```
+
+## Using a text style in your CSS
+
+Set all five tokens, so the size, weight and spacing stay in step:
+
+```css
+.my-page-title {
+  font-family: var(--shk-typography-h1-font-family);
+  font-size: var(--shk-typography-h1-font-size);
+  font-weight: var(--shk-typography-h1-font-weight);
+  line-height: var(--shk-typography-h1-line-height);
+  letter-spacing: var(--shk-typography-h1-letter-spacing);
+}
+```
+
+Match the text style to the HTML element: `h2` for an `<h2>`, and so on. That way what people see matches what screen readers announce. [`ContentSection`](../layout/content-section.mdx) does this for you.
+
+## Numbers
+
+Values in the Readings components use **tabular figures**: every digit is the same width, so a layout doesn't jump when 19.9 becomes 20.0. Use the same in your own lists of numbers:
+
+```css
+.my-table td {
+  font-variant-numeric: tabular-nums;
+}
+```
+
+## Related
+
+- [Design tokens](./design-tokens.mdx): how tokens work and how to change them.
+- [`ReadingValue`](../readings/reading-value.mdx) and [`UnitLabel`](../readings/unit-label.mdx): the readout styles in use.

@@ -1,5 +1,7 @@
 # ReadingValue
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/readings/reading-value.mdx). Props are defined in [`ReadingValue.types.ts`](./ReadingValue.types.ts).
+
 ### Purpose
 
 Shows the latest value of one Metric as an easy-to-read number: "22.4". It is the number in a reading card, a Space overview or a detail view, the thing the user looks at first.
@@ -26,8 +28,8 @@ What it does **not** show, and why:
 
 - **Unit** ("°C", "%RH"). That is [`UnitLabel`](../UnitLabel/UnitLabel.md), so the same Unit style can be reused outside of readings. Choosing the display Unit (°C or °F) is a formatting choice made by the parent.
 - **Connection Status as a label** ("Stale", "Disconnected"). That is `DeviceConnectionStatus`. `ReadingValue` only reacts to **Disconnected** (it swaps the number for an icon), because a number from an unreachable Device would look fresh when it isn't.
-- **Fault.** Shown by a future Fault component. `ReadingValue` doesn't change its look for it.
-- **Metric name** ("Temperature"). That says _what_ is measured, so it is Context. A label component sits next to the value.
+- **Fault.** Shown by `DeviceFaultStatus`. `ReadingValue` doesn't change its look for it.
+- **Metric name** ("Temperature"). That says _what_ is measured, so it is Context. `SensorLabel` sits next to the value.
 - **Time of the Reading** ("Updated 5 s ago"). A fixed fact about the Reading, so it is Context too.
 - **Sensor, Module, Space.** Where the value comes from is `LocationPath`.
 - **Thresholds** ("too warm", "CO₂ high"). Not in the Ubiquitous Language yet. If it comes, it is Status, not part of this component.
@@ -66,13 +68,13 @@ This way it can never show two states at once.
 
 Target states:
 
-| Target state | Applies? | Why                                                                                                                                     |
-| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| loading      | yes      | The `loading` state.                                                                                                                    |
-| Connected    | yes      | The `default` state: the latest value.                                                                                                  |
-| Stale        | no       | Shown by `DeviceConnectionStatus`. The number stays as it is.                                                                        |
+| Target state | Applies? | Why                                                                                                                                 |
+| ------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| loading      | yes      | The `loading` state.                                                                                                                |
+| Connected    | yes      | The `default` state: the latest value.                                                                                              |
+| Stale        | no       | Shown by `DeviceConnectionStatus`. The number stays as it is.                                                                       |
 | Disconnected | yes      | The `disconnected` state. The last value is **hidden**, as the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx) says. |
-| Fault        | no       | Shown by a Status component.                                                                                                            |
+| Fault        | no       | Shown by a Status component.                                                                                                        |
 
 **Connecting** (a Device re-establishing its link) has no state of its own. The parent decides: pass the last value to keep showing it, or `null` to show `loading`.
 
@@ -110,23 +112,9 @@ The root has no padding and no background: spacing around the number comes from 
 
 ### API
 
-```ts
-/** How big the number is drawn. */
-type ReadingValueSize = "xs" | "sm" | "md" | "lg";
+The props are defined in [`ReadingValue.types.ts`](./ReadingValue.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface ReadingValueProps {
-  /** The latest value of the Reading. `null` while it is loading. */
-  value: number | null;
-  /** True when the Device's Connection Status is Disconnected. Hides the value and shows the disconnected icon. */
-  isDisconnected?: boolean;
-  /** How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0). Defaults to 1. */
-  fractionDigits?: number;
-  /** How big the number is drawn. Defaults to `lg`. */
-  size?: ReadingValueSize;
-}
-```
-
-Notes:
+The decisions behind them:
 
 - The value is a number, not a string. The component formats it with the browser's language (`Intl.NumberFormat`), so every user sees their own decimal mark and thousands separator: "22.4" and "1,250" in English, "22,4" and "1250" in Polish.
 - The parent passes `fractionDigits` for the Metric: each Metric has its own natural precision (Temperature 1, Humidity 0, CO₂ 0, Illuminance 0). The default of 1 fits Temperature, the most common case.

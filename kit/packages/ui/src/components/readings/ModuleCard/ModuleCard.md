@@ -1,5 +1,7 @@
 # ModuleCard
 
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/readings/module-card.mdx). Props are defined in [`ModuleCard.types.ts`](./ModuleCard.types.ts).
+
 ### Purpose
 
 Shows one Module as a card: its name, its Connection Status, its Faults and the latest Reading of each of its Sensors. A Module has one to three Sensors, so the card shows one to three `SensorReading`s.
@@ -27,7 +29,7 @@ It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/g
 | faults  | **Fault**               | CO₂ sensor failure | `DeviceFaultStatus`      |
 | sensors | **Sensor**, **Reading** | 22.4 °C            | `SensorReading`          |
 
-A Module has **one or more** Sensors, and **one Sensor per Metric** ([Domain Analysis](/docs/architecture/domain-model/domain-analysis.md)). The Sensors are fixed by the Module's board, so the user never adds or removes one.
+A Module has **one or more** Sensors ([Data model](/kit/apps/docs-site/docs/domain-model/data-model.mdx#cardinality-summary)), and **one Sensor per Metric**. The second rule is not in the Data model yet (see Open questions), but the card relies on it: it uses the Metric to tell Sensors apart. The Sensors are fixed by the Module's board, so the user never adds or removes one.
 
 What it does **not** show, and why:
 
@@ -89,12 +91,12 @@ The Module Name can be long, because the user can rename it. It stays on one lin
 
 Figma variant property `state`. In code there is no `state` prop: the card works it out from `connectionStatus` and the Sensors' values.
 
-| State          | Figma value          | When                                                                     | Status label | Sensors                    |
-| -------------- | -------------------- | ------------------------------------------------------------------------ | ------------ | -------------------------- |
-| `loading`      | `state=loading`      | The first Readings are on their way (`value` is `null`).                 | Connecting   | Spinning icon, per Sensor  |
-| `connected`    | `state=connected`    | Reachable and sending Readings.                                          | Connected    | The values                 |
-| `stale`        | `state=stale`        | Connected, but no Reading within its Expected Interval.                  | Stale        | The last values, unchanged |
-| `disconnected` | `state=disconnected` | The Module can't be reached, for example it was unplugged.               | Disconnected | Hidden, disconnected icon  |
+| State          | Figma value          | When                                                       | Status label | Sensors                    |
+| -------------- | -------------------- | ---------------------------------------------------------- | ------------ | -------------------------- |
+| `loading`      | `state=loading`      | The first Readings are on their way (`value` is `null`).   | Connecting   | Spinning icon, per Sensor  |
+| `connected`    | `state=connected`    | Reachable and sending Readings.                            | Connected    | The values                 |
+| `stale`        | `state=stale`        | Connected, but no Reading within its Expected Interval.    | Stale        | The last values, unchanged |
+| `disconnected` | `state=disconnected` | The Module can't be reached, for example it was unplugged. | Disconnected | Hidden, disconnected icon  |
 
 The card follows `connectionStatus`. Each `SensorReading` picks up its own `loading` from a `null` value. In `disconnected`, the card passes `isDisconnected` to every `SensorReading`.
 
@@ -104,12 +106,12 @@ When an unplugged Module is plugged back in, the parent passes `connectionStatus
 
 Target states:
 
-| Target state | Applies? | Why                                                                                                                               |
-| ------------ | -------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| loading      | yes      | The `loading` state.                                                                                                              |
-| Connected    | yes      | The `connected` state.                                                                                                            |
-| Stale        | yes      | The `stale` state. `SensorReading` has no Stale state: only the status label changes, as `SensorReading.md` expects.              |
-| Disconnected | yes      | The `disconnected` state. Values are **hidden**, as the glossary says.                                                            |
+| Target state | Applies? | Why                                                                                                                                             |
+| ------------ | -------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| loading      | yes      | The `loading` state.                                                                                                                            |
+| Connected    | yes      | The `connected` state.                                                                                                                          |
+| Stale        | yes      | The `stale` state. `SensorReading` has no Stale state: only the status label changes, as `SensorReading.md` expects.                            |
+| Disconnected | yes      | The `disconnected` state. Values are **hidden**, as the glossary says.                                                                          |
 | Fault        | yes      | Not a state of its own: `faults` adds one `DeviceFaultStatus` per Fault on top of any state, because a Module can be Connected and have Faults. |
 
 ### Anatomy
@@ -135,32 +137,9 @@ Figma layer names follow this anatomy. In Figma, `hasFault` stands for a non-emp
 
 ### API
 
-```ts
-/** One Sensor in the Module. The same fields SensorReading takes. */
-interface ModuleCardSensor {
-  /** The Metric the Sensor measures. One Sensor per Metric, so it also identifies the Sensor within the Module. */
-  metric: SensorLabelMetric;
-  /** The latest value of the Reading. `null` while the first Reading is on its way. */
-  value: number | null;
-  /** The Unit to show. The parent picks it, so it can choose the display Unit (°C or °F). */
-  unit: UnitLabelUnit;
-  /** How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0). Defaults to 1. */
-  fractionDigits?: number;
-}
+The props are defined in [`ModuleCard.types.ts`](./ModuleCard.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-interface ModuleCardProps {
-  /** The Module Name, e.g. "Climate Module". The user can rename it, so the parent passes it in. */
-  name: string;
-  /** The Module's Sensors, one to three. */
-  sensors: ModuleCardSensor[];
-  /** The Module's current Connection Status. */
-  connectionStatus: ConnectionStatus;
-  /** The Module's current Faults, one per Fault Code. A Module can report several at once. Leave it out, or pass an empty list, when there are none. */
-  faults?: DeviceFaultStatusProps[];
-}
-```
-
-Notes:
+The decisions behind them:
 
 - `sensors` is a list, not `temperatureC` / `humidityPct` props, because the card works with any Module Type. This is the "sensor-agnostic" rule from the conventions.
 - The list order is the display order. The parent decides it.
@@ -201,7 +180,7 @@ The parts bring their own tokens. ModuleCard only adds the card and the spacing 
 | root    | gap           | `space/3`             | `--shk-space-3` (12px)          |
 | sensors | gap           | `space/3`             | `--shk-space-3` (12px)          |
 | name    | text          | `typography/h4/*`     | `--shk-typography-h4-*`         |
-| name    | colour        | `color-text/primary`  | to confirm in step 3            |
+| name    | colour        | `color-text/primary`  | `--shk-color-text-primary`      |
 
 The Figma `row` variants are 364px wide (two 160px Sensors) and `stacked` 192px (one 160px Sensor). The card fills its parent, so these are the smallest widths.
 
@@ -220,5 +199,6 @@ The container query widths (332px, 504px) are raw values, an exception to the to
 ### Open questions
 
 - **Which Sensors each Module Type has.** Not written down in the domain docs, and "one to three" is the working limit. Add it to the Glossary or the Data model once the supported boards are chosen (domain open question 19).
+- **One Sensor per Metric.** The card uses the Metric as each Sensor's key, so it assumes a Module never has two Sensors with the same Metric. The old link for this rule (Domain Analysis) was deleted in the repo cleanup. Add the rule to the Data model, or change the card if it isn't true.
 - **Heading.** Should the Module name be a heading for screen-reader navigation? If yes, the card needs a `headingLevel` prop, because it doesn't know where it sits on the page.
 - **Figma is behind.** Remove the `state=off` variant and the Switch layer from the `ModuleCard` component set (node `349:591`), so Figma matches the code.

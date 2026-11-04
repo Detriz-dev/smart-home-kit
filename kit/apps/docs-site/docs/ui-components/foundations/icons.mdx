@@ -1,0 +1,203 @@
+---
+sidebar_position: 3
+sidebar_label: Icons
+description: The kit's icon set and the Icon component, with sizes, colours and screen reader text.
+---
+
+# Icons
+
+The kit has a small, fixed set of icons, shown with the `Icon` component. The components use them for Metrics, places and states. You can use them in your own screens too, so your icons match the kit's.
+
+```jsx live
+<Icon name="thermostat" />
+```
+
+## Import
+
+```tsx
+import { Icon } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. See [Design tokens](./design-tokens.mdx#loading-the-tokens).
+
+## Basic usage
+
+Pass the icon's name:
+
+```tsx
+import { Icon } from "@detriz-sh-kit/ui";
+
+<Icon name="home" />;
+```
+
+## The icon set
+
+The icons are [Material Symbols](https://fonts.google.com/icons), in the Rounded style at weight 400. Only the icons below exist in the kit: `name` accepts these names only, and TypeScript tells you if you pass anything else.
+
+```jsx live
+function IconSet() {
+  const names = [
+    "airwave",
+    "battery_full",
+    "bolt",
+    "co2",
+    "door_front",
+    "error",
+    "grain",
+    "home",
+    "humidity_percentage",
+    "humidity_mid",
+    "light_mode",
+    "lightbulb",
+    "lightbulb-fill",
+    "link_off",
+    "refresh",
+    "sensors",
+    "stairs_2",
+    "thermometer",
+    "thermostat",
+    "tv_gen",
+    "wifi",
+    "wifi_off",
+  ];
+  return (
+    <div
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(auto-fill, minmax(13rem, 1fr))",
+        gap: "var(--shk-space-3)",
+      }}
+    >
+      {names.map((name) => (
+        <span
+          key={name}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "var(--shk-space-2)",
+          }}
+        >
+          <Icon name={name} />
+          <code>{name}</code>
+        </span>
+      ))}
+    </div>
+  );
+}
+```
+
+### Which component uses which icon
+
+Use the same icon for the same meaning, so people learn it once.
+
+| Means                  | Icon           | Used by                                                  |
+| ---------------------- | -------------- | -------------------------------------------------------- |
+| Site                   | `home`         | [`LocationPath`](../context/location-path.mdx)           |
+| Floor                  | `stairs_2`     | `LocationPath`                                           |
+| Space                  | `door_front`   | `LocationPath`                                           |
+| Device (Hub or Module) | `tv_gen`       | `LocationPath`                                           |
+| Temperature            | `thermostat`   | [`SensorLabel`](../context/sensor-label.mdx)             |
+| Humidity               | `humidity_mid` | `SensorLabel`                                            |
+| Illuminance            | `light_mode`   | `SensorLabel`                                            |
+| CO₂                    | `co2`          | `SensorLabel`                                            |
+| VOC                    | `airwave`      | `SensorLabel`                                            |
+| PM2.5                  | `grain`        | `SensorLabel`                                            |
+| Loading                | `refresh`      | [`ReadingValue`](../readings/reading-value.mdx)          |
+| Disconnected           | `link_off`     | `ReadingValue`                                           |
+| Fault                  | `error`        | [`DeviceFaultStatus`](../status/device-fault-status.mdx) |
+
+The other icons in the set aren't used by a component yet.
+
+Illuminance uses `light_mode` (a sun), not `lightbulb`, because a bulb looks like a light you can switch, and the kit has no lights to switch.
+
+## Sizes
+
+Use the `size` prop. The default is `md`.
+
+| `size` | Size | Use it next to                          |
+| ------ | ---- | --------------------------------------- |
+| `xs`   | 16px | Small text (caption, 12px)              |
+| `sm`   | 20px | 14px text                               |
+| `md`   | 24px | 16px text. Default.                     |
+| `lg`   | 32px | Large numbers, like a `lg` ReadingValue |
+
+The icons are drawn on a 24px grid, so 20, 24 and 32px look sharpest. 16px is for small text, where 20px is too big.
+
+```jsx live
+<div
+  style={{ display: "flex", alignItems: "center", gap: "var(--shk-space-4)" }}
+>
+  <Icon name="thermostat" size="xs" />
+  <Icon name="thermostat" size="sm" />
+  <Icon name="thermostat" size="md" />
+  <Icon name="thermostat" size="lg" />
+</div>
+```
+
+## Colour
+
+An icon takes the **text colour** around it, so it always matches the text next to it. To change its colour, change the text colour of its parent:
+
+```jsx live
+<div style={{ display: "flex", gap: "var(--shk-space-4)" }}>
+  <span style={{ color: "var(--shk-color-text-primary)" }}>
+    <Icon name="error" />
+  </span>
+  <span style={{ color: "var(--shk-color-text-secondary)" }}>
+    <Icon name="error" />
+  </span>
+  <span style={{ color: "var(--shk-status-danger-fg)" }}>
+    <Icon name="error" />
+  </span>
+</div>
+```
+
+## Screen readers
+
+Every icon is either **decorative** or **meaningful**:
+
+- **Decorative**, when text next to it already says the same thing, like the thermostat next to "Temperature". Leave `label` out: screen readers skip the icon.
+- **Meaningful**, when the icon is the only thing that says it, like a disconnected icon in place of a value. Pass a `label`: screen readers read it.
+
+```jsx live
+<StackLayout gap="sm">
+  {/* Decorative: the text says the same thing */}
+  <span
+    style={{ display: "flex", alignItems: "center", gap: "var(--shk-space-1)" }}
+  >
+    <Icon name="thermostat" size="sm" />
+    Temperature
+  </span>
+  {/* Meaningful: the icon is all there is */}
+  <Icon name="link_off" label="Disconnected" />
+</StackLayout>
+```
+
+Don't use an icon on its own as a button: there's no icon button in the kit yet. Use a [`Button`](../controls/button.mdx) with text.
+
+## Props
+
+| Prop    | Type                           | Default | Description                                                                                                 |
+| ------- | ------------------------------ | ------- | ----------------------------------------------------------------------------------------------------------- |
+| `name`  | `IconName`                     | –       | **Required.** Which icon to show. Only the names in the icon set work.                                      |
+| `size`  | `"xs" \| "sm" \| "md" \| "lg"` | `"md"`  | 16, 20, 24 or 32px.                                                                                         |
+| `label` | `string`                       | none    | What the icon means, read by screen readers, like "Disconnected". Leave it out when the icon is decorative. |
+
+The types `IconProps`, `IconName` and `IconSize` are exported too:
+
+```tsx
+import type { IconName, IconProps, IconSize } from "@detriz-sh-kit/ui";
+```
+
+## Icons in a row
+
+An icon never gets squashed in a row: it keeps its size, and the text next to it shrinks instead. That's why long names in `SensorLabel` and `LocationPath` end with `…` while their icons stay whole.
+
+## Missing an icon?
+
+The set is fixed, so every screen uses icons that have been checked together. If you need an icon that isn't in the set, ask for it to be added to the kit rather than mixing in icons from somewhere else.
+
+## Related
+
+- [Design tokens](./design-tokens.mdx): the size tokens the icon sizes use.
+- [`SensorLabel`](../context/sensor-label.mdx) and [`LocationPath`](../context/location-path.mdx): icons next to text.
