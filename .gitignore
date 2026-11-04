@@ -22,3 +22,21 @@ storybook-static/
 .vscode/*
 !.vscode/extensions.json
 .DS_Store
+.idea/
+Thumbs.db
+*.swp
+
+# Secrets and keys
+*.pem
+*.key
+# Can hold an npm publish token once packages are published
+.npmrc
+
+# Claude Code personal settings (the shared .claude/settings.json stays committed)
+.claude/settings.local.json
+
+# Test coverage
+coverage/
+
+# Private notes (ideation, retros, project management). Kept locally, never committed.
+/docs-ignore/
