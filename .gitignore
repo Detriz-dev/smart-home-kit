@@ -38,6 +38,5 @@ Thumbs.db
 # Test coverage
 coverage/
 
-# Internal project docs (product, architecture, retros). Kept locally, not public.
-# The leading slash means only the root docs/ folder, not kit/apps/docs-site/docs/.
-/docs/
+# Private notes (ideation, retros, project management). Kept locally, never committed.
+/docs-ignore/
