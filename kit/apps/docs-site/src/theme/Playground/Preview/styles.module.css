@@ -1,0 +1,23 @@
+/* Figma "SHK – Landing", node 24:410: the component sits 34px from the top and 22px from the left,
+   in an area 85px tall (for an 18px-tall component). The kit has no tokens for these, so they are
+   set once here. */
+.preview {
+  --preview-padding-top: 34px;
+  --preview-padding-bottom: 33px;
+  --preview-padding-inline: 22px;
+
+  padding: var(--preview-padding-top) var(--preview-padding-inline)
+    var(--preview-padding-bottom);
+  /* The kit has one light theme, so the preview stays on the kit's light surface in dark mode too. */
+  background-color: var(--shk-surface-page);
+  color: var(--shk-color-text-primary);
+  /* Keeps the empty line around inline components as tall as the component itself.
+     Kit components set their own line height, so their text isn't affected. */
+  line-height: 1;
+}
+
+/* Inline components line up with the text baseline by default, which adds 1px above them.
+   Aligning them to the top puts them exactly 34px from the top, as in Figma. */
+.preview > div > * {
+  vertical-align: top;
+}

@@ -17,15 +17,20 @@
     "@docusaurus/core": "3.10.2",
     "@docusaurus/faster": "3.10.2",
     "@docusaurus/preset-classic": "3.10.2",
+    "@docusaurus/theme-common": "3.10.2",
     "@docusaurus/theme-live-codeblock": "3.10.2",
     "@docusaurus/theme-mermaid": "3.10.2",
+    "@fontsource-variable/lexend": "^5.3.0",
     "@fontsource/space-grotesk": "^5.3.0",
     "@fontsource/space-mono": "^5.3.0",
+    "@material-symbols/svg-300": "^0.48.2",
+    "@material-symbols/svg-400": "^0.48.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
     "prism-react-renderer": "^2.3.0",
     "react": "catalog:",
-    "react-dom": "catalog:"
+    "react-dom": "catalog:",
+    "react-live": "^4.1.8"
   },
   "devDependencies": {
     "@docusaurus/module-type-aliases": "3.10.2",

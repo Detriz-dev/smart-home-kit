@@ -3,46 +3,44 @@ import Link from "@docusaurus/Link";
 import Heading from "@theme/Heading";
 import Layout from "@theme/Layout";
 
+// Imported (not linked as "/img/…") so the path still works when the site moves under a baseUrl,
+// and the build fails if the file goes missing.
+import heroIllustration from "@site/static/img/heroSection.png";
+
 import styles from "./index.module.css";
 
 // The landing page at "/". Every file in src/pages/ becomes a page with the same name.
-// The copy is a placeholder: replace it with the real explanation of the kit.
+// Design: Figma "SHK – Landing", node 8:3 (hero: node 23:396).
 export default function Home(): ReactNode {
   return (
-    <Layout description="Design system and SDK for prototyping with live sensor data">
-      <main className={styles.hero}>
-        <div className={styles.visual} aria-hidden="true">
-          {/* Placeholder. Later: real kit components, for example a SpaceCard. */}
-          Visual
-        </div>
-
-        <div className={styles.text}>
-          <Heading as="h1" className={styles.title}>
-            Smart home interfaces with live sensor data
-          </Heading>
-          <p>
-            DeTriz Smart Home Kit gives you design tokens and React components
-            for screens that show Readings from real Sensors.
-          </p>
-          <p>
-            Placeholder text: explain here who the kit is for, what problem it
-            solves and how to start.
-          </p>
-          <div className={styles.actions}>
-            <Link
-              className="button button--primary button--lg"
-              to="/docs/domain-model"
-            >
-              Explore the domain model
-            </Link>
-            <Link
-              className="button button--secondary button--lg"
-              to="/docs/ui-components"
-            >
-              Browse UI components
+    <Layout description="Rapid prototyping for smart home apps: a ready-made domain model and React components.">
+      <main className={styles.page}>
+        <section className={styles.hero}>
+          <div className={styles.text}>
+            <Heading as="h1" className={styles.title}>
+              <strong>Rapid prototyping</strong> <br />
+              for smart home apps
+            </Heading>
+            <p className={styles.intro}>
+              <strong>Skip the groundwork.</strong> The domain model and
+              components are ready.
+            </p>
+            <Link className={styles.cta} to="/docs/get-started/how-it-works">
+              Start building
             </Link>
           </div>
-        </div>
+
+          <div className={styles.picture}>
+            {/* Decorative: the text next to it says the same, so screen readers skip it (alt=""). */}
+            <img
+              src={heroIllustration}
+              alt=""
+              width={508}
+              height={495}
+              className={styles.illustration}
+            />
+          </div>
+        </section>
       </main>
     </Layout>
   );

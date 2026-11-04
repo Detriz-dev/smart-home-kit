@@ -4,6 +4,17 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 // This file runs in Node.js, not in the browser: no JSX or browser APIs here.
 
+// Code theme for every code block and the live editor, in light and dark mode: VS Code's dark
+// colours on our own background. The value is a CSS variable, so the colour itself lives in
+// src/css/custom.css (--site-code-background) and the browser fills it in.
+const codeTheme = {
+  ...prismThemes.vsDark,
+  plain: {
+    ...prismThemes.vsDark.plain,
+    backgroundColor: "var(--site-code-background)",
+  },
+};
+
 const config: Config = {
   title: "DeTriz Smart Home Kit",
   tagline: "Design system and SDK for prototyping with live sensor data",
@@ -59,25 +70,29 @@ const config: Config = {
     },
     navbar: {
       // Clicking the title opens the landing page ("/").
-      title: "DeTriz Smart Home Kit",
+      // Its icon and the link icons are added in src/css/custom.css ("Navbar").
+      title: "Smart Home Kit",
       items: [
         {
           type: "docSidebar",
           sidebarId: "getStartedSidebar",
           label: "Get Started",
           position: "right",
+          className: "site-nav-link site-nav-link--get-started",
         },
         {
           type: "docSidebar",
           sidebarId: "domainModelSidebar",
           label: "Domain Model",
           position: "right",
+          className: "site-nav-link site-nav-link--domain-model",
         },
         {
           type: "docSidebar",
           sidebarId: "uiComponentsSidebar",
           label: "UI Components",
           position: "right",
+          className: "site-nav-link site-nav-link--ui-components",
         },
       ],
     },
@@ -89,8 +104,8 @@ const config: Config = {
       playgroundPosition: "top",
     },
     prism: {
-      theme: prismThemes.github,
-      darkTheme: prismThemes.dracula,
+      theme: codeTheme,
+      darkTheme: codeTheme,
     },
   } satisfies Preset.ThemeConfig,
 };

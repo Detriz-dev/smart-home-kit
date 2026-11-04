@@ -9,6 +9,10 @@ import "@fontsource/space-grotesk/600.css";
 import "@fontsource/space-grotesk/700.css";
 import "@fontsource/space-mono/400.css";
 
+// The docs site's own font, for the site's text only (not part of the kit).
+// The variable font is one file that covers every weight.
+import "@fontsource-variable/lexend";
+
 // Design tokens (the --shk- CSS variables) and the styles of every ui component.
 import "@detriz-sh-kit/tokens/tokens.css";
 import "@detriz-sh-kit/ui/styles.css";

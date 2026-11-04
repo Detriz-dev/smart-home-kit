@@ -1,45 +1,122 @@
-/* Uses Docusaurus's own variables (--ifm-…) for now.
-   Step 2 of the plan connects our tokens and switches this to var(--shk-…). */
+/* Landing page. Design: Figma "SHK – Landing", node 8:3.
+   Uses the kit's tokens (--shk-…). Values the kit has no token for are set once, below,
+   as local variables, so the raw numbers live in one place. */
 
-.hero {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: calc(var(--ifm-spacing-horizontal) * 4);
-  align-items: center;
-  max-width: var(--ifm-container-width-xl);
-  margin: 0 auto;
-  padding: calc(var(--ifm-spacing-vertical) * 6) var(--ifm-spacing-horizontal);
+.page {
+  --hero-max-width: 1080px;
+  --hero-title-line-height: 56px; /* 48px text */
+  --hero-intro-line-height: 40px; /* 24px text */
+
+  background-color: var(--shk-surface-page);
+  color: var(--shk-color-text-primary);
 }
 
-.visual {
-  display: grid;
-  place-items: center;
-  aspect-ratio: 4 / 3;
-  border: 2px dashed var(--ifm-color-emphasis-300);
-  border-radius: var(--ifm-global-radius);
-  color: var(--ifm-color-emphasis-600);
+/* The hero fills the screen below the navbar and sits in the middle of it. */
+.hero {
+  display: flex;
+  align-items: center;
+  gap: var(--shk-space-12);
+  box-sizing: border-box;
+  max-inline-size: var(--hero-max-width);
+  min-block-size: calc(100vh - var(--ifm-navbar-height));
+  margin-inline: auto;
+  padding: var(--shk-space-2);
+}
+
+.text,
+.picture {
+  flex: 1 1 0;
+  min-inline-size: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--shk-space-8);
 }
 
 .title {
-  font-size: 3rem;
-  line-height: 1.1;
+  margin: 0;
+  font-size: var(--shk-font-size-48);
+  font-weight: var(--shk-font-weight-light);
+  line-height: var(--hero-title-line-height);
+  color: inherit;
 }
 
-.actions {
+/* "Rapid prototyping" in bold; the rest of the heading stays light. */
+.title strong {
+  font-weight: var(--shk-font-weight-bold);
+}
+
+.intro {
+  margin: 0;
+  font-size: var(--shk-font-size-24);
+  font-weight: var(--shk-font-weight-light);
+  line-height: var(--hero-intro-line-height);
+}
+
+.intro strong {
+  font-weight: var(--shk-font-weight-medium);
+}
+
+/* A link that looks like a button: it opens another page. */
+.cta {
+  padding: var(--shk-space-2) var(--shk-space-4);
+  border-radius: var(--site-radius);
+  background-color: var(--shk-palette-gray-900);
+  color: var(--shk-color-text-inverse);
+  font-size: var(--shk-font-size-18);
+  font-weight: var(--shk-font-weight-regular);
+  line-height: var(--shk-line-height-tight); /* About 36px tall with the padding */
+  text-decoration: none;
+}
+
+.cta:hover {
+  background-color: var(--shk-palette-gray-800);
+  color: var(--shk-color-text-inverse);
+  text-decoration: none;
+}
+
+.cta:focus-visible {
+  outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+  outline-offset: var(--shk-space-1);
+}
+
+/* The picture: static/img/heroSection.png (a SpaceCard, its props and the domain model). */
+.picture {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--ifm-spacing-horizontal);
-  margin-top: calc(var(--ifm-spacing-vertical) * 2);
+  justify-content: center;
 }
 
-/* Phone and small tablet: one column, text first. */
+/* Never wider than its column; the height follows, so it keeps its shape. */
+.illustration {
+  display: block;
+  max-inline-size: 100%;
+  block-size: auto;
+}
+
+/* Phone and small tablet: one column, text first, picture below. */
 @media (max-width: 996px) {
   .hero {
-    grid-template-columns: 1fr;
-    padding-top: calc(var(--ifm-spacing-vertical) * 3);
+    flex-direction: column;
+    align-items: stretch;
+    padding: var(--shk-space-10) var(--shk-space-4);
   }
 
-  .visual {
-    order: 2;
+  /* In a column, `flex: 1 1 0` would squash the heights; let each take its own height. */
+  .text,
+  .picture {
+    flex: none;
+  }
+
+  .title {
+    font-size: var(--shk-font-size-32);
+    line-height: var(--shk-line-height-snug);
+  }
+
+  .intro {
+    font-size: var(--shk-font-size-20);
+    line-height: var(--shk-line-height-normal);
   }
 }

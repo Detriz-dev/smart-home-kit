@@ -1,0 +1,8 @@
+/* The whole live code block: preview on top, then the editor bar, then the code. */
+.container {
+  margin-bottom: var(--ifm-leading);
+  overflow: hidden; /* Clips the code area to the rounded corners. */
+  border-radius: var(--site-radius);
+  box-shadow: var(--site-shadow-card);
+  background-color: var(--shk-surface-page);
+}
