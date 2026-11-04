@@ -15,6 +15,12 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* The docs site's font. Lexend is for the site's text only: the kit's
+     components keep the kit's own font (--shk-font-family-sans). */
+  --site-font-family: "Lexend Variable", system-ui, sans-serif;
+  --ifm-font-family-base: var(--site-font-family);
+  --ifm-heading-font-family: var(--site-font-family);
 }
 
 /* For readability concerns, you should choose a lighter palette in dark mode. */
@@ -27,6 +33,91 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+}
+
+/* Navbar
+   Design: Figma "SHK – Landing", node 8:343 ("Nawigation").
+   The icons are Material Symbols (Rounded, weight 400) from @material-symbols/svg-400, the same
+   package the kit's Icon component uses. They are drawn as CSS masks, so they take the text colour.
+   They are site icons, so they aren't added to the kit's icon set. */
+:root {
+  --site-font-weight-extrabold: 800; /* The kit has no 800 weight; the site title uses it. */
+  --site-nav-icon-gap: 2px; /* Icon box to label. Smaller than the kit's smallest space (4px). */
+  --ifm-navbar-height: calc(
+    var(--shk-size-10) + 2 * var(--shk-space-2)
+  ); /* 40px content + padding */
+  --ifm-navbar-padding-vertical: var(--shk-space-2);
+  --ifm-navbar-padding-horizontal: var(--shk-space-4);
+  --ifm-navbar-item-padding-horizontal: 0;
+  --ifm-navbar-shadow: none;
+}
+
+/* Colours only in light mode: the kit has no dark theme yet. */
+[data-theme="light"] {
+  --ifm-navbar-background-color: var(--shk-surface-page);
+  --ifm-navbar-link-color: var(--shk-color-text-primary);
+}
+
+.navbar__brand {
+  gap: var(--shk-space-1);
+  padding: var(--shk-space-1);
+  color: var(--ifm-navbar-link-color);
+}
+
+.navbar__brand::before {
+  content: "";
+  flex: none;
+  inline-size: var(--shk-size-8);
+  block-size: var(--shk-size-8);
+  background-color: currentColor;
+  mask: url("@material-symbols/svg-400/rounded/crossword.svg") center / contain
+    no-repeat;
+}
+
+.navbar__title {
+  font-size: var(--shk-font-size-20);
+  font-weight: var(--site-font-weight-extrabold);
+}
+
+.navbar__items--right {
+  gap: var(--shk-space-8);
+}
+
+.site-nav-link {
+  align-items: center;
+  gap: var(--site-nav-icon-gap);
+  font-size: var(--shk-font-size-18);
+  font-weight: var(--shk-font-weight-regular);
+}
+
+/* Desktop only. Below 997px Docusaurus hides the top-bar links (they move to the phone menu,
+   which is already flex), and setting `display` here at every width would show them again. */
+@media (min-width: 997px) {
+  .navbar__items .site-nav-link {
+    display: flex;
+  }
+}
+
+/* As in Figma: a 24px icon centred in a 32px box, so there's 4px of space on each side of it. */
+.site-nav-link::before {
+  content: "";
+  flex: none;
+  inline-size: var(--shk-size-8);
+  block-size: var(--shk-size-8);
+  background-color: currentColor;
+  mask: var(--site-nav-icon) center / var(--shk-size-6) no-repeat;
+}
+
+.site-nav-link--get-started {
+  --site-nav-icon: url("@material-symbols/svg-400/rounded/slideshow.svg");
+}
+
+.site-nav-link--domain-model {
+  --site-nav-icon: url("@material-symbols/svg-400/rounded/account_tree.svg");
+}
+
+.site-nav-link--ui-components {
+  --site-nav-icon: url("@material-symbols/svg-400/rounded/widgets.svg");
 }
 
 /* Live code block results sit on the kit's own surface, in light and dark mode,

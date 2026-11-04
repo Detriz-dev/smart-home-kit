@@ -56,12 +56,18 @@ importers:
       '@docusaurus/theme-mermaid':
         specifier: 3.10.2
         version: 3.10.2(9f4eb33924b410d12d29ea31543a8a2f)
+      '@fontsource-variable/lexend':
+        specifier: ^5.3.0
+        version: 5.3.0
       '@fontsource/space-grotesk':
         specifier: ^5.3.0
         version: 5.3.0
       '@fontsource/space-mono':
         specifier: ^5.3.0
         version: 5.3.0
+      '@material-symbols/svg-400':
+        specifier: ^0.48.0
+        version: 0.48.0
       '@mdx-js/react':
         specifier: ^3.0.0
         version: 3.1.1(@types/react@19.3.0)(react@19.3.0)
@@ -1602,6 +1608,9 @@ packages:
     engines: {node: '>=18'}
     cpu: [x64]
     os: [win32]
+
+  '@fontsource-variable/lexend@5.3.0':
+    resolution: {integrity: sha512-3SXtiZ8rFbT0oaPzEboCG5RM3jtyhpNxandh1jWNLqvrJRfV/eP3R+GGw+o5e3hS1uqmAGutKxSvaWG5oyrimA==}
 
   '@fontsource/space-grotesk@5.3.0':
     resolution: {integrity: sha512-ksnGizDPXIDuvqcTYTSrmZ+evx9sDlS8rp7+42BQ7wU+spt3twEoXfbJz672C+5CLg6VeUQwRy5RXshWb67LcQ==}
@@ -9781,6 +9790,8 @@ snapshots:
 
   '@esbuild/win32-x64@0.28.2':
     optional: true
+
+  '@fontsource-variable/lexend@5.3.0': {}
 
   '@fontsource/space-grotesk@5.3.0': {}
 

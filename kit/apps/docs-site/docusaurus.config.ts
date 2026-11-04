@@ -59,25 +59,29 @@ const config: Config = {
     },
     navbar: {
       // Clicking the title opens the landing page ("/").
-      title: "DeTriz Smart Home Kit",
+      // Its icon and the link icons are added in src/css/custom.css ("Navbar").
+      title: "Smart Home Kit",
       items: [
         {
           type: "docSidebar",
           sidebarId: "getStartedSidebar",
           label: "Get Started",
           position: "right",
+          className: "site-nav-link site-nav-link--get-started",
         },
         {
           type: "docSidebar",
           sidebarId: "domainModelSidebar",
           label: "Domain Model",
           position: "right",
+          className: "site-nav-link site-nav-link--domain-model",
         },
         {
           type: "docSidebar",
           sidebarId: "uiComponentsSidebar",
           label: "UI Components",
           position: "right",
+          className: "site-nav-link site-nav-link--ui-components",
         },
       ],
     },
