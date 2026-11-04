@@ -1,4 +1,17 @@
-# Todo
+# Backlog
+
+### Style
+- [ ] Improve docs style
+- [ ] Landing page style
+
+### Copywriting 
+- [ ] Write ton of voice
+- [ ] Improve documentation copy
+- [ ] Landing page copy
+
+### Release
+- [ ] Publish Figma asset 
+- [ ] Deploy documentation to Vercel
 
 
 - [ ] Update architecture - style guide
@@ -27,11 +40,8 @@
 
 #### Component 
 - [x] Component creation workflow (Mock Temperature) 
-- [ ] [Component](/kit/packages/tokens/src/component)
+- [x] [Component](/kit/packages/tokens/src/component)
 
 
-#### Landing page 
-- [ ] Define tone of voice
 
-#### Sensor set-up
 
