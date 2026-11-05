@@ -18,9 +18,11 @@
   --ifm-color-primary-lightest: var(--shk-palette-blue-400);
 
   /* Lines between the navbar, the left sidebar, the page and the table of contents on the right.
-     Figma: #95d7fe, the kit's blue-300. Docusaurus draws the sidebar's and the table of contents'
-     borders with --ifm-toc-border-color; the navbar's border is in the Navbar section below. */
-  --site-border-color: var(--shk-palette-blue-300);
+     One colour for all of them: the navbar line from Figma "SHK – Landing" (node 70:464), the
+     kit's gray-200. Dark mode uses a darker colour (below). Docusaurus draws the sidebar's and the
+     table of contents' borders with --ifm-toc-border-color; the navbar's border is in the Navbar
+     section below. */
+  --site-border-color: var(--shk-palette-gray-200);
   --ifm-toc-border-color: var(--site-border-color);
 
   --ifm-code-font-size: 95%;
@@ -54,13 +56,12 @@
 }
 
 /* Navbar
-   Design: Figma "SHK – Landing", node 8:343 ("Nawigation").
-   The icons are Material Symbols (Rounded, weight 400) from @material-symbols/svg-400, the same
-   package the kit's Icon component uses. They are drawn as CSS masks, so they take the text colour.
-   They are site icons, so they aren't added to the kit's icon set. */
+   Design: Figma "SHK – Landing", node 70:464 ("Nawigation").
+   The icons are Material Symbols (Rounded) from @material-symbols/svg-400 (links) and svg-300
+   (the logo), the same icons the kit's Icon component uses. They are drawn as CSS masks, so they
+   take the text colour. They are site icons, so they aren't added to the kit's icon set. */
 :root {
-  --site-font-weight-extrabold: 800; /* The kit has no 800 weight; the site title uses it. */
-  --site-nav-icon-gap: 2px; /* Icon box to label. Smaller than the kit's smallest space (4px). */
+  --site-nav-icon-gap: 6px; /* Icon to label. Between the kit's 4px and 8px spaces. */
   --ifm-navbar-height: calc(
     var(--shk-size-10) + 2 * var(--shk-space-2)
   ); /* 40px content + padding */
@@ -76,6 +77,87 @@
   --ifm-navbar-link-color: var(--shk-color-text-primary);
   /* The footer matches the page background (the landing page and navbar use the same colour). */
   --ifm-footer-background-color: var(--shk-surface-page);
+}
+
+/* Dark mode: Docusaurus's own line colour, so the lines aren't too bright on a dark page.
+   Used by the navbar, the sidebar and the table of contents. */
+[data-theme="dark"] {
+  --site-border-color: var(--ifm-color-emphasis-200);
+}
+
+/* Side columns on docs pages: the left sidebar and the table of contents on the right.
+   Their background is the landing page's background, so the page content stands out in the
+   middle. In dark mode they use the page's own colour, as the landing page does. */
+:root {
+  --site-side-background: var(--shk-surface-page);
+}
+
+[data-theme="dark"] {
+  --site-side-background: var(--ifm-background-color);
+}
+
+.theme-doc-sidebar-container {
+  background-color: var(--site-side-background);
+}
+
+/* The selected page in the sidebar: white, like the page content, so it stands out on the
+   light blue sidebar. Light mode only; dark mode keeps Docusaurus's own colour. */
+[data-theme="light"] .theme-doc-sidebar-container {
+  --ifm-menu-color-background-active: var(--shk-surface-default);
+}
+
+/* The current page in the breadcrumbs above the page title: the landing page's light blue
+   instead of gray, like the side columns. Light mode only; dark mode keeps Docusaurus's colour. */
+[data-theme="light"] .breadcrumbs {
+  --ifm-breadcrumb-item-background-active: var(--shk-surface-page);
+}
+
+/* Docusaurus pads the menu on the left only, so the selected item ran to the edge and covered
+   the sidebar's border line. The same 8px on the right keeps it clear of the line. */
+.theme-doc-sidebar-container .menu {
+  padding-inline-end: var(--shk-space-2);
+  /* The same size, weight and colour as the navbar links (.site-nav-link), so the two menus
+     match. Docusaurus makes sidebar links semibold and gray by default. The selected page
+     keeps the blue, like the selected navbar link. */
+  --ifm-menu-color: var(--ifm-navbar-link-color);
+  font-size: var(--shk-font-size-14);
+  font-weight: var(--shk-font-weight-regular);
+}
+
+/* The table of contents column is narrower than the space next to the page content, and on wide
+   screens it doesn't reach the right edge. A strip behind it fills from its left edge to the
+   right edge of the screen, the full height of the page, with the border line on its left
+   (like the sidebar's border on the right). Desktop only: below 997px the table of contents
+   moves to the top of the page. */
+@media (min-width: 997px) {
+  /* Stops the strip (which runs past the screen edge) from adding a sideways scrollbar.
+     `clip`, not `hidden`, so the sticky sidebar and table of contents still stick. */
+  .main-wrapper {
+    overflow-x: clip;
+  }
+
+  .col--3:has(> .theme-doc-toc-desktop) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .col--3:has(> .theme-doc-toc-desktop)::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    /* Also covers the page's top (1rem) and bottom (2rem) padding: Infima's
+       padding-top--md and padding-bottom--lg on the container around this row. */
+    inset-block: -1rem -2rem;
+    inset-inline: 0 -100vw;
+    border-inline-start: var(--shk-border-width-thin) solid
+      var(--site-border-color);
+    background-color: var(--site-side-background);
+  }
+
+  /* The strip draws the line now, so the list's own shorter line goes. */
+  .theme-doc-toc-desktop .table-of-contents__left-border {
+    border-inline-start: none;
+  }
 }
 
 /* A 1px line under the navbar, the same colour as the sidebar borders. */
@@ -95,13 +177,13 @@
   inline-size: var(--shk-size-8);
   block-size: var(--shk-size-8);
   background-color: currentColor;
-  mask: url("@material-symbols/svg-400/rounded/crossword.svg") center / contain
+  mask: url("@material-symbols/svg-300/rounded/crossword.svg") center / contain
     no-repeat;
 }
 
 .navbar__title {
-  font-size: var(--shk-font-size-20);
-  font-weight: var(--site-font-weight-extrabold);
+  font-size: var(--shk-font-size-16);
+  font-weight: var(--shk-font-weight-semibold);
 }
 
 .navbar__items--right {
@@ -111,8 +193,9 @@
 .site-nav-link {
   align-items: center;
   gap: var(--site-nav-icon-gap);
-  font-size: var(--shk-font-size-16);
+  font-size: var(--shk-font-size-14);
   font-weight: var(--shk-font-weight-regular);
+  line-height: 20px; /* As in Figma (node 70:604). */
 }
 
 /* Desktop only. Below 997px Docusaurus hides the top-bar links (they move to the phone menu,
@@ -123,14 +206,14 @@
   }
 }
 
-/* As in Figma: a 24px icon centred in a 32px box, so there's 4px of space on each side of it. */
+/* As in Figma: a 20px icon. */
 .site-nav-link::before {
   content: "";
   flex: none;
-  inline-size: var(--shk-size-8);
-  block-size: var(--shk-size-8);
+  inline-size: var(--shk-size-5);
+  block-size: var(--shk-size-5);
   background-color: currentColor;
-  mask: var(--site-nav-icon) center / var(--shk-size-6) no-repeat;
+  mask: var(--site-nav-icon) center / contain no-repeat;
 }
 
 .site-nav-link--get-started {
@@ -143,4 +226,57 @@
 
 .site-nav-link--ui-components {
   --site-nav-icon: url("@material-symbols/svg-400/rounded/widgets.svg");
+}
+
+/* GitHub: icon only (the link has an aria-label). The mark is the PNG from the Figma design,
+   used as a mask so it takes the text colour in light and dark mode. */
+.site-nav-github {
+  display: flex;
+  align-items: center;
+}
+
+.site-nav-github::before {
+  content: "";
+  inline-size: var(--shk-size-6);
+  block-size: var(--shk-size-6);
+  background-color: currentColor;
+  mask: url("../../static/img/landing/github.png") center / contain no-repeat;
+}
+
+.site-nav-github:hover {
+  opacity: 0.7;
+}
+
+/* Docusaurus adds an "opens in a new tab" arrow to outside links; the GitHub mark says enough. */
+.site-nav-github svg {
+  display: none;
+}
+
+/* Light / dark mode switch: its shape the same size as the 24px GitHub mark next to it.
+   Docusaurus draws each icon in a 24px box, but the shapes are smaller: the moon (dark) and the
+   half circle (system) are 18px, the sun (light) is 22px. So the boxes grow until each shape is
+   24px. They still fit in the 32px button. The class names are Docusaurus's, so the part before
+   "_" stays the same between versions. */
+.navbar [class*="darkToggleIcon"],
+.navbar [class*="systemToggleIcon"] {
+  inline-size: var(--shk-size-8); /* 18 × 32 / 24 = 24px shape */
+  block-size: var(--shk-size-8);
+}
+
+.navbar [class*="lightToggleIcon"] {
+  inline-size: 26px; /* 22 × 26 / 24 ≈ 24px shape */
+  block-size: 26px;
+}
+
+/* Footer: just the copyright line. Design: Figma "SHK – Landing", node 70:528. */
+/* 56px on top: with the landing page's 8px bottom padding, 64px from the cards, as in Figma. */
+.footer {
+  padding: calc(var(--shk-space-16) - var(--shk-space-2)) var(--shk-space-4)
+    var(--shk-space-10);
+}
+
+.footer__copyright {
+  color: var(--ifm-color-emphasis-700);
+  font-size: var(--shk-font-size-14);
+  line-height: 20px;
 }

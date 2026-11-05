@@ -94,6 +94,14 @@ const config: Config = {
           position: "right",
           className: "site-nav-link site-nav-link--ui-components",
         },
+        {
+          // Icon only: the GitHub mark is drawn in src/css/custom.css ("Navbar").
+          // The light / dark mode switch comes after it; Docusaurus adds it on its own.
+          href: "https://github.com/Detriz-dev/smart-home-kit",
+          position: "right",
+          className: "site-nav-github",
+          "aria-label": "GitHub repository",
+        },
       ],
     },
     footer: {
