@@ -328,7 +328,7 @@ Pass only the Metrics a screen needs. For "the temperature in every room", give 
 
 | Prop       | Comes from                                                                     | Example                                            |
 | ---------- | ------------------------------------------------------------------------------ | -------------------------------------------------- |
-| `name`     | The [Space](/docs/domain-model/glossary#where-things-are)'s name               | `"Bedroom"`                                        |
+| `name`     | The [Space](/docs/domain-model/glossary#places)'s name                         | `"Bedroom"`                                        |
 | `readings` | One latest Reading per Metric, from the Space's Modules                        | see below                                          |
 | `faults`   | The current [Faults](/docs/domain-model/glossary#fault) of the Space's Modules | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
 
@@ -336,7 +336,7 @@ Each item in `readings`:
 
 | Field              | Comes from                                                                                                       | Example         |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------- | --------------- |
-| `metric`           | The Sensor's [Metric](/docs/domain-model/glossary#what-is-tracked)                                               | `"temperature"` |
+| `metric`           | The Sensor's [Metric](/docs/domain-model/glossary#measurements)                                                  | `"temperature"` |
 | `value`            | The value of its latest Reading, or `null` before the first one                                                  | `21.5`          |
 | `unit`             | The display Unit you chose for the Metric                                                                        | `"celsius"`     |
 | `fractionDigits`   | The Metric (optional, default `1`)                                                                               | `0` for CO₂     |
@@ -416,7 +416,7 @@ What you get without doing anything:
 - The card is a group named by the Space name, so screen readers announce "Bedroom" first.
 - The Faults and the rows are real lists, so screen readers say how many there are.
 - Each row reads label first, then the status when Stale, then the value: "Temperature, Stale, 21.5 degrees Celsius".
-- Not colour alone: Stale has a text label, Disconnected its own icon, and a Fault its icon and message.
+- Not color alone: Stale has a text label, Disconnected its own icon, and a Fault its icon and message.
 - A row going Stale is announced (the Stale label is a live region). New Readings are not, so the card doesn't keep interrupting.
 
 What's up to you:

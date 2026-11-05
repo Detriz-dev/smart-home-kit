@@ -1,12 +1,16 @@
 ---
+title: Build your first screen
 sidebar_position: 3
 sidebar_label: Quick start
-description: Build a first smart home screen from a few of the kit's components.
+description: Build a first smart home screen for one Space from a few of the kit's React components, in about ten minutes.
+keywords:
+  - smart home kit tutorial
+  - quick start
+  - React components
+  - ModuleCard
 ---
 
-# Quick start
-
-Build a screen for one Space, the Bedroom, from a few of the kit's components. It takes about ten minutes. You need the kit installed first: see [Installation](./installation.mdx).
+Build a screen for one Space, the Bedroom, from a few of the kit's components. It takes about ten minutes. You need the kit installed first: see [Installation](./installation.mdx). If you want to know why the components work the way they do, read the [Introduction](./introduction.mdx).
 
 This is what you'll build:
 
@@ -37,16 +41,48 @@ This is what you'll build:
 </ContentSection>
 ```
 
-## How the kit works
+## 1. Show one Module
 
-Two things to know before you start:
+Render the Bedroom's Climate Module with [`ModuleCard`](/docs/ui-components/readings/module-card). It shows the Module's name, its Connection Status and a Reading for each Sensor:
 
-- **The components show what you pass them.** They never fetch data or talk to a Device. Your app gets the data and passes it in as props.
-- **They use the Domain Model's words.** A Space has Modules, a Module has Sensors, and a Sensor produces Readings. The props use the same words, so if you know the [Glossary](/docs/domain-model/glossary), you know what to pass.
+```tsx title="src/App.tsx"
+import { ModuleCard } from "@detriz-sh-kit/ui";
 
-## 1. Describe the data
+export function App() {
+  return (
+    <ModuleCard
+      name="Climate Module"
+      connectionStatus="connected"
+      sensors={[
+        { metric: "temperature", value: 21.5, unit: "celsius" },
+        {
+          metric: "humidity",
+          value: 48,
+          unit: "percent-rh",
+          fractionDigits: 0,
+        },
+      ]}
+    />
+  );
+}
+```
 
-Start with the data for the screen. In a real app it comes from your API. Here it's written out by hand. Use the kit's [shared types](/docs/ui-components/foundations/shared-types), so TypeScript checks the data against the components:
+You should see this:
+
+```jsx live
+<ModuleCard
+  name="Climate Module"
+  connectionStatus="connected"
+  sensors={[
+    { metric: "temperature", value: 21.5, unit: "celsius" },
+    { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+  ]}
+/>
+```
+
+## 2. Move the data into its own file
+
+To show more than one Module, keep the data apart from the screen. In a real app it comes from your API. Here it's written out by hand, with a second Module that reports a Fault. The [shared types](/docs/ui-components/foundations/shared-types) let TypeScript check the data against the components:
 
 ```tsx title="src/bedroomData.ts"
 import type { ModuleCardProps } from "@detriz-sh-kit/ui";
@@ -69,9 +105,7 @@ export const bedroomModules: ModuleCardProps[] = [
 ];
 ```
 
-## 2. Show one Module
-
-Render the first Module with [`ModuleCard`](/docs/ui-components/readings/module-card). It shows the Module's name, its Connection Status, any Faults and a Reading for each Sensor:
+Then pass the first Module to the card. The screen looks the same as before:
 
 ```tsx title="src/App.tsx"
 import { ModuleCard } from "@detriz-sh-kit/ui";
@@ -80,17 +114,6 @@ import { bedroomModules } from "./bedroomData";
 export function App() {
   return <ModuleCard {...bedroomModules[0]} />;
 }
-```
-
-```jsx live
-<ModuleCard
-  name="Climate Module"
-  connectionStatus="connected"
-  sensors={[
-    { metric: "temperature", value: 21.5, unit: "celsius" },
-    { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
-  ]}
-/>
 ```
 
 ## 3. Show every Module side by side
@@ -149,10 +172,57 @@ That's the screen from the top of this page.
 
 Readings arrive all the time, and Devices go Stale or disconnect. You don't change the components for that: you pass new data, and they show the right state.
 
-Try it here: the buttons change the data, and the card follows.
+To see it, add a small test component. It keeps the Climate Module's Connection Status and temperature in state, and its buttons change them:
+
+```tsx title="src/ConnectionTest.tsx"
+import { useState } from "react";
+import {
+  Button,
+  ModuleCard,
+  StackLayout,
+  type ConnectionStatus,
+} from "@detriz-sh-kit/ui";
+
+export function ConnectionTest() {
+  const [status, setStatus] = useState<ConnectionStatus>("connected");
+  const [temperature, setTemperature] = useState(21.5);
+
+  return (
+    <StackLayout>
+      <div
+        style={{ display: "flex", flexWrap: "wrap", gap: "var(--shk-space-2)" }}
+      >
+        <Button
+          onClick={() => setTemperature((t) => Math.round((t + 0.3) * 10) / 10)}
+        >
+          New Reading
+        </Button>
+        <Button onClick={() => setStatus("stale")}>Go Stale</Button>
+        <Button onClick={() => setStatus("disconnected")}>Disconnect</Button>
+        <Button onClick={() => setStatus("connected")}>Reconnect</Button>
+      </div>
+      <ModuleCard
+        name="Climate Module"
+        connectionStatus={status}
+        sensors={[
+          { metric: "temperature", value: temperature, unit: "celsius" },
+          {
+            metric: "humidity",
+            value: 48,
+            unit: "percent-rh",
+            fractionDigits: 0,
+          },
+        ]}
+      />
+    </StackLayout>
+  );
+}
+```
+
+Render `<ConnectionTest />` in `App.tsx` in place of the screen, and click the buttons. You can also try it here:
 
 ```jsx live
-function LiveModule() {
+function ConnectionTest() {
   const [status, setStatus] = useState("connected");
   const [temperature, setTemperature] = useState(21.5);
 

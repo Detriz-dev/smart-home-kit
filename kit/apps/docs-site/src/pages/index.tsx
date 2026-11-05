@@ -116,7 +116,7 @@ export default function Home(): ReactNode {
             <InstallCommand />
             <Link
               className={styles.introLink}
-              to="/docs/get-started/how-it-works"
+              to="/docs/get-started/introduction"
             >
               Introduction
               <span

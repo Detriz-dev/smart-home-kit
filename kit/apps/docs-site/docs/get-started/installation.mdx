@@ -1,12 +1,21 @@
 ---
+title: Installation
 sidebar_position: 2
 sidebar_label: Installation
 description: Install the kit's packages, load its styles and fonts, and render your first component.
+keywords:
+  - install smart home kit
+  - React components
+  - design tokens
+  - npm install
+  - Vite
+  - Next.js
 ---
 
-# Installation
+import Tabs from "@theme/Tabs";
+import TabItem from "@theme/TabItem";
 
-How to add the kit to a React app and render your first component. It takes three steps: install the packages, load the styles and fonts, and check that your own CSS doesn't override the kit.
+Add the kit to a React app and render your first component in three steps: install the packages, load the styles and fonts, and check that your own CSS doesn't override the kit.
 
 ## What you need
 
@@ -25,16 +34,29 @@ The kit comes as two packages:
 
 Install both. The kit's fonts come with `ui`, so there's nothing else to install:
 
+<Tabs groupId="package-manager" queryString>
+  <TabItem value="npm" label="npm" default>
+
 ```sh
 npm install @detriz-sh-kit/ui @detriz-sh-kit/tokens
 ```
 
-With pnpm or Yarn:
+  </TabItem>
+  <TabItem value="pnpm" label="pnpm">
 
 ```sh
 pnpm add @detriz-sh-kit/ui @detriz-sh-kit/tokens
+```
+
+  </TabItem>
+  <TabItem value="yarn" label="Yarn">
+
+```sh
 yarn add @detriz-sh-kit/ui @detriz-sh-kit/tokens
 ```
+
+  </TabItem>
+</Tabs>
 
 ## 2. Load the styles and fonts
 
@@ -76,7 +98,7 @@ If your app has no global styles, you can skip this step. See [Design tokens](/d
 
 The root of a Vite app, with everything in place:
 
-```tsx title="src/main.tsx"
+```tsx title="src/main.tsx" {5-7}
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
@@ -110,6 +132,10 @@ export function App() {
 }
 ```
 
+:::note[Next.js App Router]
+The kit's components run in the browser, so they can't be rendered in a Server Component. Put `"use client";` at the top of each file that renders them.
+:::
+
 You should see this:
 
 ```jsx live
@@ -123,7 +149,7 @@ If yours looks different:
 | You see                                          | Likely cause                                           | Fix                                               |
 | ------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------- |
 | Plain text, no card                              | The styles aren't loaded.                              | Step 2: import `ui/styles.css`.                   |
-| A card, but wrong colours or no spacing          | The tokens aren't loaded, or load after the styles.    | Step 2: import `tokens/tokens.css` first.         |
+| A card, but wrong colors or no spacing           | The tokens aren't loaded, or load after the styles.    | Step 2: import `tokens/tokens.css` first.         |
 | The right layout, but a different font           | The fonts aren't loaded.                               | Step 2: import `ui/fonts.css`.                    |
 | Extra indents, margins or bullets                | Your global CSS overrides the kit.                     | Step 3.                                           |
 | A React error about hooks or two copies of React | React isn't version 19, or two versions are installed. | Install React 19 and check there's only one copy. |
@@ -132,4 +158,4 @@ If yours looks different:
 
 - [Quick start](./quick-start.mdx): build a first screen from a few components.
 - [UI Components](/docs/ui-components): every component, with live examples.
-- [Domain Model](/docs/domain-model/glossary): the words the components use, like Site, Space, Module and Reading.
+- [Glossary](/docs/domain-model/glossary): the words the components use, like Site, Space, Module and Reading.

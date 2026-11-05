@@ -5,7 +5,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 // This file runs in Node.js, not in the browser: no JSX or browser APIs here.
 
 // Code theme for every code block and the live editor, in light and dark mode: VS Code's dark
-// colours on our own background. The value is a CSS variable, so the colour itself lives in
+// colors on our own background. The value is a CSS variable, so the color itself lives in
 // src/css/custom.css (--site-code-background) and the browser fills it in.
 const codeTheme = {
   ...prismThemes.vsDark,

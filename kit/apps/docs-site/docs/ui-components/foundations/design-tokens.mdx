@@ -6,7 +6,7 @@ description: The CSS variables every component is styled with, and how to change
 
 # Design tokens
 
-Every colour, size and space in the kit's components comes from a **design token**: a named value, stored as a CSS variable that starts with `--shk-`. For example, `--shk-color-text-primary` is the colour of main text, and `--shk-space-4` is 16px of space.
+Every color, size and space in the kit's components comes from a **design token**: a named value, stored as a CSS variable that starts with `--shk-`. For example, `--shk-color-text-primary` is the color of main text, and `--shk-space-4` is 16px of space.
 
 Because the components only use tokens, you can change the look of the whole kit by changing a few tokens, without touching the components.
 
@@ -69,7 +69,7 @@ In a stylesheet, the same change looks like this:
 }
 ```
 
-Prefer pointing a token at another token, like `var(--shk-palette-gray-50)`, over a raw value like `#f6f9fb`. That keeps your colours in the same family as the kit's.
+Prefer pointing a token at another token, like `var(--shk-palette-gray-50)`, over a raw value like `#f6f9fb`. That keeps your colors in the same family as the kit's.
 
 :::note
 
@@ -99,7 +99,7 @@ Changing tokens isn't affected by this: tokens are CSS variables, so setting the
 
 The semantic tokens, grouped. Each component page lists the tokens it uses under **Styling**.
 
-### Text colour
+### Text color
 
 | Token                        | Value    | For                                            |
 | ---------------------------- | -------- | ---------------------------------------------- |
@@ -156,7 +156,7 @@ function Swatches() {
 }
 ```
 
-### Status and action colours
+### Status and action colors
 
 The Status components use `--shk-status-*` tokens, in five roles. Each role has five tokens: `-solid` (a strong fill, like the status dot), `-on-solid` (text on that fill), `-bg` (a light fill), `-border` and `-fg` (text and icons):
 
@@ -172,7 +172,7 @@ Disconnected uses `neutral`, not `danger`: red is kept for Faults, so "unplugged
 
 [`Button`](../controls/button.mdx) uses its own `--shk-action-*` tokens for its fills, text and focus ring.
 
-These colours are shared by many components, so change them on `:root`, for the whole app.
+These colors are shared by many components, so change them on `:root`, for the whole app.
 
 ### Space
 

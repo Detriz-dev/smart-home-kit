@@ -135,10 +135,10 @@ Fault and Connection Status are separate. A Device can be Connected **and** have
 
 ## Mapping your data
 
-| Prop        | Comes from                                                                                        | Example            |
-| ----------- | ------------------------------------------------------------------------------------------------- | ------------------ |
-| `faultCode` | The Fault's [Fault Code](/docs/domain-model/glossary#fault)                                       | `"sensor_failure"` |
-| `metric`    | The [Metric](/docs/domain-model/glossary#what-is-tracked) of the affected Sensor, if there is one | `"co2"`            |
+| Prop        | Comes from                                                                                     | Example            |
+| ----------- | ---------------------------------------------------------------------------------------------- | ------------------ |
+| `faultCode` | The Fault's [Fault Code](/docs/domain-model/glossary#fault)                                    | `"sensor_failure"` |
+| `metric`    | The [Metric](/docs/domain-model/glossary#measurements) of the affected Sensor, if there is one | `"co2"`            |
 
 A few rules from the domain model:
 
@@ -183,7 +183,7 @@ A Fault message is never shortened: a cut-off message could hide what's wrong. W
 
 What you get without doing anything:
 
-- **Not colour alone.** The message says what's wrong in words, and the icon has its own shape. The icon is hidden from screen readers, because the message says the same thing.
+- **Not color alone.** The message says what's wrong in words, and the icon has its own shape. The icon is hidden from screen readers, because the message says the same thing.
 - **New Faults are announced.** The component is a polite live region (`role="status"`), so when a Fault appears, screen readers read it without moving focus.
 - **Metric names are spoken in full:** "CO₂ sensor failure" is read as "carbon dioxide sensor failure".
 - The message meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
@@ -200,13 +200,13 @@ DeviceFaultStatus uses the kit's [design tokens](../foundations/design-tokens.md
 
 | What                         | Token                               |
 | ---------------------------- | ----------------------------------- |
-| Icon and message colour      | `--shk-status-danger-fg`            |
+| Icon and message color       | `--shk-status-danger-fg`            |
 | Message text style           | `--shk-typography-caption-*` (12px) |
 | Gap between icon and message | `--shk-space-1` (4px)               |
 
 It has no padding or background: the space around it belongs to the parent.
 
-The status colours are shared by every Status component, so change them for the whole app, not one screen:
+The status colors are shared by every Status component, so change them for the whole app, not one screen:
 
 ```css
 :root {

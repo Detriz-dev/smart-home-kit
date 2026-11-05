@@ -6,7 +6,7 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  /* Brand colour: links, the selected navbar link, the selected sidebar item, buttons.
+  /* Brand color: links, the selected navbar link, the selected sidebar item, buttons.
      Figma "SHK – Landing" (node 8:3): #017bab, the kit's blue-600. Docusaurus uses the
      darker shades for hover and pressed, and the lighter ones for subtle backgrounds. */
   --ifm-color-primary: var(--shk-palette-blue-600);
@@ -18,8 +18,8 @@
   --ifm-color-primary-lightest: var(--shk-palette-blue-400);
 
   /* Lines between the navbar, the left sidebar, the page and the table of contents on the right.
-     One colour for all of them: the navbar line from Figma "SHK – Landing" (node 70:464), the
-     kit's gray-200. Dark mode uses a darker colour (below). Docusaurus draws the sidebar's and the
+     One color for all of them: the navbar line from Figma "SHK – Landing" (node 70:464), the
+     kit's gray-200. Dark mode uses a darker color (below). Docusaurus draws the sidebar's and the
      table of contents' borders with --ifm-toc-border-color; the navbar's border is in the Navbar
      section below. */
   --site-border-color: var(--shk-palette-gray-200);
@@ -59,7 +59,7 @@
    Design: Figma "SHK – Landing", node 70:464 ("Nawigation").
    The icons are Material Symbols (Rounded) from @material-symbols/svg-400 (links) and svg-300
    (the logo), the same icons the kit's Icon component uses. They are drawn as CSS masks, so they
-   take the text colour. They are site icons, so they aren't added to the kit's icon set. */
+   take the text color. They are site icons, so they aren't added to the kit's icon set. */
 :root {
   --site-nav-icon-gap: 6px; /* Icon to label. Between the kit's 4px and 8px spaces. */
   --ifm-navbar-height: calc(
@@ -71,15 +71,15 @@
   --ifm-navbar-shadow: none;
 }
 
-/* Colours only in light mode: the kit has no dark theme yet. */
+/* Colors only in light mode: the kit has no dark theme yet. */
 [data-theme="light"] {
   --ifm-navbar-background-color: var(--shk-surface-page);
   --ifm-navbar-link-color: var(--shk-color-text-primary);
-  /* The footer matches the page background (the landing page and navbar use the same colour). */
+  /* The footer matches the page background (the landing page and navbar use the same color). */
   --ifm-footer-background-color: var(--shk-surface-page);
 }
 
-/* Dark mode: Docusaurus's own line colour, so the lines aren't too bright on a dark page.
+/* Dark mode: Docusaurus's own line color, so the lines aren't too bright on a dark page.
    Used by the navbar, the sidebar and the table of contents. */
 [data-theme="dark"] {
   --site-border-color: var(--ifm-color-emphasis-200);
@@ -87,7 +87,7 @@
 
 /* Side columns on docs pages: the left sidebar and the table of contents on the right.
    Their background is the landing page's background, so the page content stands out in the
-   middle. In dark mode they use the page's own colour, as the landing page does. */
+   middle. In dark mode they use the page's own color, as the landing page does. */
 :root {
   --site-side-background: var(--shk-surface-page);
 }
@@ -101,13 +101,13 @@
 }
 
 /* The selected page in the sidebar: white, like the page content, so it stands out on the
-   light blue sidebar. Light mode only; dark mode keeps Docusaurus's own colour. */
+   light blue sidebar. Light mode only; dark mode keeps Docusaurus's own color. */
 [data-theme="light"] .theme-doc-sidebar-container {
   --ifm-menu-color-background-active: var(--shk-surface-default);
 }
 
 /* The current page in the breadcrumbs above the page title: the landing page's light blue
-   instead of gray, like the side columns. Light mode only; dark mode keeps Docusaurus's colour. */
+   instead of gray, like the side columns. Light mode only; dark mode keeps Docusaurus's color. */
 [data-theme="light"] .breadcrumbs {
   --ifm-breadcrumb-item-background-active: var(--shk-surface-page);
 }
@@ -116,7 +116,7 @@
    the sidebar's border line. The same 8px on the right keeps it clear of the line. */
 .theme-doc-sidebar-container .menu {
   padding-inline-end: var(--shk-space-2);
-  /* The same size, weight and colour as the navbar links (.site-nav-link), so the two menus
+  /* The same size, weight and color as the navbar links (.site-nav-link), so the two menus
      match. Docusaurus makes sidebar links semibold and gray by default. The selected page
      keeps the blue, like the selected navbar link. */
   --ifm-menu-color: var(--ifm-navbar-link-color);
@@ -160,7 +160,7 @@
   }
 }
 
-/* A 1px line under the navbar, the same colour as the sidebar borders. */
+/* A 1px line under the navbar, the same color as the sidebar borders. */
 .navbar {
   border-block-end: var(--shk-border-width-thin) solid var(--site-border-color);
 }
@@ -229,7 +229,7 @@
 }
 
 /* GitHub: icon only (the link has an aria-label). The mark is the PNG from the Figma design,
-   used as a mask so it takes the text colour in light and dark mode. */
+   used as a mask so it takes the text color in light and dark mode. */
 .site-nav-github {
   display: flex;
   align-items: center;

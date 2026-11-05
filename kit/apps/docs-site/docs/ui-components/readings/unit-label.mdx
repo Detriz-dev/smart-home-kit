@@ -171,17 +171,17 @@ The Unit stays visible when `ReadingValue` shows its loading or disconnected ico
 
 ## Mapping your data
 
-Pass the [Unit](/docs/domain-model/glossary#what-is-tracked) of the Reading as `unit`.
+Pass the [Unit](/docs/domain-model/glossary#measurements) of the Reading as `unit`.
 
-| Prop   | Domain term                                         | Example   |
-| ------ | --------------------------------------------------- | --------- |
-| `unit` | [Unit](/docs/domain-model/glossary#what-is-tracked) | `celsius` |
+| Prop   | Domain term                                      | Example   |
+| ------ | ------------------------------------------------ | --------- |
+| `unit` | [Unit](/docs/domain-model/glossary#measurements) | `celsius` |
 
 A few rules from the domain model:
 
 - **You pick the display Unit.** Each Metric has one Unit in the data. Showing Temperature in °F instead of °C is a formatting choice. UnitLabel shows the Unit it is given: converting the value and remembering what the user prefers is up to your app.
 - **A fixed list.** `unit` only accepts the seven Units above, so nobody types "°c" or "C°". TypeScript tells you if you pass anything else.
-- **VOC uses ppb for now.** This may change when the supported Air Quality board is chosen (see the [Glossary](/docs/domain-model/glossary#what-is-tracked)).
+- **VOC uses ppb for now.** This may change when the supported Air Quality board is chosen (see the [Glossary](/docs/domain-model/glossary#measurements)).
 
 ## Props
 
@@ -218,22 +218,22 @@ What you get without doing anything:
 
 - Screen readers say the spoken name ("degrees Celsius"), not the symbol, so "°C" sounds the same in every screen reader.
 - Next to a `ReadingValue` and a `SensorLabel`, the group reads as "Temperature 22.4 degrees Celsius".
-- The Unit is told apart by its text, not by colour. The lighter colour only makes it quieter than the number.
-- The text colour meets the WCAG AA contrast ratio (4.5:1) on light backgrounds, also at 14px.
+- The Unit is told apart by its text, not by color. The lighter color only makes it quieter than the number.
+- The text color meets the WCAG AA contrast ratio (4.5:1) on light backgrounds, also at 14px.
 
 What's up to you:
 
 - **No extra label.** Don't add an `aria-label` or your own hidden text for the Unit. It is already read out.
-- Check the contrast if you place it on a dark or coloured background.
+- Check the contrast if you place it on a dark or colored background.
 
 ## Styling
 
 UnitLabel uses the kit's [design tokens](../foundations/design-tokens.mdx) (CSS variables starting with `--shk-`):
 
-| What        | Token                                                                                 |
-| ----------- | ------------------------------------------------------------------------------------- |
-| Text colour | `--shk-color-text-secondary`                                                          |
-| Text style  | `lg` readout, `md` readout-sm, `sm` and `xs` readout-xs (`--shk-typography-readout…`) |
+| What       | Token                                                                                 |
+| ---------- | ------------------------------------------------------------------------------------- |
+| Text color | `--shk-color-text-secondary`                                                          |
+| Text style | `lg` readout, `md` readout-sm, `sm` and `xs` readout-xs (`--shk-typography-readout…`) |
 
 UnitLabel has no padding, gap or background: the space around it belongs to the parent.
 

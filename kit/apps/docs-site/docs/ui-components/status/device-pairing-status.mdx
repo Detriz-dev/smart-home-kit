@@ -1,12 +1,12 @@
 ---
 sidebar_position: 2
 sidebar_label: DevicePairingStatus
-description: Shows whether a Device belongs to the Account, as a short label with a coloured dot.
+description: Shows whether a Device belongs to the Account, as a short label with a colored dot.
 ---
 
 # DevicePairingStatus
 
-Shows a Device's Pairing Status as a short label with a coloured dot: Unpaired, Pairing or Paired. Use it while people add Devices to their Account, so they can see which Devices are new, which are being set up and which are done.
+Shows a Device's Pairing Status as a short label with a colored dot: Unpaired, Pairing or Paired. Use it while people add Devices to their Account, so they can see which Devices are new, which are being set up and which are done.
 
 ```jsx live
 <DevicePairingStatus status="paired" />
@@ -60,15 +60,15 @@ Don't use it for:
 
 ## States
 
-One state per Pairing Status. Each has its own label and dot colour.
+One state per Pairing Status. Each has its own label and dot color.
 
 | `status`   | Label    | Dot   | Means                                                                          |
 | ---------- | -------- | ----- | ------------------------------------------------------------------------------ |
-| `unpaired` | Unpaired | grey  | The Device has been detected, but the user hasn't added it to the Account yet. |
+| `unpaired` | Unpaired | gray  | The Device has been detected, but the user hasn't added it to the Account yet. |
 | `pairing`  | Pairing  | blue  | First-time setup is running: the Device is joining the Account.                |
 | `paired`   | Paired   | green | The Device belongs to the Account. From now on it has a Connection Status.     |
 
-The colours mean the same as in `DeviceConnectionStatus`: grey for "not active", blue for "in progress", green for "done".
+The colors mean the same as in `DeviceConnectionStatus`: gray for "not active", blue for "in progress", green for "done".
 
 ### Unpaired
 
@@ -167,7 +167,7 @@ The labels are short and fixed, so they never wrap or get shortened. The longest
 
 What you get without doing anything:
 
-- **Not colour alone.** The label says the status in words. The dot only repeats it, and screen readers skip it.
+- **Not color alone.** The label says the status in words. The dot only repeats it, and screen readers skip it.
 - **Changes are announced.** The component is a polite live region (`role="status"`), so when pairing finishes, screen readers read "Paired" without moving focus.
 - The label meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
 
@@ -183,14 +183,14 @@ DevicePairingStatus uses the same tokens as `DeviceConnectionStatus` (CSS variab
 
 | What                   | Token                                                                                                                   |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| Label colour           | `--shk-color-text-primary`                                                                                              |
+| Label color            | `--shk-color-text-primary`                                                                                              |
 | Label text style       | `--shk-typography-caption-*` (12px)                                                                                     |
 | Background             | `--shk-surface-default`                                                                                                 |
 | Gap and inline padding | `--shk-space-1` (4px)                                                                                                   |
 | Dot size               | `--shk-size-3` (12px)                                                                                                   |
-| Dot colour             | `unpaired` `--shk-status-neutral-solid`, `pairing` `--shk-status-progress-solid`, `paired` `--shk-status-success-solid` |
+| Dot color              | `unpaired` `--shk-status-neutral-solid`, `pairing` `--shk-status-progress-solid`, `paired` `--shk-status-success-solid` |
 
-The status colours are shared by every Status component, so change them for the whole app, not one screen:
+The status colors are shared by every Status component, so change them for the whole app, not one screen:
 
 ```css
 :root {

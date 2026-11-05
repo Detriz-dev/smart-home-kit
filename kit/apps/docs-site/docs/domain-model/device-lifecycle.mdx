@@ -1,34 +1,27 @@
 ---
+title: Device lifecycle
 sidebar_position: 4
 sidebar_label: Device lifecycle
+description: "How a Hub or a Module moves through its life: from detected, through pairing and connection, to removed, and what the UI shows at each step."
+keywords:
+  - device lifecycle
+  - Device Status
+  - Connection Status
+  - Pairing Status
+  - smart home states
 ---
 
-# Device lifecycle
-
-This page describes how a **Device** (a Hub or a Module) moves through its life: from being detected, through pairing and day-to-day connection, to being removed. It builds on the [Glossary](./glossary.mdx) and the [Data model](./data-model.mdx). Simulated Devices from the API Simulator go through exactly the same lifecycle.
-
-The statuses (Unpaired, Connected, …) come from the glossary. The **events** that move a Device between statuses (Device Paired, Device Went Stale, …) are _(proposed)_: they aren't part of the glossary yet. They are listed, with the commands, on [Events and commands](./events-and-commands.mdx).
-
-## How to read the diagrams
-
-The lifecycle diagrams are **state diagrams**:
-
-- A **box** is a status the Device can be in.
-- An **arrow** is a change of status. The label on the arrow is the **event** that causes it.
-- `[*]` is the start (an arrow leaving it) or the end (an arrow going into it).
-- A **box inside a box** means the inner statuses only exist while the Device is in the outer one.
-
-The two flows near the end are **sequence diagrams**: each column is a participant, and time runs from top to bottom.
+A **Device** (a Hub or a Module) moves through its life in steps: it is detected, paired, connects and disconnects day to day, and is finally removed. This page shows each step, the rules behind them, and what the UI shows. It builds on the [Glossary](./glossary.mdx) and the [Data model](./data-model.mdx). The events that move a Device between statuses, like Device Paired, are listed on [Events and commands](./events-and-commands.mdx).
 
 ## Three independent fields
 
 The glossary splits Device Status into three fields. Each one has its own small lifecycle:
 
-| Field | Question | Exists when |
-| --- | --- | --- |
-| **Pairing Status** | Is this Device registered to the Account? | Always, from the moment the Device is detected |
-| **Connection Status** | Can we reach it right now? | Only while the Device is **Paired** |
-| **Fault** | Is the hardware healthy? | Only while the Device is **Paired**. Independent of Connection Status |
+| Field                 | Question                                  | Exists when                                                           |
+| --------------------- | ----------------------------------------- | --------------------------------------------------------------------- |
+| **Pairing Status**    | Is this Device registered to the Account? | Always, from the moment the Device is detected                        |
+| **Connection Status** | Can we reach it right now?                | Only while the Device is **Paired**                                   |
+| **Fault**             | Is the hardware healthy?                  | Only while the Device is **Paired**. Independent of Connection Status |
 
 Keeping them apart is what allows real combinations like "Connected **and** has a Fault", and makes impossible ones like "Unpaired **and** Stale" impossible to express.
 
@@ -46,20 +39,20 @@ stateDiagram-v2
     Paired --> [*] : Device Removed
 ```
 
-| Status | What it means | How it gets there |
-| --- | --- | --- |
-| **Unpaired** | The Device has been seen, but the user hasn't added it yet. | **Device Detected**: the Hub finds a new Module in its settings, or a new Hub comes online. Also **Pairing Failed**. |
-| **Pairing** | First-time setup is running: joining the Account. | **Pairing Started**: the user taps "Add". |
-| **Paired** | The Device belongs to the Account. From now on it has a Connection Status. | **Device Paired**: setup finished. |
+| Status       | What it means                                                              | How it gets there                                                                                                    |
+| ------------ | -------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| **Unpaired** | The Device has been seen, but the user hasn't added it yet.                | **Device Detected**: the Hub finds a new Module in its settings, or a new Hub comes online. Also **Pairing Failed**. |
+| **Pairing**  | First-time setup is running: joining the Account.                          | **Pairing Started**: the user taps "Add".                                                                            |
+| **Paired**   | The Device belongs to the Account. From now on it has a Connection Status. | **Device Paired**: setup finished.                                                                                   |
 
 Leaving the lifecycle:
 
-- **Device Dismissed** _(proposed)_: the user ignores a detected Device ("Not now"). It disappears from the list until it's detected again.
+- **Device Dismissed**: the user ignores a detected Device ("Not now"). It disappears from the list until it's detected again.
 - **Device Removed**: the user removes a Paired Device from the Account. Its past Readings stay; the Device can be detected and paired again later.
 
 ## Connection Status
 
-Connection answers "can we reach it right now?". It changes often: after every power cut, restart or Wi-Fi drop. It only exists while the Device is Paired.
+Connection answers "can we reach it right now?". It changes often: after every power cut, restart or Wi-Fi drop. It only exists while the Device is Paired. Only Modules can be Stale: a Hub has no Sensors, so it goes straight between Connected and Disconnected.
 
 ```mermaid
 stateDiagram-v2
@@ -73,18 +66,18 @@ stateDiagram-v2
     Disconnected --> Connecting : Reconnect Started
 ```
 
-| Status | What it means | How it gets there |
-| --- | --- | --- |
-| **Connecting** | Establishing or re-establishing the connection. | Right after **Device Paired**, after a power-up, or **Reconnect Started** after a dropped link. |
-| **Connected** | Reachable, and Readings arrive on time. | **Device Connected**, or a **Reading Recorded** while Stale. |
-| **Stale** | Still reachable, but no Reading arrived within its Expected Interval (set by the user). | **Device Went Stale**, raised by the Staleness Policy in Telemetry. |
-| **Disconnected** | Can't be reached, for example a Hub lost Wi-Fi or a Module was unplugged. Last known values are hidden: a disconnected icon shows in their place. | **Device Disconnected**, or **Connection Timed Out** while Connecting. |
+| Status           | What it means                                                                                                                                     | How it gets there                                                                               |
+| ---------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| **Connecting**   | Establishing or re-establishing the connection.                                                                                                   | Right after **Device Paired**, after a power-up, or **Reconnect Started** after a dropped link. |
+| **Connected**    | Reachable, and Readings arrive on time.                                                                                                           | **Device Connected**, or a **Reading Recorded** while Stale.                                    |
+| **Stale**        | Modules only. Still reachable, but no Reading arrived within its Expected Interval (set by the user).                                             | **Device Went Stale**: the API raises it when the Expected Interval passes with no Reading.     |
+| **Disconnected** | Can't be reached, for example a Hub lost Wi-Fi or a Module was unplugged. Last known values are hidden: a disconnected icon shows in their place. | **Device Disconnected**, or **Connection Timed Out** while Connecting.                          |
 
 There is no end state: a Paired Device keeps cycling between these statuses until it is removed.
 
 ## Fault
 
-Fault answers "is the hardware healthy?". The Device reports it about itself, so it is independent of connection. Only Paired Devices have Faults: a Device that isn't Paired yet has none, so "New module found" never shows a Fault.
+Fault answers "is the hardware healthy?". The Device reports it about itself, so it is independent of connection. Only Paired Devices have Faults: a Device that isn't Paired yet has none.
 
 ```mermaid
 stateDiagram-v2
@@ -137,22 +130,13 @@ stateDiagram-v2
 
 Hubs and Modules share the same three fields, but they reach them in different ways.
 
-| | Hub | Module |
-| --- | --- | --- |
-| **Who detects it** | The API, when a new Hub first comes online over its own Wi-Fi and sends its Hub Token | Its Hub, when the Hub starts and finds the Module listed in its settings |
-| **Can be paired when** | Any time | Only when its Hub is Paired |
-| **Gets a location** | **Hub Placed** in a Space, after it is Paired | Never directly. It's always in its Hub's Space |
-| **Physical events** | Power-up, power cut, Wi-Fi drop | Unplugged and plugged back in |
-| **Connection depends on** | Its own link to the API | Its Hub. If the Hub is Disconnected, the Module is too |
-
-### Setting up a Hub
-
-A Hub needs two things before it can be detected: a Wi-Fi network and a Hub Token.
-
-1. **Wi-Fi.** The user enters the Wi-Fi name and password when preparing the Hub's SD card, in Raspberry Pi Imager.
-2. **Hub Token.** The user creates a Hub Token in their Account and copies it into the Hub's settings.
-3. **First start.** The Hub joins the Wi-Fi, connects to the API and sends its Hub Token. The API raises **Device Detected**, and the Hub appears as **Unpaired**, only in the Account the token belongs to.
-4. **Pairing.** The user adds it, like any other Device.
+|                           | Hub                                                                | Module                                                                   |
+| ------------------------- | ------------------------------------------------------------------ | ------------------------------------------------------------------------ |
+| **Who detects it**        | The API, when a new Hub first comes online and sends its Hub Token | Its Hub, when the Hub starts and finds the Module listed in its settings |
+| **Can be paired when**    | Any time                                                           | Only when its Hub is Paired                                              |
+| **Gets a location**       | **Hub Placed** in a Space, after it is Paired                      | Never directly. It's always in its Hub's Space                           |
+| **Physical events**       | Power-up, power cut, Wi-Fi drop                                    | Unplugged and plugged back in                                            |
+| **Connection depends on** | Its own link to the API                                            | Its Hub. If the Hub is Disconnected, the Module is too                   |
 
 ### Hub placement
 
@@ -169,15 +153,6 @@ stateDiagram-v2
     NotPlaced --> [*] : Device Removed
 ```
 
-### Adding a Module to a Hub
-
-A Module is a sensor board wired to the Hub. The Hub doesn't search for boards by itself: the user lists them.
-
-1. **Wire it.** The user connects the board to the Raspberry Pi.
-2. **List it.** The user adds the board to the Hub's settings, with its model name (for example BME280). The model decides the Module Type and which Sensors it has.
-3. **Restart.** When the Hub starts, it raises **Device Detected** for every Module in its settings that isn't Paired yet.
-4. **Pairing.** The user adds it, like any other Device.
-
 ### Unplugging a Module
 
 Unplugging doesn't remove a Module. While it is unplugged, the Hub can't read it, so it is **Disconnected** but stays **Paired**. When it's plugged back into the same Hub, it reconnects (Connecting, then Connected) with the same identity and keeps its Readings. Only removing it from the Hub's settings, or **Device Removed**, takes it out of the Account.
@@ -192,17 +167,16 @@ A Module can be moved to another Hub, but it doesn't keep anything from the old 
 
 ## Flow: adding a new Module
 
-What happens, step by step, when someone adds a new Climate Module (a BME280 board) to a Paired Hub. "App" is the app the developer builds with the kit.
+What happens, step by step, when someone adds a new Climate Module to a Paired Hub. "App" is the app you build with the kit.
 
 ```mermaid
 sequenceDiagram
     actor User
-    participant Hub as Hub software
+    participant Hub
     participant API
     participant App
 
-    User->>Hub: Wires the board and lists it in the Hub's settings
-    User->>Hub: Restarts the Hub
+    User->>Hub: Connects the Module and restarts the Hub
     Hub->>API: Device Detected (Climate Module)
     API->>App: Module is Unpaired
     App->>User: "New module found"
@@ -217,19 +191,19 @@ sequenceDiagram
 
 ## Flow: unplugging and plugging back in
 
-A Paired Module is unplugged and plugged back into the same Hub. It keeps its identity, so it doesn't need to pair again and `useSensor(id)` keeps working.
+A Paired Module is unplugged and plugged back into the same Hub. It keeps its identity, so it doesn't need to pair again, and your app keeps using the same Module.
 
 ```mermaid
 sequenceDiagram
     actor User
-    participant Hub as Hub software
+    participant Hub
     participant API
     participant App
 
-    User->>Hub: Unplugs the board
+    User->>Hub: Unplugs the Module
     Hub->>API: Device Disconnected (can't read the Module)
     API->>App: Module is Disconnected (values replaced by the disconnected icon)
-    User->>Hub: Plugs the board back in
+    User->>Hub: Plugs the Module back in
     Hub->>API: Reconnect Started
     Note over API: Same Module, already Paired:<br/>no pairing needed
     API->>App: Module is Connecting
@@ -237,38 +211,39 @@ sequenceDiagram
     API->>App: Module is Connected, live Readings
 ```
 
-## Events and commands
-
-The events that move a Device between these statuses, and the commands a user can send (Pair Device, Remove Device…), are listed on their own page: [Events and commands](./events-and-commands.mdx). Each event there links back to the rules below that it follows.
-
 ## Rules
 
 These add to the [rules in the Data model](./data-model.mdx#rules-the-diagrams-cant-show). [Events and commands](./events-and-commands.mdx) shows which events and commands follow which rule.
 
-1. **Connection Status exists only while Paired.** (Already invariant 8.)
+1. **Connection Status exists only while Paired.** (Data model rule 8.)
 2. **A Paired Device always starts at Connecting**, never straight at Connected.
 3. **A Module can be paired only when its Hub is Paired.**
 4. **If a Hub is Disconnected, all its Modules are Disconnected.** When the Hub reconnects, its Modules go to Connecting.
 5. **An unplugged Module is Disconnected but stays Paired.** When plugged back into the same Hub, it reconnects with the same identity, keeps its Readings and doesn't pair again.
-6. **Stale is decided from Readings, not from the link.** A Device is Stale only if it is reachable but no Reading arrived within its Expected Interval. What counts is when a Reading **arrives**, not the time inside it: a late Reading, sent after a Wi-Fi drop, still moves a Device from Stale back to Connected.
+6. **Stale is decided from Readings, not from the link.** Only Modules send Readings, so only Modules can be Stale. A Module is Stale only if it is reachable but no Reading arrived within its Expected Interval. What counts is when a Reading **arrives**, not the time inside it: a late Reading, sent after a Wi-Fi drop, still moves a Module from Stale back to Connected.
 7. **Fault never changes Pairing or Connection Status**, and they never clear a Fault.
-8. **Removing a Device keeps its Readings**, with two exceptions: a Module moved to another Hub loses its past Readings (rule 10), and Readings about an Asset are deleted when the Asset is removed ([Data model rule 11](./data-model.mdx#rules-the-diagrams-cant-show)).
-9. **Simulated Devices follow the same rules.** The API Simulator's Hubs and Modules have the same statuses and events as real ones.
-10. **A Module moved to another Hub pairs again and starts with no Readings.** Its past Readings are deleted. Unplugging and plugging back into the same Hub keeps everything (rule 5).
-11. **Only Paired Devices have Faults.** A Device's Faults start when it is Paired and end when it is removed.
-12. **A Hub connects over its own Wi-Fi and identifies itself with a Hub Token.** It is detected (**Device Detected**) the first time it comes online, and only the Account its Hub Token belongs to sees it. Then the user pairs it like any other Device.
-13. **A Module is detected from the Hub's settings.** The Hub raises **Device Detected** when it starts and finds a listed Module that isn't Paired yet. It never searches for boards by itself.
+8. **Removing a Device keeps its Readings**, with two exceptions: a Module moved to another Hub loses its past Readings (rule 9), and Readings about an Asset are deleted when the Asset is removed ([Data model rule 11](./data-model.mdx#rules-the-diagrams-cant-show)).
+9. **A Module moved to another Hub pairs again and starts with no Readings.** Its past Readings are deleted. Unplugging and plugging back into the same Hub keeps everything (rule 5).
+10. **Only Paired Devices have Faults.** A Device's Faults start when it is Paired and end when it is removed.
+11. **A Hub is detected the first time it comes online.** It identifies itself with its Hub Token, and only the Account that token belongs to sees it.
+12. **A Module is detected from its Hub's settings.** The Hub raises **Device Detected** when it starts and finds a listed Module that isn't Paired yet. It never searches for Modules by itself.
 
 ## What the UI shows
 
-How each status maps to the states that Status and Readings [UI components](/docs/ui-components) show.
+How each status maps to what the kit's [UI components](/docs/ui-components) show.
 
-| Device status | Component state | What the user sees |
-| --- | --- | --- |
-| Unpaired | (not a component state) | "New module found" with **Add** and **Not now** |
-| Pairing | loading | Progress: "Setting up…" |
-| Paired + Connecting | loading | "Connecting…" |
-| Paired + Connected | Connected | Live value |
-| Paired + Stale | Stale | Value with "Last update 5 min ago" |
-| Paired + Disconnected | Disconnected | Disconnected icon instead of the value |
-| Paired + Has Fault | Fault | A message and help for each Fault Code, **on top of** the connection state |
+| Device status                 | What the components show                                                                                                                                                                                                        |
+| ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Unpaired                      | [`DevicePairingStatus`](/docs/ui-components/status/device-pairing-status): "Unpaired". Your app decides how to offer **Add** and **Not now**.                                                                                   |
+| Pairing                       | `DevicePairingStatus`: "Pairing".                                                                                                                                                                                               |
+| Paired + Connecting           | [`DeviceConnectionStatus`](/docs/ui-components/status/device-connection-status): "Connecting". [`ModuleCard`](/docs/ui-components/readings/module-card) keeps the last values, or shows a loading icon until the first Reading. |
+| Paired + Connected            | "Connected", with the live values.                                                                                                                                                                                              |
+| Paired + Stale (Modules only) | "Stale", with the last values unchanged.                                                                                                                                                                                        |
+| Paired + Disconnected         | "Disconnected". The values are hidden and a disconnected icon shows in their place.                                                                                                                                             |
+| Paired + Has Fault            | [`DeviceFaultStatus`](/docs/ui-components/status/device-fault-status): a message for each Fault Code, **on top of** the connection status.                                                                                      |
+
+## Related
+
+- [Events and commands](./events-and-commands.mdx): every event and command named on this page.
+- [Glossary](./glossary.mdx): what each status means.
+- [Data model](./data-model.mdx): how Devices relate to Spaces, Sensors and Readings.

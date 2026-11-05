@@ -1,12 +1,12 @@
 ---
 sidebar_position: 1
 sidebar_label: DeviceConnectionStatus
-description: Shows whether a Device can be reached right now, as a short label with a coloured dot.
+description: Shows whether a Device can be reached right now, as a short label with a colored dot.
 ---
 
 # DeviceConnectionStatus
 
-Shows a Device's Connection Status as a short label with a coloured dot: Connecting, Connected, Stale or Disconnected. Use it next to a Device's name or its Readings, so people know whether the Device can be reached right now.
+Shows a Device's Connection Status as a short label with a colored dot: Connecting, Connected, Stale or Disconnected. Use it next to a Device's name or its Readings, so people know whether the Device can be reached right now.
 
 ```jsx live
 <DeviceConnectionStatus status="connected" />
@@ -62,16 +62,16 @@ Don't use it for:
 
 ## States
 
-One state per Connection Status. Each has its own label and dot colour.
+One state per Connection Status. Each has its own label and dot color.
 
 | `status`       | Label        | Dot   | Means                                                                                 |
 | -------------- | ------------ | ----- | ------------------------------------------------------------------------------------- |
 | `connecting`   | Connecting   | blue  | The Device is getting its connection back, after a power-up, restart or dropped link. |
 | `connected`    | Connected    | green | The Device can be reached and is sending Readings.                                    |
 | `stale`        | Stale        | amber | Still connected, but no Reading arrived within its Expected Interval.                 |
-| `disconnected` | Disconnected | grey  | The Device can't be reached.                                                          |
+| `disconnected` | Disconnected | gray  | The Device can't be reached.                                                          |
 
-Disconnected is grey, not red. Red is kept for Faults, so "unplugged" and "broken" never look the same.
+Disconnected is gray, not red. Red is kept for Faults, so "unplugged" and "broken" never look the same.
 
 ### Connecting
 
@@ -148,7 +148,7 @@ A few rules from the domain model:
 
 - **Paired Devices only.** Only a Paired Device has a Connection Status. For a Device that isn't Paired, don't render this component: show [`DevicePairingStatus`](./device-pairing-status.mdx) instead.
 - **Before the first status arrives,** pass `connecting`. A Device is always Connecting after it powers up, so this is true, and there is no separate "unknown" or loading state.
-- **Stale depends on the Expected Interval.** A Device is Stale when no Reading arrived within the interval the user set for it. Work this out in your app (or let the API do it) and pass `stale`.
+- **Stale depends on the Expected Interval.** A Module is Stale when no Reading arrived within the interval the user set for it. Only Modules can be Stale: never pass `stale` for a Hub. Work this out in your app (or let the API do it) and pass `stale`.
 - **It's one of three fields.** Pairing Status, Connection Status and Fault are independent. See [Device lifecycle](/docs/domain-model/device-lifecycle#connection-status) for how a Device moves between Connection Statuses.
 
 ## Props
@@ -182,7 +182,7 @@ The labels are short and fixed, so they never wrap or get shortened. The longest
 
 What you get without doing anything:
 
-- **Not colour alone.** The label says the status in words. The dot only repeats it, and screen readers skip it.
+- **Not color alone.** The label says the status in words. The dot only repeats it, and screen readers skip it.
 - **Changes are announced.** The component is a polite live region (`role="status"`), so when the status changes, screen readers read the new label without moving focus. A change in Connection Status matters, and it happens far less often than new Readings.
 - The label meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
 
@@ -198,14 +198,14 @@ DeviceConnectionStatus uses the kit's [design tokens](../foundations/design-toke
 
 | What                   | Token                                                                                                                                                                   |
 | ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Label colour           | `--shk-color-text-primary`                                                                                                                                              |
+| Label color            | `--shk-color-text-primary`                                                                                                                                              |
 | Label text style       | `--shk-typography-caption-*` (12px)                                                                                                                                     |
 | Background             | `--shk-surface-default`                                                                                                                                                 |
 | Gap and inline padding | `--shk-space-1` (4px)                                                                                                                                                   |
 | Dot size               | `--shk-size-3` (12px)                                                                                                                                                   |
-| Dot colour             | `connecting` `--shk-status-progress-solid`, `connected` `--shk-status-success-solid`, `stale` `--shk-status-warning-solid`, `disconnected` `--shk-status-neutral-solid` |
+| Dot color              | `connecting` `--shk-status-progress-solid`, `connected` `--shk-status-success-solid`, `stale` `--shk-status-warning-solid`, `disconnected` `--shk-status-neutral-solid` |
 
-To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only DeviceConnectionStatus. The status colours are shared by every Status component, so change them for the whole app, not one screen:
+To change how it looks, set a token on a parent element. The change applies to everything inside that element, not only DeviceConnectionStatus. The status colors are shared by every Status component, so change them for the whole app, not one screen:
 
 ```css
 :root {

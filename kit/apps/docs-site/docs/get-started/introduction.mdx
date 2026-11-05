@@ -1,0 +1,38 @@
+---
+title: Introduction
+sidebar_position: 1
+sidebar_label: Introduction
+description: Build smart home apps faster with a ready-made domain model, a Figma component library and React components that share the same names.
+keywords:
+  - smart home UI kit
+  - smart home app
+  - React components
+  - Figma library
+  - domain model
+---
+
+# Introduction
+
+DeTriz Smart Home Kit helps you **build smart home apps faster**. Every smart home app starts with the same groundwork: deciding what a Space, a Sensor and a Reading are, how they relate, and what the screen shows when a Device goes Stale or Disconnected. Then someone designs and builds a card, a value and a status badge for each case. The kit gives you all of this ready-made, so you start on your own idea from day one.
+
+## What's in the kit
+
+The kit has three parts, and they all use the same names.
+
+### Domain model
+
+The domain model is a ready-made description of a smart home. It names what exists (Site, Space, Hub, Module, Sensor, Reading and more), shows how those things relate, and describes how a Device moves between statuses. The Figma and React components are built on it. Read it in [Domain Model](/docs/domain-model).
+
+### UI components in Figma
+
+The Figma library gives designers the kit's components to design screens with. Each component already covers the cases real homes produce, such as a Module that is Stale, Disconnected or reports a Fault.
+
+### UI components in React
+
+The React components are the same components in code, typed and themed with design tokens. Their props follow the domain model, so a design made in Figma maps straight to code. The components show what you pass them: they never fetch data or talk to a Device. Your app gets the data and passes it in as props, and the components show the right state, such as hiding the values of a Disconnected Module. Browse them in [UI Components](/docs/ui-components).
+
+## Next steps
+
+- [Installation](./installation.mdx): add the kit to a React app.
+- [Quick start](./quick-start.mdx): build your first screen.
+- [Glossary](/docs/domain-model/glossary): learn the names the whole kit uses.

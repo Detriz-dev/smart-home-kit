@@ -26,7 +26,7 @@
 }
 
 .label {
-  /* Centred on the whole bar, not just below its 3px top padding. */
+  /* Centered on the whole bar, not just below its 3px top padding. */
   align-self: center;
   margin-block-start: calc(-1 * var(--bar-padding-top));
   font-size: var(--shk-font-size-12);
@@ -74,7 +74,7 @@
   outline-offset: var(--shk-border-width-medium);
 }
 
-/* The code. Its colours and background come from the code theme (prism) in docusaurus.config.ts. */
+/* The code. Its colors and background come from the code theme (prism) in docusaurus.config.ts. */
 .editor {
   font: var(--ifm-code-font-size) / var(--ifm-pre-line-height)
     var(--ifm-font-family-monospace) !important;

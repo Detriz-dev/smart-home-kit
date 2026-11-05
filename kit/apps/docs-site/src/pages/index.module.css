@@ -2,8 +2,8 @@
    Uses the kit's tokens (--shk-…). Values the kit has no token for are set once, below,
    as local variables, so the raw numbers live in one place.
 
-   Light and dark mode: the kit's tokens are light-only, so the page's own colours (background,
-   text, the two option boxes) are local variables, switched to Docusaurus's dark colours below.
+   Light and dark mode: the kit's tokens are light-only, so the page's own colors (background,
+   text, the two option boxes) are local variables, switched to Docusaurus's dark colors below.
    The three cards keep their light look in dark mode: they show kit components, which have no
    dark theme yet. */
 
@@ -187,7 +187,7 @@ a.option:hover {
 }
 
 /* ---------- Icons ----------
-   Material Symbols (Rounded, weight 400) drawn as CSS masks, so they take the text colour.
+   Material Symbols (Rounded, weight 400) drawn as CSS masks, so they take the text color.
    The same approach as the navbar icons in src/css/custom.css. */
 
 .icon {
@@ -274,7 +274,7 @@ a.option:hover {
   background: var(--landing-domain-background);
 }
 
-/* The diagram is a fixed-size picture: centred, and it scrolls sideways on a narrow phone. */
+/* The diagram is a fixed-size picture: centered, and it scrolls sideways on a narrow phone. */
 .cardBody {
   display: flex;
   flex: 1;

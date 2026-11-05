@@ -143,12 +143,12 @@ If you pass no names at all, LocationPath renders nothing.
 
 Each prop matches a term from the [Glossary](/docs/domain-model/glossary). Pass the **name** of each one.
 
-| Prop         | Domain term                                                 | Example        |
-| ------------ | ----------------------------------------------------------- | -------------- |
-| `siteName`   | [Site](/docs/domain-model/glossary#where-things-are)        | My flat        |
-| `floorName`  | [Floor](/docs/domain-model/glossary#where-things-are)       | Level 2        |
-| `spaceName`  | [Space](/docs/domain-model/glossary#where-things-are)       | Bedroom        |
-| `deviceName` | [Hub or Module](/docs/domain-model/glossary#how-is-tracked) | Climate Module |
+| Prop         | Domain term                                                     | Example        |
+| ------------ | --------------------------------------------------------------- | -------------- |
+| `siteName`   | [Site](/docs/domain-model/glossary#places)                      | My flat        |
+| `floorName`  | [Floor](/docs/domain-model/glossary#places)                     | Level 2        |
+| `spaceName`  | [Space](/docs/domain-model/glossary#places)                     | Bedroom        |
+| `deviceName` | [Hub or Module](/docs/domain-model/glossary#devices-and-assets) | Climate Module |
 
 A few rules from the domain model:
 
@@ -192,14 +192,14 @@ LocationPath never wraps or overflows its container. When there isn't enough roo
 
 What you get without doing anything:
 
-- The path is an ordered list (`<ol>`) labelled "Location", because the order has meaning.
+- The path is an ordered list (`<ol>`) labeled "Location", because the order has meaning.
 - Icons are hidden from screen readers. Instead, each name gets a hidden prefix, so screen readers say "Site: My flat", "Floor: Level 2", "Space: Bedroom" and "Device: Climate Module".
-- The text colour meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+- The text color meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
 
 What's up to you:
 
 - Don't add your own "Location:" heading or label right next to it. Screen readers already announce one.
-- Check the contrast if you place it on a dark or coloured background.
+- Check the contrast if you place it on a dark or colored background.
 
 ## Styling
 
@@ -207,7 +207,7 @@ LocationPath uses the kit's [design tokens](../foundations/design-tokens.mdx) (C
 
 | What                                 | Token                               |
 | ------------------------------------ | ----------------------------------- |
-| Text and icon colour                 | `--shk-color-text-primary`          |
+| Text and icon color                  | `--shk-color-text-primary`          |
 | Text style                           | `--shk-typography-caption-*` (12px) |
 | Gap between icon and name            | `--shk-space-1` (4px)               |
 | Gap between parts (`inline`, `grid`) | `--shk-space-4` (16px)              |

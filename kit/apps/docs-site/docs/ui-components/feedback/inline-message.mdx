@@ -6,7 +6,7 @@ description: A short message in the page about what your app just did or couldn'
 
 # InlineMessage
 
-A short message in the page about what your app just did or couldn't do: a coloured bar, an icon, an optional title, the message and, if you need them, one action and a × to dismiss it. It sits next to the thing it talks about and stays until your app removes it.
+A short message in the page about what your app just did or couldn't do: a colored bar, an icon, an optional title, the message and, if you need them, one action and a × to dismiss it. It sits next to the thing it talks about and stays until your app removes it.
 
 ```jsx live
 <div style={{ maxWidth: 400 }}>
@@ -73,7 +73,7 @@ Don't use it for:
 
 ## Variants
 
-Use the `tone` prop. Each tone has its own colour and its own icon shape, so the tones can be told apart without colour too.
+Use the `tone` prop. Each tone has its own color and its own icon shape, so the tones can be told apart without color too.
 
 | `tone`    | Means                                  | Looks like                    | Example                          |
 | --------- | -------------------------------------- | ----------------------------- | -------------------------------- |
@@ -231,7 +231,7 @@ Keep messages to one or two short sentences: what happened, then what to do.
 What you get without doing anything:
 
 - **Screen readers announce it.** `info` and `success` use `role="status"` and are read out when the person pauses. `warning` and `error` use `role="alert"` and are read out straight away.
-- **Not colour alone.** Each tone has its own icon shape, and the text says what happened. The icon is hidden from screen readers, because the text says the same thing.
+- **Not color alone.** Each tone has its own icon shape, and the text says what happened. The icon is hidden from screen readers, because the text says the same thing.
 - **Real buttons.** The action is a [`Button`](../controls/button.mdx) and the × is a `<button>`: Tab reaches them, Enter or Space activates them, and both show a blue focus ring.
 - **The × has a name.** Screen readers say "Dismiss", or your `dismissLabel`. It is 32px, above the 24px minimum for something you tap.
 - **Contrast:** the title and message are above 4.5:1 on white.
@@ -250,7 +250,7 @@ InlineMessage uses these [design tokens](../foundations/design-tokens.mdx):
 | What                                   | Token                                                                                             |
 | -------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | Card                                   | `--shk-surface-default`, `--shk-color-border-subtle`, `--shk-radius-4`                            |
-| Coloured bar and icon                  | `--shk-status-progress-solid` (info), `-success-solid`, `-warning-solid`, `-danger-solid` (error) |
+| Colored bar and icon                   | `--shk-status-progress-solid` (info), `-success-solid`, `-warning-solid`, `-danger-solid` (error) |
 | Bar width                              | `--shk-border-width-thick` (4px)                                                                  |
 | Title                                  | `--shk-color-text-primary`, `--shk-typography-label-*` (14px, medium)                             |
 | Message                                | `--shk-color-text-secondary`, `--shk-typography-body-sm-*` (14px, regular)                        |

@@ -18,12 +18,12 @@ Category: **Status** ("Is everything OK?"). The Connection Status changes on its
 
 It shows one of the three Device Status fields from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx#connection-status) and the [Device lifecycle](/kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx#connection-status):
 
-| Value          | Domain term      | Meaning (from the Glossary)                                     |
-| -------------- | ---------------- | --------------------------------------------------------------- |
-| `connecting`   | **Connecting**   | A Paired Device is (re)establishing its connection.             |
-| `connected`    | **Connected**    | The Device is reachable and sending Readings.                   |
-| `stale`        | **Stale**        | Connected, but no Reading arrived within its Expected Interval. |
-| `disconnected` | **Disconnected** | The Device can't be reached.                                    |
+| Value          | Domain term      | Meaning (from the Glossary)                                                   |
+| -------------- | ---------------- | ----------------------------------------------------------------------------- |
+| `connecting`   | **Connecting**   | A Paired Device is (re)establishing its connection.                           |
+| `connected`    | **Connected**    | The Device is reachable and sending Readings.                                 |
+| `stale`        | **Stale**        | Modules only. Connected, but no Reading arrived within its Expected Interval. |
+| `disconnected` | **Disconnected** | The Device can't be reached.                                                  |
 
 Only **Paired** Devices have a Connection Status, so the parent doesn't render this component for an Unpaired Device.
 

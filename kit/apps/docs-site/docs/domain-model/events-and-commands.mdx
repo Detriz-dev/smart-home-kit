@@ -1,10 +1,14 @@
 ---
+title: Events and commands
 sidebar_position: 5
 sidebar_label: Events and commands
 description: The events that move a Device between statuses, and the commands a user can send.
+keywords:
+  - smart home events
+  - device commands
+  - Device Status
+  - pairing
 ---
-
-# Events and commands
 
 The events that move a Device (a Hub or a Module) between its statuses, and the commands a user can send. This page is a reference: for how the statuses fit together, with diagrams, see [Device lifecycle](./device-lifecycle.mdx).
 
@@ -13,9 +17,9 @@ The events that move a Device (a Hub or a Module) between its statuses, and the 
 
 A command that succeeds leads to an event. For example, the **Pair Device** command leads to **Pairing Started**, and later **Device Paired** or **Pairing Failed**.
 
-:::note[Proposed names]
+:::note
 
-All names on this page are _(proposed)_: they aren't part of the [Glossary](./glossary.mdx) yet, and may change before the API is built.
+The API isn't built yet, so these names can still change.
 
 :::
 
@@ -27,54 +31,54 @@ Grouped by the Device Status field they change. The **Rules** column points to t
 
 See [Pairing Status](./device-lifecycle.mdx#pairing-status) in the lifecycle.
 
-| Event                | Changes                                           | Raised by                                 | Rules  |
-| -------------------- | ------------------------------------------------- | ----------------------------------------- | ------ |
-| **Device Detected**  | Pairing → Unpaired                                | Hub software (Module) or API (Hub)        | 12, 13 |
-| **Pairing Started**  | Pairing → Pairing                                 | API, after the **Pair Device** command    | 3      |
-| **Device Paired**    | Pairing → Paired; Connection starts at Connecting | Hub software                              | 1, 2   |
-| **Pairing Failed**   | Pairing → Unpaired                                | Hub software                              | –      |
-| **Device Dismissed** | Leaves the lifecycle                              | API, after the **Dismiss Device** command | –      |
-| **Device Removed**   | Leaves the lifecycle                              | API, after the **Remove Device** command  | 8      |
+| Event                | Changes                                                         | Raised by                                 | Rules  |
+| -------------------- | --------------------------------------------------------------- | ----------------------------------------- | ------ |
+| **Device Detected**  | Pairing Status → Unpaired                                       | Hub (for a Module) or API (for a new Hub) | 11, 12 |
+| **Pairing Started**  | Pairing Status → Pairing                                        | API, after the **Pair Device** command    | 3      |
+| **Device Paired**    | Pairing Status → Paired; Connection Status starts at Connecting | Hub, when setup finishes                  | 1, 2   |
+| **Pairing Failed**   | Pairing Status → Unpaired                                       | Hub, when setup fails                     | –      |
+| **Device Dismissed** | Leaves the lifecycle                                            | API, after the **Dismiss Device** command | –      |
+| **Device Removed**   | Leaves the lifecycle                                            | API, after the **Remove Device** command  | 8      |
 
 ### Connection Status
 
 See [Connection Status](./device-lifecycle.mdx#connection-status) in the lifecycle.
 
-| Event                    | Changes                      | Raised by                                          | Rules |
-| ------------------------ | ---------------------------- | -------------------------------------------------- | ----- |
-| **Device Connected**     | Connection → Connected       | Hub software or API                                | –     |
-| **Device Went Stale**    | Connection → Stale           | Staleness Policy (Telemetry)                       | 6     |
-| **Reading Recorded**     | Connection Stale → Connected | Telemetry                                          | 6     |
-| **Device Disconnected**  | Connection → Disconnected    | API (link lost) or Hub software (Module unplugged) | 4, 5  |
-| **Connection Timed Out** | Connection → Disconnected    | API                                                | –     |
-| **Reconnect Started**    | Connection → Connecting      | Hub software or API                                | 4     |
+| Event                    | Changes                                                | Raised by                                              | Rules |
+| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ----- |
+| **Device Connected**     | Connection Status → Connected                          | Hub or API                                             | –     |
+| **Device Went Stale**    | Connection Status → Stale (Modules only)               | API, when the Expected Interval passes with no Reading | 6     |
+| **Reading Recorded**     | Connection Status → Connected, if the Module was Stale | API, every time a Reading arrives                      | 6     |
+| **Device Disconnected**  | Connection Status → Disconnected                       | API (the link is lost) or Hub (a Module is unplugged)  | 4, 5  |
+| **Connection Timed Out** | Connection Status → Disconnected                       | API, when Connecting takes too long                    | –     |
+| **Reconnect Started**    | Connection Status → Connecting                         | Hub or API                                             | 4     |
 
 ### Fault
 
 See [Fault](./device-lifecycle.mdx#fault) in the lifecycle.
 
-| Event                                | Changes                       | Raised by                            | Rules |
-| ------------------------------------ | ----------------------------- | ------------------------------------ | ----- |
-| **Fault Raised** / **Fault Cleared** | Adds or clears one Fault Code | Hub software (the Device reports it) | 7, 11 |
+| Event                                | Changes                       | Raised by                   | Rules |
+| ------------------------------------ | ----------------------------- | --------------------------- | ----- |
+| **Fault Raised** / **Fault Cleared** | Adds or clears one Fault Code | Hub (the Device reports it) | 7, 10 |
 
 ### Hub placement
 
 See [Hub placement](./device-lifecycle.mdx#hub-placement) in the lifecycle.
 
-| Event          | Changes         | Raised by                            | Rules |
-| -------------- | --------------- | ------------------------------------ | ----- |
-| **Hub Placed** | The Hub's Space | API, after the **Place Hub** command | –     |
+| Event          | Changes         | Raised by                            | Rules                                                               |
+| -------------- | --------------- | ------------------------------------ | ------------------------------------------------------------------- |
+| **Hub Placed** | The Hub's Space | API, after the **Place Hub** command | [Data model rule 10](./data-model.mdx#rules-the-diagrams-cant-show) |
 
 ## Commands
 
-| Command            | Who sends it | Refused when                                                         | Leads to             | Rules |
-| ------------------ | ------------ | -------------------------------------------------------------------- | -------------------- | ----- |
-| **Pair Device**    | User         | The Device isn't Unpaired, or it's a Module whose Hub isn't Paired   | **Pairing Started**  | 3     |
-| **Dismiss Device** | User         | The Device isn't Unpaired                                            | **Device Dismissed** | –     |
-| **Remove Device**  | User         | The Device isn't Paired                                              | **Device Removed**   | 8, 10 |
-| **Place Hub**      | User         | The Hub isn't Paired, or the Space is in a Site the user doesn't own | **Hub Placed**       | –     |
+Users send every command. Only the Account a Device belongs to can send commands for it. Accounts a Site is shared with can only view it.
 
-Only a Site's owner can send these commands for its Devices. Accounts the Site is shared with can only view it.
+| Command            | Refused when                                                                  | Leads to             | Rules                                                                       |
+| ------------------ | ----------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------- |
+| **Pair Device**    | The Device isn't Unpaired, or it's a Module whose Hub isn't Paired            | **Pairing Started**  | 3                                                                           |
+| **Dismiss Device** | The Device isn't Unpaired                                                     | **Device Dismissed** | –                                                                           |
+| **Remove Device**  | The Device isn't Paired                                                       | **Device Removed**   | 8, 9                                                                        |
+| **Place Hub**      | The Hub isn't Paired, or the Space is in a Site the Hub's Account doesn't own | **Hub Placed**       | [Data model rules 10 and 17](./data-model.mdx#rules-the-diagrams-cant-show) |
 
 ## Related
 
