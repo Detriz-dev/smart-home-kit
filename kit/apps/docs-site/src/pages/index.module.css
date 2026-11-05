@@ -1,122 +1,319 @@
-/* Landing page. Design: Figma "SHK – Landing", node 8:3.
+/* Landing page. Design: Figma "SHK – Landing", node 70:598.
    Uses the kit's tokens (--shk-…). Values the kit has no token for are set once, below,
-   as local variables, so the raw numbers live in one place. */
+   as local variables, so the raw numbers live in one place.
+
+   Light and dark mode: the kit's tokens are light-only, so the page's own colors (background,
+   text, the two option boxes) are local variables, switched to Docusaurus's dark colors below.
+   The three cards keep their light look in dark mode: they show kit components, which have no
+   dark theme yet. */
 
 .page {
-  --hero-max-width: 1080px;
-  --hero-title-line-height: 56px; /* 48px text */
-  --hero-intro-line-height: 40px; /* 24px text */
+  --landing-title-font-size: 56px;
+  --landing-title-line-height: 64px;
+  --landing-title-letter-spacing: -0.015em;
+  --landing-intro-line-height: 30px;
+  --landing-intro-max-width: 680px;
+  --landing-card-width: 396px;
+  --landing-card-height: 248px;
+  --landing-card-gap: var(--shk-space-4);
+  --landing-domain-background: #eaf4fc; /* Light blue, between blue-50 and blue-100. */
 
-  background-color: var(--shk-surface-page);
-  color: var(--shk-color-text-primary);
+  --landing-background: var(--shk-surface-page);
+  --landing-text: var(--shk-color-text-primary);
+  --landing-text-muted: var(--shk-color-text-secondary);
+  --landing-option-background: var(--shk-surface-default);
+  --landing-option-background-hover: var(--shk-palette-gray-50);
+  --landing-option-border: var(--shk-palette-gray-300);
+  --landing-option-border-hover: var(--shk-palette-gray-400);
+
+  /* The bottom padding leaves room for the cards' shadow; the footer adds the rest of the 64px gap. */
+  padding: var(--shk-space-24) var(--shk-space-4) var(--shk-space-2);
+  background-color: var(--landing-background);
+  color: var(--landing-text);
 }
 
-/* The hero fills the screen below the navbar and sits in the middle of it. */
+[data-theme="dark"] .page {
+  --landing-background: var(--ifm-background-color);
+  --landing-text: var(--ifm-font-color-base);
+  --landing-text-muted: var(--ifm-color-emphasis-700);
+  --landing-option-background: var(--ifm-background-surface-color);
+  --landing-option-background-hover: var(--ifm-color-emphasis-100);
+  --landing-option-border: var(--ifm-color-emphasis-300);
+  --landing-option-border-hover: var(--ifm-color-emphasis-500);
+}
+
+/* ---------- Hero ---------- */
+
 .hero {
   display: flex;
-  align-items: center;
-  gap: var(--shk-space-12);
-  box-sizing: border-box;
-  max-inline-size: var(--hero-max-width);
-  min-block-size: calc(100vh - var(--ifm-navbar-height));
-  margin-inline: auto;
-  padding: var(--shk-space-2);
-}
-
-.text,
-.picture {
-  flex: 1 1 0;
-  min-inline-size: 0;
-}
-
-.text {
-  display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--shk-space-8);
+  text-align: center;
 }
 
 .title {
   margin: 0;
-  font-size: var(--shk-font-size-48);
-  font-weight: var(--shk-font-weight-light);
-  line-height: var(--hero-title-line-height);
   color: inherit;
+  font-size: var(--landing-title-font-size);
+  font-weight: var(--shk-font-weight-light);
+  line-height: var(--landing-title-line-height);
+  letter-spacing: var(--landing-title-letter-spacing);
 }
 
-/* "Rapid prototyping" in bold; the rest of the heading stays light. */
+/* "Rapid prototyping kit" in bold; "for smart home apps" stays light. */
 .title strong {
   font-weight: var(--shk-font-weight-bold);
 }
 
 .intro {
+  max-inline-size: var(--landing-intro-max-width);
   margin: 0;
-  font-size: var(--shk-font-size-24);
-  font-weight: var(--shk-font-weight-light);
-  line-height: var(--hero-intro-line-height);
+  color: var(--landing-text-muted);
+  font-size: var(--shk-font-size-20);
+  line-height: var(--landing-intro-line-height);
 }
 
 .intro strong {
+  font-weight: var(--shk-font-weight-bold);
+}
+
+/* Figma, the install command and Introduction, on one line (they wrap on a phone).
+   Figma and npm look the same, so neither is the "main" one. All three are 32px tall. */
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--shk-space-2);
+  max-inline-size: 100%;
+  padding-block-start: var(--shk-space-4);
+}
+
+.option {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--shk-space-2);
+  max-inline-size: 100%;
+  block-size: var(--shk-size-8);
+  padding-inline: var(--shk-space-3);
+  border: var(--shk-border-width-thin) solid var(--landing-option-border);
+  border-radius: var(--shk-radius-8);
+  background: var(--landing-option-background);
+  color: var(--landing-text);
+  font-size: var(--shk-font-size-14);
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+a.option:hover {
+  border-color: var(--landing-option-border-hover);
+  background: var(--landing-option-background-hover);
+  color: var(--landing-text);
+  text-decoration: none;
+}
+
+/* The Figma box has only a short label, so its icon sits closer. */
+.optionFigma {
+  gap: var(--shk-space-1);
+}
+
+.optionLabel {
   font-weight: var(--shk-font-weight-medium);
 }
 
-/* A link that looks like a button: it opens another page. */
-.cta {
-  padding: var(--shk-space-2) var(--shk-space-4);
-  border-radius: var(--site-radius);
-  background-color: var(--shk-palette-gray-900);
-  color: var(--shk-color-text-inverse);
-  font-size: var(--shk-font-size-18);
-  font-weight: var(--shk-font-weight-regular);
-  line-height: var(--shk-line-height-tight); /* About 36px tall with the padding */
-  text-decoration: none;
+.prompt {
+  color: var(--landing-text-muted);
 }
 
-.cta:hover {
-  background-color: var(--shk-palette-gray-800);
-  color: var(--shk-color-text-inverse);
-  text-decoration: none;
+/* The command keeps the site font, as in the design, but drops the code-block look. */
+.command {
+  overflow: hidden;
+  min-inline-size: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: var(--shk-font-weight-medium);
+  text-overflow: ellipsis;
 }
 
-.cta:focus-visible {
-  outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
-  outline-offset: var(--shk-space-1);
-}
-
-/* The picture: static/img/heroSection.png (a SpaceCard, its props and the domain model). */
-.picture {
+.copyButton {
   display: flex;
+  flex: none;
+  padding: 2px;
+  margin: -2px;
+  border: 0;
+  border-radius: var(--shk-radius-4);
+  background: none;
+  color: var(--landing-text-muted);
+  cursor: pointer;
+}
+
+.copyButton:hover {
+  color: var(--landing-text);
+}
+
+.option:focus-visible,
+.copyButton:focus-visible,
+.introLink:focus-visible {
+  outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+  outline-offset: 2px;
+}
+
+/* Introduction: the filled blue button, for people who want to read first. */
+.introLink {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: var(--shk-space-1);
+  block-size: var(--shk-size-8);
+  padding-inline: var(--shk-space-4) var(--shk-space-2);
+  border-radius: var(--shk-radius-8);
+  background: var(--shk-palette-blue-600);
+  color: var(--shk-palette-white);
+  font-size: var(--shk-font-size-14);
+  font-weight: var(--shk-font-weight-medium);
+  line-height: 20px;
+  white-space: nowrap;
+}
+
+.introLink:hover {
+  background: var(--shk-palette-blue-700);
+  color: var(--shk-palette-white);
+  text-decoration: none;
+}
+
+/* ---------- Icons ----------
+   Material Symbols (Rounded, weight 400) drawn as CSS masks, so they take the text color.
+   The same approach as the navbar icons in src/css/custom.css. */
+
+.icon {
+  flex: none;
+  inline-size: 18px;
+  block-size: 18px;
+  background-color: currentColor;
+  mask: var(--landing-icon) center / contain no-repeat;
+}
+
+.iconExternal {
+  --landing-icon: url("@material-symbols/svg-400/rounded/open_in_new.svg");
+  color: var(--landing-text-muted);
+}
+
+.iconCopy {
+  --landing-icon: url("@material-symbols/svg-400/rounded/content_copy.svg");
+}
+
+.iconCheck {
+  --landing-icon: url("@material-symbols/svg-400/rounded/check.svg");
+}
+
+.iconArrow {
+  --landing-icon: url("@material-symbols/svg-400/rounded/arrow_right_alt.svg");
+  inline-size: var(--shk-size-4);
+  block-size: var(--shk-size-4);
+}
+
+.iconDomain {
+  --landing-icon: url("@material-symbols/svg-400/rounded/account_tree.svg");
+  inline-size: var(--shk-size-5);
+  block-size: var(--shk-size-5);
+}
+
+/* ---------- Cards ---------- */
+
+.cards {
+  display: flex;
+  flex-wrap: wrap;
   justify-content: center;
+  gap: var(--landing-card-gap);
+  padding-block-start: var(--shk-space-16);
 }
 
-/* Never wider than its column; the height follows, so it keeps its shape. */
-.illustration {
-  display: block;
+/* The outline is drawn inside the card, so the padding is one border width smaller (as in the
+   kit's cards). That leaves exactly 364px inside: the width where ModuleCard puts its two
+   Sensors side by side. */
+.card {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: var(--shk-space-4);
+  inline-size: var(--landing-card-width);
   max-inline-size: 100%;
-  block-size: auto;
+  min-block-size: var(--landing-card-height);
+  padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+  overflow: hidden;
+  border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+  border-radius: var(--shk-radius-8);
+  background: var(--shk-surface-default);
+  box-shadow: var(--site-shadow-card);
+  color: var(--shk-color-text-primary);
+  text-align: start;
 }
 
-/* Phone and small tablet: one column, text first, picture below. */
-@media (max-width: 996px) {
-  .hero {
-    flex-direction: column;
-    align-items: stretch;
-    padding: var(--shk-space-10) var(--shk-space-4);
-  }
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--shk-space-2);
+  min-block-size: var(--shk-size-6);
+  margin: 0;
+  color: inherit;
+  font-size: var(--shk-font-size-16);
+  font-weight: var(--shk-font-weight-medium);
+  line-height: normal;
+}
 
-  /* In a column, `flex: 1 1 0` would squash the heights; let each take its own height. */
-  .text,
-  .picture {
-    flex: none;
+.cardTitle img {
+  flex: none;
+}
+
+.cardDomain {
+  background: var(--landing-domain-background);
+}
+
+/* The diagram is a fixed-size picture: centered, and it scrolls sideways on a narrow phone. */
+.cardBody {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: safe center;
+  overflow-x: auto;
+}
+
+.cardCode {
+  border-color: rgb(255 255 255 / 0.08);
+  background: var(--site-code-background);
+  color: var(--shk-palette-white);
+}
+
+/* Docusaurus's code block, without its own card look: the card is the frame. */
+.code {
+  --ifm-pre-padding: 0;
+  margin: 0;
+  box-shadow: none;
+  font-size: 11px;
+}
+
+.code pre {
+  line-height: 16px;
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 996px) {
+  .page {
+    padding-block-start: var(--shk-space-16);
   }
 
   .title {
-    font-size: var(--shk-font-size-32);
+    font-size: var(--shk-font-size-40);
     line-height: var(--shk-line-height-snug);
   }
 
   .intro {
-    font-size: var(--shk-font-size-20);
-    line-height: var(--shk-line-height-normal);
+    font-size: var(--shk-font-size-18);
   }
 }

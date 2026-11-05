@@ -209,7 +209,7 @@ Faults stay on the card when the Module is Disconnected: a Fault lasts until the
 
 | Prop               | Comes from                                                                      | Example                                            |
 | ------------------ | ------------------------------------------------------------------------------- | -------------------------------------------------- |
-| `name`             | The [Module Name](/docs/domain-model/glossary#how-is-tracked)                   | `"Kitchen climate"`                                |
+| `name`             | The [Module Name](/docs/domain-model/glossary#devices-and-assets)               | `"Kitchen climate"`                                |
 | `connectionStatus` | The Module's [Connection Status](/docs/domain-model/glossary#connection-status) | `"connected"`                                      |
 | `faults`           | The Module's current [Faults](/docs/domain-model/glossary#fault)                | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
 | `sensors`          | The Module's Sensors, each with its Metric and its latest Reading               | see below                                          |
@@ -286,7 +286,7 @@ What you get without doing anything:
 - The Sensors are a real list, so screen readers say how many there are.
 - Each Sensor keeps its own spoken name ("Temperature, 22.4 degrees Celsius").
 - Connection Status changes and new Faults are announced (their components are live regions). New Readings are not, so the card doesn't keep interrupting.
-- Not colour alone: the status has a text label, and Disconnected has its own icon.
+- Not color alone: the status has a text label, and Disconnected has its own icon.
 
 What's up to you:
 

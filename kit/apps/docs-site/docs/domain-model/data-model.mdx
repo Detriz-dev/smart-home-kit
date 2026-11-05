@@ -1,47 +1,35 @@
 ---
+title: Data model
 sidebar_position: 3
 sidebar_label: Data model
+description: "How the kit's smart home terms relate, and how many of each there can be: diagrams, a cardinality table and the rules they can't show."
+keywords:
+  - smart home data model
+  - entity relationship diagram
+  - cardinality
+  - domain model
 ---
-
-# Data model
 
 This page shows how the terms in the [Glossary](./glossary.mdx) relate to each other, and **how many** of each thing can sit on each side of a relationship. That "how many" is called **cardinality**.
 
-Entity names in the diagrams are written in PascalCase (`SpaceType`), the same way they appear as TypeScript types. They mean exactly the glossary term (`SpaceType` = **Space Type**).
-
-## How to read the diagrams
-
-Each line connects two entities. The symbol at each **end** of the line says how many of the entity **at that end** take part.
-
-| Symbol | Meaning | Read it as |
-| --- | --- | --- |
-| `\|\|` | exactly one | "one and only one" |
-| `o\|` / `\|o` | zero or one | "optional, at most one" |
-| `\|{` / `}\|` | one or more | "at least one" |
-| `o{` / `}o` | zero or more | "any number, maybe none" |
-
-Example: `Site ||--o{ Space : contains` reads in both directions:
-
-- One **Site** contains **zero or more** Spaces.
-- Each **Space** belongs to **exactly one** Site.
-
-Where Mermaid can't express a rule (for example "exactly one of the two"), the rule is written under the diagram.
+Entity names in the diagrams are written in PascalCase (`SpaceType`), the names the kit's TypeScript types will use. They mean exactly the glossary term (`SpaceType` = **Space Type**). Rules the diagrams can't express are listed in [Rules the diagrams can't show](#rules-the-diagrams-cant-show).
 
 ## The whole model
 
-The full picture, without Device Status. Each section below zooms into one part.
+The full picture, without Device Status. Each section below explains one part.
 
 ```mermaid
 erDiagram
     Account ||--o{ Site : owns
     Account }o--o{ Site : "is shared"
+    Account ||--o{ Hub : owns
     Site ||--o{ Floor : "is split into"
     Site ||--o{ Space : contains
     Floor |o--o{ Space : groups
-    SpaceType ||--o{ Space : categorises
+    SpaceType ||--o{ Space : categorizes
     Space |o--o{ Hub : "is home to"
     Space ||--o{ Asset : contains
-    AssetType ||--o{ Asset : categorises
+    AssetType ||--o{ Asset : categorizes
     Hub ||--o{ Module : "has wired to it"
     ModuleType ||--o{ Module : defines
     Module ||--|{ Sensor : contains
@@ -54,19 +42,9 @@ erDiagram
     Asset |o--o{ Reading : "is the Subject of"
 ```
 
-## Where things are
+## Places
 
 The location hierarchy: Site → (Floor) → Space.
-
-```mermaid
-erDiagram
-    Account ||--o{ Site : owns
-    Account }o--o{ Site : "is shared"
-    Site ||--o{ Floor : "is split into"
-    Site ||--o{ Space : contains
-    Floor |o--o{ Space : groups
-    SpaceType ||--o{ Space : categorises
-```
 
 - One **Account** owns zero or more **Sites**. Each Site is owned by exactly one Account.
 - The owner can **share** a Site with zero or more other Accounts, and an Account can have zero or more Sites shared with it. Shared Accounts can only view the Site.
@@ -74,28 +52,18 @@ erDiagram
 - **Floors** are optional. A Site has zero or more Floors, and a Space sits on zero or one Floor.
 - Every **Space** has exactly one **Space Type** (use `Other` when nothing fits). One Space Type is used by many Spaces.
 
-## How is tracked
+## Devices and Assets
 
 Devices (Hub and Module), the Sensors on Modules, and the Assets that Sensors watch.
 
-```mermaid
-erDiagram
-    Space |o--o{ Hub : "is home to"
-    Hub ||--o{ Module : "has wired to it"
-    ModuleType ||--o{ Module : defines
-    Module ||--|{ Sensor : contains
-    Space ||--o{ Asset : contains
-    AssetType ||--o{ Asset : categorises
-    Asset |o--|{ Sensor : "is watched by"
-```
-
 - A **Space** is home to zero or more **Hubs**. A Hub is in zero or one Space: it has no Space until it is Paired and placed.
+- An **Account** owns zero or more **Hubs**. Each Hub belongs to exactly one Account, from the moment it is detected: the Account its Hub Token belongs to.
 - A **Hub** has zero or more **Modules** wired to it. Each Module belongs to exactly one Hub: the one whose settings list it.
-- A **Module** has no Space of its own. Its Space is always its Hub's Space.
+- A **Module** has no Space or Account of its own. Its Space and its Account are always its Hub's.
 - Every **Module** has exactly one **Module Type** (a category such as Climate). Which **Sensors** it contains (at least one) depends on its board.
 - A **Sensor** belongs to exactly one Module.
 - A **Space** contains zero or more **Assets**. Each Asset is in exactly one Space and has exactly one **Asset Type**.
-- An **Asset** is watched by one or more **Sensors**. A Sensor watches zero or one Asset: zero means it measures the Space itself (room air). When the last Sensor watching an Asset is removed, the Asset is removed too.
+- An **Asset** is watched by one or more **Sensors**. A Sensor watches zero or one Asset: zero means it measures the Space itself (room air). See rule 11 for what happens when its last Sensor is removed.
 
 ### Device is the parent of Hub and Module
 
@@ -124,28 +92,18 @@ classDiagram
 - The filled diamond (`*--`) means "is made of": when a Module is removed, its Sensors go with it.
 - The hollow diamond (`o--`) means "has", but the parts live on their own: a Module wired to a Hub is still a Device of its own, with its own Device Status.
 
-## What is tracked
+## Measurements
 
 Metrics, Units and the Readings Sensors produce.
 
-```mermaid
-erDiagram
-    Metric ||--o{ Sensor : "is measured by"
-    Unit ||--o{ Metric : "is canonical for"
-    Sensor ||--o{ Reading : produces
-    Metric ||--o{ Reading : "is recorded in"
-    Space |o--o{ Reading : "is the Subject of"
-    Asset |o--o{ Reading : "is the Subject of"
-```
-
 - A **Sensor** measures exactly one **Metric**. One Metric can be measured by many Sensors.
-- Each **Metric** has exactly one canonical **Unit** in the API. A Unit can be canonical for several Metrics (for example `µg/m³` for PM2.5 and PM10) or for none (a display-only Unit like `°F`).
+- Each **Metric** has exactly one standard **Unit** in the data. A Unit is the standard for zero or one Metric: `°F`, for example, is only a display Unit.
 - A **Sensor** produces zero or more **Readings**. Each Reading comes from exactly one Sensor and records exactly one Metric.
 - Each **Reading** has exactly one **Subject**: either a Space or an Asset. The diagram shows both links as optional; the rule "exactly one of the two" is in [Rules the diagrams can't show](#rules-the-diagrams-cant-show).
 
 ## Device Status
 
-Device Status is three separate fields. The cardinality shows the key rule: a Device **always** has a Pairing Status, but has a Connection Status **only when Paired**.
+Device Status is three separate fields. The cardinality shows the key rule: a Device **always** has a Pairing Status, but has a Connection Status **only when Paired**. Stale applies to Modules only (rule 15).
 
 ```mermaid
 classDiagram
@@ -180,40 +138,41 @@ classDiagram
 ```
 
 - **Pairing Status**: exactly one, always.
-- **Connection Status**: zero or one. It exists only when Pairing Status is `Paired`.
+- **Connection Status**: zero or one. It exists only when Pairing Status is `Paired`. Only a Module can be `Stale`: a Hub has no Sensors, so it never sends Readings of its own.
 - **Fault**: zero or more ("None, or one or more Faults"), and only when Pairing Status is `Paired`. A Device can report several Faults at once, for example two broken Sensors. Faults are independent of Connection Status, so a Device can be `Connected` and have a Fault.
 - Each **Fault** has exactly one **Fault Code**.
 
 ## Cardinality summary
 
-| From | Relationship | To | From side | To side |
-| --- | --- | --- | --- | --- |
-| Account | owns | Site | 1 | 0..* |
-| Site | is shared with | Account | 0..* | 0..* |
-| Site | contains | Space | 1 | 0..* |
-| Site | is split into | Floor | 1 | 0..* |
-| Floor | groups | Space | 0..1 | 0..* |
-| Space Type | categorises | Space | 1 | 0..* |
-| Space | is home to | Hub | 0..1 | 0..* |
-| Hub | has wired to it | Module | 1 | 0..* |
-| Module Type | defines | Module | 1 | 0..* |
-| Module | contains | Sensor | 1 | 1..* |
-| Space | contains | Asset | 1 | 0..* |
-| Asset Type | categorises | Asset | 1 | 0..* |
-| Asset | is watched by | Sensor | 0..1 | 1..* |
-| Metric | is measured by | Sensor | 1 | 0..* |
-| Unit | is canonical for | Metric | 1 | 0..* |
-| Sensor | produces | Reading | 1 | 0..* |
-| Metric | is recorded in | Reading | 1 | 0..* |
-| Subject (Space or Asset) | is the Subject of | Reading | 1 | 0..* |
-| Device | has | Pairing Status | 1 | 1 |
-| Device | has | Connection Status | 1 | 0..1 (only when Paired) |
-| Device | may report | Fault | 1 | 0..* (only when Paired) |
-| Fault | identified by | Fault Code | 1 | 1 |
+| From                     | Relationship      | To                | From side | To side                  |
+| ------------------------ | ----------------- | ----------------- | --------- | ------------------------ |
+| Account                  | owns              | Site              | 1         | 0..\*                    |
+| Site                     | is shared with    | Account           | 0..\*     | 0..\*                    |
+| Account                  | owns              | Hub               | 1         | 0..\*                    |
+| Site                     | contains          | Space             | 1         | 0..\*                    |
+| Site                     | is split into     | Floor             | 1         | 0..\*                    |
+| Floor                    | groups            | Space             | 0..1      | 0..\*                    |
+| Space Type               | categorizes       | Space             | 1         | 0..\*                    |
+| Space                    | is home to        | Hub               | 0..1      | 0..\*                    |
+| Hub                      | has wired to it   | Module            | 1         | 0..\*                    |
+| Module Type              | defines           | Module            | 1         | 0..\*                    |
+| Module                   | contains          | Sensor            | 1         | 1..\*                    |
+| Space                    | contains          | Asset             | 1         | 0..\*                    |
+| Asset Type               | categorizes       | Asset             | 1         | 0..\*                    |
+| Asset                    | is watched by     | Sensor            | 0..1      | 1..\*                    |
+| Metric                   | is measured by    | Sensor            | 1         | 0..\*                    |
+| Unit                     | is canonical for  | Metric            | 1         | 0..\*                    |
+| Sensor                   | produces          | Reading           | 1         | 0..\*                    |
+| Metric                   | is recorded in    | Reading           | 1         | 0..\*                    |
+| Subject (Space or Asset) | is the Subject of | Reading           | 1         | 0..\*                    |
+| Device                   | has               | Pairing Status    | 1         | 1                        |
+| Device                   | has               | Connection Status | 1         | 0..1 (only when Paired)  |
+| Device                   | may report        | Fault             | 1         | 0..\* (only when Paired) |
+| Fault                    | identified by     | Fault Code        | 1         | 1                        |
 
 ## Rules the diagrams can't show
 
-These are **invariants**: rules that must always be true. The code (types, API validation, backend) has to enforce them.
+These rules are always true, even where a diagram can't show them.
 
 1. **A Module belongs to exactly one Hub**: the Hub whose settings list it.
 2. **A Module's Space is its Hub's Space.** A Module never stores its own Space.
@@ -229,17 +188,12 @@ These are **invariants**: rules that must always be true. The code (types, API v
 12. **A Module can move to another Hub, but it starts again.** It pairs again on the new Hub, and its past Readings are deleted. See [Device lifecycle](./device-lifecycle.mdx#moving-a-module-to-another-hub).
 13. **A Site has exactly one owner.** The Accounts it is shared with never include its owner.
 14. **Sharing is view-only.** Accounts a Site is shared with can see it and its Readings, but can't change anything or share it further. Only the owner makes changes.
+15. **Only Modules can be Stale.** Stale means no Reading arrived within the Expected Interval, and only Modules send Readings. A Hub is Connecting, Connected or Disconnected.
+16. **A Hub belongs to exactly one Account,** the one its Hub Token belongs to. Its Modules belong to the same Account.
+17. **A Hub can only be placed in a Space its Account owns.** The Space's Site must be owned by the Hub's Account.
 
-## Aggregates
+## Related
 
-In Domain-Driven Design an **aggregate** is a group of things that are always changed together, through one "root" entity. Other parts of the system point at the root by its ID and never reach inside.
-
-| Aggregate | Root | Contains | Points to (by ID) |
-| --- | --- | --- | --- |
-| **Site** | Site | Floors, Spaces, Assets | Account, Space Type, Asset Type |
-| **Hub** | Hub | Modules, Sensors, Device Status | Space, Module Type, Metric, Asset |
-| **Reading** | Reading | (nothing; it's a single fact) | Sensor, Metric, Subject |
-
-**Reference data** never changes during normal use and is shared by everyone: Space Type, Asset Type, Module Type, Metric, Unit, Device Kind, Fault Code.
-
-Why Readings are their own aggregate: there are millions of them and they never change, so they shouldn't be loaded every time someone renames a Hub.
+- [Glossary](./glossary.mdx): what each term in the diagrams means.
+- [Device lifecycle](./device-lifecycle.mdx): how a Device moves between the statuses shown here.
+- [Events and commands](./events-and-commands.mdx): what changes the data, and what a user can ask for.

@@ -32,11 +32,11 @@ All event and command names here are _(proposed)_. They aren't part of the Ubiqu
 
 Three ideas that are easy to mix up:
 
-| Idea | Tense | Can it be refused? | Example | Analogy |
-| --- | --- | --- | --- | --- |
-| **Command** | Imperative: "do this" | Yes | **Pair Device** | Ordering a coffee |
-| **Event** | Past: "this happened" | No, it already happened | **Device Paired** | The receipt |
-| **Status** | Present: "this is how it is now" | — | Pairing Status = **Paired** | The coffee in your hand |
+| Idea        | Tense                            | Can it be refused?      | Example                     | Analogy                 |
+| ----------- | -------------------------------- | ----------------------- | --------------------------- | ----------------------- |
+| **Command** | Imperative: "do this"            | Yes                     | **Pair Device**             | Ordering a coffee       |
+| **Event**   | Past: "this happened"            | No, it already happened | **Device Paired**           | The receipt             |
+| **Status**  | Present: "this is how it is now" | —                       | Pairing Status = **Paired** | The coffee in your hand |
 
 A command, if accepted, causes one or more events. Events change statuses. So the chain is always: **command → event → new status**.
 
@@ -54,16 +54,16 @@ Not every event comes from a command. Many come from the physical world: a Modul
 
 Every event has the same **envelope** (shared fields) plus its own **payload** (the details).
 
-| Field | Meaning | Example |
-| --- | --- | --- |
-| `eventId` | Unique ID of this event, used to spot duplicates | `evt_01HZX…` |
-| `type` | Event name | `DevicePaired` |
-| `context` | Bounded context that published it | `devices` |
-| `subjectId` | ID of the thing it happened to (the aggregate root) | `mod_7F3A…` (a Module) |
-| `occurredAt` | When it happened in the real world | `2026-10-16T10:15:03Z` |
+| Field        | Meaning                                                                                     | Example                |
+| ------------ | ------------------------------------------------------------------------------------------- | ---------------------- |
+| `eventId`    | Unique ID of this event, used to spot duplicates                                            | `evt_01HZX…`           |
+| `type`       | Event name                                                                                  | `DevicePaired`         |
+| `context`    | Bounded context that published it                                                           | `devices`              |
+| `subjectId`  | ID of the thing it happened to (the aggregate root)                                         | `mod_7F3A…` (a Module) |
+| `occurredAt` | When it happened in the real world                                                          | `2026-10-16T10:15:03Z` |
 | `receivedAt` | When the API learned about it. Can be much later if the Hub buffered it during a Wi-Fi drop | `2026-10-16T10:17:40Z` |
-| `version` | Payload format version, so it can change safely later | `1` |
-| `payload` | The event-specific details | see below |
+| `version`    | Payload format version, so it can change safely later                                       | `1`                    |
+| `payload`    | The event-specific details                                                                  | see below              |
 
 Example: **Device Paired**
 
@@ -114,93 +114,93 @@ Each table lists the events one context publishes. **Consumers** are the context
 
 ### Identity and Access
 
-| Event | What happened | Key payload | Consumers | Public |
-| --- | --- | --- | --- | --- |
-| **Account Created** | Someone signed up | `accountId` | Location (creates a default Site) | No |
-| **Hub Token Issued** | A Hub got a token to send data | `hubId` | Hub agent | No |
-| **Hub Token Revoked** | A Hub's token was cancelled | `hubId` | Ingest API (rejects its data) | No |
+| Event                 | What happened                  | Key payload | Consumers                         | Public |
+| --------------------- | ------------------------------ | ----------- | --------------------------------- | ------ |
+| **Account Created**   | Someone signed up              | `accountId` | Location (creates a default Site) | No     |
+| **Hub Token Issued**  | A Hub got a token to send data | `hubId`     | Hub agent                         | No     |
+| **Hub Token Revoked** | A Hub's token was cancelled    | `hubId`     | Ingest API (rejects its data)     | No     |
 
 ### Location
 
-| Event | What happened | Key payload | Consumers | Public |
-| --- | --- | --- | --- | --- |
-| **Site Created** | A new Site was added | `siteId`, `accountId`, `name` | — | Yes |
-| **Floor Added** | A Floor was added to a Site | `floorId`, `siteId`, `name` | — | Yes |
-| **Space Created** | A new Space was added | `spaceId`, `siteId`, `spaceType`, `floorId?` | — | Yes |
-| **Space Renamed** | A Space got a new name | `spaceId`, `name` | — | Yes |
-| **Space Deleted** | A Space was removed | `spaceId` | Device Management (unplaces its Hubs) | Yes |
-| **Asset Added** | An Asset was added to a Space | `assetId`, `spaceId`, `assetType` | — | Yes |
-| **Asset Removed** | An Asset was removed | `assetId` | Device Management (unlinks its Sensors) | Yes |
+| Event             | What happened                 | Key payload                                  | Consumers                               | Public |
+| ----------------- | ----------------------------- | -------------------------------------------- | --------------------------------------- | ------ |
+| **Site Created**  | A new Site was added          | `siteId`, `accountId`, `name`                | —                                       | Yes    |
+| **Floor Added**   | A Floor was added to a Site   | `floorId`, `siteId`, `name`                  | —                                       | Yes    |
+| **Space Created** | A new Space was added         | `spaceId`, `siteId`, `spaceType`, `floorId?` | —                                       | Yes    |
+| **Space Renamed** | A Space got a new name        | `spaceId`, `name`                            | —                                       | Yes    |
+| **Space Deleted** | A Space was removed           | `spaceId`                                    | Device Management (unplaces its Hubs)   | Yes    |
+| **Asset Added**   | An Asset was added to a Space | `assetId`, `spaceId`, `assetType`            | —                                       | Yes    |
+| **Asset Removed** | An Asset was removed          | `assetId`                                    | Device Management (unlinks its Sensors) | Yes    |
 
 ### Device Management
 
 Lifecycle events are explained with diagrams in [Device lifecycle](../../../kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx).
 
-| Event | What happened | Key payload | Consumers | Public |
-| --- | --- | --- | --- | --- |
-| **Device Detected** | A new Device was seen (Pairing Status → Unpaired) | `deviceId`, `deviceKind`, `moduleType?`, `hubId?` | Client ("New module found") | Yes |
-| **Pairing Started** | The user started adding a Device (→ Pairing) | `deviceId` | Hub agent (starts auto-configure) | Yes |
-| **Device Paired** | Setup finished (→ Paired, Connection → Connecting) | `deviceId`, `deviceKind`, `hubId?`, `slotNumber?` | Telemetry (starts accepting its Readings) | Yes |
-| **Pairing Failed** | Setup failed (→ Unpaired) | `deviceId`, `reason` | Client | Yes |
-| **Device Dismissed** | The user chose "Not now" | `deviceId` | — | Yes |
-| **Device Removed** | A Paired Device left the Account | `deviceId` | Telemetry (stops accepting its Readings) | Yes |
-| **Module Inserted** | A Module was snapped into a Slot | `moduleId`, `hubId`, `slotNumber` | — | Yes |
-| **Module Ejected** | A Module was pulled out of a Slot | `moduleId`, `hubId`, `slotNumber` | — | Yes |
-| **Module Turned Off** | The user turned a Module Off (→ Disconnected) | `moduleId`, `hubId` | Client | Yes |
-| **Module Turned On** | The user turned a Module On (→ Connecting) | `moduleId`, `hubId` | Client | Yes |
-| **Hub Placed** | A Hub was placed in, or moved to, a Space | `hubId`, `spaceId`, `previousSpaceId?` | Telemetry (new Subject for new Readings) | Yes |
-| **Sensor Linked to Asset** | A Sensor now watches an Asset | `sensorId`, `assetId` | Telemetry (new Subject for new Readings) | Yes |
-| **Sensor Unlinked from Asset** | A Sensor stopped watching an Asset | `sensorId`, `assetId` | Telemetry (Subject goes back to the Space) | Yes |
-| **Device Connected** | Connection → Connected | `deviceId` | — | Yes |
-| **Device Disconnected** | Connection → Disconnected | `deviceId`, `reason` (link lost, Module ejected, Module turned Off, Hub disconnected) | — | Yes |
-| **Connection Timed Out** | Connecting took too long (→ Disconnected) | `deviceId` | — | Yes |
-| **Reconnect Started** | Connection → Connecting | `deviceId` | — | Yes |
-| **Fault Raised** | The Device reported a hardware problem | `deviceId`, `faultCode`, `sensorId?` | Client (shows Fault message) | Yes |
-| **Fault Cleared** | The Device stopped reporting the problem | `deviceId`, `faultCode` | Client | Yes |
+| Event                          | What happened                                      | Key payload                                                                           | Consumers                                  | Public |
+| ------------------------------ | -------------------------------------------------- | ------------------------------------------------------------------------------------- | ------------------------------------------ | ------ |
+| **Device Detected**            | A new Device was seen (Pairing Status → Unpaired)  | `deviceId`, `deviceKind`, `moduleType?`, `hubId?`                                     | Client ("New module found")                | Yes    |
+| **Pairing Started**            | The user started adding a Device (→ Pairing)       | `deviceId`                                                                            | Hub agent (starts auto-configure)          | Yes    |
+| **Device Paired**              | Setup finished (→ Paired, Connection → Connecting) | `deviceId`, `deviceKind`, `hubId?`, `slotNumber?`                                     | Telemetry (starts accepting its Readings)  | Yes    |
+| **Pairing Failed**             | Setup failed (→ Unpaired)                          | `deviceId`, `reason`                                                                  | Client                                     | Yes    |
+| **Device Dismissed**           | The user chose "Not now"                           | `deviceId`                                                                            | —                                          | Yes    |
+| **Device Removed**             | A Paired Device left the Account                   | `deviceId`                                                                            | Telemetry (stops accepting its Readings)   | Yes    |
+| **Module Inserted**            | A Module was snapped into a Slot                   | `moduleId`, `hubId`, `slotNumber`                                                     | —                                          | Yes    |
+| **Module Ejected**             | A Module was pulled out of a Slot                  | `moduleId`, `hubId`, `slotNumber`                                                     | —                                          | Yes    |
+| **Module Turned Off**          | The user turned a Module Off (→ Disconnected)      | `moduleId`, `hubId`                                                                   | Client                                     | Yes    |
+| **Module Turned On**           | The user turned a Module On (→ Connecting)         | `moduleId`, `hubId`                                                                   | Client                                     | Yes    |
+| **Hub Placed**                 | A Hub was placed in, or moved to, a Space          | `hubId`, `spaceId`, `previousSpaceId?`                                                | Telemetry (new Subject for new Readings)   | Yes    |
+| **Sensor Linked to Asset**     | A Sensor now watches an Asset                      | `sensorId`, `assetId`                                                                 | Telemetry (new Subject for new Readings)   | Yes    |
+| **Sensor Unlinked from Asset** | A Sensor stopped watching an Asset                 | `sensorId`, `assetId`                                                                 | Telemetry (Subject goes back to the Space) | Yes    |
+| **Device Connected**           | Connection → Connected                             | `deviceId`                                                                            | —                                          | Yes    |
+| **Device Disconnected**        | Connection → Disconnected                          | `deviceId`, `reason` (link lost, Module ejected, Module turned Off, Hub disconnected) | —                                          | Yes    |
+| **Connection Timed Out**       | Connecting took too long (→ Disconnected)          | `deviceId`                                                                            | —                                          | Yes    |
+| **Reconnect Started**          | Connection → Connecting                            | `deviceId`                                                                            | —                                          | Yes    |
+| **Fault Raised**               | The Device reported a hardware problem             | `deviceId`, `faultCode`, `sensorId?`                                                  | Client (shows Fault message)               | Yes    |
+| **Fault Cleared**              | The Device stopped reporting the problem           | `deviceId`, `faultCode`                                                               | Client                                     | Yes    |
 
 ### Telemetry
 
-| Event | What happened | Key payload | Consumers | Public |
-| --- | --- | --- | --- | --- |
-| **Reading Recorded** | A Reading was stored | `sensorId`, `metric`, `value`, `unit`, `subject` | Device Management (Stale → Connected), Insight, Record and Replay, client stream | Yes |
-| **Device Went Stale** | No Reading within the expected interval | `deviceId`, `lastReadingAt` | Device Management (sets Stale) | Yes |
+| Event                 | What happened                                          | Key payload                                      | Consumers                                                                        | Public |
+| --------------------- | ------------------------------------------------------ | ------------------------------------------------ | -------------------------------------------------------------------------------- | ------ |
+| **Reading Recorded**  | A Reading was stored                                   | `sensorId`, `metric`, `value`, `unit`, `subject` | Device Management (Stale → Connected), Insight, Record and Replay, client stream | Yes    |
+| **Device Went Stale** | No Reading within the expected interval (Modules only) | `deviceId`, `lastReadingAt`                      | Device Management (sets Stale)                                                   | Yes    |
 
 ### Insight _(proposed context)_
 
-| Event | What happened | Key payload | Consumers | Public |
-| --- | --- | --- | --- | --- |
-| **Threshold Crossed** | A Reading went outside a Threshold | `thresholdId`, `sensorId`, `subject`, `value`, `direction` (above / below) | Client (shows an Alert) | Yes |
-| **Threshold Recovered** | Readings came back inside the Threshold | `thresholdId`, `sensorId` | Client (clears the Alert) | Yes |
+| Event                   | What happened                           | Key payload                                                                | Consumers                 | Public |
+| ----------------------- | --------------------------------------- | -------------------------------------------------------------------------- | ------------------------- | ------ |
+| **Threshold Crossed**   | A Reading went outside a Threshold      | `thresholdId`, `sensorId`, `subject`, `value`, `direction` (above / below) | Client (shows an Alert)   | Yes    |
+| **Threshold Recovered** | Readings came back inside the Threshold | `thresholdId`, `sensorId`                                                  | Client (clears the Alert) | Yes    |
 
 ### Record and Replay _(proposed context)_
 
-| Event | What happened | Key payload | Consumers | Public |
-| --- | --- | --- | --- | --- |
-| **Recording Started** | The user started recording | `recordingId`, `sensorIds` | — | Yes |
-| **Recording Stopped** | The user stopped recording | `recordingId`, `startedAt`, `stoppedAt` | Sharing | Yes |
+| Event                 | What happened              | Key payload                             | Consumers | Public |
+| --------------------- | -------------------------- | --------------------------------------- | --------- | ------ |
+| **Recording Started** | The user started recording | `recordingId`, `sensorIds`              | —         | Yes    |
+| **Recording Stopped** | The user stopped recording | `recordingId`, `startedAt`, `stoppedAt` | Sharing   | Yes    |
 
 ### Sharing _(proposed context)_
 
-| Event | What happened | Key payload | Consumers | Public |
-| --- | --- | --- | --- | --- |
-| **Share Link Created** | A shareable link was made | `shareLinkId`, `recordingId?` | — | No |
-| **Share Link Revoked** | A shareable link was cancelled | `shareLinkId` | — | No |
+| Event                  | What happened                  | Key payload                   | Consumers | Public |
+| ---------------------- | ------------------------------ | ----------------------------- | --------- | ------ |
+| **Share Link Created** | A shareable link was made      | `shareLinkId`, `recordingId?` | —         | No     |
+| **Share Link Revoked** | A shareable link was cancelled | `shareLinkId`                 | —         | No     |
 
 ## Commands and the events they cause
 
-| Command | Context | Sent by | If accepted | Refused when |
-| --- | --- | --- | --- | --- |
-| **Pair Device** | Device Management | User | Pairing Started, then Device Paired or Pairing Failed | Device isn't Unpaired, or it's a Module whose Hub isn't Paired |
-| **Dismiss Device** | Device Management | User | Device Dismissed | Device isn't Unpaired |
-| **Remove Device** | Device Management | User | Device Removed | Device isn't Paired |
-| **Place Hub** | Device Management | User | Hub Placed | Hub isn't Paired, or the Space belongs to another Account |
-| **Turn Module Off** | Device Management | User | Module Turned Off, then Device Disconnected | Module isn't Paired, or its Hub is Disconnected |
-| **Turn Module On** | Device Management | User | Module Turned On, then Reconnect Started | Module isn't Paired, or its Hub is Disconnected |
-| **Link Sensor to Asset** | Device Management | User | Sensor Linked to Asset | The Asset is in a different Space than the Sensor's Hub |
-| **Create Space** | Location | User | Space Created | The Site belongs to another Account |
-| **Add Asset** | Location | User | Asset Added | The Space doesn't exist |
-| **Ingest Readings** | Telemetry | Hub agent | Reading Recorded (one per Reading) | Hub Token invalid, or the Sensor isn't Paired |
-| **Start Recording** | Record and Replay | User | Recording Started | A Recording is already running |
+| Command                  | Context           | Sent by   | If accepted                                           | Refused when                                                   |
+| ------------------------ | ----------------- | --------- | ----------------------------------------------------- | -------------------------------------------------------------- |
+| **Pair Device**          | Device Management | User      | Pairing Started, then Device Paired or Pairing Failed | Device isn't Unpaired, or it's a Module whose Hub isn't Paired |
+| **Dismiss Device**       | Device Management | User      | Device Dismissed                                      | Device isn't Unpaired                                          |
+| **Remove Device**        | Device Management | User      | Device Removed                                        | Device isn't Paired                                            |
+| **Place Hub**            | Device Management | User      | Hub Placed                                            | Hub isn't Paired, or the Space belongs to another Account      |
+| **Turn Module Off**      | Device Management | User      | Module Turned Off, then Device Disconnected           | Module isn't Paired, or its Hub is Disconnected                |
+| **Turn Module On**       | Device Management | User      | Module Turned On, then Reconnect Started              | Module isn't Paired, or its Hub is Disconnected                |
+| **Link Sensor to Asset** | Device Management | User      | Sensor Linked to Asset                                | The Asset is in a different Space than the Sensor's Hub        |
+| **Create Space**         | Location          | User      | Space Created                                         | The Site belongs to another Account                            |
+| **Add Asset**            | Location          | User      | Asset Added                                           | The Space doesn't exist                                        |
+| **Ingest Readings**      | Telemetry         | Hub agent | Reading Recorded (one per Reading)                    | Hub Token invalid, or the Sensor isn't Paired                  |
+| **Start Recording**      | Record and Replay | User      | Recording Started                                     | A Recording is already running                                 |
 
 ## Flow: one Reading through the system
 
@@ -231,14 +231,14 @@ Solid arrows are commands or internal work. Dashed arrows are events. Note that 
 
 Inside the backend, events let contexts react to each other. Some of them are also sent to the client over the **WebSocket stream**, which is how `useSensor` and `useConnectionStatus` stay live.
 
-| Group | Sent to the client? | Why |
-| --- | --- | --- |
-| Reading Recorded | Yes | Live values for `useSensor`, Gauge, HistoryChart |
-| Connection and Fault events | Yes | Live status for `useConnectionStatus`, ConnectionBadge, DeviceFaultStatus |
-| Pairing, Module and Hub Placed events | Yes | Studio updates the Device list without reloading |
-| Location events | Yes | Studio updates the Site and Space tree |
-| Insight events | Yes | Alerts |
-| Identity and Sharing events | No | Internal or security-related |
+| Group                                 | Sent to the client? | Why                                                                       |
+| ------------------------------------- | ------------------- | ------------------------------------------------------------------------- |
+| Reading Recorded                      | Yes                 | Live values for `useSensor`, Gauge, HistoryChart                          |
+| Connection and Fault events           | Yes                 | Live status for `useConnectionStatus`, ConnectionBadge, DeviceFaultStatus |
+| Pairing, Module and Hub Placed events | Yes                 | Studio updates the Device list without reloading                          |
+| Location events                       | Yes                 | Studio updates the Site and Space tree                                    |
+| Insight events                        | Yes                 | Alerts                                                                    |
+| Identity and Sharing events           | No                  | Internal or security-related                                              |
 
 Events sent to the client are part of the **Published Language**, so they must be described in `openapi.yaml` (or an AsyncAPI file next to it) and versioned like any other API.
 

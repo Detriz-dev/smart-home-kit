@@ -113,9 +113,9 @@ Converting the value is up to your app: `UnitLabel` shows the Unit it is given, 
 
 | State    | Props                    | Looks like                                          |
 | -------- | ------------------------ | --------------------------------------------------- |
-| Off      | `isOn={false}`           | Grey track, circle on the left, "Off"               |
+| Off      | `isOn={false}`           | Gray track, circle on the left, "Off"               |
 | On       | `isOn={true}`            | Blue track, circle on the right, "On"               |
-| Disabled | `isDisabled` (on or off) | Light grey track and grey text. Clicks are ignored. |
+| Disabled | `isDisabled` (on or off) | Light gray track and gray text. Clicks are ignored. |
 
 When it's reached with the keyboard, a blue focus ring shows around the track.
 
@@ -159,7 +159,7 @@ Disable the Switch while the setting's value is still loading, or when the setti
 | `isOn`       | `boolean`                 | –       | **Required.** Whether the switch is on. Your app owns this value.                                                         |
 | `onChange`   | `(isOn: boolean) => void` | –       | **Required.** Called with the **new** value when the switch is flipped, so you can store it as it is.                     |
 | `ariaLabel`  | `string`                  | –       | **Required.** The name screen readers say, like "Show temperature in °F". Not shown: show the same name as your own text. |
-| `isDisabled` | `boolean`                 | `false` | Greys the switch out and ignores clicks.                                                                                  |
+| `isDisabled` | `boolean`                 | `false` | Grays the switch out and ignores clicks.                                                                                  |
 
 The type `SwitchProps` is exported too:
 
@@ -200,14 +200,14 @@ What you get without doing anything:
 - It's a real switch (`role="switch"`), so screen readers say "Show temperature in °F, switch, off".
 - **Keyboard:** Tab reaches it, Space or Enter flips it, and a focus ring shows.
 - Clicking the "On" / "Off" text flips it too. Screen readers skip that text, because they already say on or off.
-- **Not colour alone:** the circle's position and the "On" / "Off" text both show the value.
-- The track colours meet the 3:1 contrast ratio controls need, on light backgrounds.
+- **Not color alone:** the circle's position and the "On" / "Off" text both show the value.
+- The track colors meet the 3:1 contrast ratio controls need, on light backgrounds.
 
 What's up to you:
 
 - **A name.** `ariaLabel` is required. Use the same words as the name people see next to the Switch, so what they hear matches what they see.
 - **Take effect straight away.** People expect a switch to work as soon as it's flipped. If a setting needs a Save step, use something else.
-- **Say why it's disabled.** A greyed-out Switch doesn't explain itself. Add a short note next to it.
+- **Say why it's disabled.** A grayed-out Switch doesn't explain itself. Add a short note next to it.
 
 ## Styling
 
@@ -220,7 +220,7 @@ What's up to you:
 | "On" / "Off" text         | `--shk-typography-label-*` (14px), `--shk-color-text-primary` |
 | Size                      | `--shk-size-10` × `--shk-size-6` (40 × 24px)                  |
 
-The status colours are shared by every Status component, so change them for the whole app, not one screen.
+The status colors are shared by every Status component, so change them for the whole app, not one screen.
 
 ## Related components
 

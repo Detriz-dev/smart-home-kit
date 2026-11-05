@@ -1,81 +1,102 @@
 ---
+title: UI Components
 sidebar_position: 1
 sidebar_label: Overview
-description: The kit's React components for smart home screens, grouped by the question they answer.
+description: "React components for smart home screens: built on shared Foundations, in six groups by the question they answer, from Layout to Controls."
+keywords:
+  - smart home UI components
+  - React components
+  - component groups
+  - design system
 ---
 
-# UI Components
-
-The kit's React components for smart home screens. They show Sites, Spaces, Devices and Readings using the words of the [Domain Model](/docs/domain-model/glossary), so you can build a screen without designing those pieces yourself.
+The kit's React components show Sites, Devices and Readings in the [Domain Model](/docs/domain-model)'s words, so you can build a smart home screen without designing those pieces yourself. They're built on shared **Foundations** and come in six groups. Each group answers **one question** about the home, so knowing the question tells you which group to look in. The same components are in the kit's [Figma library](https://www.figma.com/community/file/1700179982740576850/detriz-smart-home-kit), with the same names.
 
 ## How the components are grouped
 
-Every component belongs to one group, and each group answers **one question** about the home. Knowing the question tells you which group to look in.
+Every screen is built from the same pieces. Here is one screen, with each piece marked by its number: 0 for the Foundations everything is made of, and 1 to 6 for the groups.
 
-```mermaid
-flowchart TB
-    Data[("Your data<br/>Sites · Devices · Readings")]
-    Person(["The person using your app"])
+![A Bedroom screen. The heading's text style, an icon and the space between the cards are Foundations (0). Its heading and the row of cards are Layout (1). The location path and a Sensor's name are Context (2). Two Module cards with their values are Readings (3). "Connected", "Stale" and "CO₂ sensor failure" are Status (4). A "Couldn't load the last 24 hours" message is Feedback (5), and its Retry button is a Control (6).](./img/component-anatomy.png)
 
-    Context["Context<br/><b>Where is this, what is it?</b>"]
-    Readings["Readings<br/><b>What is it right now?</b>"]
-    Status["Status<br/><b>Is everything OK?</b>"]
-    Controls["Controls<br/><b>How do I change what I see?</b>"]
-    Layout["Layout<br/><b>How is it arranged?</b>"]
-    Screen(["A screen"])
+The groups differ in **where their content comes from** and **how often it changes**. That's why they're kept apart: each kind of content needs its own behavior.
 
-    Data -->|fixed facts| Context
-    Data -->|latest values| Readings
-    Data -->|Device Status| Status
-    Person -->|actions and settings| Controls
-    Context --> Layout
-    Readings --> Layout
-    Status --> Layout
-    Controls --> Layout
-    Layout -->|arranges them into| Screen
+### 0. Foundations
 
-    classDef context fill:#e8f4fb,stroke:#017bab,color:#272f34
-    classDef readings fill:#eaf7ee,stroke:#2e8555,color:#272f34
-    classDef status fill:#fff4e5,stroke:#b86e00,color:#272f34
-    classDef controls fill:#f3eefc,stroke:#6b4fbb,color:#272f34
-    classDef layout fill:#f6f9fb,stroke:#697379,color:#272f34
-    class Context context
-    class Readings readings
-    class Status status
-    class Controls controls
-    class Layout,Screen layout
-```
+**What is everything made of?** The colors, sizes, fonts and icons every component uses. Use them in your own screens to match the kit:
 
-The groups differ in **where their content comes from** and **how often it changes**:
+| Page                                             | What's in it                                                                                     |
+| ------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
+| [Design tokens](./foundations/design-tokens.mdx) | The `--shk-` CSS variables, how to change them, and how your own CSS and the kit's fit together. |
+| [Typography](./foundations/typography.mdx)       | The two fonts, how to load them, and the 16 text styles.                                         |
+| [Icons](./foundations/icons.mdx)                 | The icon set and the `Icon` component.                                                           |
+| [Shared types](./foundations/shared-types.mdx)   | The TypeScript types for Metrics, Units and Device statuses.                                     |
 
-| Group                 | Answers                       | Shows                                                             | Changes when                                                                   | Examples                                        |
-| --------------------- | ----------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------- |
-| [Context](#context)   | "Where is this, what is it?"  | Fixed facts: where a Device is, what a Sensor measures.           | Almost never: only when the user renames or moves something.                   | `LocationPath`, `SensorLabel`                   |
-| [Readings](#readings) | "What is it right now?"       | Current values, from one number up to a card for a whole Space.   | With every new Reading, every few seconds.                                     | `ReadingValue`, `ModuleCard`, `SpaceCard`       |
-| [Status](#status)     | "Is everything OK?"           | The state of a Device: Pairing Status, Connection Status, Faults. | When a Device's health changes: it goes Stale, disconnects or reports a Fault. | `DeviceConnectionStatus`, `DeviceFaultStatus`   |
-| [Controls](#controls) | "How do I change what I see?" | Inputs for actions and settings in your app.                      | When the person clicks or flips something.                                     | `Button`, `Switch`                              |
-| [Layout](#layout)     | "How is it arranged?"         | Structure and spacing for the other components. No data.          | Never: it only places what's inside it.                                        | `StackLayout`, `ColumnLayout`, `ContentSection` |
+### 1. Layout
 
-Two rules make the groups easy to use:
+**How is it arranged?** Structure and spacing for the other components. Layout shows no data and never changes on its own: it only places what's inside it.
 
-- **A component that combines groups belongs to its main job.** `ModuleCard` shows a Connection Status and Faults, but its main job is the current values, so it's in Readings.
+[`ContentSection`](./layout/content-section.mdx) · [`ColumnLayout`](./layout/column-layout.mdx) · [`StackLayout`](./layout/stack-layout.mdx)
+
+### 2. Context
+
+**Where is this, what is it?** Fixed facts, like where a Device is or what a Sensor measures. They almost never change: only when the user renames or moves something.
+
+[`LocationPath`](./context/location-path.mdx) · [`SensorLabel`](./context/sensor-label.mdx)
+
+### 3. Readings
+
+**What is it right now?** Current values, from a single number up to a card for a whole Space. They change with every new Reading, often every few seconds.
+
+[`ReadingValue`](./readings/reading-value.mdx) · [`UnitLabel`](./readings/unit-label.mdx) · [`SensorReading`](./readings/sensor-reading.mdx) · [`ModuleCard`](./readings/module-card.mdx) · [`SpaceCard`](./readings/space-card.mdx)
+
+### 4. Status
+
+**Is everything OK?** The state of a Device: its Pairing Status, Connection Status and Faults. They change when a Device's health changes, for example when it goes Stale, disconnects or reports a Fault.
+
+[`DeviceConnectionStatus`](./status/device-connection-status.mdx) · [`DevicePairingStatus`](./status/device-pairing-status.mdx) · [`DeviceFaultStatus`](./status/device-fault-status.mdx)
+
+### 5. Feedback
+
+**What is the interface doing?** Messages about your app, not the hardware: a request failed, or a change was saved. They appear when your app finishes or fails at something.
+
+[`InlineMessage`](./feedback/inline-message.mdx)
+
+### 6. Controls
+
+**How do I change what I see?** Inputs for actions and settings in your app. They change when the person clicks or switches something.
+
+[`Button`](./controls/button.mdx) · [`Switch`](./controls/switch.mdx)
+
+### Two rules behind the groups
+
+- **A component belongs to its main job.** A component can hold pieces of other groups. `ModuleCard` shows a Connection Status and Faults, but its main job is the current values, so it's in Readings.
 - **Fixed facts and changing values are kept apart.** A Sensor's name (`SensorLabel`, Context) stays on screen while its value (`ReadingValue`, Readings) is loading or hidden, so people always know what was measured.
 
-More groups are planned: History ("How has it changed?"), Comparison ("How do Sensors relate to each other?") and Feedback ("What is the interface doing?").
+Status and Feedback can look alike, but they answer different questions: Status is about the hardware ("The Hub is Disconnected"), Feedback is about your app ("Couldn't load Readings").
 
-### One screen, four groups
+More groups are planned: History ("How has it changed?") and Comparison ("How do Sensors relate to each other?").
 
-This screen uses four of the groups: **Layout** (`ContentSection`, `ColumnLayout`) arranges it, **Context** (`LocationPath`) says where it is, **Readings** (`ModuleCard`) shows the values, and each card shows its **Status** (`DeviceConnectionStatus`) inside it.
+## Try it: the screen from the illustration
+
+The same screen, built with the real components. Change the code and the result updates as you type.
 
 ```jsx live
 <ContentSection title="Bedroom">
   <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
-  <ColumnLayout ratio="2:1">
+  <InlineMessage
+    tone="error"
+    title="Couldn't load the last 24 hours."
+    actionLabel="Retry"
+    onAction={() => {}}
+  >
+    Check your connection and try again.
+  </InlineMessage>
+  <ColumnLayout>
     <ModuleCard
       name="Climate Module"
       connectionStatus="connected"
       sensors={[
-        { metric: "temperature", value: 21.5, unit: "celsius" },
+        { metric: "temperature", value: 22.4, unit: "celsius" },
         {
           metric: "humidity",
           value: 48,
@@ -85,21 +106,14 @@ This screen uses four of the groups: **Layout** (`ContentSection`, `ColumnLayout
       ]}
     />
     <ModuleCard
-      name="Light Module"
+      name="Air Quality Module"
       connectionStatus="stale"
-      sensors={[
-        { metric: "illuminance", value: 320, unit: "lux", fractionDigits: 0 },
-      ]}
+      faults={[{ faultCode: "sensor_failure", metric: "co2" }]}
+      sensors={[{ metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 }]}
     />
   </ColumnLayout>
 </ContentSection>
 ```
-
-:::tip[Try it]
-
-Every example in these pages is live: it uses the real components. Change the code and the result updates as you type.
-
-:::
 
 ## Getting started
 
@@ -114,66 +128,13 @@ import { ModuleCard } from "@detriz-sh-kit/ui";
 
 See [Installation](/docs/get-started/installation) for how to install the packages. The kit's fonts aren't included in its CSS: see [Typography](./foundations/typography.mdx#loading-the-fonts) for how to load them.
 
-## Foundations
-
-What every component is built from. Start here if you want your own screens to match the kit:
-
-| Page                                             | What's in it                                                                                     |
-| ------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
-| [Design tokens](./foundations/design-tokens.mdx) | The `--shk-` CSS variables, how to change them, and how your own CSS and the kit's fit together. |
-| [Typography](./foundations/typography.mdx)       | The two fonts, how to load them, and the 16 text styles.                                         |
-| [Icons](./foundations/icons.mdx)                 | The icon set and the `Icon` component.                                                           |
-| [Shared types](./foundations/shared-types.mdx)   | The TypeScript types for Metrics, Units and Device statuses.                                     |
-
-## All components
-
-### Status
-
-| Component                                                         | Shows                                                             |
-| ----------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [`DeviceConnectionStatus`](./status/device-connection-status.mdx) | Whether a Device can be reached right now.                        |
-| [`DevicePairingStatus`](./status/device-pairing-status.mdx)       | Whether a Device belongs to the Account.                          |
-| [`DeviceFaultStatus`](./status/device-fault-status.mdx)           | A hardware problem the Device reports, like "CO₂ sensor failure". |
-
-### Readings
-
-| Component                                        | Shows                                                               |
-| ------------------------------------------------ | ------------------------------------------------------------------- |
-| [`ReadingValue`](./readings/reading-value.mdx)   | The latest value of a Reading as a number.                          |
-| [`UnitLabel`](./readings/unit-label.mdx)         | The Unit next to a value, like °C.                                  |
-| [`SensorReading`](./readings/sensor-reading.mdx) | One Sensor's latest Reading as a small card.                        |
-| [`ModuleCard`](./readings/module-card.mdx)       | One Module as a card: its status, Faults and each Sensor's Reading. |
-| [`SpaceCard`](./readings/space-card.mdx)         | One Space at a glance: one row per Metric.                          |
-
-### Context
-
-| Component                                     | Shows                                                  |
-| --------------------------------------------- | ------------------------------------------------------ |
-| [`LocationPath`](./context/location-path.mdx) | Where a Device is: Site, Floor, Space and the Device.  |
-| [`SensorLabel`](./context/sensor-label.mdx)   | What a Sensor measures: an icon and the Metric's name. |
-
-### Controls
-
-| Component                         | Does                                           |
-| --------------------------------- | ---------------------------------------------- |
-| [`Switch`](./controls/switch.mdx) | Turns a setting in your app on or off.         |
-| [`Button`](./controls/button.mdx) | Runs an action, like "Send prompt" or "Retry". |
-
-### Layout
-
-| Component                                        | Does                                  |
-| ------------------------------------------------ | ------------------------------------- |
-| [`StackLayout`](./layout/stack-layout.mdx)       | Places components in one column.      |
-| [`ColumnLayout`](./layout/column-layout.mdx)     | Places components side by side.       |
-| [`ContentSection`](./layout/content-section.mdx) | A group of components with a heading. |
-
 ## What every component has in common
 
 - **Props only.** Components show what you pass them. They never fetch data or talk to a Device, so you can use them with any data source. Your app decides where the data comes from.
 - **The Domain Model's words.** Props and labels use the [Glossary](/docs/domain-model/glossary)'s terms: `connectionStatus`, `metric`, `unit`. If you know the Domain Model, you know what to pass.
 - **Device states built in.** Readings and Status components cover the states of a Device: loading, Connected, Stale, Disconnected (the value is hidden) and Fault. You pass the data; the component shows the right state.
-- **Accessible by default.** Real HTML elements, screen reader text for icons and symbols, no meaning by colour alone. Each page says what you get and what's still up to you.
-- **Styled with tokens.** Every colour, size and space comes from the kit's [design tokens](./foundations/design-tokens.mdx) (CSS variables starting with `--shk-`), so you can change the look in one place.
+- **Accessible by default.** Real HTML elements, screen reader text for icons and symbols, no meaning by color alone. Each page says what you get and what's still up to you.
+- **Styled with tokens.** Every color, size and space comes from the kit's [design tokens](./foundations/design-tokens.mdx) (CSS variables starting with `--shk-`), so you can change the look in one place.
 - **They fill their parent.** Cards and layouts take the width they're given and arrange themselves to fit it, not the screen.
 
 ## How to read a component page

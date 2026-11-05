@@ -155,13 +155,13 @@ Put one SensorReading per Metric in a layout component, such as [`ColumnLayout`]
 
 ## Mapping your data
 
-| Prop             | Comes from                                                                                                     | Example                               |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| `metric`         | The Sensor's [Metric](/docs/domain-model/glossary#what-is-tracked)                                             | `temperature`                         |
-| `value`          | The value of the latest [Reading](/docs/domain-model/glossary#what-is-tracked), or `null` before the first one | `22.4`                                |
-| `unit`           | The display [Unit](/docs/domain-model/glossary#what-is-tracked) you chose for the Metric                       | `celsius`                             |
-| `isDisconnected` | The Module's [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected                | `connectionStatus === "disconnected"` |
-| `fractionDigits` | The Metric                                                                                                     | `1` for Temperature, `0` for CO₂      |
+| Prop             | Comes from                                                                                                  | Example                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `metric`         | The Sensor's [Metric](/docs/domain-model/glossary#measurements)                                             | `temperature`                         |
+| `value`          | The value of the latest [Reading](/docs/domain-model/glossary#measurements), or `null` before the first one | `22.4`                                |
+| `unit`           | The display [Unit](/docs/domain-model/glossary#measurements) you chose for the Metric                       | `celsius`                             |
+| `isDisconnected` | The Module's [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected             | `connectionStatus === "disconnected"` |
+| `fractionDigits` | The Metric                                                                                                  | `1` for Temperature, `0` for CO₂      |
 
 A few rules from the domain model:
 
@@ -216,7 +216,7 @@ What you get without doing anything:
 - The card is a group named by its Metric, so screen readers announce "Temperature" and then read "22.4 degrees Celsius". This is the context a value needs.
 - CO₂ and PM2.5 are spoken in full ("carbon dioxide"), like in `SensorLabel`.
 - In the Loading and Disconnected states, the group reads "Temperature, Loading" or "Temperature, Disconnected". The Unit is skipped, so it doesn't sound like a value ("Disconnected degrees Celsius").
-- Disconnected has its own icon shape, so it isn't told apart by colour alone. The card's outline stays visible in Windows High Contrast mode.
+- Disconnected has its own icon shape, so it isn't told apart by color alone. The card's outline stays visible in Windows High Contrast mode.
 - The loading icon stops spinning when the user has asked for reduced motion.
 - The text meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
 

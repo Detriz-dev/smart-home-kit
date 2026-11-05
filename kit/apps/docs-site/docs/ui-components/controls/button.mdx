@@ -69,7 +69,7 @@ Use the `variant` prop. The default is `secondary`.
 | `variant`   | Looks like                          | Use it for                                                          |
 | ----------- | ----------------------------------- | ------------------------------------------------------------------- |
 | `primary`   | Blue fill, white text               | **The one main action** in a place, like "Send prompt".             |
-| `secondary` | White fill, grey outline, dark text | Every other action, like "Retry", "Undo" and answers to a question. |
+| `secondary` | White fill, gray outline, dark text | Every other action, like "Retry", "Undo" and answers to a question. |
 
 Use only one primary Button in a place, so the main action is easy to find.
 
@@ -95,10 +95,10 @@ Hover, pressed and focus come from the browser: you don't set them. Only disable
 
 | State    | How it happens                 | primary                    | secondary                                 |
 | -------- | ------------------------------ | -------------------------- | ----------------------------------------- |
-| Hover    | The pointer is over it         | Darker blue                | Light grey fill                           |
-| Pressed  | It's being clicked             | Darkest blue               | Grey fill                                 |
+| Hover    | The pointer is over it         | Darker blue                | Light gray fill                           |
+| Pressed  | It's being clicked             | Darkest blue               | Gray fill                                 |
 | Focus    | It's reached with the keyboard | + a blue ring around it    | + a blue ring around it                   |
-| Disabled | `isDisabled`                   | Light grey fill, grey text | Light grey fill, faint outline, grey text |
+| Disabled | `isDisabled`                   | Light gray fill, gray text | Light gray fill, faint outline, gray text |
 
 Hover over the buttons, click them, or press Tab to see the states. The counter shows that clicks reach `onClick`:
 
@@ -173,7 +173,7 @@ A Button is as wide as its text, at least 44px tall. Inside a [`StackLayout`](..
 | `children`   | `ReactNode`                | –             | **Required.** The text on the button, like "Send prompt" or a Space name.                                     |
 | `onClick`    | `() => void`               | –             | **Required.** Called when the button is clicked, or activated with Enter or Space. Not called while disabled. |
 | `variant`    | `"primary" \| "secondary"` | `"secondary"` | How much weight the action has.                                                                               |
-| `isDisabled` | `boolean`                  | `false`       | Greys the button out and ignores clicks.                                                                      |
+| `isDisabled` | `boolean`                  | `false`       | Grays the button out and ignores clicks.                                                                      |
 
 The types `ButtonProps` and `ButtonVariant` are exported too:
 
@@ -205,12 +205,12 @@ What you get without doing anything:
 - **Focus** shows a blue ring, only when the button is reached with the keyboard.
 - **Disabled** uses the browser's own `disabled`, so the button leaves the Tab order and screen readers say it's unavailable.
 - At least **44px tall**, so it's easy to hit on a touch screen.
-- **Contrast:** white on the primary blue is about 4.7:1, and dark text on the secondary fill is above 4.5:1. Primary and secondary differ by fill and outline, not by colour alone.
+- **Contrast:** white on the primary blue is about 4.7:1, and dark text on the secondary fill is above 4.5:1. Primary and secondary differ by fill and outline, not by color alone.
 
 What's up to you:
 
 - **Clear text.** The text is the button's name for screen readers too, so it must make sense on its own. "Retry" is clear; "Click here" isn't.
-- **Say why it's disabled.** A greyed-out button doesn't explain itself. Add a short note next to it when the reason isn't obvious.
+- **Say why it's disabled.** A grayed-out button doesn't explain itself. Add a short note next to it when the reason isn't obvious.
 - **One primary per place.** More than one makes it hard to see the main action.
 
 ## Styling

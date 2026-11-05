@@ -73,3 +73,8 @@ export type {
   StackLayoutGap,
   StackLayoutProps,
 } from "./components/layout/StackLayout";
+export { InlineMessage } from "./components/feedback/InlineMessage";
+export type {
+  InlineMessageProps,
+  InlineMessageTone,
+} from "./components/feedback/InlineMessage";

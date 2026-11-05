@@ -30,7 +30,7 @@ export default function PlaygroundEditor(): ReactNode {
         <ResetButton />
       </div>
       <LiveEditor
-        // Remount after hydration, otherwise the code colours from the server render stay.
+        // Remount after hydration, otherwise the code colors from the server render stay.
         key={String(isBrowser)}
         className={styles.editor}
       />

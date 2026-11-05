@@ -111,11 +111,11 @@ Use the `size` prop. The default is `xs`, the same size as `LocationPath`, so th
 
 ## Mapping your data
 
-Pass the [Metric](/docs/domain-model/glossary#what-is-tracked) of the Sensor as `metric`.
+Pass the [Metric](/docs/domain-model/glossary#measurements) of the Sensor as `metric`.
 
-| Prop     | Domain term                                           | Example       |
-| -------- | ----------------------------------------------------- | ------------- |
-| `metric` | [Metric](/docs/domain-model/glossary#what-is-tracked) | `temperature` |
+| Prop     | Domain term                                        | Example       |
+| -------- | -------------------------------------------------- | ------------- |
+| `metric` | [Metric](/docs/domain-model/glossary#measurements) | `temperature` |
 
 A few rules from the domain model:
 
@@ -161,8 +161,8 @@ What you get without doing anything:
 
 - The icon is hidden from screen readers. The label already says the same thing.
 - Labels that screen readers read oddly are spoken in full: "CO₂" is read as "carbon dioxide" and "PM2.5" as "PM 2.5".
-- The Metric is told apart by its text and its icon shape, not by colour alone.
-- The text colour meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+- The Metric is told apart by its text and its icon shape, not by color alone.
+- The text color meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
 
 What's up to you:
 
@@ -175,7 +175,7 @@ What's up to you:
   ```
 
 - **No extra label.** Don't add an `aria-label` or a visually hidden "Metric:" text. The label is already read out.
-- Check the contrast if you place it on a dark or coloured background.
+- Check the contrast if you place it on a dark or colored background.
 
 ## Styling
 
@@ -183,7 +183,7 @@ SensorLabel uses the kit's [design tokens](../foundations/design-tokens.mdx) (CS
 
 | What                      | Token                                                                            |
 | ------------------------- | -------------------------------------------------------------------------------- |
-| Text and icon colour      | `--shk-color-text-primary`                                                       |
+| Text and icon color       | `--shk-color-text-primary`                                                       |
 | Text style                | `xs` caption, `sm` body-sm, `md` body, `lg` body-lg (`--shk-typography-…`)       |
 | Gap between icon and name | `--shk-space-1` (4px) for `xs` and `sm`, `--shk-space-2` (8px) for `md` and `lg` |
 

@@ -1,0 +1,107 @@
+/* Domain diagram. Design: Figma "SHK – Landing", node 70:637.
+   It is a tiny picture, so its type is smaller than the kit's smallest size (12px). Those sizes
+   and the column widths are set once here, as local variables. */
+
+.diagram {
+  --diagram-font-size-name: 10px;
+  --diagram-font-size: 9px;
+  --diagram-line-height: 14px;
+  /* Top row: all the same height, so the association lines line up. 61px fits the name and
+     two attribute lines (Module, Reading) without cutting them off. */
+  --diagram-entity-height: 61px;
+  --diagram-column-width: 76px; /* Fits "temperature". */
+  /* 112 + 76 + 76 + 2 × 49 = 362px, the space inside the card. */
+  --diagram-association-width: 49px;
+  --diagram-line-color: var(--shk-palette-blue-300);
+  --diagram-accent: var(--shk-palette-blue-600);
+
+  display: flex;
+  align-items: flex-start;
+  color: var(--shk-color-text-primary);
+  font-family: var(--shk-font-family-mono);
+  font-size: var(--diagram-font-size);
+}
+
+/* One entity, a line, and the enum one of its fields uses. Widths fit the longest label. */
+.column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  inline-size: var(--diagram-column-width);
+}
+
+.column:first-child {
+  inline-size: 112px; /* Fits "ConnectionStatus" and "connectionStatus". */
+}
+
+.class {
+  box-sizing: border-box;
+  inline-size: 100%;
+  overflow: hidden;
+  border: var(--shk-border-width-thin) solid var(--diagram-line-color);
+  border-radius: var(--shk-radius-4);
+  background: var(--shk-palette-white);
+}
+
+.entity {
+  block-size: var(--diagram-entity-height);
+}
+
+.className {
+  padding: 3px 6px;
+  border-block-end: var(--shk-border-width-thin) solid var(--diagram-line-color);
+  background: var(--shk-palette-blue-50);
+  font-size: var(--diagram-font-size-name);
+  font-weight: var(--shk-font-weight-bold);
+  /* As in Figma. The browser's default for Space Mono is taller and cut off the last line. */
+  line-height: 15px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.attributes {
+  margin: 0;
+  padding: var(--shk-space-1) 6px 5px;
+  list-style: none;
+  line-height: var(--diagram-line-height);
+  white-space: nowrap;
+}
+
+/* The values the landing page example uses (ModuleCard and its code). */
+.highlighted {
+  color: var(--diagram-accent);
+  font-weight: var(--shk-font-weight-bold);
+}
+
+/* From an entity to the enum below it. */
+.typeLink {
+  inline-size: var(--shk-border-width-thin);
+  block-size: var(--shk-space-4);
+  background: var(--diagram-line-color);
+}
+
+/* Verb above the line, cardinality at each end below it. Sits at the middle of the top row. */
+.association {
+  display: flex;
+  flex: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  inline-size: var(--diagram-association-width);
+  padding-block-start: 15px; /* The line sits level with the middle of the top row. */
+  color: var(--diagram-accent);
+  white-space: nowrap;
+}
+
+.line {
+  align-self: stretch;
+  block-size: var(--shk-border-width-thin);
+  background: var(--diagram-line-color);
+}
+
+.cardinality {
+  display: flex;
+  align-self: stretch;
+  justify-content: space-between;
+  padding-inline: 3px;
+}

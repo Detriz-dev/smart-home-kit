@@ -180,11 +180,11 @@ The Unit stays visible in the Loading and Disconnected states, so people still k
 
 ## Mapping your data
 
-| Prop             | Comes from                                                                                                     | Example                               |
-| ---------------- | -------------------------------------------------------------------------------------------------------------- | ------------------------------------- |
-| `value`          | The value of the latest [Reading](/docs/domain-model/glossary#what-is-tracked), or `null` before the first one | `22.4`                                |
-| `isDisconnected` | The Device's [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected                | `connectionStatus === "disconnected"` |
-| `fractionDigits` | The Metric                                                                                                     | `1` for Temperature, `0` for CO₂      |
+| Prop             | Comes from                                                                                                  | Example                               |
+| ---------------- | ----------------------------------------------------------------------------------------------------------- | ------------------------------------- |
+| `value`          | The value of the latest [Reading](/docs/domain-model/glossary#measurements), or `null` before the first one | `22.4`                                |
+| `isDisconnected` | The Device's [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected             | `connectionStatus === "disconnected"` |
+| `fractionDigits` | The Metric                                                                                                  | `1` for Temperature, `0` for CO₂      |
 
 A few rules from the domain model:
 
@@ -227,7 +227,7 @@ A number is never wrapped or shortened: a cut-off number would show the wrong va
 What you get without doing anything:
 
 - The Loading and Disconnected icons have labels, so screen readers say "Loading" or "Disconnected" instead of nothing.
-- Disconnected is told apart by its own icon shape, not by colour.
+- Disconnected is told apart by its own icon shape, not by color.
 - The loading icon stops spinning when the user has asked for reduced motion. It still shows, so loading is still visible.
 - The number and the icons meet the WCAG AA contrast ratio (4.5:1) on light backgrounds.
 
@@ -235,7 +235,7 @@ What's up to you:
 
 - **Give the value its context.** "22.4" on its own means little to a screen reader. Show it together with the Metric name and the Unit, so the group reads as "Temperature 22.4 degrees Celsius". `SensorReading` does this for you.
 - **Announcing changes.** ReadingValue has no live region, because Readings can arrive every few seconds and would keep interrupting. If a screen needs to announce a change, decide in your app how often, and don't put `aria-live` on a value that updates constantly.
-- Check the contrast if you place it on a dark or coloured background.
+- Check the contrast if you place it on a dark or colored background.
 
 ## Styling
 
@@ -243,8 +243,8 @@ ReadingValue uses the kit's [design tokens](../foundations/design-tokens.mdx) (C
 
 | What               | Token                                                                                         |
 | ------------------ | --------------------------------------------------------------------------------------------- |
-| Number colour      | `--shk-color-text-primary`                                                                    |
-| Icon colour        | `--shk-color-text-secondary`                                                                  |
+| Number color       | `--shk-color-text-primary`                                                                    |
+| Icon color         | `--shk-color-text-secondary`                                                                  |
 | Number text style  | `lg` readout-lg, `md` readout, `sm` readout-sm, `xs` readout-xs (`--shk-typography-readout…`) |
 | Loading spin speed | `--shk-motion-duration-spin` (1 second per turn)                                              |
 

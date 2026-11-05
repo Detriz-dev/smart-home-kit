@@ -1,12 +1,16 @@
 ---
+title: Design tokens
 sidebar_position: 1
 sidebar_label: Design tokens
-description: The CSS variables every component is styled with, and how to change them.
+description: The CSS variables and Figma variables every component is styled with, and how to change them.
+keywords:
+  - design tokens
+  - CSS variables
+  - Figma variables
+  - theming
 ---
 
-# Design tokens
-
-Every colour, size and space in the kit's components comes from a **design token**: a named value, stored as a CSS variable that starts with `--shk-`. For example, `--shk-color-text-primary` is the colour of main text, and `--shk-space-4` is 16px of space.
+Every color, size and space in the kit's components comes from a **design token**: a named value, stored as a CSS variable that starts with `--shk-`. For example, `--shk-color-text-primary` is the color of main text, and `--shk-space-4` is 16px of space.
 
 Because the components only use tokens, you can change the look of the whole kit by changing a few tokens, without touching the components.
 
@@ -28,6 +32,19 @@ You can then use the tokens in your own CSS too, so your screens match the kit:
   color: var(--shk-color-text-primary);
 }
 ```
+
+## In Figma
+
+The same tokens are variables in the kit's [Figma library](https://www.figma.com/community/file/1700179982740576850/detriz-smart-home-kit), with the same names. The CSS name joins the Figma collection and the variable's path, with `--shk-` in front:
+
+| Figma collection | Figma variable  | CSS variable                 |
+| ---------------- | --------------- | ---------------------------- |
+| `surface`        | `default`       | `--shk-surface-default`      |
+| `color-border`   | `subtle`        | `--shk-color-border-subtle`  |
+| `status`         | `danger/border` | `--shk-status-danger-border` |
+| `palette`        | `gray/900`      | `--shk-palette-gray-900`     |
+
+So a color you pick from a variable in Figma has a CSS variable with the same name in code.
 
 ## Two kinds of tokens
 
@@ -69,7 +86,9 @@ In a stylesheet, the same change looks like this:
 }
 ```
 
-Prefer pointing a token at another token, like `var(--shk-palette-gray-50)`, over a raw value like `#f6f9fb`. That keeps your colours in the same family as the kit's.
+Prefer pointing a token at another token, like `var(--shk-palette-gray-50)`, over a raw value like `#f6f9fb`. That keeps your colors in the same family as the kit's.
+
+If you change a color token, check that text still has enough contrast: at least 4.5:1 for normal text and 3:1 for large text and icons.
 
 :::note
 
@@ -99,7 +118,7 @@ Changing tokens isn't affected by this: tokens are CSS variables, so setting the
 
 The semantic tokens, grouped. Each component page lists the tokens it uses under **Styling**.
 
-### Text colour
+### Text color
 
 | Token                        | Value    | For                                            |
 | ---------------------------- | -------- | ---------------------------------------------- |
@@ -144,7 +163,8 @@ function Swatches() {
               inlineSize: "var(--shk-size-8)",
               blockSize: "var(--shk-size-8)",
               borderRadius: "var(--shk-radius-8)",
-              border: "1px solid var(--shk-palette-gray-300)",
+              border:
+                "var(--shk-border-width-thin) solid var(--shk-palette-gray-300)",
               background: `var(${token})`,
             }}
           />
@@ -156,23 +176,23 @@ function Swatches() {
 }
 ```
 
-### Status and action colours
+### Status and action colors
 
-The Status components use `--shk-status-*` tokens, in five roles. Each role has five tokens: `-solid` (a strong fill, like the status dot), `-on-solid` (text on that fill), `-bg` (a light fill), `-border` and `-fg` (text and icons):
+The Status components and `InlineMessage` use `--shk-status-*` tokens, in five roles. Each role has five tokens: `-solid` (a strong fill, like the status dot), `-on-solid` (text on that fill), `-bg` (a light fill), `-border` and `-fg` (text and icons):
 
-| Role       | For                                | Used by                                                         |
-| ---------- | ---------------------------------- | --------------------------------------------------------------- |
-| `neutral`  | Not active: Disconnected, Unpaired | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (off) |
-| `progress` | In progress: Connecting, Pairing   | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (on)  |
-| `success`  | Done or fine: Connected, Paired    | `DeviceConnectionStatus`, `DevicePairingStatus`                 |
-| `warning`  | Needs attention soon: Stale        | `DeviceConnectionStatus`                                        |
-| `danger`   | A problem: Faults                  | `DeviceFaultStatus`                                             |
+| Role       | For                                             | Used by                                                                                |
+| ---------- | ----------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `neutral`  | Not active: Disconnected, Unpaired              | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (off)                        |
+| `progress` | In progress: Connecting, Pairing; info messages | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (on), `InlineMessage` (info) |
+| `success`  | Done or fine: Connected, Paired                 | `DeviceConnectionStatus`, `DevicePairingStatus`, `InlineMessage` (success)             |
+| `warning`  | Needs attention soon: Stale                     | `DeviceConnectionStatus`, `InlineMessage` (warning)                                    |
+| `danger`   | A problem: Faults, errors                       | `DeviceFaultStatus`, `InlineMessage` (error)                                           |
 
 Disconnected uses `neutral`, not `danger`: red is kept for Faults, so "unplugged" and "broken" never look the same.
 
-[`Button`](../controls/button.mdx) uses its own `--shk-action-*` tokens for its fills, text and focus ring.
+[`Button`](../controls/button.mdx), and the dismiss (×) button in [`InlineMessage`](../feedback/inline-message.mdx), use their own `--shk-action-*` tokens for fills, text and the focus ring.
 
-These colours are shared by many components, so change them on `:root`, for the whole app.
+These colors are shared by many components, so change them on `:root`, for the whole app.
 
 ### Space
 

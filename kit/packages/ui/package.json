@@ -11,13 +11,14 @@
       "types": "./dist/index.d.ts",
       "import": "./dist/index.js"
     },
-    "./styles.css": "./dist/styles.css"
+    "./styles.css": "./dist/styles.css",
+    "./fonts.css": "./dist/fonts.css"
   },
   "sideEffects": [
     "*.css"
   ],
   "scripts": {
-    "build": "vite build && tsc -p tsconfig.build.json",
+    "build": "vite build && cp src/fonts.css dist/fonts.css && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
     "icons": "node --experimental-strip-types --no-warnings=ExperimentalWarning scripts/generate-icons.mjs"
   },
@@ -38,6 +39,8 @@
     "react-dom": "^19.0.0"
   },
   "dependencies": {
-    "@detriz-sh-kit/tokens": "workspace:*"
+    "@detriz-sh-kit/tokens": "workspace:*",
+    "@fontsource/space-grotesk": "^5.3.0",
+    "@fontsource/space-mono": "^5.3.0"
   }
 }
