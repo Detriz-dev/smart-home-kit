@@ -6,7 +6,7 @@ description: Install the kit's packages, load its styles and fonts, and render y
 
 # Installation
 
-How to add the kit to a React app and render your first component. It takes four steps: install the packages, load the styles, load the fonts, and check that your own CSS doesn't override the kit.
+How to add the kit to a React app and render your first component. It takes three steps: install the packages, load the styles and fonts, and check that your own CSS doesn't override the kit.
 
 ## What you need
 
@@ -23,26 +23,27 @@ The kit comes as two packages:
 | `@detriz-sh-kit/ui`     | The React components and their styles.                               |
 | `@detriz-sh-kit/tokens` | The design tokens: the CSS variables the components are styled with. |
 
-Install both, plus the two fonts the kit uses:
+Install both. The kit's fonts come with `ui`, so there's nothing else to install:
 
 ```sh
-npm install @detriz-sh-kit/ui @detriz-sh-kit/tokens @fontsource/space-grotesk @fontsource/space-mono
+npm install @detriz-sh-kit/ui @detriz-sh-kit/tokens
 ```
 
 With pnpm or Yarn:
 
 ```sh
-pnpm add @detriz-sh-kit/ui @detriz-sh-kit/tokens @fontsource/space-grotesk @fontsource/space-mono
-yarn add @detriz-sh-kit/ui @detriz-sh-kit/tokens @fontsource/space-grotesk @fontsource/space-mono
+pnpm add @detriz-sh-kit/ui @detriz-sh-kit/tokens
+yarn add @detriz-sh-kit/ui @detriz-sh-kit/tokens
 ```
 
-## 2. Load the styles
+## 2. Load the styles and fonts
 
-Import the tokens and the components' styles **once**, at the root of your app. Load the tokens first:
+Import the tokens, the components' styles and the fonts **once**, at the root of your app. Load the tokens first:
 
 ```tsx
 import "@detriz-sh-kit/tokens/tokens.css";
 import "@detriz-sh-kit/ui/styles.css";
+import "@detriz-sh-kit/ui/fonts.css";
 ```
 
 Where the root is depends on your setup:
@@ -53,23 +54,9 @@ Where the root is depends on your setup:
 | Next.js (App Router)   | `app/layout.tsx` |
 | Next.js (Pages Router) | `pages/_app.tsx` |
 
-Without these two imports, the components render without any styling.
+Without the first two, the components render without any styling. Without `fonts.css`, the text falls back to the system font. If your app already loads Space Grotesk and Space Mono its own way, skip `fonts.css`. See [Typography](/docs/ui-components/foundations/typography) for the fonts and text styles.
 
-## 3. Load the fonts
-
-The tokens name the fonts (Space Grotesk and Space Mono), but don't include the font files. Import the weights the kit uses, next to the styles:
-
-```tsx
-import "@fontsource/space-grotesk/400.css";
-import "@fontsource/space-grotesk/500.css";
-import "@fontsource/space-grotesk/600.css";
-import "@fontsource/space-grotesk/700.css";
-import "@fontsource/space-mono/400.css";
-```
-
-Without them, the text falls back to the system font. See [Typography](/docs/ui-components/foundations/typography) for the text styles.
-
-## 4. Check your own CSS
+## 3. Check your own CSS
 
 The kit's styles are inside a CSS cascade layer called `detriz`. Styles **outside** a layer always win over styles inside one, so global styles in your app, like a reset for every `button` or `ol`, can change the kit's components.
 
@@ -93,16 +80,10 @@ The root of a Vite app, with everything in place:
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 
-// Fonts
-import "@fontsource/space-grotesk/400.css";
-import "@fontsource/space-grotesk/500.css";
-import "@fontsource/space-grotesk/600.css";
-import "@fontsource/space-grotesk/700.css";
-import "@fontsource/space-mono/400.css";
-
-// The kit's tokens, then its components' styles
+// The kit's tokens, then its components' styles and fonts
 import "@detriz-sh-kit/tokens/tokens.css";
 import "@detriz-sh-kit/ui/styles.css";
+import "@detriz-sh-kit/ui/fonts.css";
 
 import { App } from "./App";
 
@@ -143,8 +124,8 @@ If yours looks different:
 | ------------------------------------------------ | ------------------------------------------------------ | ------------------------------------------------- |
 | Plain text, no card                              | The styles aren't loaded.                              | Step 2: import `ui/styles.css`.                   |
 | A card, but wrong colours or no spacing          | The tokens aren't loaded, or load after the styles.    | Step 2: import `tokens/tokens.css` first.         |
-| The right layout, but a different font           | The fonts aren't loaded.                               | Step 3.                                           |
-| Extra indents, margins or bullets                | Your global CSS overrides the kit.                     | Step 4.                                           |
+| The right layout, but a different font           | The fonts aren't loaded.                               | Step 2: import `ui/fonts.css`.                    |
+| Extra indents, margins or bullets                | Your global CSS overrides the kit.                     | Step 3.                                           |
 | A React error about hooks or two copies of React | React isn't version 19, or two versions are installed. | Install React 19 and check there's only one copy. |
 
 ## Next steps
