@@ -68,6 +68,32 @@ const config: Config = {
     colorMode: {
       respectPrefersColorScheme: true,
     },
+    // Colors of the ```mermaid diagrams (Domain Model pages), matching the site: the brand blue
+    // for borders and the kit's grays for text and lines. Mermaid needs plain hex values, not
+    // CSS variables, so each one names the token it copies from tokens/src/primitive/palette.json.
+    // Dark mode isn't designed yet, so it keeps Mermaid's own dark theme.
+    mermaid: {
+      theme: { light: "base", dark: "dark" },
+      options: {
+        fontFamily: '"Lexend Variable", system-ui, sans-serif',
+        themeVariables: {
+          background: "#ffffff",
+          primaryColor: "#f3fafe", // blue-50: box fill
+          primaryBorderColor: "#017bab", // blue-600: box border, the brand blue
+          primaryTextColor: "#272f34", // gray-900: text
+          secondaryColor: "#e1f3ff", // blue-100: second box color (state groups, ER rows)
+          secondaryBorderColor: "#017bab", // blue-600
+          tertiaryColor: "#f6f9fb", // gray-50: groups and alternate rows
+          tertiaryBorderColor: "#c7cfd4", // gray-300
+          lineColor: "#697379", // gray-600: arrows and lines
+          textColor: "#272f34", // gray-900
+          noteBkgColor: "#e1f3ff", // blue-100: sequence diagram notes
+          noteBorderColor: "#017bab", // blue-600
+          noteTextColor: "#272f34", // gray-900
+          edgeLabelBackground: "#ffffff",
+        },
+      },
+    },
     navbar: {
       // Clicking the title opens the landing page ("/").
       // Its icon and the link icons are added in src/css/custom.css ("Navbar").
