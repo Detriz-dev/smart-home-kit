@@ -13,8 +13,9 @@ import reactLogo from "@site/static/img/landing/react-logo.png";
 
 import styles from "./index.module.css";
 
-// TODO: the public link to the kit's Figma library. Replace once it is published.
-const FIGMA_URL = "https://www.figma.com/";
+// The kit's Figma library on Figma Community.
+const FIGMA_URL =
+  "https://www.figma.com/community/file/1700179982740576850/detriz-smart-home-kit";
 const INSTALL_COMMAND = "npm install @detriz-sh-kit/ui @detriz-sh-kit/tokens";
 
 // One example on all three cards: the diagram highlights these values, the Figma card renders

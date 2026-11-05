@@ -1,10 +1,14 @@
 ---
+title: Typography
 sidebar_position: 2
 sidebar_label: Typography
 description: The kit's two fonts, how to load them, and its 16 text styles.
+keywords:
+  - typography
+  - text styles
+  - Space Grotesk
+  - font loading
 ---
-
-# Typography
 
 The kit uses two fonts and 16 text styles. The components pick their text style themselves. Use the same styles in your own text, so your screens match the kit.
 
@@ -25,7 +29,7 @@ import "@detriz-sh-kit/ui/styles.css";
 import "@detriz-sh-kit/ui/fonts.css";
 ```
 
-It loads every weight of both fonts. The browser only downloads a weight when some text uses it, so this doesn't slow your app down. Without it, the text falls back to the system font.
+It loads every weight the kit uses. The browser only downloads a weight when some text uses it, so this doesn't slow your app down. Without it, the text falls back to the system font.
 
 ### Loading the fonts your own way
 
@@ -35,24 +39,24 @@ It loads every weight of both fonts. The browser only downloads a weight when so
 
 Each style is five tokens: `--shk-typography-<style>-font-family`, `-font-size`, `-font-weight`, `-line-height` and `-letter-spacing`.
 
-| Style        | Size | Weight | Line height | Used by                                                      |
-| ------------ | ---- | ------ | ----------- | ------------------------------------------------------------ |
-| `display`    | 64px | 700    | 70px        | Big hero text                                                |
-| `h1`         | 40px | 700    | 44px        | Your page's main heading                                     |
-| `h2`         | 32px | 600    | 40px        | `ContentSection` level 2                                     |
-| `h3`         | 24px | 600    | 30px        | `ContentSection` level 3                                     |
-| `h4`         | 20px | 600    | 25px        | `ContentSection` level 4, `ModuleCard` and `SpaceCard` names |
-| `body-lg`    | 18px | 400    | 27px        | `SensorLabel` `lg`                                           |
-| `body`       | 16px | 400    | 24px        | Running text, `SensorLabel` `md`                             |
-| `body-sm`    | 14px | 400    | 21px        | `SensorLabel` `sm`                                           |
-| `label`      | 14px | 500    | 18px        | `Button`, `Switch`                                           |
-| `caption`    | 12px | 400    | 18px        | `LocationPath`, `SensorLabel` `xs`, the Status components    |
-| `overline`   | 12px | 500    | 18px        | Small labels above a heading                                 |
-| `readout-lg` | 48px | 500    | 53px        | `ReadingValue` `lg`                                          |
-| `readout`    | 32px | 500    | 35px        | `ReadingValue` `md`, `UnitLabel` `lg`                        |
-| `readout-sm` | 20px | 500    | 22px        | `ReadingValue` `sm`, `UnitLabel` `md`                        |
-| `readout-xs` | 14px | 500    | 15px        | `ReadingValue` `xs`, `UnitLabel` `sm` and `xs`               |
-| `code`       | 14px | 400    | 21px        | Code (Space Mono)                                            |
+| Style        | Size | Weight | Line height | Letter spacing | Used by                                                      |
+| ------------ | ---- | ------ | ----------- | -------------- | ------------------------------------------------------------ |
+| `display`    | 64px | 700    | 70px        | -1.28px        | Big hero text                                                |
+| `h1`         | 40px | 700    | 44px        | -0.8px         | Your page's main heading                                     |
+| `h2`         | 32px | 600    | 40px        | -0.64px        | `ContentSection` level 2                                     |
+| `h3`         | 24px | 600    | 30px        | 0              | `ContentSection` level 3                                     |
+| `h4`         | 20px | 600    | 25px        | 0              | `ContentSection` level 4, `ModuleCard` and `SpaceCard` names |
+| `body-lg`    | 18px | 400    | 27px        | 0              | `SensorLabel` `lg`                                           |
+| `body`       | 16px | 400    | 24px        | 0              | Running text, `SensorLabel` `md`                             |
+| `body-sm`    | 14px | 400    | 21px        | 0              | `SensorLabel` `sm`, `InlineMessage` text                     |
+| `label`      | 14px | 500    | 18px        | 0              | `Button`, `Switch`, `InlineMessage` title                    |
+| `caption`    | 12px | 400    | 18px        | 0              | `LocationPath`, `SensorLabel` `xs`, the Status components    |
+| `overline`   | 12px | 500    | 18px        | 0.48px         | Small labels above a heading                                 |
+| `readout-lg` | 48px | 500    | 53px        | -0.96px        | `ReadingValue` `lg`                                          |
+| `readout`    | 32px | 500    | 35px        | -0.64px        | `ReadingValue` `md`, `UnitLabel` `lg`                        |
+| `readout-sm` | 20px | 500    | 22px        | -0.4px         | `ReadingValue` `sm`, `UnitLabel` `md`                        |
+| `readout-xs` | 14px | 500    | 15px        | -0.28px        | `ReadingValue` `xs`, `UnitLabel` `sm` and `xs`               |
+| `code`       | 14px | 400    | 21px        | 0              | Code (Space Mono)                                            |
 
 The `readout` styles are for numbers: they have tight line heights, so a value and its Unit sit close together.
 
