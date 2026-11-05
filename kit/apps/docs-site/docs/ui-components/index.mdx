@@ -16,11 +16,13 @@ Every component belongs to one group, and each group answers **one question** ab
 flowchart TB
     Data[("Your data<br/>Sites · Devices · Readings")]
     Person(["The person using your app"])
+    App(["Your app"])
 
     Context["Context<br/><b>Where is this, what is it?</b>"]
     Readings["Readings<br/><b>What is it right now?</b>"]
     Status["Status<br/><b>Is everything OK?</b>"]
     Controls["Controls<br/><b>How do I change what I see?</b>"]
+    Feedback["Feedback<br/><b>What is the interface doing?</b>"]
     Layout["Layout<br/><b>How is it arranged?</b>"]
     Screen(["A screen"])
 
@@ -28,40 +30,47 @@ flowchart TB
     Data -->|latest values| Readings
     Data -->|Device Status| Status
     Person -->|actions and settings| Controls
+    App -->|what it just did| Feedback
     Context --> Layout
     Readings --> Layout
     Status --> Layout
     Controls --> Layout
+    Feedback --> Layout
     Layout -->|arranges them into| Screen
 
     classDef context fill:#e8f4fb,stroke:#017bab,color:#272f34
     classDef readings fill:#eaf7ee,stroke:#2e8555,color:#272f34
     classDef status fill:#fff4e5,stroke:#b86e00,color:#272f34
     classDef controls fill:#f3eefc,stroke:#6b4fbb,color:#272f34
+    classDef feedback fill:#fdecec,stroke:#c4314b,color:#272f34
     classDef layout fill:#f6f9fb,stroke:#697379,color:#272f34
     class Context context
     class Readings readings
     class Status status
     class Controls controls
+    class Feedback feedback
     class Layout,Screen layout
 ```
 
 The groups differ in **where their content comes from** and **how often it changes**:
 
-| Group                 | Answers                       | Shows                                                             | Changes when                                                                   | Examples                                        |
-| --------------------- | ----------------------------- | ----------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------- |
-| [Context](#context)   | "Where is this, what is it?"  | Fixed facts: where a Device is, what a Sensor measures.           | Almost never: only when the user renames or moves something.                   | `LocationPath`, `SensorLabel`                   |
-| [Readings](#readings) | "What is it right now?"       | Current values, from one number up to a card for a whole Space.   | With every new Reading, every few seconds.                                     | `ReadingValue`, `ModuleCard`, `SpaceCard`       |
-| [Status](#status)     | "Is everything OK?"           | The state of a Device: Pairing Status, Connection Status, Faults. | When a Device's health changes: it goes Stale, disconnects or reports a Fault. | `DeviceConnectionStatus`, `DeviceFaultStatus`   |
-| [Controls](#controls) | "How do I change what I see?" | Inputs for actions and settings in your app.                      | When the person clicks or flips something.                                     | `Button`, `Switch`                              |
-| [Layout](#layout)     | "How is it arranged?"         | Structure and spacing for the other components. No data.          | Never: it only places what's inside it.                                        | `StackLayout`, `ColumnLayout`, `ContentSection` |
+| Group                 | Answers                        | Shows                                                             | Changes when                                                                   | Examples                                        |
+| --------------------- | ------------------------------ | ----------------------------------------------------------------- | ------------------------------------------------------------------------------ | ----------------------------------------------- |
+| [Context](#context)   | "Where is this, what is it?"   | Fixed facts: where a Device is, what a Sensor measures.           | Almost never: only when the user renames or moves something.                   | `LocationPath`, `SensorLabel`                   |
+| [Readings](#readings) | "What is it right now?"        | Current values, from one number up to a card for a whole Space.   | With every new Reading, every few seconds.                                     | `ReadingValue`, `ModuleCard`, `SpaceCard`       |
+| [Status](#status)     | "Is everything OK?"            | The state of a Device: Pairing Status, Connection Status, Faults. | When a Device's health changes: it goes Stale, disconnects or reports a Fault. | `DeviceConnectionStatus`, `DeviceFaultStatus`   |
+| [Feedback](#feedback) | "What is the interface doing?" | Messages about your app: a request failed, a change was saved.    | When your app finishes or fails at something.                                  | `InlineMessage`                                 |
+| [Controls](#controls) | "How do I change what I see?"  | Inputs for actions and settings in your app.                      | When the person clicks or flips something.                                     | `Button`, `Switch`                              |
+| [Layout](#layout)     | "How is it arranged?"          | Structure and spacing for the other components. No data.          | Never: it only places what's inside it.                                        | `StackLayout`, `ColumnLayout`, `ContentSection` |
 
 Two rules make the groups easy to use:
 
 - **A component that combines groups belongs to its main job.** `ModuleCard` shows a Connection Status and Faults, but its main job is the current values, so it's in Readings.
 - **Fixed facts and changing values are kept apart.** A Sensor's name (`SensorLabel`, Context) stays on screen while its value (`ReadingValue`, Readings) is loading or hidden, so people always know what was measured.
 
-More groups are planned: History ("How has it changed?"), Comparison ("How do Sensors relate to each other?") and Feedback ("What is the interface doing?").
+More groups are planned: History ("How has it changed?") and Comparison ("How do Sensors relate to each other?").
+
+Status and Feedback can look alike, but answer different questions: Status is about the hardware ("The Hub is Disconnected"), Feedback is about your app ("Couldn't load Readings").
 
 ### One screen, four groups
 
@@ -151,6 +160,12 @@ What every component is built from. Start here if you want your own screens to m
 | --------------------------------------------- | ------------------------------------------------------ |
 | [`LocationPath`](./context/location-path.mdx) | Where a Device is: Site, Floor, Space and the Device.  |
 | [`SensorLabel`](./context/sensor-label.mdx)   | What a Sensor measures: an icon and the Metric's name. |
+
+### Feedback
+
+| Component                                        | Shows                                                                 |
+| ------------------------------------------------ | --------------------------------------------------------------------- |
+| [`InlineMessage`](./feedback/inline-message.mdx) | What your app just did or couldn't do, like "Couldn't load Readings". |
 
 ### Controls
 

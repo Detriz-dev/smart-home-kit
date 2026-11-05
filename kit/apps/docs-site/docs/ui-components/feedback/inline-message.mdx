@@ -1,0 +1,273 @@
+---
+sidebar_position: 1
+sidebar_label: InlineMessage
+description: A short message in the page about what your app just did or couldn't do, like "Couldn't load Readings" with a Retry button.
+---
+
+# InlineMessage
+
+A short message in the page about what your app just did or couldn't do: a coloured bar, an icon, an optional title, the message and, if you need them, one action and a × to dismiss it. It sits next to the thing it talks about and stays until your app removes it.
+
+```jsx live
+<div style={{ maxWidth: 400 }}>
+  <InlineMessage
+    tone="error"
+    title="Couldn't load Readings"
+    actionLabel="Retry"
+    onAction={() => {}}
+  >
+    Check that the Hub is on the same network.
+  </InlineMessage>
+</div>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { InlineMessage } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass a `tone` and the message as children:
+
+```tsx
+import { InlineMessage } from "@detriz-sh-kit/ui";
+
+<InlineMessage tone="success">Settings saved.</InlineMessage>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+InlineMessage fills the width of its parent, so the examples sit in a 400px box to look like they would in a card or a column.
+
+## When to use it
+
+Use InlineMessage to say **what your app is doing or just did**:
+
+- a request failed, like "Couldn't load Readings", with a Retry button
+- something worked, like "Settings saved"
+- something only partly worked, like "Some Spaces didn't load"
+- something worth knowing about the screen, like "New Readings appear every 30 seconds"
+
+Don't use it for:
+
+- **The state of a Device.** "The Hub is Disconnected" or "CO₂ sensor failure" describe the hardware, not your app. Use [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx). A rule of thumb: if the message would still be true with your app closed, it's a Status.
+- **A message that floats over the screen and disappears by itself** (a toast). InlineMessage sits in the page and never hides on its own, so it can't be missed.
+- **Several actions or links.** It has room for one action. For more, show your own Buttons next to it.
+
+## Variants
+
+Use the `tone` prop. Each tone has its own colour and its own icon shape, so the tones can be told apart without colour too.
+
+| `tone`    | Means                                  | Looks like                    | Example                          |
+| --------- | -------------------------------------- | ----------------------------- | -------------------------------- |
+| `info`    | Something worth knowing, nothing wrong | Blue bar, circle with i       | "Readings refresh automatically" |
+| `success` | Something the person did worked        | Green bar, circle with a tick | "Settings saved"                 |
+| `warning` | It worked, but not fully               | Amber bar, triangle with !    | "Some Spaces didn't load"        |
+| `error`   | Something failed, and they can act     | Red bar, circle with !        | "Couldn't load Readings"         |
+
+### info
+
+```jsx live
+<div style={{ maxWidth: 400 }}>
+  <InlineMessage tone="info" title="Readings refresh automatically">
+    New Readings appear every 30 seconds.
+  </InlineMessage>
+</div>
+```
+
+### success
+
+```jsx live
+<div style={{ maxWidth: 400 }}>
+  <InlineMessage tone="success" title="Settings saved">
+    Your Spaces now use the new names.
+  </InlineMessage>
+</div>
+```
+
+### warning
+
+```jsx live
+<div style={{ maxWidth: 400 }}>
+  <InlineMessage tone="warning" title="Some Spaces didn't load">
+    Showing 4 of 6 Spaces.
+  </InlineMessage>
+</div>
+```
+
+### error
+
+```jsx live
+<div style={{ maxWidth: 400 }}>
+  <InlineMessage tone="error" title="Couldn't load Readings">
+    Check that the Hub is on the same network.
+  </InlineMessage>
+</div>
+```
+
+## Title, action and dismiss
+
+Every part apart from the icon and the message is optional. Each one shows only when you pass its props:
+
+| Part                | Shown when you pass              | Use it for                                                                               |
+| ------------------- | -------------------------------- | ---------------------------------------------------------------------------------------- |
+| Title               | `title`                          | A short bold line that says what happened. Leave it out for short messages like "Saved." |
+| Action (a `Button`) | `actionLabel` **and** `onAction` | One thing the person can do about it, like "Retry".                                      |
+| × (dismiss)         | `onDismiss`                      | Letting the person close a message they've read.                                         |
+
+InlineMessage doesn't hide itself: `onDismiss` only tells your app the × was clicked, and your app removes the message. In this example, Retry pretends to load again and × closes the message:
+
+```jsx live
+function LoadReadings() {
+  const [status, setStatus] = useState("failed");
+
+  if (status === "dismissed") {
+    return (
+      <Button onClick={() => setStatus("failed")}>
+        Show the message again
+      </Button>
+    );
+  }
+
+  return (
+    <div style={{ maxWidth: 400 }}>
+      {status === "failed" ? (
+        <InlineMessage
+          tone="error"
+          title="Couldn't load Readings"
+          actionLabel="Retry"
+          onAction={() => setStatus("loaded")}
+          onDismiss={() => setStatus("dismissed")}
+        >
+          Check that the Hub is on the same network.
+        </InlineMessage>
+      ) : (
+        <InlineMessage tone="success" onDismiss={() => setStatus("dismissed")}>
+          Readings loaded.
+        </InlineMessage>
+      )}
+    </div>
+  );
+}
+```
+
+## Mapping your data
+
+InlineMessage shows your app's state, not data from the Hub. Pick the tone from what happened:
+
+| What happened in your app                                    | `tone`    | Example `title` / message                                                  |
+| ------------------------------------------------------------ | --------- | -------------------------------------------------------------------------- |
+| A request for [Readings](/docs/domain-model/glossary) failed | `error`   | "Couldn't load Readings" / "Check that the Hub is on the same network."    |
+| Some of a list loaded, some didn't                           | `warning` | "Some Spaces didn't load" / "Showing 4 of 6 Spaces."                       |
+| A change the person made was saved                           | `success` | "Settings saved" / "Your Spaces now use the new names."                    |
+| A fact about the screen                                      | `info`    | "Readings refresh automatically" / "New Readings appear every 30 seconds." |
+
+Rules to keep in mind:
+
+- **Use the [Glossary](/docs/domain-model/glossary)'s words** in your messages: Reading, Space, Hub, Module. "Device" means a Hub or a Module, so don't use it for the person's phone or computer.
+- **Don't repeat a Device's status.** If the Hub is Disconnected, show `DeviceConnectionStatus`. Use InlineMessage for what that means for your screen, like "Couldn't load Readings".
+- **Keep `actionLabel` short:** a verb, like "Retry" or "Try again".
+
+## Props
+
+| Prop           | Type                                          | Default     | Description                                                                                                                                           |
+| -------------- | --------------------------------------------- | ----------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `tone`         | `"info" \| "success" \| "warning" \| "error"` | –           | **Required.** What kind of message it is: `info` (worth knowing), `success` (it worked), `warning` (it worked, but not fully) or `error` (it failed). |
+| `children`     | `ReactNode`                                   | –           | **Required.** The message, like "Check that the Hub is on the same network."                                                                          |
+| `title`        | `string`                                      | –           | A short bold line above the message, like "Couldn't load Readings". Left out, only the message shows.                                                 |
+| `actionLabel`  | `string`                                      | –           | The action's text, like "Retry". The action only shows when `onAction` is given too.                                                                  |
+| `onAction`     | `() => void`                                  | –           | Called when the action is clicked. The action only shows when `actionLabel` is given too.                                                             |
+| `onDismiss`    | `() => void`                                  | –           | Called when × is clicked. Your app removes the message. Left out, there is no ×.                                                                      |
+| `dismissLabel` | `string`                                      | `"Dismiss"` | What screen readers say for ×. Change it for other languages.                                                                                         |
+
+The types `InlineMessageProps` and `InlineMessageTone` are exported too:
+
+```tsx
+import type { InlineMessageProps, InlineMessageTone } from "@detriz-sh-kit/ui";
+```
+
+## Long text
+
+The title and message wrap instead of being cut off. When the text would get narrower than 96px, the action moves under it, and the × stays on the right:
+
+```jsx live
+<div
+  style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <InlineMessage
+    tone="error"
+    title="Couldn't load Readings"
+    actionLabel="Try again"
+    onAction={() => {}}
+    onDismiss={() => {}}
+  >
+    Check that the Hub is on the same network as your phone or computer, then
+    try again.
+  </InlineMessage>
+</div>
+```
+
+Keep messages to one or two short sentences: what happened, then what to do.
+
+## Accessibility
+
+What you get without doing anything:
+
+- **Screen readers announce it.** `info` and `success` use `role="status"` and are read out when the person pauses. `warning` and `error` use `role="alert"` and are read out straight away.
+- **Not colour alone.** Each tone has its own icon shape, and the text says what happened. The icon is hidden from screen readers, because the text says the same thing.
+- **Real buttons.** The action is a [`Button`](../controls/button.mdx) and the × is a `<button>`: Tab reaches them, Enter or Space activates them, and both show a blue focus ring.
+- **The × has a name.** Screen readers say "Dismiss", or your `dismissLabel`. It is 32px, above the 24px minimum for something you tap.
+- **Contrast:** the title and message are above 4.5:1 on white.
+
+What's up to you:
+
+- **Show it when something happens.** Screen readers announce a message when it appears or changes, not one that was already on the page when it loaded. Render it when the request fails or the change is saved, or keep one InlineMessage on the page and change its text.
+- **Don't wrap it in another live region** (`aria-live` or `role="status"`): it would be announced twice.
+- **Move focus after dismissing.** When the × removes the message, the focus is gone with it. Move it somewhere useful, like the list the message was about, so keyboard users aren't lost.
+- **Write messages that make sense alone:** say what happened and what to do, not only "Error".
+
+## Styling
+
+InlineMessage uses these [design tokens](../foundations/design-tokens.mdx):
+
+| What                                   | Token                                                                                             |
+| -------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Card                                   | `--shk-surface-default`, `--shk-color-border-subtle`, `--shk-radius-4`                            |
+| Coloured bar and icon                  | `--shk-status-progress-solid` (info), `-success-solid`, `-warning-solid`, `-danger-solid` (error) |
+| Bar width                              | `--shk-border-width-thick` (4px)                                                                  |
+| Title                                  | `--shk-color-text-primary`, `--shk-typography-label-*` (14px, medium)                             |
+| Message                                | `--shk-color-text-secondary`, `--shk-typography-body-sm-*` (14px, regular)                        |
+| Padding and gaps                       | `--shk-space-4` (16px), `--shk-space-3` (12px), `--shk-space-2` (8px), `--shk-space-1` (4px)      |
+| Narrowest text before the action wraps | `--shk-size-24` (96px)                                                                            |
+| ×                                      | `--shk-size-8` (32px), `--shk-color-text-secondary`, focus ring `--shk-action-focus`              |
+
+The `status` tokens are shared with the Status components, so change them for the whole app:
+
+```css
+:root {
+  --shk-status-danger-solid: var(--shk-palette-red-500);
+}
+```
+
+## Related components
+
+- [`Button`](../controls/button.mdx): the action inside InlineMessage, and for more actions next to it.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx): for the state of a Device, instead of InlineMessage.
+- [`StackLayout`](../layout/stack-layout.mdx): to place a message above the content it talks about.

@@ -1,6 +1,6 @@
 # InlineMessage
 
-> Spec for the team: decisions, Figma mapping and open questions. Reviewed at step 3 of the [component building workflow](/docs/architecture/design-system/workflows/component-building.md). No code yet.
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/feedback/inline-message.mdx). Props are defined in [`InlineMessage.types.ts`](./InlineMessage.types.ts).
 
 Figma: `InlineMessage` component set in _DeTriz - Smart Home Kit_ (node `450:26`), page `InlineMessage`. Examples in the `InlineMessage / usage` frame (node `450:27`).
 
@@ -111,17 +111,14 @@ In Figma, `icon`, `text` (title and message) and `action` sit in a `content` fra
 
 ### API
 
-| Prop           | Type                                          | Required | Description                                                                            |
-| -------------- | --------------------------------------------- | -------- | -------------------------------------------------------------------------------------- |
-| `tone`         | `"info" \| "success" \| "warning" \| "error"` | yes      | What kind of message it is. Sets the colour, icon and role.                            |
-| `title`        | `string`                                      | no       | A short bold line above the message, e.g. "Couldn't load Readings".                    |
-| `children`     | `ReactNode`                                   | yes      | The message, e.g. "Check that the Hub is on the same network."                         |
-| `actionLabel`  | `string`                                      | no       | The action's text, e.g. "Retry". Needs `onAction`.                                     |
-| `onAction`     | `() => void`                                  | no       | Called when the action is clicked. Needs `actionLabel`.                                |
-| `onDismiss`    | `() => void`                                  | no       | Called when × is clicked. The parent removes the message.                              |
-| `dismissLabel` | `string`                                      | no       | What screen readers say for ×. Defaults to `"Dismiss"`. Change it for other languages. |
+The props are defined in [`InlineMessage.types.ts`](./InlineMessage.types.ts), with a `/** */` comment on each one. That file is the source of truth now that the code exists, so the props are not repeated here.
 
-Type name: `InlineMessageTone`.
+The decisions behind them:
+
+- `tone`, not `variant`, and `error`, not `danger`: see Variants.
+- No booleans for the optional parts: the title shows when `title` is given, the action when both `actionLabel` and `onAction` are given, the × when `onDismiss` is given. Figma's `hasTitle`, `hasAction` and `isDismissible` map to these.
+- `dismissLabel` defaults to `"Dismiss"`, so apps in other languages can change what screen readers say.
+- The component never hides itself. `onDismiss` only tells the parent, which removes it.
 
 ### Example values
 

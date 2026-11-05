@@ -1,0 +1,123 @@
+@layer detriz {
+  /* The card: white, a thin subtle outline, the content row then × in one centred row.
+     The padding subtracts the border, so the content sits 16px from the edge like in Figma
+     (where the stroke and the bar sit inside the frame). */
+  .root {
+    display: flex;
+    align-items: center;
+    gap: var(--shk-space-2);
+    box-sizing: border-box;
+    inline-size: 100%;
+    padding-block: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+    padding-inline-start: calc(
+      var(--shk-space-4) - var(--shk-border-width-thick)
+    );
+    padding-inline-end: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+    border-inline-start: var(--shk-border-width-thick) solid
+      var(--inline-message-accent);
+    border-radius: var(--shk-radius-4);
+    background: var(--shk-surface-default);
+  }
+
+  /* The tone's bright colour, used by the bar and the icon. */
+  .root[data-tone="info"] {
+    --inline-message-accent: var(--shk-status-progress-solid);
+  }
+
+  .root[data-tone="success"] {
+    --inline-message-accent: var(--shk-status-success-solid);
+  }
+
+  .root[data-tone="warning"] {
+    --inline-message-accent: var(--shk-status-warning-solid);
+  }
+
+  .root[data-tone="error"] {
+    --inline-message-accent: var(--shk-status-danger-solid);
+  }
+
+  /* Icon, text and action in a row that wraps: when the text would get narrower than 96px,
+     the action moves to the next line. The × stays outside, on the right. */
+  .content {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--shk-space-3);
+    row-gap: var(--shk-space-2);
+    min-inline-size: var(--shk-space-0);
+  }
+
+  /* The tone icon, never squashed. The Icon draws in the colour set here. */
+  .icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--inline-message-accent);
+  }
+
+  /* Title above message. Takes the free space, but never less than 96px. */
+  .text {
+    display: flex;
+    flex: 1 1 var(--shk-size-24);
+    flex-direction: column;
+    gap: var(--shk-space-1);
+    min-inline-size: var(--shk-size-24);
+  }
+
+  /* Figma's 14px medium dark text is the label text style. Long words wrap instead of being cut off. */
+  .title {
+    margin: var(--shk-space-0);
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    overflow-wrap: break-word;
+  }
+
+  /* Figma's 14px regular grey text is the body-sm text style. */
+  .message {
+    margin: var(--shk-space-0);
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+    overflow-wrap: break-word;
+  }
+
+  /* The ×: a 32px square button with no border, the grey icon in the middle. */
+  .dismiss {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--shk-size-8);
+    block-size: var(--shk-size-8);
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    border: none;
+    border-radius: var(--shk-radius-4);
+    background: transparent;
+    color: var(--shk-color-text-secondary);
+    cursor: pointer;
+  }
+
+  /* Same light grey as a secondary Button under the pointer and while pressed. */
+  .dismiss:hover {
+    background: var(--shk-action-secondary-bg-hover);
+  }
+
+  .dismiss:active {
+    background: var(--shk-action-secondary-bg-pressed);
+  }
+
+  /* A visible ring when the × is reached with the keyboard, like Button. */
+  .dismiss:focus-visible {
+    outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+    outline-offset: var(--shk-space-0);
+  }
+}
