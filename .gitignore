@@ -40,3 +40,4 @@ coverage/
 
 # Private notes (ideation, retros, project management). Kept locally, never committed.
 /docs-ignore/
+/screens/
