@@ -101,6 +101,12 @@ const config: Config = {
       title: "Smart Home Kit",
       items: [
         {
+          // The search box (Algolia DocSearch, see `algolia` below): the first of the top-bar
+          // items, before "Get Started". Its phone layout is in src/css/custom.css ("Search").
+          type: "search",
+          position: "right",
+        },
+        {
           type: "docSidebar",
           sidebarId: "getStartedSidebar",
           label: "Get Started",
@@ -130,6 +136,21 @@ const config: Config = {
           "aria-label": "GitHub repository",
         },
       ],
+    },
+    // Search: Algolia DocSearch, https://docusaurus.io/docs/search
+    // Algolia's crawler reads the live site (about once a week) into an index; the search box
+    // queries that index directly. Crawler and index are managed at https://dashboard.algolia.com.
+    // Plan: docs/architecture/design-system/search-implementation-plan.md
+    algolia: {
+      appId: "T9OX50PJBZ",
+      // Public search-only key: it can only search, so it is safe to commit.
+      apiKey: "ee0ab9f3b5e26044725f4e510261ebd3",
+      // The trailing space is part of the index name in Algolia. Without it, search finds nothing.
+      indexName: "Smart Home Kit ",
+      // Default. Filters results to the current language and docs version (we have one of each).
+      contextualSearch: true,
+      // A full results page at /search, linked from the bottom of the search box.
+      searchPagePath: "search",
     },
     footer: {
       copyright: `© ${new Date().getFullYear()} DeTriz Smart Home Kit`,
