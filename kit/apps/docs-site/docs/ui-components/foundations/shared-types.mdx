@@ -1,16 +1,17 @@
 ---
-sidebar_position: 4
+sidebar_position: 8
 sidebar_label: Shared types
-description: The TypeScript types for Metrics, Units and Device statuses that several components share.
+description: The TypeScript types for Metrics, Space Types, Units and Device statuses that several components share.
 ---
 
 # Shared types
 
-Several components take the same kinds of values: a Metric, a Unit, a Connection Status. The kit exports one TypeScript type for each, named after its term in the [Glossary](/docs/domain-model/glossary). Use them in your own data, so your values always match what the components accept.
+Several components take the same kinds of values: a Metric, a Space Type, a Unit, a Connection Status. The kit exports one TypeScript type for each, named after its term in the [Glossary](/docs/domain-model/glossary). Use them in your own data, so your values always match what the components accept.
 
 ```tsx
 import type {
   Metric,
+  SpaceType,
   UnitLabelUnit,
   ConnectionStatus,
   PairingStatus,
@@ -37,6 +38,28 @@ type Metric =
 | `pm25`        | PM2.5       | `ug-m3`                      |
 
 **Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`), [`SensorReading`](../readings/sensor-reading.mdx), [`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) (each Sensor or row), and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). `SensorLabelMetric` is the same type under another name.
+
+## SpaceType
+
+A category of Space. A fixed list from the Glossary; use `other` when nothing fits.
+
+```ts
+type SpaceType =
+  | "bedroom"
+  | "bathroom"
+  | "kitchen"
+  | "living-room"
+  | "hallway"
+  | "garage"
+  | "office"
+  | "meeting"
+  | "outdoor"
+  | "other";
+```
+
+Each Space Type has one icon, in the exported `SPACE_TYPE_ICONS` map. See [`SpaceLabel`](../context/space-label.mdx#space-types) for the table.
+
+**Used by:** [`SpaceLabel`](../context/space-label.mdx) (`spaceType`), and `SPACE_TYPE_ICONS` for a [`Card`](../layout/card.mdx)'s `icon`.
 
 ## UnitLabelUnit
 

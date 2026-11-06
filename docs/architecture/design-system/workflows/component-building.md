@@ -12,7 +12,7 @@ Every component **starts with a Markdown file**. The `.md` file decides what the
 
 Steps **1b** and **2b** are short checks you (or the AI) run alone, before asking for a review. They catch missing tokens, missing icons and small Figma mistakes early, so the review in step 3 can focus on domain words and naming.
 
-Worked examples in the repo: [`DeviceConnectionStatus`](/kit/packages/ui/src/components/status/DeviceConnectionStatus/) (Status) and [`LocationPath`](/kit/packages/ui/src/components/context/LocationPath/) (Context).
+Worked examples in the repo: [`DeviceConnectionStatus`](/kit/packages/ui/src/components/status/DeviceConnectionStatus/) (Status) and [`LocationPath`](/kit/packages/ui/src/components/navigation/LocationPath/) (Navigation).
 
 ## Contents
 
@@ -112,12 +112,12 @@ If the look changes while you draw in Figma, update this section first.
 
 What varies depends on the category:
 
-| Category                    | Fill this table                                                                  | Target states (loading, Connected, Stale, Disconnected, Fault) |
-| --------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------- |
-| Status, Readings, History   | **States:** state, prop value, label, colour role, icon                          | Required. Say which ones don't apply and why.                  |
-| Controls                    | **States**, plus interaction states (hover, focus, pressed, disabled)            | Required.                                                      |
-| Context, Layout, Comparison | **Variants:** variant prop, its values, which parts show (a "Parts shown" table) | One line on why they don't apply, or which ones do.            |
-| Feedback                    | **Variants:** info, success, warning, error                                      | Usually Fault only.                                            |
+| Category                                | Fill this table                                                                  | Target states (loading, Connected, Stale, Disconnected, Fault) |
+| --------------------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------------------------- |
+| Status, Readings, History               | **States:** state, prop value, label, colour role, icon                          | Required. Say which ones don't apply and why.                  |
+| Controls                                | **States**, plus interaction states (hover, focus, pressed, disabled)            | Required.                                                      |
+| Context, Layout, Comparison, Navigation | **Variants:** variant prop, its values, which parts show (a "Parts shown" table) | One line on why they don't apply, or which ones do.            |
+| Feedback                                | **Variants:** info, success, warning, error                                      | Usually Fault only.                                            |
 
 `DeviceConnectionStatus.md` is the example for a States table, `LocationPath.md` for a Variants table.
 
@@ -206,7 +206,7 @@ Then in Figma select the **component set**, right-click → **Copy link to selec
 | Spec ↔ Figma  | Every state or variant in the spec is in Figma, and the other way round. Variant property and values match the prop and its values. Layer names match the anatomy. The look matches the spec's Visual idea.                              |
 | Tokens        | Every value is bound to a variable. Every variable maps to an existing `--shk-…` token in `kit/packages/tokens/dist/tokens.css`.                                                                                                         |
 | Figma → HTML  | Frames that only exist for layout and won't become elements (see [Figma structure is not HTML](#figma-structure-is-not-html)).                                                                                                           |
-| Category      | The folder matches the category rules (Status vs Feedback, Context vs Status, clickable means Controls).                                                                                                                                 |
+| Category      | The folder matches the category rules (Status vs Feedback, Context vs Status, Controls vs Navigation).                                                                                                                                   |
 | Accessibility | Status is not shown by colour alone. Text contrast is enough.                                                                                                                                                                            |
 
 ### The review report
@@ -383,16 +383,16 @@ An AI agent working on a component follows these rules on top of the steps above
 
 ## Words used in this workflow
 
-| Word                  | Means                                                                   | Example                                                    |
-| --------------------- | ----------------------------------------------------------------------- | ---------------------------------------------------------- |
-| Component set         | The purple dashed frame in Figma that holds all variants of a component | `LocationPath` with `layout=inline`, `layout=stacked`, …   |
-| Variant               | One version of the component, set by a property                         | `status=stale`                                             |
-| Boolean property      | An on/off switch in Figma, usually to show or hide a layer              | `site` shows or hides the Site part                        |
-| Component description | Text attached to the component set, shown in Figma's Assets panel       | "Shows where a Device is. Spec: `context/LocationPath.md`" |
-| Separator             | A mark between items in a row                                           | The `›` in `Home › Level 2 › Kitchen`                      |
-| Anatomy               | The named parts of a component                                          | `root`, `part`, `icon`, `label`                            |
-| Auto layout           | Figma's flexbox: gap and padding become real values                     | A row with `gap = space/1`                                 |
-| Stress story          | A Storybook story with extreme but realistic data                       | A very long Space name in a 240px box                      |
+| Word                  | Means                                                                   | Example                                                       |
+| --------------------- | ----------------------------------------------------------------------- | ------------------------------------------------------------- |
+| Component set         | The purple dashed frame in Figma that holds all variants of a component | `LocationPath` with `layout=inline`, `layout=stacked`, …      |
+| Variant               | One version of the component, set by a property                         | `status=stale`                                                |
+| Boolean property      | An on/off switch in Figma, usually to show or hide a layer              | `site` shows or hides the Site part                           |
+| Component description | Text attached to the component set, shown in Figma's Assets panel       | "Shows where a Device is. Spec: `navigation/LocationPath.md`" |
+| Separator             | A mark between items in a row                                           | The `›` in `Home › Level 2 › Kitchen`                         |
+| Anatomy               | The named parts of a component                                          | `root`, `part`, `icon`, `label`                               |
+| Auto layout           | Figma's flexbox: gap and padding become real values                     | A row with `gap = space/1`                                    |
+| Stress story          | A Storybook story with extreme but realistic data                       | A very long Space name in a 240px box                         |
 
 ## Checklist
 

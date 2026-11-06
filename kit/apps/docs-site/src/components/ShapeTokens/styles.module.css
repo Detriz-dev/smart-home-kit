@@ -1,0 +1,37 @@
+/* Tables for the Shape page. Only kit tokens, so the page shows the kit's own look. */
+
+.table td {
+  vertical-align: middle;
+}
+
+/* A 64px box, so radius 24 still looks different from full (a circle). */
+.corner {
+  display: block;
+  inline-size: var(--shk-size-16);
+  block-size: var(--shk-size-16);
+  background: var(--shk-status-progress-bg);
+  border: var(--shk-border-width-thin) solid var(--shk-status-progress-border);
+}
+
+.line {
+  display: block;
+  inline-size: var(--shk-size-12);
+  border-block-start-style: solid;
+  border-block-start-color: var(--shk-status-progress-solid);
+}
+
+.value {
+  font-family: var(--shk-font-family-mono);
+  font-size: var(--shk-font-size-14);
+  white-space: nowrap;
+}
+
+/* Hidden on screen, still read by screen readers. */
+.visuallyHidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

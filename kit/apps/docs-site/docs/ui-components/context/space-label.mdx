@@ -1,0 +1,228 @@
+---
+sidebar_position: 5
+sidebar_label: SpaceLabel
+description: Names a Space with the icon of its Space Type and the Space's name, like Bedroom or Anna's kitchen.
+---
+
+# SpaceLabel
+
+Names a Space: the icon of its Space Type and the Space's name, like Bedroom or Anna's kitchen. Use it in lists of rooms, Space pickers and screen headers, so people recognise a room at a glance.
+
+```jsx live
+<SpaceLabel name="Kitchen" spaceType="kitchen" />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { SpaceLabel } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Space's name and its Space Type. The icon follows from the Space Type:
+
+```tsx
+import { SpaceLabel } from "@detriz-sh-kit/ui";
+
+<SpaceLabel name="Anna's bedroom" spaceType="bedroom" />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use SpaceLabel in:
+
+- **lists of rooms**, one per row
+- **Space pickers**, so each choice shows its icon
+- **screen headers**, as the name of a Space's page
+
+Don't use it for:
+
+- **Where the Space is** (Site, Floor). Use [`LocationPath`](../navigation/location-path.mdx).
+- **The title of a room card.** Use [`Card`](../layout/card.mdx) with `icon` and `title`, and take the icon from [`SPACE_TYPE_ICONS`](#the-icon-for-a-card). The card's title has to be plain text, because on a clickable card it's the link's text.
+- **The Space's latest Readings.** Use [`SpaceCard`](../readings/space-card.mdx).
+- **What a Sensor measures.** Use [`SensorLabel`](./sensor-label.mdx).
+
+## Variants
+
+### Space Types
+
+One icon per [Space Type](/docs/domain-model/glossary#places). The name is always the one you pass, so two bedrooms can have two names and the same icon.
+
+| `spaceType`   | Space Type  | Icon          |
+| ------------- | ----------- | ------------- |
+| `bedroom`     | Bedroom     | `bed`         |
+| `bathroom`    | Bathroom    | `bathtub`     |
+| `kitchen`     | Kitchen     | `countertops` |
+| `living-room` | Living room | `weekend`     |
+| `hallway`     | Hallway     | `door_front`  |
+| `garage`      | Garage      | `garage_home` |
+| `office`      | Office      | `desk`        |
+| `meeting`     | Meeting     | `groups`      |
+| `outdoor`     | Outdoor     | `yard`        |
+| `other`       | Other       | `home`        |
+
+```jsx live
+<StackLayout gap="sm">
+  <SpaceLabel name="Bedroom" spaceType="bedroom" size="sm" />
+  <SpaceLabel name="Bathroom" spaceType="bathroom" size="sm" />
+  <SpaceLabel name="Kitchen" spaceType="kitchen" size="sm" />
+  <SpaceLabel name="Living room" spaceType="living-room" size="sm" />
+  <SpaceLabel name="Hallway" spaceType="hallway" size="sm" />
+  <SpaceLabel name="Garage" spaceType="garage" size="sm" />
+  <SpaceLabel name="Office" spaceType="office" size="sm" />
+  <SpaceLabel name="Meeting room A" spaceType="meeting" size="sm" />
+  <SpaceLabel name="Balcony" spaceType="outdoor" size="sm" />
+  <SpaceLabel name="Storage room" spaceType="other" size="sm" />
+</StackLayout>
+```
+
+### Sizes
+
+Use the `size` prop. The default is `xs`. The sizes are the same as [`SensorLabel`](./sensor-label.mdx#sizes)'s, so the two sit well together.
+
+| `size` | Text | Icon | Use it when                         |
+| ------ | ---- | ---- | ----------------------------------- |
+| `xs`   | 12px | 16px | List rows, small headers. Default.  |
+| `sm`   | 14px | 20px | Pickers, roomier lists.             |
+| `md`   | 16px | 24px | Detail views.                       |
+| `lg`   | 18px | 24px | The main heading of a Space's page. |
+
+```jsx live
+<StackLayout>
+  <SpaceLabel name="Living room" spaceType="living-room" size="xs" />
+  <SpaceLabel name="Living room" spaceType="living-room" size="sm" />
+  <SpaceLabel name="Living room" spaceType="living-room" size="md" />
+  <SpaceLabel name="Living room" spaceType="living-room" size="lg" />
+</StackLayout>
+```
+
+## The icon for a card
+
+`SPACE_TYPE_ICONS` is the kit's map from Space Type to icon, the one SpaceLabel uses. Use it to give a room card the same icon:
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <Card
+    icon={SPACE_TYPE_ICONS["living-room"]}
+    title="Living room"
+    href="#living-room"
+  >
+    <SensorReading metric="temperature" value={21.8} unit="celsius" size="md" />
+  </Card>
+</div>
+```
+
+```tsx
+import { Card, SPACE_TYPE_ICONS } from "@detriz-sh-kit/ui";
+
+<Card icon={SPACE_TYPE_ICONS[space.spaceType]} title={space.name} …>
+```
+
+## Mapping your data
+
+| Prop        | Domain term                                            | Example         |
+| ----------- | ------------------------------------------------------ | --------------- |
+| `name`      | [Space](/docs/domain-model/glossary#places) (its name) | `"Anna's room"` |
+| `spaceType` | [Space Type](/docs/domain-model/glossary#places)       | `"bedroom"`     |
+
+A few rules from the domain model:
+
+- **Every Space has exactly one Space Type.** Use `other` when nothing fits.
+- **A fixed list.** `spaceType` only accepts the ten values above. TypeScript tells you if you pass anything else. The list is exported as the [`SpaceType` type](../foundations/shared-types.mdx#spacetype):
+
+  ```tsx
+  import type { SpaceType } from "@detriz-sh-kit/ui";
+  ```
+
+- **The name is the user's.** Pass the name the user gave the Space, not the Space Type's name. "Room 2" with a bed icon is fine.
+
+## Props
+
+| Prop        | Type                           | Default | Description                                                                  |
+| ----------- | ------------------------------ | ------- | ---------------------------------------------------------------------------- |
+| `name`      | `string`                       | –       | **Required.** The Space's name, e.g. "Bedroom" or "Anna's room". Plain text. |
+| `spaceType` | `SpaceType`                    | –       | **Required.** The Space's Space Type, e.g. `bedroom`. Decides the icon.      |
+| `size`      | `"xs" \| "sm" \| "md" \| "lg"` | `"xs"`  | How big the label is drawn.                                                  |
+
+The types `SpaceLabelProps`, `SpaceLabelSize` and `SpaceType` are exported too, and so is the `SPACE_TYPE_ICONS` map:
+
+```tsx
+import { SPACE_TYPE_ICONS } from "@detriz-sh-kit/ui";
+import type {
+  SpaceLabelProps,
+  SpaceLabelSize,
+  SpaceType,
+} from "@detriz-sh-kit/ui";
+```
+
+## Long names
+
+SpaceLabel never wraps or overflows its container. When there isn't enough room, the name is shortened with `…` and the icon stays whole. The full name shows as a tooltip when you hover over it.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <SpaceLabel
+    name="Living room and dining area by the garden"
+    spaceType="living-room"
+    size="md"
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The icon is hidden from screen readers. The name already says which Space it is.
+- The name is always shown as text, never as HTML.
+- The Space Type is told apart by the icon's shape, not by colour.
+- The text colour meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+
+What's up to you:
+
+- **Headings.** SpaceLabel is a plain `<span>`. When it's the heading of a page or a section, wrap it in a heading element:
+
+  ```tsx
+  <h2>
+    <SpaceLabel name="Kitchen" spaceType="kitchen" size="lg" />
+  </h2>
+  ```
+
+- **Names people can tell apart.** Two Spaces called "Room" with the same icon look identical.
+
+## Styling
+
+SpaceLabel uses the same [design tokens](../foundations/design-tokens.mdx) as `SensorLabel`:
+
+| What                      | Token                                                                            |
+| ------------------------- | -------------------------------------------------------------------------------- |
+| Text and icon colour      | `--shk-color-text-primary`                                                       |
+| Text style                | `xs` caption, `sm` body-sm, `md` body, `lg` body-lg (`--shk-typography-…`)       |
+| Gap between icon and name | `--shk-space-1` (4px) for `xs` and `sm`, `--shk-space-2` (8px) for `md` and `lg` |
+
+SpaceLabel has no padding or background: the space around it belongs to the parent. To change how it looks, set a token on a parent element.
+
+## Related components
+
+- [`Card`](../layout/card.mdx): a room card. Give it the icon from `SPACE_TYPE_ICONS`.
+- [`SensorLabel`](./sensor-label.mdx): the same look for what a Sensor measures.
+- [`LocationPath`](../navigation/location-path.mdx): where a Space is in the home.
+- [`SpaceCard`](../readings/space-card.mdx): a Space's latest Readings.

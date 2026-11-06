@@ -1,6 +1,6 @@
 # LocationPath
 
-> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/context/location-path.mdx). Props are defined in [`LocationPath.types.ts`](./LocationPath.types.ts).
+> Spec for the team: decisions, Figma mapping and open questions. For how to use the component, see the [user docs page](/kit/apps/docs-site/docs/ui-components/navigation/location-path.mdx). Props are defined in [`LocationPath.types.ts`](./LocationPath.types.ts).
 
 ### Purpose
 
@@ -33,7 +33,7 @@ What it does **not** show, and why:
 
 ### States
 
-LocationPath is Context, so it has no states of its own. It changes in two ways: the **layout**, and **which parts are shown**.
+LocationPath is Navigation: it shows where you are, and it is a fixed fact, so it has no states of its own. It changes in two ways: the **layout**, and **which parts are shown**.
 
 **Layout** (Figma variant property `layout`, prop `layout`):
 

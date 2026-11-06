@@ -1,0 +1,92 @@
+---
+title: Elevation
+sidebar_position: 6
+sidebar_label: Elevation
+description: How the kit shows depth without shadows, with three surface colors and a thin outline, and what will change when floating components arrive.
+keywords:
+  - elevation
+  - shadows
+  - surfaces
+  - layers
+  - high contrast
+---
+
+The kit is **flat**: none of its components has a shadow. Depth comes from three surface colors and a thin outline. A card is a white surface with a 1px outline, sitting on a light gray page. That's the whole system for now, and it has no tokens of its own: it uses the [surface and border colors](./colors.mdx#surfaces).
+
+## The layers
+
+| Layer      | Fill                              | Outline                                               | Used for                                                                                      |
+| ---------- | --------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- |
+| **Page**   | `--shk-surface-page` (gray 50)    | None                                                  | The screen behind everything                                                                  |
+| **Card**   | `--shk-surface-default` (white)   | `--shk-border-width-thin` `--shk-color-border-subtle` | `SensorReading`, `ModuleCard`, `SpaceCard`, `InlineMessage`                                   |
+| **Sunken** | `--shk-surface-sunken` (gray 100) | None                                                  | An area set into a card, like a code sample or an empty slot. Not used by the components yet. |
+
+Cards sit **in** the page, not above it. They don't move, overlap or cover each other, so they don't need a shadow to show what's on top.
+
+```jsx live
+<div
+  style={{
+    background: "var(--shk-surface-page)",
+    padding: "var(--shk-space-6)",
+    borderRadius: "var(--shk-radius-16)",
+  }}
+>
+  <StackLayout gap="md">
+    <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+    <div
+      style={{
+        background: "var(--shk-surface-sunken)",
+        padding: "var(--shk-space-4)",
+        borderRadius: "var(--shk-radius-12)",
+        color: "var(--shk-color-text-secondary)",
+      }}
+    >
+      Sunken: an area set into the page or a card.
+    </div>
+  </StackLayout>
+</div>
+```
+
+## Why outlines, not shadows
+
+- **They survive high contrast.** In Windows High Contrast mode, the browser removes shadows but keeps borders. A card with only a shadow would disappear into the page; a card with an outline keeps its edge.
+- **They say "in the page".** A shadow says "this floats above". Cards, messages and statuses are part of the page, so they get an outline.
+- **They match Figma.** A 1px inside stroke in Figma and a 1px border in code look the same. See [Borders and padding](./shape.mdx#borders-and-padding).
+
+## Building your own surfaces
+
+Make your own cards the same way, so they sit next to the kit's:
+
+```css title="src/styles/space-summary.css"
+.space-summary {
+  background: var(--shk-surface-default);
+  border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+  border-radius: var(--shk-radius-16);
+  padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+}
+```
+
+Don't add a `box-shadow` to the kit's components. If something must look more important, use [`InlineMessage`](../feedback/inline-message.mdx) or a [status color](./colors.mdx#status) instead.
+
+## In Figma
+
+The Figma library has no shadow effect styles. Build a card as a frame with:
+
+- **Fill:** `surface/default`
+- **Stroke:** `color-border/subtle`, **Inside**, weight `border-width/thin`
+- **Corner radius:** the [`radius`](./shape.mdx#corner-radius) of the kit's card closest in size
+
+## Floating layers: not in the kit yet
+
+Some components will float above the page: a toast, a dialog, a menu. They need what the kit doesn't have yet:
+
+- **Shadow tokens**, to show they are on top.
+- **Layer order** (z-index) tokens, so a dialog always covers a toast, and a toast covers the page.
+
+They will be added together with the first floating component, so their values come from a real use. Until then, if you build a floating element yourself, keep the 1px outline as well as your shadow, so it still has an edge in high contrast mode.
+
+## Related
+
+- [Colors](./colors.mdx): the surface and border colors.
+- [Shape](./shape.mdx): corner radius and border width.
+- [Space and size](./space-and-size.mdx): padding inside a card.

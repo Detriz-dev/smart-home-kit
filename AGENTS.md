@@ -106,11 +106,11 @@ The docs site uses **Algolia DocSearch** (https://docusaurus.io/docs/search). Th
 
 Full workflow: `docs/architecture/design-system/workflows/component-building.md` (the checklist is at the end).
 
-- One folder per component: `kit/packages/ui/src/components/<category>/<Name>/` with `<Name>.md`, `<Name>.types.ts`, `<Name>.tsx`, `<Name>.module.css`, `<Name>.stories.tsx` and `index.ts`. Reference examples: `status/DeviceConnectionStatus` (states) and `context/LocationPath` (variants).
+- One folder per component: `kit/packages/ui/src/components/<category>/<Name>/` with `<Name>.md`, `<Name>.types.ts`, `<Name>.tsx`, `<Name>.module.css`, `<Name>.stories.tsx` and `index.ts`. Reference examples: `status/DeviceConnectionStatus` (states) and `navigation/LocationPath` (variants).
 - An exported `<Name>Props` interface with a `/** */` comment on every prop. Use semantic HTML.
 - CSS Modules wrapped in `@layer detriz`, using only `var(--shk-…)` tokens (no raw colours or sizes).
 - Export the component and its props type from `src/index.ts`.
-- States or variants, depending on the category. Status, Readings, History and Controls components cover the target states (from the Glossary): loading, Connected, Stale, Disconnected (value hidden, disconnected icon shown) and Fault. Other categories (Context, Layout, Comparison, Feedback) describe their variants instead and say why the target states don't apply. One story per state or variant.
+- States or variants, depending on the category. Status, Readings, History and Controls components cover the target states (from the Glossary): loading, Connected, Stale, Disconnected (value hidden, disconnected icon shown) and Fault. Other categories (Context, Layout, Comparison, Feedback, Navigation) describe their variants instead and say why the target states don't apply. One story per state or variant.
 - Two stress stories for every component: `LongText` (longest realistic values in a narrow container) and `Minimal` (smallest case).
 
 General naming rules (PascalCase components, `use<Thing>` hooks, unit suffixes like `temperatureC`, `is/has` booleans, `on<Event>`/`handle<Event>`) are in `docs/architecture/design-system/ds-conventions-and-structure.md`.

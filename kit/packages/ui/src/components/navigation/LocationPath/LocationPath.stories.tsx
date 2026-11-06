@@ -3,7 +3,7 @@ import { LocationPath } from "./LocationPath";
 
 // Where the component appears in Storybook's sidebar, and the props every story starts with.
 const meta = {
-  title: "Context/LocationPath",
+  title: "Navigation/LocationPath",
   component: LocationPath,
   args: {
     siteName: "My flat",

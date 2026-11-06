@@ -1,0 +1,84 @@
+---
+title: Shape
+sidebar_position: 5
+sidebar_label: Shape
+description: The kit's 7 corner radius tokens and 4 border width tokens, with their Figma and CSS names, and which component uses which.
+keywords:
+  - corner radius
+  - border radius
+  - border width
+  - focus ring
+  - Figma variables
+---
+
+import {
+  RadiusScale,
+  BorderWidthScale,
+} from "@site/src/components/ShapeTokens";
+
+Shape is how round the corners are and how thick the outlines are. The kit has 7 **corner radius** tokens and 4 **border width** tokens. Use them in your own screens, so your cards and buttons look like the kit's.
+
+The previews on this page are drawn with the real CSS variables, so they always show what the package ships.
+
+## In Figma
+
+The tokens are variables in the kit's [Figma library](https://www.figma.com/community/file/1700179982740576850/detriz-smart-home-kit), with the same names: `radius/16` in Figma is `--shk-radius-16` in code, and `border-width/thin` is `--shk-border-width-thin`.
+
+- **`radius` variables** show up for corner radius.
+- **`border-width` variables** show up for stroke weight.
+
+## Corner radius
+
+<RadiusScale />
+
+The number in the name is the radius in pixels. `--shk-radius-full` is 9999px: on any box, that rounds the short sides into a half circle, so it makes pills and circles.
+
+### Bigger things get rounder corners
+
+The radius grows with the size of the thing, so small and large parts look like one family:
+
+| Size of the thing              | Radius              | Example                   |
+| ------------------------------ | ------------------- | ------------------------- |
+| Small: messages, small buttons | `--shk-radius-4`    | `InlineMessage`           |
+| Controls                       | `--shk-radius-8`    | `Button`                  |
+| Small cards                    | `--shk-radius-12`   | `SensorReading`           |
+| Large cards                    | `--shk-radius-16`   | `ModuleCard`, `SpaceCard` |
+| Dots, pills, switches          | `--shk-radius-full` | Status dots, `Switch`     |
+
+When you build a card of your own, pick the radius of the kit's card closest in size.
+
+## Border width
+
+<BorderWidthScale />
+
+### Focus rings
+
+Everything you can reach with the keyboard shows a **2px** ring (`--shk-border-width-medium`) when it has focus. `Button` and the `InlineMessage` dismiss button draw it in `--shk-action-focus`; `Switch` uses `--shk-status-progress-border`, the same blue. For focusable things you build, use `--shk-action-focus`:
+
+```css title="src/styles/space-row.css"
+.space-row:focus-visible {
+  outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+}
+```
+
+### Borders and padding
+
+Figma draws an outline **inside** the frame, so it takes no space. A CSS `border` adds to the box instead. To match Figma, the kit takes the border's width off the padding. See [Borders stay on the grid](./space-and-size.mdx#borders-stay-on-the-grid).
+
+## Using shape in your code
+
+```css title="src/styles/space-summary.css"
+.space-summary {
+  border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+  border-radius: var(--shk-radius-16);
+  padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+}
+```
+
+To change a token for the whole app or one part of it, see [Changing a token](./design-tokens.mdx#changing-a-token).
+
+## Related
+
+- [Colors](./colors.mdx): the border and focus colors.
+- [Space and size](./space-and-size.mdx): padding, and how borders stay on the grid.
+- [`ModuleCard`](../readings/module-card.mdx) and [`Button`](../controls/button.mdx): the radius and border tokens in use.

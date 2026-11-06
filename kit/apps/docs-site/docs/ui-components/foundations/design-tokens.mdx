@@ -118,104 +118,17 @@ Changing tokens isn't affected by this: tokens are CSS variables, so setting the
 
 The semantic tokens, grouped. Each component page lists the tokens it uses under **Styling**.
 
-### Text color
+### Colors
 
-| Token                        | Value    | For                                            |
-| ---------------------------- | -------- | ---------------------------------------------- |
-| `--shk-color-text-primary`   | gray 900 | Main text, values, names                       |
-| `--shk-color-text-secondary` | gray 700 | Quieter text, like Units and icons in Readings |
-| `--shk-color-text-disabled`  | gray 400 | Disabled controls                              |
-| `--shk-color-text-inverse`   | white    | Text on a dark fill                            |
+The palette and every semantic color (text, surfaces, borders, status and action), with swatches, Figma names and contrast: see [Colors](./colors.mdx).
 
-### Surfaces and borders
+### Space and size
 
-| Token                       | Value    | For                         |
-| --------------------------- | -------- | --------------------------- |
-| `--shk-surface-page`        | gray 50  | The page behind the cards   |
-| `--shk-surface-default`     | white    | Cards and components        |
-| `--shk-surface-sunken`      | gray 100 | Areas set into a surface    |
-| `--shk-color-border-subtle` | gray 100 | The quiet outline of a card |
+Gaps, padding, and the sizes of icons, dots and controls: see [Space and size](./space-and-size.mdx).
 
-```jsx live
-function Swatches() {
-  const tokens = [
-    "--shk-color-text-primary",
-    "--shk-color-text-secondary",
-    "--shk-color-text-disabled",
-    "--shk-surface-page",
-    "--shk-surface-default",
-    "--shk-surface-sunken",
-    "--shk-color-border-subtle",
-  ];
-  return (
-    <StackLayout gap="sm">
-      {tokens.map((token) => (
-        <span
-          key={token}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "var(--shk-space-2)",
-          }}
-        >
-          <span
-            style={{
-              inlineSize: "var(--shk-size-8)",
-              blockSize: "var(--shk-size-8)",
-              borderRadius: "var(--shk-radius-8)",
-              border:
-                "var(--shk-border-width-thin) solid var(--shk-palette-gray-300)",
-              background: `var(${token})`,
-            }}
-          />
-          <code>{token}</code>
-        </span>
-      ))}
-    </StackLayout>
-  );
-}
-```
+### Shape
 
-### Status and action colors
-
-The Status components and `InlineMessage` use `--shk-status-*` tokens, in five roles. Each role has five tokens: `-solid` (a strong fill, like the status dot), `-on-solid` (text on that fill), `-bg` (a light fill), `-border` and `-fg` (text and icons):
-
-| Role       | For                                             | Used by                                                                                |
-| ---------- | ----------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `neutral`  | Not active: Disconnected, Unpaired              | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (off)                        |
-| `progress` | In progress: Connecting, Pairing; info messages | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (on), `InlineMessage` (info) |
-| `success`  | Done or fine: Connected, Paired                 | `DeviceConnectionStatus`, `DevicePairingStatus`, `InlineMessage` (success)             |
-| `warning`  | Needs attention soon: Stale                     | `DeviceConnectionStatus`, `InlineMessage` (warning)                                    |
-| `danger`   | A problem: Faults, errors                       | `DeviceFaultStatus`, `InlineMessage` (error)                                           |
-
-Disconnected uses `neutral`, not `danger`: red is kept for Faults, so "unplugged" and "broken" never look the same.
-
-[`Button`](../controls/button.mdx), and the dismiss (×) button in [`InlineMessage`](../feedback/inline-message.mdx), use their own `--shk-action-*` tokens for fills, text and the focus ring.
-
-These colors are shared by many components, so change them on `:root`, for the whole app.
-
-### Space
-
-Gaps and padding. Most components use 4, 8, 12 and 16px.
-
-| Token           | Value |     | Token            | Value |
-| --------------- | ----- | --- | ---------------- | ----- |
-| `--shk-space-1` | 4px   |     | `--shk-space-8`  | 32px  |
-| `--shk-space-2` | 8px   |     | `--shk-space-10` | 40px  |
-| `--shk-space-3` | 12px  |     | `--shk-space-12` | 48px  |
-| `--shk-space-4` | 16px  |     | `--shk-space-16` | 64px  |
-| `--shk-space-5` | 20px  |     | `--shk-space-20` | 80px  |
-| `--shk-space-6` | 24px  |     | `--shk-space-24` | 96px  |
-
-`--shk-space-0` is 0. [`StackLayout`](../layout/stack-layout.mdx)'s gaps use names instead: `sm` is `--shk-space-2`, `md` is `--shk-space-4`, `lg` is `--shk-space-8`.
-
-### Sizes, radii and borders
-
-| Group         | Tokens                                                                                                                          |
-| ------------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| Size          | `--shk-size-3` (12px) up to `--shk-size-24` (96px). Icons use 4, 5, 6 and 8 (16–32px). Button height is `--shk-size-11` (44px). |
-| Corner radius | `--shk-radius-0`, `-4`, `-8`, `-12`, `-16`, `-24` (the number is the pixels), and `--shk-radius-full` for pills and circles.    |
-| Border width  | `--shk-border-width-0`, `-thin` (1px), `-medium` (2px, focus rings), `-thick` (4px).                                            |
+Corner radius and border width: see [Shape](./shape.mdx).
 
 ### Text and motion
 
@@ -224,5 +137,9 @@ Gaps and padding. Most components use 4, 8, 12 and 16px.
 
 ## Related
 
+- [Colors](./colors.mdx): the palette and the semantic colors.
 - [Typography](./typography.mdx): the fonts and text styles.
+- [Space and size](./space-and-size.mdx): the space and size scales.
+- [Shape](./shape.mdx): corner radius and border width.
+- [Elevation](./elevation.mdx): how the kit shows depth without shadows.
 - [Icons](./icons.mdx): the icon set, sized with the size tokens.

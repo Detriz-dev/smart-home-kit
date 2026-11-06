@@ -14,17 +14,23 @@ export type {
   DeviceFaultStatusProps,
   FaultCode,
 } from "./components/status/DeviceFaultStatus";
-export { LocationPath } from "./components/context/LocationPath";
+export { LocationPath } from "./components/navigation/LocationPath";
 export type {
   LocationPathLayout,
   LocationPathProps,
-} from "./components/context/LocationPath";
+} from "./components/navigation/LocationPath";
 export { SensorLabel } from "./components/context/SensorLabel";
 export type {
   SensorLabelMetric,
   SensorLabelProps,
   SensorLabelSize,
 } from "./components/context/SensorLabel";
+export { SPACE_TYPE_ICONS, SpaceLabel } from "./components/context/SpaceLabel";
+export type {
+  SpaceLabelProps,
+  SpaceLabelSize,
+} from "./components/context/SpaceLabel";
+export type { SpaceType } from "./types/spaceType";
 export { ReadingValue } from "./components/readings/ReadingValue";
 export type {
   ReadingValueProps,
@@ -68,6 +74,13 @@ export type {
   ContentSectionHeadingLevel,
   ContentSectionProps,
 } from "./components/layout/ContentSection";
+export { Card } from "./components/layout/Card";
+export type {
+  CardButtonProps,
+  CardLinkProps,
+  CardProps,
+  CardStaticProps,
+} from "./components/layout/Card";
 export { StackLayout } from "./components/layout/StackLayout";
 export type {
   StackLayoutGap,

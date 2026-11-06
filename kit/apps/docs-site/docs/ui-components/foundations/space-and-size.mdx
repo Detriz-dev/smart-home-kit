@@ -1,0 +1,87 @@
+---
+title: Space and size
+sidebar_position: 4
+sidebar_label: Space and size
+description: The kit's 13 space tokens for gaps and padding and 11 size tokens for icons, dots and controls, with their Figma and CSS names.
+keywords:
+  - spacing
+  - space tokens
+  - size tokens
+  - touch target
+  - Figma variables
+---
+
+import { SpaceScale, SizeScale } from "@site/src/components/SpaceSizeTokens";
+
+The kit has two scales for distance. **Space** is the room between and around things: gaps and padding. **Size** is how big a thing is: the width and height of an icon, a dot or a control. Both are on a 4px grid, and the number in the name times 4 is the value in pixels: `--shk-space-4` is 16px, `--shk-size-6` is 24px.
+
+The bars and squares on this page are drawn with the real CSS variables, so they always show what the package ships.
+
+## Space or size?
+
+| Use       | When you set                                      | Example                                            |
+| --------- | ------------------------------------------------- | -------------------------------------------------- |
+| **Space** | A gap between things, or padding inside something | 16px between two cards, 8px inside a SensorReading |
+| **Size**  | The width or height of the thing itself           | A 24px icon, a 44px-tall button                    |
+
+They share the same numbers on purpose, so `--shk-space-4` and `--shk-size-4` are both 16px. Pick by what you set, not by the number: that way, if the kit's spacing ever changes, sizes stay put.
+
+## In Figma
+
+The tokens are variables in the kit's [Figma library](https://www.figma.com/community/file/1700179982740576850/detriz-smart-home-kit), with the same names: `space/4` in Figma is `--shk-space-4` in code.
+
+- **`space` variables** show up for auto layout gap and padding.
+- **`size` variables** show up for width and height.
+
+## Space
+
+<SpaceScale />
+
+Most components use only 4, 8, 12 and 16px (`space-1` to `space-4`). Steps 10 to 24 are for spacing between big parts of your own screens.
+
+[`StackLayout`](../layout/stack-layout.mdx) names its gaps instead of numbering them: `sm` is `--shk-space-2`, `md` is `--shk-space-4` and `lg` is `--shk-space-8`.
+
+## Size
+
+<SizeScale />
+
+[`Icon`](./icons.mdx) sizes map to size tokens: `xs` is `--shk-size-4`, `sm` is `--shk-size-5`, `md` is `--shk-size-6` and `lg` is `--shk-size-8`.
+
+## Touch targets
+
+Anything people tap should be at least **44px** tall and wide: `--shk-size-11`. [`Button`](../controls/button.mdx) is 44px tall for this reason. Keep the same minimum for tappable things you build yourself, like a row that opens a Space.
+
+## Borders stay on the grid
+
+When a component has a border, the kit takes the border's width off its padding. A card with a 1px border and 16px padding uses `calc(var(--shk-space-4) - var(--shk-border-width-thin))`, so the content still starts 16px from the outer edge. Do the same in your own CSS:
+
+```css title="src/styles/space-summary.css"
+.space-summary {
+  border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+  padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+}
+```
+
+## Using space and size in your code
+
+```css title="src/styles/space-list.css"
+.space-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shk-space-4);
+  padding: var(--shk-space-6);
+}
+
+.space-list__row {
+  min-block-size: var(--shk-size-11); /* a 44px touch target */
+}
+```
+
+To change a token for the whole app or one part of it, see [Changing a token](./design-tokens.mdx#changing-a-token).
+
+## Related
+
+- [Design tokens](./design-tokens.mdx): how tokens work.
+- [Shape](./shape.mdx): corner radius and border width.
+- [Icons](./icons.mdx): the icon sizes in use.
+- [`StackLayout`](../layout/stack-layout.mdx) and [`ColumnLayout`](../layout/column-layout.mdx): the space scale in layouts.
