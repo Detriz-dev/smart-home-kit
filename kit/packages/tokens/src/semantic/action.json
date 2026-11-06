@@ -66,10 +66,29 @@
         "$description": "Text of a disabled action."
       }
     },
+    "current": {
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.blue.600}",
+        "$description": "Icon and label of the item people are on, and of navigation items under the pointer, e.g. BottomNav."
+      },
+      "indicator": {
+        "$type": "color",
+        "$value": "{palette.blue.600}",
+        "$description": "Marker of the current item, e.g. the bar on top of the current BottomNav section."
+      }
+    },
+    "subtle": {
+      "bg-pressed": {
+        "$type": "color",
+        "$value": "{palette.blue.200}",
+        "$description": "Light fill behind a navigation item while pressed, e.g. a BottomNav section."
+      }
+    },
     "focus": {
       "$type": "color",
-      "$value": "{palette.blue.600}",
-      "$description": "Keyboard focus ring around an action."
+      "$value": "{palette.blue.800}",
+      "$description": "Keyboard focus ring around an action. Darker than the primary and current blue, so focus never looks like either."
     }
   }
 }

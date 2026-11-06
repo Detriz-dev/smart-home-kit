@@ -32,7 +32,7 @@ import { LinkProvider } from "@detriz-sh-kit/ui";
 ```
 
 - Every `ui` component that has an `href` renders its links through an internal `KitLink`, which uses the provider's component, or a plain `<a>` when there is no provider.
-- The link component gets `href`, `className`, `children`, and when needed `id`, `title` and `aria-label`. That matches `next/link` directly. Routers whose link takes `to` instead of `href` (React Router) need a two-line adapter, shown in the docs.
+- The link component gets `href`, `className`, `children`, and when needed `id`, `title`, `aria-label` and `aria-current`. That matches `next/link` directly. Routers whose link takes `to` instead of `href` (React Router) need a two-line adapter, shown in the docs.
 - `onClick` stays for actions that aren't navigation.
 - The code lives in `kit/packages/ui/src/link/`. It's a React context, so it sits next to hooks in the import chain: components may import it; it imports no components.
 

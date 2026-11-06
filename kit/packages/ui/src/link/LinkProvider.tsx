@@ -14,6 +14,8 @@ export interface LinkComponentProps {
   title?: string;
   /** The link's name for screen readers, when it has no visible text (an icon-only back button). */
   "aria-label"?: string;
+  /** "page" on the link to the screen people are on, e.g. the current BottomNav item. */
+  "aria-current"?: "page";
 }
 
 /** Any component that renders a link from these props, e.g. `next/link`'s `Link`. */
