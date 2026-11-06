@@ -1,0 +1,115 @@
+@layer detriz {
+  /* One row: start, text and end side by side, centred vertically.
+     position: relative so a clickable row's stretched link covers exactly the row,
+     and so List can draw its divider line on top. */
+  .root {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--shk-space-3);
+    min-inline-size: 0;
+    padding-block: var(--shk-space-2);
+    padding-inline: var(--shk-space-3);
+    border-radius: var(--shk-radius-8);
+  }
+
+  /* start and end keep their full width; the text gives way. */
+  .start,
+  .end {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  /* end always sits on the right, even when the row has no text (Figma: the lead frame).
+     Its children line up on their text baseline, 4px apart, so a value and its Unit sit like "22.4 °C". */
+  .end {
+    align-items: baseline;
+    gap: var(--shk-space-1);
+    margin-inline-start: auto;
+  }
+
+  /* Title above description, taking the space left. */
+  .text {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  /* The row's name on one line, ending with "…". The same look as a <span>, an <a> or a <button>,
+     so the resets for links and buttons live here too. */
+  .title {
+    overflow: hidden;
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    border: none;
+    background: none;
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-body-font-family);
+    font-size: var(--shk-typography-body-font-size);
+    font-weight: var(--shk-typography-body-font-weight);
+    line-height: var(--shk-typography-body-line-height);
+    letter-spacing: var(--shk-typography-body-letter-spacing);
+    text-align: start;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The second line, smaller and grey, also one line with "…". */
+  .description {
+    overflow: hidden;
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Clickable row: at least a 44px touch target. The title's invisible ::after layer covers the row,
+     so tapping anywhere follows the link (the same as Card). */
+  .root[data-interactive] {
+    min-block-size: var(--shk-size-11);
+  }
+
+  .root[data-interactive] .title {
+    cursor: pointer;
+  }
+
+  .root[data-interactive] .title::after {
+    content: "";
+    position: absolute;
+    inset: var(--shk-space-0);
+    border-radius: inherit;
+  }
+
+  /* Links and buttons inside start or end sit above the layer, so they still work. */
+  .root[data-interactive] :is(a, button):not(.title) {
+    position: relative;
+  }
+
+  /* Grey fill under the pointer and while pressed, the same tokens as Card and Button. */
+  .root[data-interactive]:hover {
+    background: var(--shk-action-secondary-bg-hover);
+  }
+
+  .root[data-interactive]:active {
+    background: var(--shk-action-secondary-bg-pressed);
+  }
+
+  /* The keyboard focus ring goes round the whole row, drawn inside it: rows touch,
+     so a ring outside would be hidden under the next row. */
+  .root[data-interactive] .title:focus-visible {
+    outline: none;
+  }
+
+  .root[data-interactive]:has(.title:focus-visible) {
+    outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+    outline-offset: calc(-1 * var(--shk-border-width-medium));
+  }
+}

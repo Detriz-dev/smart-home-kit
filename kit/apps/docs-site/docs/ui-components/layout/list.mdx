@@ -1,0 +1,309 @@
+---
+sidebar_position: 5
+sidebar_label: List
+description: Rows one under the other, like the rooms of a flat or the Readings of a Space. Each row can be clickable.
+---
+
+# List
+
+A group of rows, one under the other: the rooms of a flat, the Readings of a Space, the Modules of a Site. `List` holds the rows and `ListItem` is one row: something on the left, a title and a description, something on the right.
+
+```jsx live
+<div style={{ maxWidth: 360 }}>
+  <List hasDividers label="Rooms">
+    <ListItem
+      start={<Icon name="countertops" />}
+      title="Kitchen"
+      description="Ground floor"
+      end={
+        <>
+          <ReadingValue value={22.4} size="sm" />
+          <UnitLabel unit="celsius" size="sm" />
+        </>
+      }
+      href="#kitchen"
+    />
+    <ListItem
+      start={<Icon name="bed" />}
+      title="Bedroom"
+      description="Level 2"
+      end={
+        <>
+          <ReadingValue value={20.1} size="sm" />
+          <UnitLabel unit="celsius" size="sm" />
+        </>
+      }
+      href="#bedroom"
+    />
+  </List>
+</div>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+A list fills the width of its parent, so the examples sit in a `div` with a `maxWidth`. In your app, the layout around it sets its width.
+
+## Import
+
+```tsx
+import { List, ListItem } from "@detriz-sh-kit/ui";
+```
+
+The components need the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Put `ListItem` rows inside a `List`:
+
+```tsx
+import { List, ListItem } from "@detriz-sh-kit/ui";
+
+<List>
+  <ListItem title="Kitchen" description="Ground floor" />
+  <ListItem title="Bedroom" description="Level 2" />
+</List>;
+```
+
+A `ListItem` must always be inside a `List`, and a `List` should only hold `ListItem`s. Together they make a real HTML list (`<ul>` and `<li>`).
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use List:
+
+- **for a list of rooms**, each opening its own screen
+- **for the Readings of a Space or a Module**, one Metric per row
+- **for a list of Devices**, with their Connection Status on the right
+
+Don't use it for:
+
+- **A few big tiles side by side.** Use [`Card`](./card.mdx)s in a [`ColumnLayout`](./column-layout.mdx).
+- **Spacing between any components.** Use [`StackLayout`](./stack-layout.mdx). List is only for rows of the same kind.
+- **Choosing one or more items** (checkboxes, a selected row). That's a Control, which the kit doesn't have yet.
+
+## Rows
+
+A row has four optional parts. Leave a prop out and its part isn't shown.
+
+| Part        | Prop          | Usually                                                                                 |
+| ----------- | ------------- | --------------------------------------------------------------------------------------- |
+| Left side   | `start`       | An [`Icon`](../foundations/icons.mdx) or a [`SensorLabel`](../context/sensor-label.mdx) |
+| Title       | `title`       | The name of the room, Module or Metric                                                  |
+| Second line | `description` | Where it is, e.g. "Ground floor"                                                        |
+| Right side  | `end`         | A value and its Unit, or a `DeviceConnectionStatus`                                     |
+
+The right side always stays on the right, even when a row has no title:
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <List>
+    {/* A Reading: SensorLabel on the left, no title */}
+    <ListItem
+      start={<SensorLabel metric="humidity" size="sm" />}
+      end={
+        <>
+          <ReadingValue value={48} fractionDigits={0} size="sm" />
+          <UnitLabel unit="percent-rh" size="sm" />
+        </>
+      }
+    />
+    {/* A Module: no icon, its Connection Status on the right */}
+    <ListItem
+      title="Climate Module"
+      description="Bedroom"
+      end={<DeviceConnectionStatus status="connected" />}
+    />
+  </List>
+</div>
+```
+
+## Variants
+
+### Dividers
+
+Use the `hasDividers` prop on `List`. The default is `false`.
+
+| `hasDividers` | Looks                         | Use it for                              |
+| ------------- | ----------------------------- | --------------------------------------- |
+| `false`       | Rows separated by space only. | Short lists inside a card.              |
+| `true`        | A thin line between rows.     | Long lists, or rows with a description. |
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <List hasDividers>
+    <ListItem title="Kitchen" description="Ground floor" />
+    <ListItem title="Bedroom" description="Level 2" />
+    <ListItem title="Bathroom" description="Level 2" />
+  </List>
+</div>
+```
+
+### Clickable rows
+
+Pass `href` to make a row a link, or `onClick` to make it a button. It works the same as a [clickable `Card`](./card.mdx#making-a-card-clickable):
+
+- **A clickable row needs a `title`.** It becomes the link's text, so screen readers hear "Kitchen, link".
+- **Pass `href` or `onClick`, not both.** TypeScript checks both rules.
+- The whole row can be tapped. It turns grey under the pointer and gets a blue ring when you reach it with the keyboard. Clickable rows are at least 44px tall.
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <List>
+    <ListItem
+      start={<Icon name="countertops" />}
+      title="Kitchen"
+      href="#kitchen"
+    />
+    <ListItem
+      start={<Icon name="garage_home" />}
+      title="Garage"
+      onClick={() => console.log("Open Garage")}
+    />
+  </List>
+</div>
+```
+
+In an app with a router, use `onClick` and navigate with your router, the same as for a `Card`.
+
+## A list in a card
+
+Put a List inside a [`Card`](./card.mdx) for a surface and a title. The card's title names the list, so leave `label` out:
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <Card icon="bed" title="Bedroom">
+    <List>
+      <ListItem
+        start={<SensorLabel metric="temperature" size="sm" />}
+        end={
+          <>
+            <ReadingValue value={20.1} size="sm" />
+            <UnitLabel unit="celsius" size="sm" />
+          </>
+        }
+      />
+      <ListItem
+        start={<SensorLabel metric="co2" size="sm" />}
+        end={
+          <>
+            <ReadingValue value={840} fractionDigits={0} size="sm" />
+            <UnitLabel unit="ppm" size="sm" />
+          </>
+        }
+      />
+    </List>
+  </Card>
+</div>
+```
+
+## Mapping your data
+
+List shows no data of its own. Map each of your items to a `ListItem`:
+
+| Your data | Prop                                                                              |
+| --------- | --------------------------------------------------------------------------------- |
+| A Space   | `start={<Icon name={SPACE_TYPE_ICONS[space.spaceType]} />}`, `title={space.name}` |
+| Its Floor | `description`                                                                     |
+| A Reading | `start={<SensorLabel metric={…} />}`, the value in `end`                          |
+| A Device  | `title` its name, `end={<DeviceConnectionStatus … />}`                            |
+
+Take a room's icon from [`SPACE_TYPE_ICONS`](../context/space-label.mdx#the-icon-for-a-card), so every screen shows the same icon for the same kind of room. Only Devices have a Connection Status: don't put one on a Space's row.
+
+## Props
+
+### List
+
+| Prop          | Type        | Default | Description                                                                                                                 |
+| ------------- | ----------- | ------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `children`    | `ReactNode` | –       | **Required.** The `ListItem` rows, top to bottom. Only ListItems: anything else inside a list is invalid HTML.              |
+| `hasDividers` | `boolean`   | `false` | Draws a thin line between rows (not above the first or below the last).                                                     |
+| `label`       | `string`    | –       | Names the list for screen readers, e.g. "Rooms". Not shown. Leave it out when a visible heading right above names the list. |
+
+### ListItem
+
+| Prop          | Type         | Default | Description                                                                                                        |
+| ------------- | ------------ | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| `start`       | `ReactNode`  | –       | Shown on the left, e.g. `<Icon name="countertops" />` or a `SensorLabel`. Never shrinks.                           |
+| `title`       | `string`     | –       | The row's name, plain text, e.g. "Kitchen". One line, ends with "…". **Required** when `href` or `onClick` is set. |
+| `description` | `string`     | –       | A second line under the title, e.g. "Ground floor". Plain text, one line, ends with "…".                           |
+| `end`         | `ReactNode`  | –       | Shown on the right, e.g. a value and its Unit, or a `DeviceConnectionStatus`. Never shrinks.                       |
+| `href`        | `string`     | –       | Makes the row a link, e.g. `/spaces/kitchen`. A plain link: it doesn't use your app's router.                      |
+| `onClick`     | `() => void` | –       | Makes the row a button. Called when the row is tapped, clicked, or activated with Enter or Space.                  |
+
+The types `ListProps`, `ListItemProps`, `ListItemStaticProps`, `ListItemLinkProps` and `ListItemButtonProps` are exported too.
+
+## Long text
+
+A long title or description stays on one line and ends with "…". Point at it to see the full text. What's in `start` and `end` keeps its full width, so a value is never cut off.
+
+```jsx live
+<div
+  style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <List>
+    <ListItem
+      start={<Icon name="weekend" />}
+      title="Living room and dining area by the garden"
+      description="Ground floor, east wing"
+      end={
+        <>
+          <ReadingValue value={21.8} size="sm" />
+          <UnitLabel unit="celsius" size="sm" />
+        </>
+      }
+      href="#living-room"
+    />
+  </List>
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- A real list: screen readers say "list, 4 items" and "2 of 4" as people move through it, also in Safari.
+- A clickable row has one link or button, named by its title. Tab stops once per row.
+- Keyboard focus shows a 2px ring around the whole row, drawn inside it so the next row can't hide it.
+- Clickable rows are at least 44px tall, a comfortable touch target.
+- Title and description are always shown as text, never as HTML. When shortened, the full text is in a tooltip.
+
+What's up to you:
+
+- **A name for the list.** Pass `label` ("Rooms") when nothing visible right above names it.
+- **Titles that say where a row leads.** "Kitchen", not "More".
+- **Only `ListItem`s inside a `List`.**
+
+## Styling
+
+| What                       | Token                                                                  |
+| -------------------------- | ---------------------------------------------------------------------- |
+| Row padding                | `--shk-space-2` (top and bottom), `--shk-space-3` (sides)              |
+| Gap between parts          | `--shk-space-3` (12px)                                                 |
+| Row corners                | `--shk-radius-8`                                                       |
+| Title                      | `--shk-color-text-primary`, `--shk-typography-body-*`                  |
+| Description                | `--shk-color-text-secondary`, `--shk-typography-body-sm-*`             |
+| Divider                    | `--shk-border-width-thin`, `--shk-color-border-subtle`                 |
+| Hover, pressed (clickable) | `--shk-action-secondary-bg-hover`, `--shk-action-secondary-bg-pressed` |
+| Focus ring (clickable)     | `--shk-action-focus`, `--shk-border-width-medium`                      |
+| Clickable row height       | at least `--shk-size-11` (44px)                                        |
+
+To change how it looks, set a [design token](../foundations/design-tokens.mdx) on a parent element.
+
+## Related components
+
+- [`Card`](./card.mdx): a surface and a title for a list. Works the same way when clickable.
+- [`SpaceLabel`](../context/space-label.mdx): a Space's icon and name. Its `SPACE_TYPE_ICONS` map gives a room row its icon.
+- [`SensorLabel`](../context/sensor-label.mdx): the left side of a Reading row.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx): the right side of a Device row.
