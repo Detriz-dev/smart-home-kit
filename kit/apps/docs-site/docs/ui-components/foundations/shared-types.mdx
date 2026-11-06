@@ -12,6 +12,7 @@ Several components take the same kinds of values: a Metric, a Space Type, a Unit
 import type {
   Metric,
   SpaceType,
+  DeviceKind,
   UnitLabelUnit,
   ConnectionStatus,
   PairingStatus,
@@ -60,6 +61,16 @@ type SpaceType =
 Each Space Type has one icon, in the exported `SPACE_TYPE_ICONS` map. See [`SpaceLabel`](../context/space-label.mdx#space-types) for the table.
 
 **Used by:** [`SpaceLabel`](../context/space-label.mdx) (`spaceType`), and `SPACE_TYPE_ICONS` for a [`Card`](../layout/card.mdx)'s `icon`.
+
+## DeviceKind
+
+Which sort of Device it is. From the Glossary.
+
+```ts
+type DeviceKind = "hub" | "module";
+```
+
+**Used by:** [`DeviceListItem`](../status/device-list-item.mdx) (`deviceKind`), which picks the icon from it: `router` for a Hub, `developer_board` for a Module.
 
 ## UnitLabelUnit
 
