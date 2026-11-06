@@ -15,6 +15,17 @@ One limit: style, weight and fill can't change at runtime. If you need a filled 
 | Sizes                                           | `xs` 16px, `sm` 20px, `md` 24px, `lg` 32px | `--shk-size-4`, `--shk-size-5`, `--shk-size-6`, `--shk-size-8`. Icons are drawn on a 24px grid, so 20, 24 and 32px look sharpest; 16px is for caption-size text. |
 | Colour                                          | The surrounding text colour                | The SVG uses `fill: currentColor`. Set `color` with a token on the parent, never on the icon.                                                                    |
 | Metric → icon map (temperature → `thermometer`) | **Proposed in `SensorLabel`**              | `SensorLabel.md` lists one icon per Metric. When the Metric types exist, move the map next to them, so every app shows the same icon for the same Metric.        |
+| Space Type → icon map (Kitchen → `countertops`) | **Chosen, see below**                      | One icon per Space Type from the Glossary, so every app shows the same icon for the same room. It moves into code with the planned `SpaceLabel`.                 |
+
+**Space Type → icon** (all in `icons.config.ts`):
+
+| Space Type  | Icon          | Space Type | Icon          |
+| ----------- | ------------- | ---------- | ------------- |
+| Bedroom     | `bed`         | Garage     | `garage_home` |
+| Bathroom    | `bathtub`     | Office     | `desk`        |
+| Kitchen     | `countertops` | Meeting    | `groups`      |
+| Living room | `weekend`     | Outdoor    | `yard`        |
+| Hallway     | `door_front`  | Other      | `home`        |
 
 ## How it works
 
