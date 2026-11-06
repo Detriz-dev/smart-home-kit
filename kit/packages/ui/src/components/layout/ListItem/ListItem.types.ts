@@ -26,7 +26,7 @@ export interface ListItemStaticProps extends ListItemBaseProps {
 export interface ListItemLinkProps extends ListItemBaseProps {
   /** The row's name, plain text, e.g. "Kitchen". Required: it is the link's text, so screen readers hear "Kitchen, link". */
   title: string;
-  /** Where the row leads, e.g. `/spaces/kitchen`. A plain link: it doesn't use the app's router yet. */
+  /** Where the row leads, e.g. `/spaces/kitchen`. It uses the app's router through `LinkProvider`. */
   href: string;
   /** A row is a link or a button, not both. */
   onClick?: never;

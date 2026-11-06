@@ -22,7 +22,7 @@ What it does **not** do, and why:
 
 - **Show a status for the whole card.** A Space has no status (only Devices do), so the card can't invent one. When the card is about one Device, the parent puts a `DeviceConnectionStatus` in `headerEnd`.
 - **Lay out its content.** The content stacks with a fixed gap. For columns, put a `ColumnLayout` inside; for a list, a list.
-- **Know the app's routes.** A clickable card gets a plain `href` or an `onClick`. Working with an app's router (Next.js, React Router) comes later, see [Open questions](#open-questions).
+- **Know the app's routes.** A clickable card gets a plain `href` or an `onClick`. It renders through `KitLink`, so an app's router link is used when the app has a `LinkProvider` ([ADR 0001](/docs/adr/0001-router-links.md)).
 - **Offer padding, colour or size props.** One look only, so a generated screen can't make cards that don't match.
 - **Format the title.** `title` is plain text: no links or bold. An icon goes in `icon`, not in the title.
 
@@ -117,7 +117,7 @@ Decisions behind them:
 - **How a clickable card works:** the title becomes the real `<a href>` or `<button>`, and an invisible layer stretches it over the whole card (the "stretched link" pattern). So the whole card can be tapped, but screen readers hear one short link, "Kitchen, link", instead of everything inside the card. That's why a clickable card needs a `title`. The types enforce it: `href` or `onClick` without `title` is a type error, and so is passing both `href` and `onClick`.
 - Buttons or links inside a clickable card's content still work: they sit above the stretched layer. Use this sparingly, because two tap targets in one card are easy to miss.
 - No padding, colour or size props.
-- **Apps with a router**, until the kit supports router links: the user docs tell them to pass `onClick` and navigate with their router. The card is then a button, so it can't be opened in a new tab (see Open questions, Routing).
+- **Apps with a router** wrap their app in `LinkProvider` ([ADR 0001](/docs/adr/0001-router-links.md)); the title link then renders with the router's link component.
 
 ### Example values
 
@@ -171,5 +171,3 @@ All of these exist in `tokens.css`; nothing new is needed. In Figma, padding bin
 - **Narrow header:** `Card` keeps the header in one row at every width and truncates the title. `ModuleCard` stacks its status under the name below 332px; that stays `ModuleCard`'s own behaviour for now.
 
 ### Open questions
-
-- **Routing.** `href` gives a plain `<a>`, which reloads the page in apps with a client-side router. Apps will need to pass in their own link component (Next.js `Link`, React Router `Link`). Decide this once for the whole kit, with navigation (`TopBar`, `BottomNav`, `Breadcrumbs`), not per component. It adds a prop; `href` and `onClick` stay as they are.

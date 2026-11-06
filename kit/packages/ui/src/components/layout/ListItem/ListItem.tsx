@@ -1,3 +1,4 @@
+import { KitLink } from "../../../link";
 import styles from "./ListItem.module.css";
 import type { ListItemProps } from "./ListItem.types";
 
@@ -18,9 +19,9 @@ export function ListItem({
   let titleElement = null;
   if (title !== undefined && href !== undefined) {
     titleElement = (
-      <a href={href} className={styles.title} title={title}>
+      <KitLink href={href} className={styles.title} title={title}>
         {title}
-      </a>
+      </KitLink>
     );
   } else if (title !== undefined && onClick !== undefined) {
     titleElement = (

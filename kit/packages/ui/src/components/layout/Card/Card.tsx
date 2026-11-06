@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { Icon } from "../../../icons/Icon";
+import { KitLink } from "../../../link";
 import styles from "./Card.module.css";
 import type { CardProps } from "./Card.types";
 
@@ -23,9 +24,9 @@ export function Card({
   let titleElement = null;
   if (hasTitle && href !== undefined) {
     titleElement = (
-      <a id={titleId} href={href} className={styles.title} title={title}>
+      <KitLink id={titleId} href={href} className={styles.title} title={title}>
         {title}
-      </a>
+      </KitLink>
     );
   } else if (hasTitle && onClick !== undefined) {
     titleElement = (
