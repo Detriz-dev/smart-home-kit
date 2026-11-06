@@ -1,4 +1,4 @@
-# Product overview
+And also make a bullet for Product Overview and give a link to Product Overview. # Product overview
 
 **DeTriz Smart Home Kit** is a plug-and-play prototyping kit for building smart home UI apps quickly. It uses AI in two ways: to help you build the UI, and as a feature inside the app you build.
 
@@ -19,6 +19,6 @@ Product designers, creative technologists and frontend developers who want to bu
 
 ## How it's built
 
-The kit is built with AI coding tools, guided by context files, conventions and code review. See the [learning goals](/docs/learning/learning-goals.md).
+The kit is built with AI coding tools, guided by context files, conventions and code review. See the [learning goal and objectives](/docs/learning/learning-goal-and-objectives.md).
 
 User needs: [customer needs (JTBD)](/docs/customer/customer-needs-JTBD.md)

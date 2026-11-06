@@ -89,7 +89,7 @@ Most fixes follow [Which side wins](#which-side-wins) and need no discussion. **
 
 ## Step 5. Fix code
 
-1. Rename folders and files with `git mv`, so history is kept. Then replace the old name everywhere (code, docs, CLAUDE.md), and search again to confirm it is gone.
+1. Rename folders and files with `git mv`, so history is kept. Then replace the old name everywhere (code, docs, AGENTS.md), and search again to confirm it is gone.
 2. Fix CSS tokens, the `.md`, and add missing stories.
 3. Run, from the repo root:
    - `pnpm --filter @detriz-sh-kit/ui typecheck`

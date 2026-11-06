@@ -140,7 +140,7 @@ const config: Config = {
     // Search: Algolia DocSearch, https://docusaurus.io/docs/search
     // Algolia's crawler reads the live site (about once a week) into an index; the search box
     // queries that index directly. Crawler and index are managed at https://dashboard.algolia.com.
-    // Plan: docs/architecture/design-system/search-implementation-plan.md
+    // Setup and troubleshooting: the "Docs site search" section of AGENTS.md (repo root).
     algolia: {
       appId: "T9OX50PJBZ",
       // Public search-only key: it can only search, so it is safe to commit.
