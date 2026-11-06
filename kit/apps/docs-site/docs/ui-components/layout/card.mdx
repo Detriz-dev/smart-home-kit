@@ -124,15 +124,7 @@ Pass `href` to make the card a link, or `onClick` to make it a button. Two rules
 
 The whole card can be tapped, not only the title. Buttons and links you put inside the card still work on their own, but two tap targets in one card are easy to miss, so use them sparingly.
 
-**Apps with a router.** `href` makes a plain link, so in an app with a client-side router (Next.js, React Router) it loads the whole page again. Until the kit supports your router's link, pass `onClick` and navigate with your router:
-
-```tsx
-<Card title="Kitchen" onClick={() => navigate("/spaces/kitchen")}>
-  …
-</Card>
-```
-
-The card is then a button, so people can't open it in a new tab.
+**Apps with a router.** `href` renders a plain link unless you wrap your app in `LinkProvider`. Do that once, and every link in the kit uses your router: see [Links and routing](/docs/get-started/links-and-routing).
 
 ## A flat as cards
 
@@ -235,15 +227,15 @@ The card shows no data of its own: `title` is plain text, and the content is up 
 
 ## Props
 
-| Prop        | Type         | Default | Description                                                                                                                       |
-| ----------- | ------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| `children`  | `ReactNode`  | –       | **Required.** The card's content, top to bottom, 12px apart.                                                                      |
-| `icon`      | `IconName`   | –       | An icon before the title, 24px, e.g. `countertops` for a Kitchen. Decorative: screen readers skip it. Shown only with a `title`.  |
-| `title`     | `string`     | –       | The card's name, plain text, e.g. "Kitchen". One line, ends with "…" when too long. **Required** when `href` or `onClick` is set. |
-| `headerEnd` | `ReactNode`  | –       | Shown at the right end of the header, e.g. a `DeviceConnectionStatus` when the card is about one Module. Never shrinks.           |
-| `footer`    | `ReactNode`  | –       | Shown at the bottom in small grey text, e.g. "Updated 2 min ago". Components passed in keep their own styles.                     |
-| `href`      | `string`     | –       | Makes the card a link to this address, e.g. `/spaces/kitchen`. A plain link: it doesn't use your app's router.                    |
-| `onClick`   | `() => void` | –       | Makes the card a button. Called when the card is tapped, clicked, or activated with Enter or Space.                               |
+| Prop        | Type         | Default | Description                                                                                                                                    |
+| ----------- | ------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `ReactNode`  | –       | **Required.** The card's content, top to bottom, 12px apart.                                                                                   |
+| `icon`      | `IconName`   | –       | An icon before the title, 24px, e.g. `countertops` for a Kitchen. Decorative: screen readers skip it. Shown only with a `title`.               |
+| `title`     | `string`     | –       | The card's name, plain text, e.g. "Kitchen". One line, ends with "…" when too long. **Required** when `href` or `onClick` is set.              |
+| `headerEnd` | `ReactNode`  | –       | Shown at the right end of the header, e.g. a `DeviceConnectionStatus` when the card is about one Module. Never shrinks.                        |
+| `footer`    | `ReactNode`  | –       | Shown at the bottom in small grey text, e.g. "Updated 2 min ago". Components passed in keep their own styles.                                  |
+| `href`      | `string`     | –       | Makes the card a link to this address, e.g. `/spaces/kitchen`. Uses your router through [`LinkProvider`](/docs/get-started/links-and-routing). |
+| `onClick`   | `() => void` | –       | Makes the card a button. Called when the card is tapped, clicked, or activated with Enter or Space.                                            |
 
 The types `CardProps`, `CardStaticProps`, `CardLinkProps` and `CardButtonProps` are exported too. `CardProps` is the union of the other three:
 

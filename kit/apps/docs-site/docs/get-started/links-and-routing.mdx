@@ -1,0 +1,72 @@
+---
+title: Use your router's links
+sidebar_position: 4
+sidebar_label: Links and routing
+description: Make the kit's links (cards, list rows, the back button) use your app's router with one LinkProvider, so screens change without reloading the page.
+keywords:
+  - LinkProvider
+  - Next.js Link
+  - React Router
+  - routing
+---
+
+# Use your router's links
+
+Wrap your app in `LinkProvider` once, and every link in the kit uses your router: a clickable [`Card`](/docs/ui-components/layout/card), a clickable [`ListItem`](/docs/ui-components/layout/list) or [`DeviceListItem`](/docs/ui-components/status/device-list-item), and [`TopBar`](/docs/ui-components/navigation/top-bar)'s back button.
+
+## Why
+
+Components with an `href` render a link. Without `LinkProvider`, that's a plain `<a>`: following it makes the browser load the whole page again, so your app restarts and loses its state. Your router's link component changes the screen without a reload.
+
+## Next.js
+
+`next/link`'s `Link` takes the props the kit passes (`href`, `className`, `children`), so pass it as it is. In the App Router, put the provider in a client component:
+
+```tsx title="app/providers.tsx"
+"use client";
+
+import Link from "next/link";
+import { LinkProvider } from "@detriz-sh-kit/ui";
+
+export function Providers({ children }: { children: React.ReactNode }) {
+  return <LinkProvider component={Link}>{children}</LinkProvider>;
+}
+```
+
+Then wrap your layout's `children` in `<Providers>`.
+
+## React Router
+
+React Router's `Link` takes `to` instead of `href`, so give it a small adapter:
+
+```tsx title="src/main.tsx"
+import { Link } from "react-router";
+import { LinkProvider, type LinkComponentProps } from "@detriz-sh-kit/ui";
+
+function RouterLink({ href, ...props }: LinkComponentProps) {
+  return <Link to={href} {...props} />;
+}
+
+<LinkProvider component={RouterLink}>
+  <App />
+</LinkProvider>;
+```
+
+## What the kit passes
+
+Your link component gets these props. Pass them all on to the element it renders, or the kit's styles and accessibility break.
+
+| Prop         | What it is                                                     |
+| ------------ | -------------------------------------------------------------- |
+| `href`       | Where the link goes, e.g. `/spaces/kitchen`.                   |
+| `className`  | The kit's class, so the link keeps the component's look.       |
+| `children`   | The link's content.                                            |
+| `id`         | Sometimes set, so other elements can refer to the link.        |
+| `title`      | Sometimes set: the full text when it's cut off with "…".       |
+| `aria-label` | Sometimes set: the name of a link with no visible text (Back). |
+
+The type is exported as `LinkComponentProps`.
+
+## Links or buttons
+
+Use `href` when tapping goes to another screen: people can open it in a new tab, and it works with the browser's back button. Use `onClick` for actions that aren't a new screen.

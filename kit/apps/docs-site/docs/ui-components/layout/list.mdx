@@ -176,7 +176,7 @@ Pass `href` to make a row a link, or `onClick` to make it a button. It works the
 </div>
 ```
 
-In an app with a router, use `onClick` and navigate with your router, the same as for a `Card`.
+In an app with a router, wrap your app in `LinkProvider` once, so rows use your router's links: see [Links and routing](/docs/get-started/links-and-routing).
 
 ## A list in a card
 
@@ -234,15 +234,15 @@ Take a room's icon from [`SPACE_TYPE_ICONS`](../context/space-label.mdx#the-icon
 
 ### ListItem
 
-| Prop          | Type         | Default | Description                                                                                                        |
-| ------------- | ------------ | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `start`       | `ReactNode`  | –       | Shown on the left, e.g. `<Icon name="countertops" />` or a `SensorLabel`. Never shrinks.                           |
-| `title`       | `string`     | –       | The row's name, plain text, e.g. "Kitchen". One line, ends with "…". **Required** when `href` or `onClick` is set. |
-| `description` | `string`     | –       | A second line under the title, e.g. "Ground floor". Plain text, one line, ends with "…".                           |
-| `details`     | `ReactNode`  | –       | Shown under the description, e.g. a list of `DeviceFaultStatus`. For content too long for the right side.          |
-| `end`         | `ReactNode`  | –       | Shown on the right, e.g. a value and its Unit, or a `DeviceConnectionStatus`. Never shrinks.                       |
-| `href`        | `string`     | –       | Makes the row a link, e.g. `/spaces/kitchen`. A plain link: it doesn't use your app's router.                      |
-| `onClick`     | `() => void` | –       | Makes the row a button. Called when the row is tapped, clicked, or activated with Enter or Space.                  |
+| Prop          | Type         | Default | Description                                                                                                                   |
+| ------------- | ------------ | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `start`       | `ReactNode`  | –       | Shown on the left, e.g. `<Icon name="countertops" />` or a `SensorLabel`. Never shrinks.                                      |
+| `title`       | `string`     | –       | The row's name, plain text, e.g. "Kitchen". One line, ends with "…". **Required** when `href` or `onClick` is set.            |
+| `description` | `string`     | –       | A second line under the title, e.g. "Ground floor". Plain text, one line, ends with "…".                                      |
+| `details`     | `ReactNode`  | –       | Shown under the description, e.g. a list of `DeviceFaultStatus`. For content too long for the right side.                     |
+| `end`         | `ReactNode`  | –       | Shown on the right, e.g. a value and its Unit, or a `DeviceConnectionStatus`. Never shrinks.                                  |
+| `href`        | `string`     | –       | Makes the row a link, e.g. `/spaces/kitchen`. Uses your router through [`LinkProvider`](/docs/get-started/links-and-routing). |
+| `onClick`     | `() => void` | –       | Makes the row a button. Called when the row is tapped, clicked, or activated with Enter or Space.                             |
 
 The types `ListProps`, `ListItemProps`, `ListItemStaticProps`, `ListItemLinkProps` and `ListItemButtonProps` are exported too.
 

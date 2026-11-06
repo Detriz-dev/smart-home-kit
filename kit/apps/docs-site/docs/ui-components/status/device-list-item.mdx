@@ -222,16 +222,16 @@ A few rules from the [Device lifecycle](/docs/domain-model/device-lifecycle), ch
 
 ## Props
 
-| Prop               | Type                                  | Default | Description                                                                                                       |
-| ------------------ | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
-| `name`             | `string`                              | –       | **Required.** The Device's name, e.g. "Climate Module" or "Kitchen Hub". For a Module, its Module Name.           |
-| `deviceKind`       | `"hub" \| "module"`                   | –       | **Required.** Whether the Device is a Hub or a Module. Decides the icon.                                          |
-| `spaceName`        | `string`                              | –       | The name of the Space the Device is in, e.g. "Bedroom". Leave it out when the screen is already about that Space. |
-| `pairingStatus`    | `"unpaired" \| "pairing" \| "paired"` | –       | **Required.** The Device's Pairing Status.                                                                        |
-| `connectionStatus` | `ConnectionStatus`                    | –       | **Required when Paired.** The Device's current Connection Status. Not allowed when not Paired.                    |
-| `faults`           | `DeviceFaultStatusProps[]`            | –       | Only when Paired. The Device's current Faults, one per Fault Code.                                                |
-| `href`             | `string`                              | –       | Makes the row a link, e.g. to the Device's screen. A plain link: it doesn't use your app's router.                |
-| `onClick`          | `() => void`                          | –       | Makes the row a button. Not with `href`.                                                                          |
+| Prop               | Type                                  | Default | Description                                                                                                                        |
+| ------------------ | ------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `name`             | `string`                              | –       | **Required.** The Device's name, e.g. "Climate Module" or "Kitchen Hub". For a Module, its Module Name.                            |
+| `deviceKind`       | `"hub" \| "module"`                   | –       | **Required.** Whether the Device is a Hub or a Module. Decides the icon.                                                           |
+| `spaceName`        | `string`                              | –       | The name of the Space the Device is in, e.g. "Bedroom". Leave it out when the screen is already about that Space.                  |
+| `pairingStatus`    | `"unpaired" \| "pairing" \| "paired"` | –       | **Required.** The Device's Pairing Status.                                                                                         |
+| `connectionStatus` | `ConnectionStatus`                    | –       | **Required when Paired.** The Device's current Connection Status. Not allowed when not Paired.                                     |
+| `faults`           | `DeviceFaultStatusProps[]`            | –       | Only when Paired. The Device's current Faults, one per Fault Code.                                                                 |
+| `href`             | `string`                              | –       | Makes the row a link, e.g. to the Device's screen. Uses your router through [`LinkProvider`](/docs/get-started/links-and-routing). |
+| `onClick`          | `() => void`                          | –       | Makes the row a button. Not with `href`.                                                                                           |
 
 The types `DeviceListItemProps`, `DeviceListItemStatusProps` and [`DeviceKind`](../foundations/shared-types.mdx#devicekind) are exported too.
 
