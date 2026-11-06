@@ -268,6 +268,59 @@
   block-size: 26px;
 }
 
+/* Search (Algolia DocSearch): the navbar button and the search window.
+   No Figma design yet, so DocSearch's own layout with the kit's colors, radius and font.
+   DocSearch reads these --docsearch-* variables (list: @docsearch/css, _variables.css).
+   `html:root` and `html[...]` are stronger selectors than DocSearch's own `:root` and
+   `html[data-theme=dark]`, so these win whatever order the CSS loads in. */
+html:root {
+  --docsearch-border-radius: var(--shk-radius-8);
+  --docsearch-primary-color: var(--ifm-color-primary);
+  --docsearch-highlight-color: var(--ifm-color-primary);
+  --docsearch-logo-color: var(--ifm-color-primary);
+}
+
+/* Colors only in light mode: the kit has no dark theme yet, so dark mode keeps DocSearch's own
+   dark colors, with the site's lighter blue from above. */
+html[data-theme="light"] {
+  --docsearch-text-color: var(--shk-color-text-primary);
+  --docsearch-secondary-text-color: var(--shk-color-text-secondary);
+  --docsearch-icon-color: var(--shk-color-text-secondary);
+  --docsearch-muted-color: var(--shk-palette-gray-500);
+  --docsearch-subtle-color: var(--site-border-color);
+  --docsearch-focus-color: var(--shk-action-focus);
+  --docsearch-soft-primary-color: var(--shk-palette-blue-50);
+  --docsearch-hit-highlight-color: var(--shk-palette-blue-100);
+  --docsearch-search-button-background: var(--shk-surface-default);
+  --docsearch-search-button-text-color: var(--shk-color-text-secondary);
+  --docsearch-modal-background: var(--shk-surface-page);
+  --docsearch-searchbox-background: var(--shk-surface-default);
+  --docsearch-searchbox-focus-background: var(--shk-surface-default);
+  --docsearch-hit-background: var(--shk-surface-default);
+  --docsearch-hit-color: var(--shk-color-text-primary);
+  --docsearch-footer-background: var(--shk-surface-default);
+  --docsearch-key-background: var(--shk-surface-sunken);
+  --docsearch-key-color: var(--shk-color-text-secondary);
+}
+
+/* The search window uses the site's font, like the rest of the site. */
+.DocSearch {
+  font-family: var(--site-font-family);
+}
+
+/* On phones Docusaurus pins the search box to the right edge (position: absolute), where it
+   covered the GitHub icon. This keeps it in line with the other navbar items at every width.
+   The class name is Docusaurus's, so the part before "_" stays the same between versions. */
+.navbar [class*="navbarSearchContainer"] {
+  position: static;
+}
+
+/* The navbar button: a thin border like the navbar's line, and the 14px navbar text size. */
+.navbar .DocSearch-Button {
+  border: var(--shk-border-width-thin) solid var(--site-border-color);
+  font-size: var(--shk-font-size-14);
+}
+
 /* Footer: just the copyright line. Design: Figma "SHK – Landing", node 70:528. */
 /* 56px on top: with the landing page's 8px bottom padding, 64px from the cards, as in Figma. */
 .footer {
