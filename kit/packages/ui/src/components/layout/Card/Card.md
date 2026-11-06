@@ -167,7 +167,7 @@ All of these exist in `tokens.css`; nothing new is needed. In Figma, padding bin
 
 ### Decisions
 
-- **Icon:** `icon` takes an `IconName`, so `Card` stays generic: it doesn't know Space Types. Which icon goes with which Space Type is decided once, in the Space Type → icon map in the [icon workflow](/docs/architecture/design-system/workflows/add-icon-to-design-system-workflow.md), and moves into code with the planned `SpaceLabel`. `title` stays plain text, because on a clickable card it is the link's text. Size 24px (`md`), chosen by the designer over 20px. In Figma the `icon` layer is an exposed `Icon` instance, so designers pick the icon on each card instance.
+- **Icon:** `icon` takes an `IconName`, so `Card` stays generic: it doesn't know Space Types. Which icon goes with which Space Type is decided once, in `SPACE_TYPE_ICONS` in [`SpaceLabel`](../../context/SpaceLabel/SpaceLabel.md); apps pass `icon={SPACE_TYPE_ICONS[spaceType]}`. `title` stays plain text, because on a clickable card it is the link's text. Size 24px (`md`), chosen by the designer over 20px. In Figma the `icon` layer is an exposed `Icon` instance, so designers pick the icon on each card instance.
 - **Narrow header:** `Card` keeps the header in one row at every width and truncates the title. `ModuleCard` stacks its status under the name below 332px; that stays `ModuleCard`'s own behaviour for now.
 
 ### Open questions

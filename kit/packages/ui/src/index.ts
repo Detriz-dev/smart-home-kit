@@ -25,6 +25,12 @@ export type {
   SensorLabelProps,
   SensorLabelSize,
 } from "./components/context/SensorLabel";
+export { SPACE_TYPE_ICONS, SpaceLabel } from "./components/context/SpaceLabel";
+export type {
+  SpaceLabelProps,
+  SpaceLabelSize,
+} from "./components/context/SpaceLabel";
+export type { SpaceType } from "./types/spaceType";
 export { ReadingValue } from "./components/readings/ReadingValue";
 export type {
   ReadingValueProps,
