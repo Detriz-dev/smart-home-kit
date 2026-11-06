@@ -6,6 +6,7 @@ export function ListItem({
   start,
   title,
   description,
+  details,
   end,
   href,
   onClick,
@@ -46,13 +47,18 @@ export function ListItem({
       className={styles.root}
     >
       {start !== undefined && <div className={styles.start}>{start}</div>}
-      {(titleElement !== null || description !== undefined) && (
+      {(titleElement !== null ||
+        description !== undefined ||
+        details !== undefined) && (
         <div className={styles.text}>
           {titleElement}
           {description !== undefined && (
             <span className={styles.description} title={description}>
               {description}
             </span>
+          )}
+          {details !== undefined && (
+            <div className={styles.details}>{details}</div>
           )}
         </div>
       )}

@@ -9,6 +9,12 @@ export type {
   ConnectionStatus,
   DeviceConnectionStatusProps,
 } from "./components/status/DeviceConnectionStatus";
+export { DeviceListItem } from "./components/status/DeviceListItem";
+export type {
+  DeviceListItemProps,
+  DeviceListItemStatusProps,
+} from "./components/status/DeviceListItem";
+export type { DeviceKind } from "./types/deviceKind";
 export { DeviceFaultStatus } from "./components/status/DeviceFaultStatus";
 export type {
   DeviceFaultStatusProps,

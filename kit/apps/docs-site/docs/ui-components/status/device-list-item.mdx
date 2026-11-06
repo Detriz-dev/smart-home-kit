@@ -1,0 +1,282 @@
+---
+sidebar_position: 4
+sidebar_label: DeviceListItem
+description: One Hub or Module as a list row, with its name, Space, Pairing or Connection Status and any Faults.
+---
+
+# DeviceListItem
+
+One Device as a row in a [`List`](../layout/list.mdx): its icon, its name and Space, its status on the right, and any Faults under the name. Use it for a Devices screen or the Modules of one Hub, so people see at a glance which Devices need attention.
+
+```jsx live
+<div style={{ maxWidth: 360 }}>
+  <List hasDividers label="Devices">
+    <DeviceListItem
+      name="Kitchen Hub"
+      deviceKind="hub"
+      spaceName="Kitchen"
+      pairingStatus="paired"
+      connectionStatus="connected"
+    />
+    <DeviceListItem
+      name="Air Quality Module"
+      deviceKind="module"
+      spaceName="Office"
+      pairingStatus="paired"
+      connectionStatus="connected"
+      faults={[{ faultCode: "calibration_required", metric: "co2" }]}
+    />
+  </List>
+</div>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+DeviceListItem is a row, so it always sits inside a `List`. The examples sit in a `div` with a `maxWidth`, because a list fills the width of its parent.
+
+## Import
+
+```tsx
+import { DeviceListItem, List } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the Device's name, its Device Kind and its status:
+
+```tsx
+import { DeviceListItem, List } from "@detriz-sh-kit/ui";
+
+<List>
+  <DeviceListItem
+    name="Climate Module"
+    deviceKind="module"
+    spaceName="Bedroom"
+    pairingStatus="paired"
+    connectionStatus="stale"
+  />
+</List>;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use DeviceListItem:
+
+- **for a list of Devices**, like a Devices screen
+- **for the Modules of one Hub**, on the Hub's screen
+- **for newly detected Devices** waiting to be added (Unpaired)
+
+Don't use it for:
+
+- **A Module's Readings.** Use [`ModuleCard`](../readings/module-card.mdx).
+- **A list of rooms.** Use [`ListItem`](../layout/list.mdx) with the room's icon.
+- **One status on its own.** Use [`DeviceConnectionStatus`](./device-connection-status.mdx), [`DevicePairingStatus`](./device-pairing-status.mdx) or [`DeviceFaultStatus`](./device-fault-status.mdx).
+
+## States
+
+The right side shows one status. Which one depends on the Pairing Status:
+
+| Props                                         | Right side                                                          |
+| --------------------------------------------- | ------------------------------------------------------------------- |
+| `pairingStatus="unpaired"` or `"pairing"`     | The Pairing Status: Unpaired or Pairing                             |
+| `pairingStatus="paired"` + `connectionStatus` | The Connection Status: Connecting, Connected, Stale or Disconnected |
+
+A Paired Device always has a Connection Status, so "Paired" itself isn't shown.
+
+### Not Paired yet
+
+```jsx live
+<div style={{ maxWidth: 360 }}>
+  <List hasDividers>
+    <DeviceListItem
+      name="Climate Module"
+      deviceKind="module"
+      spaceName="Garage"
+      pairingStatus="unpaired"
+    />
+    <DeviceListItem
+      name="Climate Module"
+      deviceKind="module"
+      spaceName="Garage"
+      pairingStatus="pairing"
+    />
+  </List>
+</div>
+```
+
+### Paired
+
+```jsx live
+<div style={{ maxWidth: 360 }}>
+  <List hasDividers>
+    <DeviceListItem
+      name="Climate Module"
+      deviceKind="module"
+      spaceName="Bedroom"
+      pairingStatus="paired"
+      connectionStatus="connecting"
+    />
+    <DeviceListItem
+      name="Climate Module"
+      deviceKind="module"
+      spaceName="Bedroom"
+      pairingStatus="paired"
+      connectionStatus="connected"
+    />
+    <DeviceListItem
+      name="Climate Module"
+      deviceKind="module"
+      spaceName="Bedroom"
+      pairingStatus="paired"
+      connectionStatus="stale"
+    />
+    <DeviceListItem
+      name="Light Module"
+      deviceKind="module"
+      spaceName="Living room"
+      pairingStatus="paired"
+      connectionStatus="disconnected"
+    />
+  </List>
+</div>
+```
+
+### Fault
+
+Pass the Device's Faults as `faults`. Each one shows on its own line under the Space, whatever the Connection Status, because a Device can be Connected and have a Fault at the same time.
+
+```jsx live
+<div style={{ maxWidth: 360 }}>
+  <List>
+    <DeviceListItem
+      name="Air Quality Module"
+      deviceKind="module"
+      spaceName="Office"
+      pairingStatus="paired"
+      connectionStatus="connected"
+      faults={[{ faultCode: "calibration_required", metric: "co2" }]}
+    />
+  </List>
+</div>
+```
+
+## Device Kinds
+
+`deviceKind` decides the icon:
+
+| `deviceKind` | Device Kind | Icon              |
+| ------------ | ----------- | ----------------- |
+| `hub`        | Hub         | `router`          |
+| `module`     | Module      | `developer_board` |
+
+## Clickable rows
+
+Pass `href` or `onClick` to open the Device's own screen, the same as a [clickable `ListItem`](../layout/list.mdx#clickable-rows). The name is the link's text.
+
+```jsx live
+<div style={{ maxWidth: 360 }}>
+  <List>
+    <DeviceListItem
+      name="Kitchen Hub"
+      deviceKind="hub"
+      spaceName="Kitchen"
+      pairingStatus="paired"
+      connectionStatus="connected"
+      href="#kitchen-hub"
+    />
+  </List>
+</div>
+```
+
+## Mapping your data
+
+| Prop               | Domain term                                                                 | Example                                            |
+| ------------------ | --------------------------------------------------------------------------- | -------------------------------------------------- |
+| `name`             | The Device's name ([Module Name](/docs/domain-model/glossary) for a Module) | `"Climate Module"`                                 |
+| `deviceKind`       | [Device Kind](/docs/domain-model/glossary)                                  | `"module"`                                         |
+| `spaceName`        | [Space](/docs/domain-model/glossary#places) (its name)                      | `"Bedroom"`                                        |
+| `pairingStatus`    | [Pairing Status](/docs/domain-model/device-lifecycle#pairing-status)        | `"paired"`                                         |
+| `connectionStatus` | [Connection Status](/docs/domain-model/device-lifecycle#connection-status)  | `"stale"`                                          |
+| `faults`           | [Fault](/docs/domain-model/glossary), one per Fault Code                    | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
+
+A few rules from the [Device lifecycle](/docs/domain-model/device-lifecycle), checked by TypeScript:
+
+- **Connection Status and Faults only exist while Paired.** `connectionStatus` is required when `pairingStatus` is `"paired"`, and not allowed otherwise. So is `faults`.
+- **A Hub is never Stale.** Only Modules have Sensors, so only they can miss a Reading. TypeScript doesn't block it, but don't pass `"stale"` for a Hub.
+- **Three separate fields.** Don't merge them into one status in your data. If your API does, split it where the data comes in.
+
+## Props
+
+| Prop               | Type                                  | Default | Description                                                                                                       |
+| ------------------ | ------------------------------------- | ------- | ----------------------------------------------------------------------------------------------------------------- |
+| `name`             | `string`                              | –       | **Required.** The Device's name, e.g. "Climate Module" or "Kitchen Hub". For a Module, its Module Name.           |
+| `deviceKind`       | `"hub" \| "module"`                   | –       | **Required.** Whether the Device is a Hub or a Module. Decides the icon.                                          |
+| `spaceName`        | `string`                              | –       | The name of the Space the Device is in, e.g. "Bedroom". Leave it out when the screen is already about that Space. |
+| `pairingStatus`    | `"unpaired" \| "pairing" \| "paired"` | –       | **Required.** The Device's Pairing Status.                                                                        |
+| `connectionStatus` | `ConnectionStatus`                    | –       | **Required when Paired.** The Device's current Connection Status. Not allowed when not Paired.                    |
+| `faults`           | `DeviceFaultStatusProps[]`            | –       | Only when Paired. The Device's current Faults, one per Fault Code.                                                |
+| `href`             | `string`                              | –       | Makes the row a link, e.g. to the Device's screen. A plain link: it doesn't use your app's router.                |
+| `onClick`          | `() => void`                          | –       | Makes the row a button. Not with `href`.                                                                          |
+
+The types `DeviceListItemProps`, `DeviceListItemStatusProps` and [`DeviceKind`](../foundations/shared-types.mdx#devicekind) are exported too.
+
+## Long text
+
+The name and the Space stay on one line and end with "…". The status keeps its full width. A Fault message wraps onto more lines rather than being cut off.
+
+```jsx live
+<div
+  style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <List>
+    <DeviceListItem
+      name="Kitchen climate by the window"
+      deviceKind="module"
+      spaceName="Living room and dining area"
+      pairingStatus="paired"
+      connectionStatus="disconnected"
+      faults={[{ faultCode: "sensor_failure", metric: "co2" }]}
+    />
+  </List>
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The row is read in order: name, Space, Faults, status, for example "Air Quality Module, Office, carbon dioxide sensor calibration required, Connected".
+- The Device Kind icon is hidden from screen readers: the name says what it is.
+- Faults are a list, so screen readers count them.
+- Every status is shown by text and an icon, not by colour alone.
+- A clickable row is one link or button, named by the Device's name.
+
+What's up to you:
+
+- **Put it in a `List`.** It's an `<li>`.
+- **Device names people can tell apart.** Two Modules called "Climate Module" in different Spaces are fine, because the Space is shown. In the same Space, suggest renaming one.
+
+## Styling
+
+DeviceListItem has no tokens of its own. It uses [`ListItem`](../layout/list.mdx#styling)'s and those of the status components inside it.
+
+## Related components
+
+- [`List`](../layout/list.mdx): holds the rows. `ListItem` is the general row DeviceListItem is built on.
+- [`DeviceConnectionStatus`](./device-connection-status.mdx), [`DevicePairingStatus`](./device-pairing-status.mdx), [`DeviceFaultStatus`](./device-fault-status.mdx): the statuses inside a row.
+- [`ModuleCard`](../readings/module-card.mdx): one Module's Readings, for the Device's own screen.

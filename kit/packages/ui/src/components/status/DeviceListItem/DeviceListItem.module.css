@@ -1,0 +1,11 @@
+@layer detriz {
+  /* The Faults under the name: one per line, no bullets or indent. ListItem's details area sets the space above. */
+  .faults {
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-1);
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    list-style: none;
+  }
+}

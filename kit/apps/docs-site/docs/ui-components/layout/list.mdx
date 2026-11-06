@@ -85,7 +85,7 @@ Use List:
 
 - **for a list of rooms**, each opening its own screen
 - **for the Readings of a Space or a Module**, one Metric per row
-- **for a list of Devices**, with their Connection Status on the right
+- **for a list of Devices**: use [`DeviceListItem`](../status/device-list-item.mdx), a ListItem made for Devices
 
 Don't use it for:
 
@@ -97,12 +97,13 @@ Don't use it for:
 
 A row has four optional parts. Leave a prop out and its part isn't shown.
 
-| Part        | Prop          | Usually                                                                                 |
-| ----------- | ------------- | --------------------------------------------------------------------------------------- |
-| Left side   | `start`       | An [`Icon`](../foundations/icons.mdx) or a [`SensorLabel`](../context/sensor-label.mdx) |
-| Title       | `title`       | The name of the room, Module or Metric                                                  |
-| Second line | `description` | Where it is, e.g. "Ground floor"                                                        |
-| Right side  | `end`         | A value and its Unit, or a `DeviceConnectionStatus`                                     |
+| Part                  | Prop          | Usually                                                                                 |
+| --------------------- | ------------- | --------------------------------------------------------------------------------------- |
+| Left side             | `start`       | An [`Icon`](../foundations/icons.mdx) or a [`SensorLabel`](../context/sensor-label.mdx) |
+| Title                 | `title`       | The name of the room, Module or Metric                                                  |
+| Second line           | `description` | Where it is, e.g. "Ground floor"                                                        |
+| Right side            | `end`         | A value and its Unit, or a `DeviceConnectionStatus`                                     |
+| Under the description | `details`     | Content too long for the right side, like a Device's Faults                             |
 
 The right side always stays on the right, even when a row has no title:
 
@@ -217,7 +218,7 @@ List shows no data of its own. Map each of your items to a `ListItem`:
 | A Space   | `start={<Icon name={SPACE_TYPE_ICONS[space.spaceType]} />}`, `title={space.name}` |
 | Its Floor | `description`                                                                     |
 | A Reading | `start={<SensorLabel metric={…} />}`, the value in `end`                          |
-| A Device  | `title` its name, `end={<DeviceConnectionStatus … />}`                            |
+| A Device  | Use [`DeviceListItem`](../status/device-list-item.mdx) instead                    |
 
 Take a room's icon from [`SPACE_TYPE_ICONS`](../context/space-label.mdx#the-icon-for-a-card), so every screen shows the same icon for the same kind of room. Only Devices have a Connection Status: don't put one on a Space's row.
 
@@ -238,6 +239,7 @@ Take a room's icon from [`SPACE_TYPE_ICONS`](../context/space-label.mdx#the-icon
 | `start`       | `ReactNode`  | –       | Shown on the left, e.g. `<Icon name="countertops" />` or a `SensorLabel`. Never shrinks.                           |
 | `title`       | `string`     | –       | The row's name, plain text, e.g. "Kitchen". One line, ends with "…". **Required** when `href` or `onClick` is set. |
 | `description` | `string`     | –       | A second line under the title, e.g. "Ground floor". Plain text, one line, ends with "…".                           |
+| `details`     | `ReactNode`  | –       | Shown under the description, e.g. a list of `DeviceFaultStatus`. For content too long for the right side.          |
 | `end`         | `ReactNode`  | –       | Shown on the right, e.g. a value and its Unit, or a `DeviceConnectionStatus`. Never shrinks.                       |
 | `href`        | `string`     | –       | Makes the row a link, e.g. `/spaces/kitchen`. A plain link: it doesn't use your app's router.                      |
 | `onClick`     | `() => void` | –       | Makes the row a button. Called when the row is tapped, clicked, or activated with Enter or Space.                  |
@@ -306,4 +308,4 @@ To change how it looks, set a [design token](../foundations/design-tokens.mdx) o
 - [`Card`](./card.mdx): a surface and a title for a list. Works the same way when clickable.
 - [`SpaceLabel`](../context/space-label.mdx): a Space's icon and name. Its `SPACE_TYPE_ICONS` map gives a room row its icon.
 - [`SensorLabel`](../context/sensor-label.mdx): the left side of a Reading row.
-- [`DeviceConnectionStatus`](../status/device-connection-status.mdx): the right side of a Device row.
+- [`DeviceListItem`](../status/device-list-item.mdx): a ListItem made for Devices, with their statuses and Faults.
