@@ -1,12 +1,12 @@
 ---
 sidebar_position: 4
 sidebar_label: Card
-description: The kit's card surface with an optional title, header status and footer. Put anything inside, and make it clickable with href or onClick.
+description: The kit's card surface with an optional icon, title, header status and footer. Put anything inside, and make it clickable with href or onClick.
 ---
 
 # Card
 
-The white card surface the kit's cards share, with an optional title, a spot at the right of the header and a footer. Put anything inside it. Use it to build your own cards that match the kit, like one card per room in a flat.
+The white card surface the kit's cards share, with an optional icon and title, a spot at the right of the header and a footer. Put anything inside it. Use it to build your own cards that match the kit, like one card per room in a flat.
 
 ```jsx live
 <div style={{ maxWidth: 320 }}>
@@ -136,14 +136,14 @@ The card is then a button, so people can't open it in a new tab.
 
 ## A flat as cards
 
-One clickable card per Space gives an overview of the whole flat. Put the cards in a [`ColumnLayout`](./column-layout.mdx):
+One clickable card per Space gives an overview of the whole flat. Give each card its Space Type icon (see [Room icons](#room-icons)) and put the cards in a [`ColumnLayout`](./column-layout.mdx):
 
 ```jsx live
 <ColumnLayout>
-  <Card title="Kitchen" href="#kitchen">
+  <Card icon="countertops" title="Kitchen" href="#kitchen">
     <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
   </Card>
-  <Card title="Bedroom" href="#bedroom">
+  <Card icon="bed" title="Bedroom" href="#bedroom">
     <SensorReading metric="temperature" value={20.1} unit="celsius" size="md" />
   </Card>
 </ColumnLayout>
@@ -181,6 +181,44 @@ Every part except the content is optional. Leave a prop out and its part isn't s
 </div>
 ```
 
+## Room icons
+
+Pass `icon` to show an icon before the title. It's 24px and takes the title's colour. It needs a `title`: without one, the icon isn't shown.
+
+For a card about a Space, use the icon of its [Space Type](/docs/domain-model/glossary), so every screen shows the same icon for the same kind of room:
+
+| Space Type  | `icon`        | Space Type | `icon`        |
+| ----------- | ------------- | ---------- | ------------- |
+| Bedroom     | `bed`         | Garage     | `garage_home` |
+| Bathroom    | `bathtub`     | Office     | `desk`        |
+| Kitchen     | `countertops` | Meeting    | `groups`      |
+| Living room | `weekend`     | Outdoor    | `yard`        |
+| Hallway     | `door_front`  | Other      | `home`        |
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <StackLayout>
+    <Card icon="bathtub" title="Bathroom">
+      <SensorReading
+        metric="humidity"
+        value={64}
+        unit="percent-rh"
+        fractionDigits={0}
+        size="md"
+      />
+    </Card>
+    <Card icon="garage_home" title="Garage">
+      <SensorReading
+        metric="temperature"
+        value={9.8}
+        unit="celsius"
+        size="md"
+      />
+    </Card>
+  </StackLayout>
+</div>
+```
+
 ## Mapping your data
 
 The card shows no data of its own: `title` is plain text, and the content is up to you. One rule from the [Glossary](/docs/domain-model/glossary) matters here:
@@ -192,6 +230,7 @@ The card shows no data of its own: `title` is plain text, and the content is up 
 | Prop        | Type         | Default | Description                                                                                                                       |
 | ----------- | ------------ | ------- | --------------------------------------------------------------------------------------------------------------------------------- |
 | `children`  | `ReactNode`  | –       | **Required.** The card's content, top to bottom, 12px apart.                                                                      |
+| `icon`      | `IconName`   | –       | An icon before the title, 24px, e.g. `countertops` for a Kitchen. Decorative: screen readers skip it. Shown only with a `title`.  |
 | `title`     | `string`     | –       | The card's name, plain text, e.g. "Kitchen". One line, ends with "…" when too long. **Required** when `href` or `onClick` is set. |
 | `headerEnd` | `ReactNode`  | –       | Shown at the right end of the header, e.g. a `DeviceConnectionStatus` when the card is about one Module. Never shrinks.           |
 | `footer`    | `ReactNode`  | –       | Shown at the bottom in small grey text, e.g. "Updated 2 min ago". Components passed in keep their own styles.                     |
@@ -229,11 +268,12 @@ What you get without doing anything:
 - A clickable card has one real link or button, named by the title. Tab stops once per card, and screen readers hear "Kitchen, link" instead of everything inside.
 - Keyboard focus shows a 2px ring around the whole card. Enter opens a link card; Enter and Space activate a button card.
 - The title is always shown as text, never as HTML. When it's shortened, the full title is in a tooltip.
+- The icon is decorative, so screen readers skip it and read only the title.
 - The grey hover fill is extra feedback only. The focus ring and pointer cursor don't rely on colour.
 
 What's up to you:
 
-- **A title that says where the card leads.** "Kitchen", not "More" or "Open".
+- **A title that says where the card leads.** "Kitchen", not "More" or "Open". The icon doesn't replace it.
 - **Headings.** The title isn't a heading. Put cards inside a [`ContentSection`](./content-section.mdx) so people can jump to the group.
 - **Content order.** Put the content in the order people should read it.
 - **Few tap targets inside a clickable card.** Every button inside it is one more Tab stop.
@@ -247,7 +287,8 @@ What's up to you:
 | Corner radius              | `--shk-radius-16`                                                      |
 | Padding                    | `--shk-space-4` (16px, including the border)                           |
 | Gap between parts          | `--shk-space-3` (12px)                                                 |
-| Title                      | `--shk-color-text-primary`, `--shk-typography-h4-*`                    |
+| Title, icon                | `--shk-color-text-primary`, `--shk-typography-h4-*`                    |
+| Icon size                  | `--shk-size-6` (24px)                                                  |
 | Footer text                | `--shk-color-text-secondary`, `--shk-typography-caption-*`             |
 | Hover, pressed (clickable) | `--shk-action-secondary-bg-hover`, `--shk-action-secondary-bg-pressed` |
 | Focus ring (clickable)     | `--shk-action-focus`, `--shk-border-width-medium`                      |
