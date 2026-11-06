@@ -1,0 +1,178 @@
+---
+title: Colors
+sidebar_position: 2
+sidebar_label: Colors
+description: The kit's 57 palette colors and 46 semantic color tokens, with their Figma variable and CSS variable names, and which ones to use where.
+keywords:
+  - colors
+  - color tokens
+  - palette
+  - Figma variables
+  - status colors
+  - contrast
+---
+
+import {
+  Palette,
+  ColorTokenTable,
+  StatusColors,
+} from "@site/src/components/ColorTokens";
+
+The kit has two layers of color: a **palette** of 57 raw colors, and 46 **semantic** colors that say what they are for, like "main text" or "a Fault". The components only use semantic colors. Use them in your own screens too, in Figma and in code, so your screens match the kit.
+
+Every color on this page is a Figma variable and a CSS variable with the same name. The swatches are painted with the real CSS variables, so they always show what the package ships.
+
+## How the colors fit together
+
+A semantic color points to a palette color, and a component uses the semantic color:
+
+| Palette    | Semantic color                                    | Used by                         |
+| ---------- | ------------------------------------------------- | ------------------------------- |
+| `gray/900` | `color-text/primary` (`--shk-color-text-primary`) | The value in `ReadingValue`     |
+| `red/100`  | `status/danger/bg` (`--shk-status-danger-bg`)     | The fill of `DeviceFaultStatus` |
+| `blue/600` | `action/primary/bg` (`--shk-action-primary-bg`)   | The fill of a primary `Button`  |
+
+So to change what "main text" looks like everywhere, you point one semantic color at another palette color. Components never need to change.
+
+The colors live in six Figma collections. The CSS name is the collection, then the variable's name, with `/` turned into `-` and `--shk-` in front:
+
+| Figma collection | CSS variables          | Colors | What's in it                                               |
+| ---------------- | ---------------------- | ------ | ---------------------------------------------------------- |
+| `palette`        | `--shk-palette-*`      | 57     | Raw colors: five hues in 11 steps, plus white and black    |
+| `color-text`     | `--shk-color-text-*`   | 4      | Text                                                       |
+| `surface`        | `--shk-surface-*`      | 3      | Backgrounds of pages and cards                             |
+| `color-border`   | `--shk-color-border-*` | 1      | Outlines                                                   |
+| `status`         | `--shk-status-*`       | 25     | Device Status and messages: five roles, five parts each    |
+| `action`         | `--shk-action-*`       | 13     | Buttons and other things you click, with hover and pressed |
+
+## In Figma
+
+The variables are in the kit's [Figma library](https://www.figma.com/community/file/1700179982740576850/detriz-smart-home-kit).
+
+- **Pick semantic variables.** The palette variables are hidden from the color pickers on purpose, so you can't attach a raw color to a layer by accident.
+- **Each semantic variable only shows where it fits.** Text colors appear for text fills, `surface` colors for frame and shape fills, and border colors for strokes.
+- **One theme for now.** Semantic collections have one mode, **Light**. There is no dark theme yet.
+
+## Palette
+
+Five hues, each in 11 steps from 50 (lightest) to 950 (darkest). Each hue has one job:
+
+| Hue     | Used for                                             |
+| ------- | ---------------------------------------------------- |
+| `gray`  | Text, surfaces, borders, and the `neutral` status    |
+| `blue`  | Actions, the focus ring, and the `progress` status   |
+| `green` | The `success` status                                 |
+| `amber` | The `warning` status                                 |
+| `red`   | The `danger` status: Faults and errors, nothing else |
+
+<Palette />
+
+Use palette colors only to point a semantic color somewhere else, as in [Changing a token](./design-tokens.mdx#changing-a-token). Anywhere else, a raw palette color skips the meaning, and your screen won't follow when the kit's colors change.
+
+## Text
+
+<ColorTokenTable group="text" />
+
+## Surfaces
+
+<ColorTokenTable group="surface" />
+
+## Borders
+
+<ColorTokenTable group="border" />
+
+## Status
+
+The Status components and `InlineMessage` use five roles. Every role has the same five parts, always from the same palette steps, so all five roles look alike in weight:
+
+| Part       | Palette step       | Use it for                                    |
+| ---------- | ------------------ | --------------------------------------------- |
+| `solid`    | 400                | A strong fill, like the status dot            |
+| `on-solid` | `gray/950`, always | Text on the solid fill                        |
+| `bg`       | 100                | A light fill behind a message                 |
+| `border`   | 600                | The outline of a message                      |
+| `fg`       | 800                | Text and icons, on the light fill or on white |
+
+The Figma variable is `status/<role>/<part>`, for example `status/danger/bg`, and the CSS variable is `--shk-status-<role>-<part>`.
+
+<StatusColors />
+
+Which state uses which role:
+
+| Role       | For                                             | Used by                                                                                |
+| ---------- | ----------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `neutral`  | Not active: Disconnected, Unpaired              | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (off)                        |
+| `progress` | In progress: Connecting, Pairing; info messages | `DeviceConnectionStatus`, `DevicePairingStatus`, `Switch` (on), `InlineMessage` (info) |
+| `success`  | Done or fine: Connected, Paired                 | `DeviceConnectionStatus`, `DevicePairingStatus`, `InlineMessage` (success)             |
+| `warning`  | Needs attention soon: Stale                     | `DeviceConnectionStatus`, `InlineMessage` (warning)                                    |
+| `danger`   | A problem: Faults, errors                       | `DeviceFaultStatus`, `InlineMessage` (error)                                           |
+
+Disconnected uses `neutral`, not `danger`. Red is kept for Faults, so "unplugged" and "broken" never look the same.
+
+## Action
+
+Colors for things people click. [`Button`](../controls/button.mdx) and the dismiss (×) button in [`InlineMessage`](../feedback/inline-message.mdx) use them.
+
+<ColorTokenTable group="action" />
+
+```jsx live
+<ColumnLayout>
+  <Button variant="primary" onClick={() => {}}>
+    Save Space
+  </Button>
+  <Button variant="secondary" onClick={() => {}}>
+    Cancel
+  </Button>
+  <Button isDisabled onClick={() => {}}>
+    Rename Module
+  </Button>
+</ColumnLayout>
+```
+
+Hover over the buttons to see the `-hover` colors, and press Tab to see the focus ring.
+
+## Contrast
+
+These are the pairs the kit uses, measured with the WCAG contrast formula. Normal text needs at least 4.5:1, and icons, outlines and focus rings need 3:1.
+
+| Foreground                | On                    | Contrast  | Result                                                        |
+| ------------------------- | --------------------- | --------- | ------------------------------------------------------------- |
+| `color-text/primary`      | `surface/default`     | 13.6:1    | Passes. 12.0:1 on `surface/sunken`.                           |
+| `color-text/secondary`    | `surface/default`     | 6.8:1     | Passes. 6.0:1 on `surface/sunken`.                            |
+| `color-text/disabled`     | `surface/default`     | 2.2:1     | Allowed: WCAG doesn't require contrast for disabled controls. |
+| `status/<role>/fg`        | `status/<role>/bg`    | 8.1–9.0:1 | Passes for every role                                         |
+| `status/<role>/on-solid`  | `status/<role>/solid` | 5.5–8.4:1 | Passes for every role                                         |
+| `status/<role>/border`    | `surface/default`     | 4.6–5.4:1 | Passes (needs 3:1)                                            |
+| `status/<role>/solid`     | `surface/default`     | 2.1–3.1:1 | Below 3:1 for most roles. See below.                          |
+| `action/primary/fg`       | `action/primary/bg`   | 4.8:1     | Passes. 6.7:1 on hover, 9.5:1 pressed.                        |
+| `action/secondary/fg`     | `action/secondary/bg` | 13.6:1    | Passes                                                        |
+| `action/secondary/border` | `surface/default`     | 4.9:1     | Passes (needs 3:1)                                            |
+| `action/focus`            | `surface/default`     | 4.8:1     | Passes (needs 3:1)                                            |
+| `color-border/subtle`     | `surface/default`     | 1.1:1     | Decorative only: the card's content carries the meaning.      |
+
+The status dots (`solid` on white) are light, so they never work alone: every Status component shows a text label next to the dot, like "Stale" or "Disconnected". Do the same in your own screens: never show a status by color only.
+
+## Using the colors in your code
+
+Use the semantic CSS variables in your own CSS:
+
+```css title="src/styles/space-summary.css"
+.space-summary {
+  background: var(--shk-surface-default);
+  border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+  color: var(--shk-color-text-primary);
+}
+
+.space-summary__note {
+  color: var(--shk-color-text-secondary);
+}
+```
+
+To change a color for the whole app or for one part of it, see [Changing a token](./design-tokens.mdx#changing-a-token). If you change one, check the contrast pairs above again.
+
+## Related
+
+- [Design tokens](./design-tokens.mdx): how tokens work, how to load them, and how to change them.
+- [Typography](./typography.mdx): the fonts and text styles.
+- [Icons](./icons.mdx): icons take the color of the text around them.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`InlineMessage`](../feedback/inline-message.mdx): the status colors in use.

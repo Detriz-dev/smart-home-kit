@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { LocationPath } from "../../context/LocationPath";
+import { LocationPath } from "../../navigation/LocationPath";
 import { ModuleCard, type ModuleCardSensor } from "../../readings/ModuleCard";
 import { ContentSection } from "./ContentSection";
 

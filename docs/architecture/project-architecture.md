@@ -257,18 +257,19 @@ The design system goes from Figma to the screen in four steps. Each step is a se
 **States and variants.**
 
 - **Status, Readings, History and Controls** components cover the target states from the Glossary: loading, Connected, Stale, Disconnected (value hidden, disconnected icon shown) and Fault.
-- **Context, Layout, Comparison and Feedback** components describe their variants instead.
+- **Context, Layout, Comparison, Feedback and Navigation** components describe their variants instead.
 
 **Components today:**
 
-| Category | Components                                                     |
-| -------- | -------------------------------------------------------------- |
-| context  | LocationPath, SensorLabel                                      |
-| controls | Button, Switch                                                 |
-| feedback | InlineMessage                                                  |
-| layout   | ColumnLayout, ContentSection, StackLayout                      |
-| readings | ModuleCard, ReadingValue, SensorReading, SpaceCard, UnitLabel  |
-| status   | DeviceConnectionStatus, DeviceFaultStatus, DevicePairingStatus |
+| Category   | Components                                                     |
+| ---------- | -------------------------------------------------------------- |
+| context    | SensorLabel                                                    |
+| controls   | Button, Switch                                                 |
+| feedback   | InlineMessage                                                  |
+| layout     | ColumnLayout, ContentSection, StackLayout                      |
+| navigation | LocationPath                                                   |
+| readings   | ModuleCard, ReadingValue, SensorReading, SpaceCard, UnitLabel  |
+| status     | DeviceConnectionStatus, DeviceFaultStatus, DevicePairingStatus |
 
 The full workflow is in [component building](design-system/workflows/component-building.md), and naming rules are in [conventions and structure](design-system/ds-conventions-and-structure.md).
 

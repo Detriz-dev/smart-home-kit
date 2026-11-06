@@ -14,11 +14,11 @@ export type {
   DeviceFaultStatusProps,
   FaultCode,
 } from "./components/status/DeviceFaultStatus";
-export { LocationPath } from "./components/context/LocationPath";
+export { LocationPath } from "./components/navigation/LocationPath";
 export type {
   LocationPathLayout,
   LocationPathProps,
-} from "./components/context/LocationPath";
+} from "./components/navigation/LocationPath";
 export { SensorLabel } from "./components/context/SensorLabel";
 export type {
   SensorLabelMetric,

@@ -4,7 +4,7 @@ How to write the page that people **using** the kit read on the docs site, one p
 
 This is the last part of building a component. The [component building workflow](./component-building.md) ends with a component, its spec (`<Name>.md`) and its stories. This workflow turns them into a page for users.
 
-Worked example: [`location-path.mdx`](/kit/apps/docs-site/docs/ui-components/context/location-path.mdx).
+Worked example: [`location-path.mdx`](/kit/apps/docs-site/docs/ui-components/navigation/location-path.mdx).
 
 ```
 0. Ready? → 1. Create the page → 2. Write the sections → 3. Live examples → 4. Check in the browser → 5. Ship
@@ -53,7 +53,7 @@ After the page is written, update the spec (see [Step 5](#step-5-ship)):
 - Replace the spec's API block with a link to `<Name>.types.ts`, keeping only the decisions behind the props. The API block was needed before the code existed; now the types file is the source.
 - Add anything the page says that the spec doesn't.
 
-Worked example: [`LocationPath.md`](/kit/packages/ui/src/components/context/LocationPath/LocationPath.md).
+Worked example: [`LocationPath.md`](/kit/packages/ui/src/components/navigation/LocationPath/LocationPath.md).
 
 ## How the live examples work
 
@@ -84,7 +84,7 @@ Write the page only when:
 
 ## Step 1. Create the page
 
-1. Make the file `kit/apps/docs-site/docs/ui-components/<category>/<kebab-name>.mdx`, for example `context/location-path.mdx`. The category folder matches the component's folder in `ui`.
+1. Make the file `kit/apps/docs-site/docs/ui-components/<category>/<kebab-name>.mdx`, for example `navigation/location-path.mdx`. The category folder matches the component's folder in `ui`.
 2. Add the front matter:
 
    ```md
@@ -180,7 +180,7 @@ Rules:
 1. Format **only the files you changed**, for example:
 
    ```sh
-   pnpm exec prettier --write kit/apps/docs-site/docs/ui-components/context/location-path.mdx
+   pnpm exec prettier --write kit/apps/docs-site/docs/ui-components/navigation/location-path.mdx
    ```
 
    Running Prettier on the whole docs folder also reformats pages you didn't touch.

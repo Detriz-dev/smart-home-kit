@@ -186,7 +186,7 @@ The dark background of every code block comes from the code theme in `docusaurus
 2. **Run the site:** `pnpm docs-site` from the repo root, open <http://localhost:3000>. CSS changes show up right away. If a `docusaurus.config.ts` change doesn't, stop and restart.
 3. **Inspect first:** find the element in browser DevTools and try the change live in the Styles panel. Then copy it into the file.
 4. **Check both modes and widths:** light and dark (if kept), and a phone width (DevTools → device toolbar). The sidebar turns into a menu below 997px.
-5. **Check a component page** (for example UI Components → Context → LocationPath): the live examples must still look exactly like Storybook.
+5. **Check a component page** (for example UI Components → Navigation → LocationPath): the live examples must still look exactly like Storybook.
 6. **Check it builds:**
    ```bash
    pnpm --filter docs-site typecheck

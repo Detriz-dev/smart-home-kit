@@ -16,7 +16,7 @@ The kit's React components show Sites, Devices and Readings in the [Domain Model
 
 Every screen is built from the same pieces. Here is one screen, with each piece marked by its number: 0 for the Foundations everything is made of, and 1 to 6 for the groups.
 
-![A Bedroom screen. The heading's text style, an icon and the space between the cards are Foundations (0). Its heading and the row of cards are Layout (1). The location path and a Sensor's name are Context (2). Two Module cards with their values are Readings (3). "Connected", "Stale" and "CO₂ sensor failure" are Status (4). A "Couldn't load the last 24 hours" message is Feedback (5), and its Retry button is a Control (6).](./img/component-anatomy.png)
+![A Bedroom screen. The heading's text style, an icon and the space between the cards are Foundations (0). Its heading and the row of cards are Layout (1). A Sensor's name is Context (2). Two Module cards with their values are Readings (3). "Connected", "Stale" and "CO₂ sensor failure" are Status (4). A "Couldn't load the last 24 hours" message is Feedback (5), and its Retry button is a Control (6). The location path is Navigation (7).](./img/component-anatomy.png)
 
 The groups differ in **where their content comes from** and **how often it changes**. That's why they're kept apart: each kind of content needs its own behavior.
 
@@ -39,9 +39,9 @@ The groups differ in **where their content comes from** and **how often it chang
 
 ### 2. Context
 
-**Where is this, what is it?** Fixed facts, like where a Device is or what a Sensor measures. They almost never change: only when the user renames or moves something.
+**What is it?** Fixed facts, like what a Sensor measures. They almost never change: only when the user renames or moves something.
 
-[`LocationPath`](./context/location-path.mdx) · [`SensorLabel`](./context/sensor-label.mdx)
+[`SensorLabel`](./context/sensor-label.mdx)
 
 ### 3. Readings
 
@@ -66,6 +66,12 @@ The groups differ in **where their content comes from** and **how often it chang
 **How do I change what I see?** Inputs for actions and settings in your app. They change when the person clicks or switches something.
 
 [`Button`](./controls/button.mdx) · [`Switch`](./controls/switch.mdx)
+
+### 7. Navigation
+
+**Where am I, and where can I go?** Where the person is in the home, and ways to move between screens. Controls change something on the current screen; Navigation is about place.
+
+[`LocationPath`](./navigation/location-path.mdx)
 
 ### Two rules behind the groups
 

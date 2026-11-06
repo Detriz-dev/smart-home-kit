@@ -1,0 +1,42 @@
+/* Scales for the Space and size page. Only kit tokens, so the page shows the kit's own look. */
+
+.table td {
+  vertical-align: middle;
+}
+
+/* Wide enough for the biggest token (96px), so every row lines up. */
+.visualCell {
+  inline-size: calc(var(--shk-size-24) + var(--shk-space-4));
+}
+
+.bar {
+  display: block;
+  min-inline-size: var(--shk-border-width-thin);
+  block-size: var(--shk-size-4);
+  border-radius: var(--shk-radius-4);
+  background: var(--shk-status-progress-solid);
+}
+
+.square {
+  display: block;
+  border-radius: var(--shk-radius-4);
+  background: var(--shk-status-progress-bg);
+  box-shadow: inset 0 0 0 var(--shk-border-width-thin)
+    var(--shk-status-progress-border);
+}
+
+.value {
+  font-family: var(--shk-font-family-mono);
+  font-size: var(--shk-font-size-14);
+  white-space: nowrap;
+}
+
+/* Hidden on screen, still read by screen readers. */
+.visuallyHidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

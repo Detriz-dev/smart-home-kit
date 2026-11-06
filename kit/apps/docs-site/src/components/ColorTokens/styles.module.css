@@ -1,0 +1,105 @@
+/* Swatches and tables for the Colors page. Only kit tokens, so the page shows the kit's own look. */
+
+.palette {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shk-space-6);
+  margin-block-end: var(--shk-space-6);
+}
+
+.hue {
+  margin: 0 0 var(--shk-space-2);
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+/* 11 steps in one row on wide screens; they wrap on phones. */
+.steps {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(4rem, 1fr));
+  gap: var(--shk-space-3) var(--shk-space-2);
+}
+
+.swatch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--shk-space-1);
+  min-inline-size: 0;
+}
+
+/* The color box. The outline keeps white and very light colors visible on a white page. */
+.chip {
+  display: block;
+  inline-size: 100%;
+  min-inline-size: var(--shk-size-8);
+  block-size: var(--shk-size-10);
+  border-radius: var(--shk-radius-8);
+  box-shadow: inset 0 0 0 var(--shk-border-width-thin)
+    var(--shk-palette-gray-200);
+}
+
+.swatchName,
+.hex {
+  font-family: var(--shk-font-family-mono);
+  font-size: var(--shk-font-size-12);
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+
+.hex {
+  color: var(--ifm-color-emphasis-700);
+}
+
+.textPreview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  inline-size: var(--shk-size-10);
+  block-size: var(--shk-size-10);
+  border-radius: var(--shk-radius-8);
+  box-shadow: inset 0 0 0 var(--shk-border-width-thin)
+    var(--shk-palette-gray-200);
+  font-family: var(--shk-typography-h4-font-family);
+  font-size: var(--shk-typography-h4-font-size);
+  font-weight: var(--shk-typography-h4-font-weight);
+}
+
+.table td {
+  vertical-align: top;
+}
+
+.table .chip {
+  inline-size: var(--shk-size-10);
+}
+
+.nowrap {
+  white-space: nowrap;
+}
+
+/* A status role in use: light fill, outline, text and the solid dot. */
+.sample {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--shk-space-2);
+  padding: var(--shk-space-1) var(--shk-space-3);
+  border: var(--shk-border-width-thin) solid;
+  border-radius: var(--shk-radius-full);
+  white-space: nowrap;
+  font-size: var(--shk-typography-body-sm-font-size);
+}
+
+.dot {
+  inline-size: var(--shk-size-3);
+  block-size: var(--shk-size-3);
+  border-radius: var(--shk-radius-full);
+}
+
+/* Hidden on screen, still read by screen readers. */
+.visuallyHidden {
+  position: absolute;
+  inline-size: 1px;
+  block-size: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}

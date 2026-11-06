@@ -102,7 +102,7 @@ Components in the DeTriz Home design system are grouped by **the question they a
 
 | Category | Question it answers | What belongs here | Components |
 |---|---|---|---|
-| **Context** | "Where is this / what is it?" | Static, descriptive information about places, sensors, devices and time. Never changes on its own. | |
+| **Context** | "What is it?" | Static, descriptive information about sensors, devices and time. (Where things are is Navigation.) Never changes on its own. | |
 | **Readings** | "What is it right now?" | The current values of a single measurement or a single Module. | |
 | **History** | "How has it changed?" | Data over time: trends, past values, summaries. | |
 | **Comparison** | "How do sensors relate to each other?" | Several sensors or metrics shown together. | |
@@ -110,6 +110,7 @@ Components in the DeTriz Home design system are grouped by **the question they a
 | **Feedback** | "What is the interface doing?" | State of the UI and data flow: loading, empty, errors, confirmations. | |
 | **Controls** | "How do I change what I see?" | Inputs that change the view or settings. | |
 | **Layout** | "How is it arranged?" | Structure and spacing for placing other components. | |
+| **Navigation** | "Where am I, and where can I go?" | Wayfinding: where the person is (Site → Floor → Space → Device) and ways to move between screens or views (tabs, bottom nav, top bar, breadcrumbs). | |
 
 ## Rules for placing a component
 
@@ -117,7 +118,9 @@ Components in the DeTriz Home design system are grouped by **the question they a
 - **Composites keep the category of their main job.** A `ReadingCard` that uses `SensorLabel` inside stays in **Readings**.
 - **Context vs Status:** Context is a fixed fact ("Floor 2", "Updated 5 s ago"). Status is a changing state ("Offline", "Battery low", "Air quality: poor").
 - **Status vs Feedback:** Status describes the hardware or environment. Feedback describes the interface ("Loading…", "Couldn't fetch data").
-- **Clickable means Controls.** If a descriptive component becomes interactive (e.g. a clickable location path), the interactive version belongs in **Controls**.
+- **Context vs Navigation:** Context names a thing ("Temperature", "Climate Module"). Navigation places the person in the home or takes them somewhere else ("My flat › Level 2 › Bedroom", a tab bar).
+- **Controls vs Navigation:** Controls change something on the current screen (a setting, a filter, °C/°F). Navigation moves to another screen or view. Tabs that switch views are Navigation; a segmented switch that changes how the same data looks is Controls.
+- **Navigation components don't know about routers.** `ui` is presentational, so they take props like `href`, `isActive` and `onNavigate` and never import a routing library.
 - **Sensor support is metadata, not a category.** Label each component with the sensors it works with (e.g. "works with: temperature · light · air quality").
 
 ## Variant naming
