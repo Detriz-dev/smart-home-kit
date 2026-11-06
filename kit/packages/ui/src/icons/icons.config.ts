@@ -8,6 +8,7 @@ export const iconConfig = {
   /** Keep this list in alphabetical order, so it's easy to scan in reviews. */
   icons: [
     "airwave",
+    "arrow_back",
     "bathtub",
     "battery_full",
     "bed",

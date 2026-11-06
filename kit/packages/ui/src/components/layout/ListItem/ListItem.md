@@ -23,7 +23,7 @@ What it does **not** do, and why:
 - **Know what it lists.** A Space, a Module and a Metric look the same to it. [`DeviceListItem`](../../status/DeviceListItem/DeviceListItem.md) (Status) is a ListItem made for Devices, with typed props.
 - **Show a status for a Space.** A Space has no status. Put a `DeviceConnectionStatus` in `end` only for a row about one Device.
 - **Select rows** (checkboxes, a chosen row). That's a picker or a Control, not a list row. Not in v1.
-- **Know the app's routes.** Same as `Card`: a plain `href` or an `onClick`.
+- **Know the app's routes.** Same as `Card`: an `href` (rendered through `KitLink`, so `LinkProvider` applies) or an `onClick`.
 
 ### Visual idea
 
@@ -149,4 +149,3 @@ All exist in `tokens.css`. The focus ring sits inside the row (`outline-offset` 
 ### Open questions
 
 - **A chevron (›) at the end of clickable rows**, to show they lead somewhere, like iOS lists. It needs a `chevron_right` icon and a decision about rows that also have an `end`. Not in v1: the hover fill and pointer show it on desktop, but on touch screens nothing shows it until tapped.
-- **Routing.** The same as `Card`: `href` is a plain link, to be decided kit-wide with navigation.

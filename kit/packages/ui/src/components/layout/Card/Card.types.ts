@@ -27,7 +27,7 @@ export interface CardStaticProps extends CardBaseProps {
 export interface CardLinkProps extends CardBaseProps {
   /** The card's name, plain text, e.g. "Kitchen". Required: it is the link's text, so screen readers hear "Kitchen, link". */
   title: string;
-  /** Where the card leads, e.g. `/spaces/kitchen`. A plain link: it doesn't use the app's router yet. */
+  /** Where the card leads, e.g. `/spaces/kitchen`. It uses the app's router through `LinkProvider`. */
   href: string;
   /** A card is a link or a button, not both. */
   onClick?: never;

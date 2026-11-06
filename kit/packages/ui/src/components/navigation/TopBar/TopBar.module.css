@@ -1,0 +1,87 @@
+@layer detriz {
+  /* The bar: one row, centred vertically, a thin line under it. At least 64px tall, so it's the same
+     height with or without a back button. Fills its parent; where it sits (sticky or not) is the app's layout. */
+  .root {
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: var(--shk-space-2);
+    inline-size: 100%;
+    min-block-size: var(--shk-size-16);
+    padding-block: var(--shk-space-2);
+    padding-inline: var(--shk-space-4);
+    border-block-end: var(--shk-border-width-thin) solid
+      var(--shk-color-border-subtle);
+    background: var(--shk-surface-default);
+    color: var(--shk-color-text-primary);
+  }
+
+  /* With a back button the left padding is 8px, so the arrow lines up with the content's edge. */
+  .root[data-has-back] {
+    padding-inline-start: var(--shk-space-2);
+  }
+
+  /* The back button: a 44px square with the arrow centred. The same look as a link or a button. */
+  .back {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--shk-size-11);
+    block-size: var(--shk-size-11);
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    border: none;
+    border-radius: var(--shk-radius-8);
+    background: none;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  /* Grey fill under the pointer and while pressed, the same tokens as Button secondary. */
+  .back:hover {
+    background: var(--shk-action-secondary-bg-hover);
+  }
+
+  .back:active {
+    background: var(--shk-action-secondary-bg-pressed);
+  }
+
+  /* A visible ring when the back button is reached with the keyboard, drawn on its edge. */
+  .back:focus-visible {
+    outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+    outline-offset: calc(-1 * var(--shk-border-width-medium));
+  }
+
+  /* The <h1>: icon and title, filling the space left. No browser margins. */
+  .heading {
+    display: flex;
+    flex: 1 1 auto;
+    align-items: center;
+    gap: var(--shk-space-2);
+    min-inline-size: 0;
+    margin: var(--shk-space-0);
+  }
+
+  /* The title in the h3 text style, on one line, ending with "…". */
+  .title {
+    overflow: hidden;
+    min-inline-size: 0;
+    font-family: var(--shk-typography-h3-font-family);
+    font-size: var(--shk-typography-h3-font-size);
+    font-weight: var(--shk-typography-h3-font-weight);
+    line-height: var(--shk-typography-h3-line-height);
+    letter-spacing: var(--shk-typography-h3-letter-spacing);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* Actions on the right, never shrinking. */
+  .actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--shk-space-2);
+  }
+}

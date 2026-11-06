@@ -20,6 +20,14 @@ export type {
   DeviceFaultStatusProps,
   FaultCode,
 } from "./components/status/DeviceFaultStatus";
+export { TopBar } from "./components/navigation/TopBar";
+export type { TopBarProps } from "./components/navigation/TopBar";
+export { LinkProvider } from "./link";
+export type {
+  LinkComponent,
+  LinkComponentProps,
+  LinkProviderProps,
+} from "./link";
 export { LocationPath } from "./components/navigation/LocationPath";
 export type {
   LocationPathLayout,

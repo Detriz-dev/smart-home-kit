@@ -1,0 +1,190 @@
+---
+sidebar_position: 2
+sidebar_label: TopBar
+description: The bar at the top of a screen, with a back button, the screen's title and actions.
+---
+
+# TopBar
+
+The bar at the top of an app screen: a back button, the screen's title (with an optional icon) and actions on the right. It tells people where they are and how to go back.
+
+```jsx live
+<div style={{ maxWidth: 390 }}>
+  <TopBar title="Kitchen" icon="countertops" backHref="#home" />
+</div>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+TopBar fills the width of its parent, so the examples sit in a `div` with a phone's width.
+
+## Import
+
+```tsx
+import { TopBar } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass the screen's title, and where the back button leads:
+
+```tsx
+import { TopBar } from "@detriz-sh-kit/ui";
+
+<TopBar title="Kitchen" backHref="/" />;
+```
+
+The back button is a link. To make it use your router, wrap your app in `LinkProvider` once: see [Links and routing](/docs/get-started/links-and-routing).
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use TopBar once per screen, at the top:
+
+- **on a room's screen**, with a back button and the room's icon
+- **on a top-level screen**, like Devices, with actions on the right
+
+Don't use it for:
+
+- **The full location** (My flat › Level 2 › Kitchen). Put a [`LocationPath`](./location-path.mdx) under the bar.
+- **The headings inside a screen.** Use [`ContentSection`](../layout/content-section.mdx).
+- **Commands to Devices.** The kit never sends them. Actions are things like adding a Device.
+
+## Parts
+
+Every part but the title is optional.
+
+| Part        | Props                  | Shown                                |
+| ----------- | ---------------------- | ------------------------------------ |
+| Back button | `backHref` or `onBack` | On the left, 44 × 44px, named "Back" |
+| Icon        | `icon`                 | Before the title, 24px               |
+| Title       | `title`                | The screen's `<h1>`                  |
+| Actions     | `actions`              | On the right, e.g. a `Button`        |
+
+### With a back button
+
+```jsx live
+<div style={{ maxWidth: 390 }}>
+  <TopBar title="Kitchen" icon="countertops" backHref="#home" />
+</div>
+```
+
+`backHref` makes the back button a link. To go back to wherever people came from, pass `onBack` instead, for example `onBack={() => router.back()}`. Pass one of them, not both. `backLabel` changes the name screen readers hear (default "Back"), for example "Back to My flat".
+
+### With actions
+
+```jsx live
+<div style={{ maxWidth: 390 }}>
+  <TopBar
+    title="Devices"
+    actions={
+      <Button variant="primary" onClick={() => {}}>
+        Add Device
+      </Button>
+    }
+  />
+</div>
+```
+
+### A top-level screen
+
+```jsx live
+<div style={{ maxWidth: 390 }}>
+  <TopBar title="My flat" icon="home" />
+</div>
+```
+
+## Mapping your data
+
+| Your screen   | Props                                                            |
+| ------------- | ---------------------------------------------------------------- |
+| A Space       | `title={space.name}`, `icon={SPACE_TYPE_ICONS[space.spaceType]}` |
+| A Site        | `title={site.name}`, `icon="home"`                               |
+| A list screen | `title="Devices"`, actions for that screen                       |
+
+Take a room's icon from [`SPACE_TYPE_ICONS`](../context/space-label.mdx#the-icon-for-a-card), so the bar shows the same icon as the room's card.
+
+## Props
+
+| Prop        | Type         | Default  | Description                                                                                 |
+| ----------- | ------------ | -------- | ------------------------------------------------------------------------------------------- |
+| `title`     | `string`     | –        | **Required.** The screen's title, plain text, e.g. "Kitchen". Shown as the screen's `<h1>`. |
+| `icon`      | `IconName`   | –        | An icon before the title, e.g. `SPACE_TYPE_ICONS.kitchen`. Decorative.                      |
+| `backHref`  | `string`     | –        | Shows a back button that links here, e.g. `/`. Uses your router through `LinkProvider`.     |
+| `onBack`    | `() => void` | –        | Shows a back button that calls this, e.g. `() => router.back()`. Not with `backHref`.       |
+| `backLabel` | `string`     | `"Back"` | The back button's name for screen readers. Only with a back button.                         |
+| `actions`   | `ReactNode`  | –        | Shown on the right, e.g. a `Button`. Never shrinks.                                         |
+
+The type `TopBarProps` is exported too.
+
+## Long text
+
+A long title stays on one line and ends with "…". Point at it to see the full title. The back button and the actions keep their size.
+
+```jsx live
+<div
+  style={{ maxWidth: 320, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <TopBar
+    title="Living room and dining area by the garden"
+    icon="weekend"
+    backHref="#home"
+    actions={
+      <Button variant="primary" onClick={() => {}}>
+        Add Device
+      </Button>
+    }
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The bar is a `<header>`, and the title is the screen's `<h1>`, so screen reader users land on it with the heading shortcut.
+- The back button is a real link or button, at least 44 × 44px, named "Back" (or your `backLabel`). Its arrow is hidden from screen readers.
+- The title icon is decorative: the title says the name.
+- Keyboard focus shows a 2px ring on the back button.
+
+What's up to you:
+
+- **One TopBar per screen**, so there's one `<h1>`. Start your [`ContentSection`](../layout/content-section.mdx)s at level 2.
+- **A specific back label** when "Back" isn't clear, for example "Back to My flat".
+- **Sticking to the top.** TopBar doesn't fix itself to the top of the page. If you want that, give its parent `position: sticky` in your layout.
+
+## Styling
+
+| What                | Token                                                                           |
+| ------------------- | ------------------------------------------------------------------------------- |
+| Background          | `--shk-surface-default`                                                         |
+| Line under the bar  | `--shk-border-width-thin`, `--shk-color-border-subtle`                          |
+| Padding             | `--shk-space-2` (top, bottom, left with a back button), `--shk-space-4` (sides) |
+| Height              | at least `--shk-size-16` (64px)                                                 |
+| Title               | `--shk-color-text-primary`, `--shk-typography-h3-*`                             |
+| Back button         | `--shk-size-11` (44px), `--shk-radius-8`                                        |
+| Back hover, pressed | `--shk-action-secondary-bg-hover`, `--shk-action-secondary-bg-pressed`          |
+| Back focus ring     | `--shk-action-focus`, `--shk-border-width-medium`                               |
+
+To change how it looks, set a [design token](../foundations/design-tokens.mdx) on a parent element.
+
+## Related components
+
+- [`LocationPath`](./location-path.mdx): the full location, under the bar.
+- [`ContentSection`](../layout/content-section.mdx): the headings inside the screen, from level 2.
+- [`SpaceLabel`](../context/space-label.mdx): its `SPACE_TYPE_ICONS` gives a room's screen its icon.
+- [Links and routing](/docs/get-started/links-and-routing): make the back button use your router.

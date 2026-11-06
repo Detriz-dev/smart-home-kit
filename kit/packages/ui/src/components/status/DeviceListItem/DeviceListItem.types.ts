@@ -42,7 +42,7 @@ interface DeviceListItemStaticAction {
 
 /** A row that is a link, e.g. to the Device's own screen. */
 interface DeviceListItemLinkAction {
-  /** Where the row leads, e.g. `/devices/climate-module`. A plain link: it doesn't use the app's router yet. */
+  /** Where the row leads, e.g. `/devices/climate-module`. It uses the app's router through `LinkProvider`. */
   href: string;
   /** A row is a link or a button, not both. */
   onClick?: never;
