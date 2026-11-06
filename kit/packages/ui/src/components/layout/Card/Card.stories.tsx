@@ -29,6 +29,23 @@ const meta: Meta<typeof Card> = {
   },
   // headerEnd and children are real components, so they have no control. title and footer get text boxes.
   argTypes: {
+    // The Space Type icons, plus none.
+    icon: {
+      control: "select",
+      options: [
+        undefined,
+        "bed",
+        "bathtub",
+        "countertops",
+        "weekend",
+        "door_front",
+        "garage_home",
+        "desk",
+        "groups",
+        "yard",
+        "home",
+      ],
+    },
     headerEnd: { control: false },
     children: { control: false },
   },
@@ -59,14 +76,20 @@ type Story = StoryObj<typeof Card>;
 // isInteractive=false: a card about one Module, with its Connection Status.
 export const Default: Story = {};
 
-// A Space: no status in the header, because a Space has no status.
+// A Space with its Space Type icon. No status in the header, because a Space has no status.
 export const Space: Story = {
-  args: { title: "Kitchen", headerEnd: undefined, footer: undefined },
+  args: {
+    icon: "countertops",
+    title: "Kitchen",
+    headerEnd: undefined,
+    footer: undefined,
+  },
 };
 
 // isInteractive=true as a link. "#" keeps Storybook on the same page.
 export const ClickableLink: Story = {
   args: {
+    icon: "countertops",
     title: "Kitchen",
     href: "#/spaces/kitchen",
     headerEnd: undefined,
@@ -77,6 +100,7 @@ export const ClickableLink: Story = {
 // isInteractive=true as a button.
 export const ClickableButton: Story = {
   args: {
+    icon: "countertops",
     title: "Kitchen",
     onClick: () => {},
     headerEnd: undefined,

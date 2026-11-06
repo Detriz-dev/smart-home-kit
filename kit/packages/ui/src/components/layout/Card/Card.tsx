@@ -1,9 +1,11 @@
 import { useId } from "react";
+import { Icon } from "../../../icons/Icon";
 import styles from "./Card.module.css";
 import type { CardProps } from "./Card.types";
 
 /** The plain card surface with an optional header and footer. Clickable when given `href` or `onClick`. Takes props only, never fetches data. */
 export function Card({
+  icon,
   title,
   headerEnd,
   children,
@@ -57,6 +59,12 @@ export function Card({
     >
       {hasHeader && (
         <div className={styles.header}>
+          {/* Decorative: the title next to it already says the name, so Icon hides it from screen readers. */}
+          {icon !== undefined && hasTitle && (
+            <span className={styles.icon}>
+              <Icon name={icon} size="md" />
+            </span>
+          )}
           {titleElement}
           {headerEnd !== undefined && (
             <div className={styles.headerEnd}>{headerEnd}</div>

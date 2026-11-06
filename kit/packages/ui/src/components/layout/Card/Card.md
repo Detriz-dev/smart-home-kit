@@ -24,14 +24,14 @@ What it does **not** do, and why:
 - **Lay out its content.** The content stacks with a fixed gap. For columns, put a `ColumnLayout` inside; for a list, a list.
 - **Know the app's routes.** A clickable card gets a plain `href` or an `onClick`. Working with an app's router (Next.js, React Router) comes later, see [Open questions](#open-questions).
 - **Offer padding, colour or size props.** One look only, so a generated screen can't make cards that don't match.
-- **Format the title.** `title` is plain text: no links, bold or icons.
+- **Format the title.** `title` is plain text: no links or bold. An icon goes in `icon`, not in the title.
 
 ### Visual idea
 
 | Question                        | Answer                                                                                                   |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------- |
 | What does it roughly look like? | The white card that `SpaceCard` and `ModuleCard` already use: subtle border, 16px corners, 16px padding. |
-| Icons?                          | No. Content placed inside can have its own.                                                              |
+| Icons?                          | Optional, 24px (`md`), before the title, e.g. the Space Type icon on a room card.                        |
 | Separators?                     | No. The gap separates header, content and footer.                                                        |
 | More than one layout?           | One layout. Header, content and footer are each optional parts. A clickable card adds interaction looks. |
 | Clickable look                  | Same as static at rest. Grey fill on hover and press, blue focus ring from the keyboard, like `Button`.  |
@@ -69,6 +69,7 @@ There is no disabled state: a card that leads nowhere is simply not clickable. T
 | Part        | Shown when                      | Figma property  |
 | ----------- | ------------------------------- | --------------- |
 | `header`    | `title` or `headerEnd` is given | `hasHeader`     |
+| `icon`      | `icon` and `title` are given    | `hasIcon`       |
 | `title`     | `title` is given                | `title` (text)  |
 | `headerEnd` | `headerEnd` is given            | `hasHeaderEnd`  |
 | `children`  | always                          | slot `children` |
@@ -89,6 +90,7 @@ Target states:
 ```
 root                     the surface: background, border, radius, padding
 ├── header               one row, only when title or headerEnd is given
+│   ├── icon             optional, 24px, decorative
 │   ├── title            the card name, one line, ends with "…"
 │   └── headerEnd        slot: e.g. DeviceConnectionStatus
 ├── children             slot: whatever is passed in
@@ -97,7 +99,7 @@ root                     the surface: background, border, radius, padding
 ```
 
 1. **root**: stacks header, children and footer 12px apart, with 16px padding (minus the 1px border, as in `SpaceCard`).
-2. **header**: title on the left, `headerEnd` on the right, 8px apart, centred vertically.
+2. **header**: icon and title on the left, `headerEnd` on the right, 8px apart, centred vertically.
 3. **title**: fills the space left by `headerEnd` and truncates. In a clickable card it is the `<a>` or `<button>`.
 4. **headerEnd**: holds whatever is passed in and never shrinks.
 5. **children**: no element in code. The children sit straight in `root`, which already sets the 12px gap (same as `ContentSection`).
@@ -124,8 +126,9 @@ Figma's sample content and the stories use these:
 | Case               | title                                | headerEnd                          | children                            | footer            |
 | ------------------ | ------------------------------------ | ---------------------------------- | ----------------------------------- | ----------------- |
 | Default (Module)   | Climate Module                       | `DeviceConnectionStatus` connected | `SensorReading` Temperature 22.4 °C | Updated 2 min ago |
-| Space              | Kitchen                              | none (a Space has no status)       | `SensorReading` Temperature 22.4 °C | none              |
-| Space, clickable   | Kitchen (`href="/spaces/kitchen"`)   | none                               | `SensorReading` Temperature 22.4 °C | none              |
+| Space              | `countertops` + Kitchen              | none (a Space has no status)       | `SensorReading` Temperature 22.4 °C | none              |
+| Space, clickable   | `countertops` + Kitchen, `href`      | none                               |
+| Bedroom, clickable | `bed` + Bedroom, `href`              | none                               | `SensorReading` Temperature 22.4 °C | none              |
 | `LongText` (240px) | Climate Module by the kitchen window | `DeviceConnectionStatus` connected | `SensorReading` Temperature 22.4 °C | Updated 2 min ago |
 | `Minimal`          | none                                 | none                               | `SensorReading` Temperature 22.4 °C | none              |
 
@@ -139,7 +142,8 @@ Figma's sample content and the stories use these:
 | root           | padding           | `calc(var(--shk-space-4) - var(--shk-border-width-thin))`                      |
 | root           | gap               | `--shk-space-3`                                                                |
 | header         | gap               | `--shk-space-2`                                                                |
-| title          | color             | `--shk-color-text-primary`                                                     |
+| title, icon    | color             | `--shk-color-text-primary`                                                     |
+| icon           | size              | `--shk-size-6` (24px, `Icon` size `md`)                                        |
 | title          | text style        | `--shk-typography-h4-*`                                                        |
 | footer         | color, text style | `--shk-color-text-secondary`, `--shk-typography-caption-*`                     |
 | root (hover)   | background        | `--shk-action-secondary-bg-hover`                                              |
@@ -155,6 +159,7 @@ All of these exist in `tokens.css`; nothing new is needed. In Figma, padding bin
 - Clickable card: `root` is a plain `<div>` too. The link or button already carries the name, and a group with the same name would make screen readers say "Kitchen" twice.
 - The title isn't a heading, so it doesn't break the heading order of the page. Put cards inside a `ContentSection` for headings.
 - `title` is rendered as text, never as HTML. The full title is in the `title` attribute when it truncates.
+- The icon is decorative (`aria-hidden`): the title next to it already says the name. It never replaces the title, so it's shown only when there is one.
 - Text contrast: `text/primary` on `surface/default`. The border is decoration only; the card doesn't rely on it to be understood.
 - Reading order: title, `headerEnd`, content, footer.
 - Clickable card: the title is the one focusable element, so Tab stops once per card. The link or button is named by the title ("Kitchen, link"). The focus ring is drawn around the whole card, not just the title: `root` gets the outline when its link has keyboard focus (`.root:has(:focus-visible)`).
@@ -162,9 +167,9 @@ All of these exist in `tokens.css`; nothing new is needed. In Figma, padding bin
 
 ### Decisions
 
+- **Icon:** `icon` takes an `IconName`, so `Card` stays generic: it doesn't know Space Types. Which icon goes with which Space Type is decided once, in the Space Type → icon map in the [icon workflow](/docs/architecture/design-system/workflows/add-icon-to-design-system-workflow.md), and moves into code with the planned `SpaceLabel`. `title` stays plain text, because on a clickable card it is the link's text. Size 24px (`md`), chosen by the designer over 20px. In Figma the `icon` layer is an exposed `Icon` instance, so designers pick the icon on each card instance.
 - **Narrow header:** `Card` keeps the header in one row at every width and truncates the title. `ModuleCard` stacks its status under the name below 332px; that stays `ModuleCard`'s own behaviour for now.
 
 ### Open questions
 
 - **Routing.** `href` gives a plain `<a>`, which reloads the page in apps with a client-side router. Apps will need to pass in their own link component (Next.js `Link`, React Router `Link`). Decide this once for the whole kit, with navigation (`TopBar`, `BottomNav`, `Breadcrumbs`), not per component. It adds a prop; `href` and `onClick` stay as they are.
-- **Icon before the title.** A room card might show the Space Type icon. That would come from the planned `SpaceLabel`, so `title` may later accept a label component. Wait for `SpaceLabel`.

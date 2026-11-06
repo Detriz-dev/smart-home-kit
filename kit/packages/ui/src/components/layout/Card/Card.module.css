@@ -45,6 +45,13 @@
     white-space: nowrap;
   }
 
+  /* The icon before the title: the title's colour (Icon draws in currentColor), and it never shrinks. */
+  .icon {
+    display: flex;
+    flex-shrink: 0;
+    color: var(--shk-color-text-primary);
+  }
+
   /* headerEnd keeps its full width; the title gives way. */
   .headerEnd {
     display: flex;

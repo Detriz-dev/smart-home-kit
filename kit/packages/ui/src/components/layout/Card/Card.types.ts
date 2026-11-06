@@ -1,7 +1,10 @@
 import type { ReactNode } from "react";
+import type { IconName } from "../../../icons/Icon";
 
 /** The parts every card can have, clickable or not. */
 interface CardBaseProps {
+  /** An icon before the title, 24px, e.g. `countertops` for a Kitchen. Decorative: screen readers skip it, the title says the name. Shown only with a `title`. */
+  icon?: IconName;
   /** Shown at the right end of the header, e.g. a `DeviceConnectionStatus` when the card is about one Module. Never shrinks. */
   headerEnd?: ReactNode;
   /** The card's content, top to bottom, 12px apart. */
