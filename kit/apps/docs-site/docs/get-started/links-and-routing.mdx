@@ -12,7 +12,7 @@ keywords:
 
 # Use your router's links
 
-Wrap your app in `LinkProvider` once, and every link in the kit uses your router: a clickable [`Card`](/docs/ui-components/layout/card), a clickable [`ListItem`](/docs/ui-components/layout/list) or [`DeviceListItem`](/docs/ui-components/status/device-list-item), and [`TopBar`](/docs/ui-components/navigation/top-bar)'s back button.
+Wrap your app in `LinkProvider` once, and every link in the kit uses your router: a clickable [`Card`](/docs/ui-components/layout/card), a clickable [`ListItem`](/docs/ui-components/layout/list) or [`DeviceListItem`](/docs/ui-components/status/device-list-item), [`TopBar`](/docs/ui-components/navigation/top-bar)'s back button, and [`BottomNav`](/docs/ui-components/navigation/bottom-nav)'s sections.
 
 ## Why
 
@@ -56,14 +56,15 @@ function RouterLink({ href, ...props }: LinkComponentProps) {
 
 Your link component gets these props. Pass them all on to the element it renders, or the kit's styles and accessibility break.
 
-| Prop         | What it is                                                     |
-| ------------ | -------------------------------------------------------------- |
-| `href`       | Where the link goes, e.g. `/spaces/kitchen`.                   |
-| `className`  | The kit's class, so the link keeps the component's look.       |
-| `children`   | The link's content.                                            |
-| `id`         | Sometimes set, so other elements can refer to the link.        |
-| `title`      | Sometimes set: the full text when it's cut off with "…".       |
-| `aria-label` | Sometimes set: the name of a link with no visible text (Back). |
+| Prop           | What it is                                                             |
+| -------------- | ---------------------------------------------------------------------- |
+| `href`         | Where the link goes, e.g. `/spaces/kitchen`.                           |
+| `className`    | The kit's class, so the link keeps the component's look.               |
+| `children`     | The link's content.                                                    |
+| `id`           | Sometimes set, so other elements can refer to the link.                |
+| `title`        | Sometimes set: the full text when it's cut off with "…".               |
+| `aria-label`   | Sometimes set: the name of a link with no visible text (Back).         |
+| `aria-current` | Sometimes set: `"page"` on the link to the current screen (BottomNav). |
 
 The type is exported as `LinkComponentProps`.
 

@@ -1,0 +1,215 @@
+---
+sidebar_position: 3
+sidebar_label: BottomNav
+description: The app's main sections as a bar at the bottom of the screen on phones, with the current section marked.
+---
+
+# BottomNav
+
+The main sections of your app as a bar at the bottom of the screen, like Home, Devices, History and Settings. Each section has an icon and a label, and the current one is marked, so people always know where they are. Made for phones and wall tablets.
+
+```jsx live
+<div style={{ maxWidth: 390 }}>
+  <BottomNav
+    items={[
+      { label: "Home", icon: "home", href: "#home", isCurrent: true },
+      { label: "Devices", icon: "sensors", href: "#devices" },
+      { label: "History", icon: "monitoring", href: "#history" },
+      { label: "Settings", icon: "settings", href: "#settings" },
+    ]}
+  />
+</div>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+BottomNav fills the width of its parent, so the examples sit in a `div` with a phone's width.
+
+## Import
+
+```tsx
+import { BottomNav } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass your sections as `items`, and mark the one people are in with `isCurrent`:
+
+```tsx
+import { BottomNav } from "@detriz-sh-kit/ui";
+
+<BottomNav
+  items={[
+    { label: "Home", icon: "home", href: "/", isCurrent: true },
+    { label: "Devices", icon: "sensors", href: "/devices" },
+    { label: "Settings", icon: "settings", href: "/settings" },
+  ]}
+/>;
+```
+
+Every item is a link. To make the links use your router, wrap your app in `LinkProvider` once: see [Links and routing](/docs/get-started/links-and-routing).
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use BottomNav:
+
+- **for the 3 to 5 main sections** of an app on phones and wall tablets
+- **on every top-level screen**, in the same place, so people learn it
+
+Don't use it for:
+
+- **The screen's title and the way back.** Use [`TopBar`](./top-bar.mdx).
+- **Switching views of one thing** (a room's Overview and History). Use `Tabs` (planned).
+- **Wide screens.** A side column fits better there (`SideNav`, planned). Render one or the other depending on the screen width.
+
+## Number of items
+
+Use 3, 4 or 5 items. They share the width equally.
+
+| Items | Use it when                                                       |
+| ----- | ----------------------------------------------------------------- |
+| 3     | A small app: Home, Devices, Settings.                             |
+| 4     | The usual case.                                                   |
+| 5     | The most a phone has room for. Keep the labels to one short word. |
+
+With fewer than 3 sections, you don't need a bar. With more than 5, the labels get too narrow: group some sections, or move them into Settings.
+
+```jsx live
+<div style={{ maxWidth: 390 }}>
+  <StackLayout gap="lg">
+    {/* 3 items */}
+    <BottomNav
+      items={[
+        { label: "Home", icon: "home", href: "#home" },
+        {
+          label: "Devices",
+          icon: "sensors",
+          href: "#devices",
+          isCurrent: true,
+        },
+        { label: "Settings", icon: "settings", href: "#settings" },
+      ]}
+    />
+    {/* 5 items */}
+    <BottomNav
+      items={[
+        { label: "Home", icon: "home", href: "#home" },
+        { label: "Spaces", icon: "door_front", href: "#spaces" },
+        { label: "Devices", icon: "sensors", href: "#devices" },
+        {
+          label: "History",
+          icon: "monitoring",
+          href: "#history",
+          isCurrent: true,
+        },
+        { label: "Settings", icon: "settings", href: "#settings" },
+      ]}
+    />
+  </StackLayout>
+</div>
+```
+
+## The current section
+
+Set `isCurrent` on exactly one item: the section the person is in. It gets a blue bar on its top edge, a blue icon and a blue, slightly heavier label, and screen readers hear "current page".
+
+A section stays current on its own sub-screens. On a Module's screen (`/devices/climate-module`), Devices is still current. Work this out from your router's current path, for example:
+
+```tsx
+const path = usePathname(); // next/navigation
+const items = sections.map((section) => ({
+  ...section,
+  isCurrent:
+    section.href === "/" ? path === "/" : path.startsWith(section.href),
+}));
+```
+
+## Props
+
+| Prop    | Type              | Default  | Description                                                   |
+| ------- | ----------------- | -------- | ------------------------------------------------------------- |
+| `items` | `BottomNavItem[]` | –        | **Required.** The app's main sections, left to right. 3 to 5. |
+| `label` | `string`          | `"Main"` | The bar's name for screen readers.                            |
+
+`BottomNavItem`:
+
+| Field       | Type       | Default | Description                                                                                         |
+| ----------- | ---------- | ------- | --------------------------------------------------------------------------------------------------- |
+| `label`     | `string`   | –       | **Required.** The section's name, e.g. "Devices". Short: one word if you can.                       |
+| `icon`      | `IconName` | –       | **Required.** The section's icon, e.g. `sensors`. Decorative: the label names the section.          |
+| `href`      | `string`   | –       | **Required.** Where the section is, e.g. `/devices`. Uses your router through `LinkProvider`.       |
+| `isCurrent` | `boolean`  | `false` | True for the section the person is in, also on its sub-screens. Exactly one item should be current. |
+
+The types `BottomNavProps` and `BottomNavItem` are exported too.
+
+## Long text
+
+A long label stays on one line and ends with "…". The icons stay whole. Keep labels short: with 5 items on a small phone, each has about 60px.
+
+```jsx live
+<div
+  style={{ maxWidth: 320, outline: "1px dashed var(--shk-palette-gray-300)" }}
+>
+  <BottomNav
+    items={[
+      { label: "Home", icon: "home", href: "#home", isCurrent: true },
+      { label: "Devices", icon: "sensors", href: "#devices" },
+      { label: "Air quality history", icon: "monitoring", href: "#history" },
+      { label: "Notifications and alerts", icon: "settings", href: "#alerts" },
+      { label: "Settings", icon: "settings", href: "#settings" },
+    ]}
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The bar is a `<nav>` named "Main" (or your `label`), so screen readers list it as a landmark.
+- The items are a list, and each is a link named by its label. The icons are hidden from screen readers.
+- The current item has `aria-current="page"`, so screen readers say "current page".
+- The current item is marked by the bar, the heavier label and the colour, not by colour alone. Hover and focus turn items blue too, but never add the bar, so they can't be mistaken for current.
+- Each item is 70px tall and an equal share of the width: a comfortable touch target.
+- Keyboard focus shows a 2px dark-blue ring around the whole item, drawn inside it so the screen's edge doesn't cut it off. It's the same ring as every other component in the kit.
+
+What's up to you:
+
+- **Exactly one current item.**
+- **Short, clear labels.** One word, the same as the screen's title in its [`TopBar`](./top-bar.mdx).
+- **Keeping it at the bottom.** BottomNav doesn't fix itself to the screen. Give its parent `position: sticky; bottom: 0` (or similar) in your layout, and leave room for the phone's home indicator (`env(safe-area-inset-bottom)`).
+
+## Styling
+
+| What               | Token                                                                                     |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| Background         | `--shk-surface-default`                                                                   |
+| Line above the bar | `--shk-border-width-thin`, `--shk-color-border-subtle`                                    |
+| Icon and label     | `--shk-color-text-secondary`; hover, focus and current `--shk-action-current-fg`          |
+| Label              | `--shk-typography-caption-*`; current `--shk-font-weight-medium`                          |
+| Current bar        | `--shk-action-current-indicator`, 4px tall (`--shk-border-width-thick`), `--shk-radius-4` |
+| Pressed background | `--shk-action-subtle-bg-pressed`, `--shk-radius-12`                                       |
+| Focus ring         | `--shk-action-focus`, `--shk-border-width-medium`, `--shk-radius-12`                      |
+
+To change how it looks, set a [design token](../foundations/design-tokens.mdx) on a parent element.
+
+## Related components
+
+- [`TopBar`](./top-bar.mdx): the top of each screen, with its title and the way back.
+- [Links and routing](/docs/get-started/links-and-routing): make the items use your router.
+- [`Icon`](../foundations/icons.mdx): the icons you can use for sections.

@@ -20,6 +20,11 @@ export type {
   DeviceFaultStatusProps,
   FaultCode,
 } from "./components/status/DeviceFaultStatus";
+export { BottomNav } from "./components/navigation/BottomNav";
+export type {
+  BottomNavItem,
+  BottomNavProps,
+} from "./components/navigation/BottomNav";
 export { TopBar } from "./components/navigation/TopBar";
 export type { TopBarProps } from "./components/navigation/TopBar";
 export { LinkProvider } from "./link";
