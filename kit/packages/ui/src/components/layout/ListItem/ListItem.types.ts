@@ -6,6 +6,8 @@ interface ListItemBaseProps {
   start?: ReactNode;
   /** A second line under the title, e.g. "Ground floor". Plain text, one line, ends with "…" when too long. */
   description?: string;
+  /** Shown under the description, e.g. a list of `DeviceFaultStatus`. For content too long for the right side. */
+  details?: ReactNode;
   /** Shown on the right, e.g. a `SensorReading` or a `DeviceConnectionStatus`. Never shrinks. */
   end?: ReactNode;
 }

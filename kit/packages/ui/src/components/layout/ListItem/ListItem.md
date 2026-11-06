@@ -20,7 +20,7 @@ Category: **Layout** ("How is it arranged?"), like `Card`. It shows no domain te
 
 What it does **not** do, and why:
 
-- **Know what it lists.** A Space, a Module and a Metric look the same to it. The planned `DeviceListItem` (Status) will be a ListItem made for Devices, with typed props.
+- **Know what it lists.** A Space, a Module and a Metric look the same to it. [`DeviceListItem`](../../status/DeviceListItem/DeviceListItem.md) (Status) is a ListItem made for Devices, with typed props.
 - **Show a status for a Space.** A Space has no status. Put a `DeviceConnectionStatus` in `end` only for a row about one Device.
 - **Select rows** (checkboxes, a chosen row). That's a picker or a Control, not a list row. Not in v1.
 - **Know the app's routes.** Same as `Card`: a plain `href` or an `onClick`.
@@ -64,6 +64,7 @@ The row fills the width of its `List`. Title and description each stay on one li
 | `start`       | `start` is given                                          | `hasStart`                                              |
 | `title`       | `title` is given                                          | `hasTitle` (hides the whole text block), `title` (text) |
 | `description` | `description` is given                                    | `hasDescription`, `description` (text)                  |
+| `details`     | `details` is given                                        | `hasDetails`, slot `details`                            |
 | `end`         | `end` is given                                            | `hasEnd`                                                |
 | `divider`     | the `List` has `hasDividers` and this isn't the first row | `hasDivider`                                            |
 
@@ -85,7 +86,8 @@ root (li)                the row: padding, hover fill, divider line on top
 │   ├── start            slot: e.g. Icon, SpaceLabel, SensorLabel
 │   └── text
 │       ├── title        one line, ends with "…". In a clickable row: the <a> or <button>
-│       └── description  one line, ends with "…"
+│       ├── description  one line, ends with "…"
+│       └── details      slot: e.g. a list of DeviceFaultStatus, 4px below
 ├── end                  slot: e.g. a SensorReading, a DeviceConnectionStatus
 └── focus-ring           Figma only, in state=focus (code uses an outline)
 ```
@@ -103,6 +105,7 @@ The props are defined in [`ListItem.types.ts`](./ListItem.types.ts), with a `/**
 
 Decisions behind them:
 
+- **`details`** was added for [`DeviceListItem`](../../status/DeviceListItem/DeviceListItem.md): a Fault message is too long for the right side, and `description` is plain text. It sits under the description, 4px below it (`--shk-space-1`).
 - **The same clickable pattern as `Card`.** The title becomes the real `<a>` or `<button>`, and an invisible layer stretches it over the row. Screen readers hear "Kitchen, link". The types enforce it the same way: three shapes (static, link, button), `title` required when clickable, never `href` and `onClick` together.
 - **`start` is a slot, not an `icon` prop** (unlike `Card`). Rows often start with a whole label (`SensorLabel`, `SpaceLabel`), not just an icon. For a room row, pass `<Icon name={SPACE_TYPE_ICONS.kitchen} />`.
 - **`title` and `description` are plain strings.** On a clickable row the title is the link's text, so it can't hold components.
