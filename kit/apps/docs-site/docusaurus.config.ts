@@ -26,8 +26,9 @@ const config: Config = {
     v4: true,
   },
 
-  // Placeholder. The real URL and baseUrl are set in the deploy step (GitHub Pages).
-  url: "https://example.com",
+  // Production domain on Vercel. It must match the live address: the sitemap and
+  // Algolia DocSearch (search) use it.
+  url: "https://smart-home-kit.detriz.com",
   baseUrl: "/",
 
   onBrokenLinks: "throw",
