@@ -185,7 +185,15 @@ Every part except the content is optional. Leave a prop out and its part isn't s
 
 Pass `icon` to show an icon before the title. It's 24px and takes the title's colour. It needs a `title`: without one, the icon isn't shown.
 
-For a card about a Space, use the icon of its [Space Type](/docs/domain-model/glossary), so every screen shows the same icon for the same kind of room:
+For a card about a Space, use the icon of its [Space Type](/docs/domain-model/glossary#places), so every screen shows the same icon for the same kind of room. Take it from `SPACE_TYPE_ICONS`, the map [`SpaceLabel`](../context/space-label.mdx) uses, instead of typing the name:
+
+```tsx
+import { Card, SPACE_TYPE_ICONS } from "@detriz-sh-kit/ui";
+
+<Card icon={SPACE_TYPE_ICONS[space.spaceType]} title={space.name} …>
+```
+
+The map:
 
 | Space Type  | `icon`        | Space Type | `icon`        |
 | ----------- | ------------- | ---------- | ------------- |
@@ -301,3 +309,4 @@ To change how it looks, set a [design token](../foundations/design-tokens.mdx) o
 - [`ContentSection`](./content-section.mdx): a heading above a group of cards.
 - [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx): ready-made cards for a Module and a Space.
 - [`DeviceConnectionStatus`](../status/device-connection-status.mdx): the usual `headerEnd` for a card about one Module.
+- [`SpaceLabel`](../context/space-label.mdx): a Space's icon and name, for lists and pickers. Its `SPACE_TYPE_ICONS` map gives a room card its icon.
