@@ -1,0 +1,101 @@
+@layer detriz {
+  /* The surface: fills its parent and stacks header, children and footer.
+     Figma draws the outline inside the card, so the padding is one border width smaller (same as SpaceCard).
+     position: relative so a clickable card's stretched link covers exactly the card. */
+  .root {
+    position: relative;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-3);
+    inline-size: 100%;
+    padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+    border-radius: var(--shk-radius-16);
+    background: var(--shk-surface-default);
+  }
+
+  /* Title on the left, headerEnd on the right, always in one row. */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: var(--shk-space-2);
+    min-inline-size: 0;
+  }
+
+  /* The card name stays on one line and ends with "…". The full name is in the title attribute (shown on hover).
+     The same look whether it is a <span>, an <a> or a <button>, so the resets for links and buttons live here too. */
+  .title {
+    flex: 1 1 auto;
+    overflow: hidden;
+    min-inline-size: 0;
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    border: none;
+    background: none;
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-h4-font-family);
+    font-size: var(--shk-typography-h4-font-size);
+    font-weight: var(--shk-typography-h4-font-weight);
+    line-height: var(--shk-typography-h4-line-height);
+    letter-spacing: var(--shk-typography-h4-letter-spacing);
+    text-align: start;
+    text-decoration: none;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* headerEnd keeps its full width; the title gives way. */
+  .headerEnd {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+  }
+
+  /* Plain text in the footer gets the caption style. Components passed in set their own. */
+  .footer {
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+  }
+
+  /* Clickable card: the title's invisible ::after layer covers the whole card, so tapping anywhere follows the link.
+     The title isn't positioned, so the layer is placed against root and isn't cut off by the title's overflow. */
+  .root[data-interactive] .title {
+    cursor: pointer;
+  }
+
+  .root[data-interactive] .title::after {
+    content: "";
+    position: absolute;
+    inset: var(--shk-space-0);
+    border-radius: inherit;
+  }
+
+  /* Links and buttons inside the content sit above the layer, so they still work. */
+  .root[data-interactive] :is(a, button):not(.title) {
+    position: relative;
+  }
+
+  /* Grey fill under the pointer and while pressed, the same tokens as Button secondary. */
+  .root[data-interactive]:hover {
+    background: var(--shk-action-secondary-bg-hover);
+  }
+
+  .root[data-interactive]:active {
+    background: var(--shk-action-secondary-bg-pressed);
+  }
+
+  /* The keyboard focus ring goes round the whole card, not just the title (Figma: focus-ring). */
+  .root[data-interactive] .title:focus-visible {
+    outline: none;
+  }
+
+  .root[data-interactive]:has(.title:focus-visible) {
+    outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+    outline-offset: var(--shk-space-1);
+  }
+}

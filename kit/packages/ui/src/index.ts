@@ -68,6 +68,13 @@ export type {
   ContentSectionHeadingLevel,
   ContentSectionProps,
 } from "./components/layout/ContentSection";
+export { Card } from "./components/layout/Card";
+export type {
+  CardButtonProps,
+  CardLinkProps,
+  CardProps,
+  CardStaticProps,
+} from "./components/layout/Card";
 export { StackLayout } from "./components/layout/StackLayout";
 export type {
   StackLayoutGap,
