@@ -1,0 +1,191 @@
+---
+sidebar_position: 3
+sidebar_label: IconButton
+description: A button with only an icon, for small well-known actions like Refresh or Close. Always has a label for screen readers.
+---
+
+# IconButton
+
+A button with only an icon, for small, well-known actions where a word would take too much room: refresh the Readings, close a panel, open settings. Its `label` is read by screen readers and shows as a tooltip on hover.
+
+```jsx live
+<IconButton icon="refresh" label="Refresh Readings" onClick={() => {}} />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { IconButton } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+Pass an icon, a label that says what the button does, and what happens on click:
+
+```tsx
+import { IconButton } from "@detriz-sh-kit/ui";
+
+<IconButton icon="close" label="Close" onClick={() => setOpen(false)} />;
+```
+
+The examples below leave out the `import` line. In your app, you need it.
+
+## When to use it
+
+Use IconButton:
+
+- **for actions in a [`TopBar`](../navigation/top-bar.mdx)**, like Refresh or Settings
+- **for small actions on a card or panel**, like Close
+- **when the icon is well known.** Refresh, close and settings are; most others aren't.
+
+Don't use it for:
+
+- **An action people might not recognise from its icon.** Use [`Button`](./button.mdx) with words.
+- **The one main action on a screen.** Use `Button` with `variant="primary"`: it has words.
+- **Going to another screen.** Use a link: `TopBar`'s back button, [`BottomNav`](../navigation/bottom-nav.mdx), or a clickable [`Card`](../layout/card.mdx).
+- **A setting that stays on or off.** Use [`Switch`](./switch.mdx).
+
+## Variants
+
+Use the `variant` prop. The default is `ghost`.
+
+Both react the same way, like the items in a [`BottomNav`](../navigation/bottom-nav.mdx): the icon turns blue under the pointer, and a light-blue fill appears while pressed.
+
+| `variant`   | Looks                                                    | Use it                                   |
+| ----------- | -------------------------------------------------------- | ---------------------------------------- |
+| `ghost`     | Icon only. A grey fill appears under the pointer.        | In bars and on cards.                    |
+| `secondary` | White fill with a grey outline, like `Button` secondary. | On its own on a page, next to `Button`s. |
+
+### Ghost
+
+```jsx live
+<IconButton icon="refresh" label="Refresh Readings" onClick={() => {}} />
+```
+
+### Secondary
+
+```jsx live
+<IconButton
+  icon="settings"
+  label="Settings"
+  variant="secondary"
+  onClick={() => {}}
+/>
+```
+
+### Disabled
+
+Pass `isDisabled` while the action can't run, for example Refresh while Readings are loading. The button turns grey, ignores clicks and is skipped by Tab.
+
+```jsx live
+<StackLayout>
+  <IconButton
+    icon="refresh"
+    label="Refresh Readings"
+    isDisabled
+    onClick={() => {}}
+  />
+  <IconButton
+    icon="refresh"
+    label="Refresh Readings"
+    variant="secondary"
+    isDisabled
+    onClick={() => {}}
+  />
+</StackLayout>
+```
+
+## In a TopBar
+
+Put IconButtons in `TopBar`'s `actions`. Use the `ghost` variant there.
+
+```jsx live
+<div style={{ maxWidth: 390 }}>
+  <TopBar
+    title="Kitchen"
+    icon="countertops"
+    backHref="#home"
+    actions={
+      <>
+        <IconButton
+          icon="refresh"
+          label="Refresh Readings"
+          onClick={() => {}}
+        />
+        <IconButton icon="settings" label="Settings" onClick={() => {}} />
+      </>
+    }
+  />
+</div>
+```
+
+## Writing the label
+
+The label is the button's name. People never see it on screen, only as a tooltip, so it has to say exactly what happens:
+
+- **A verb and an object:** "Refresh Readings", not "Refresh" when there's more than one thing to refresh.
+- **The kit's words:** Readings, Devices, Spaces, from the [Glossary](/docs/domain-model/glossary).
+- **No "button" or "icon"** in it. Screen readers already say "button".
+
+## Props
+
+| Prop         | Type                     | Default   | Description                                                                                                  |
+| ------------ | ------------------------ | --------- | ------------------------------------------------------------------------------------------------------------ |
+| `icon`       | `IconName`               | –         | **Required.** The icon, e.g. `refresh`. Decorative: the button is named by `label`.                          |
+| `label`      | `string`                 | –         | **Required.** What the button does, e.g. "Refresh Readings". Read by screen readers and shown as a tooltip.  |
+| `onClick`    | `() => void`             | –         | **Required.** Called when the button is clicked or activated with Enter or Space. Not called while disabled. |
+| `variant`    | `"ghost" \| "secondary"` | `"ghost"` | How the button looks.                                                                                        |
+| `isDisabled` | `boolean`                | `false`   | Greys the button out and ignores clicks.                                                                     |
+
+The types `IconButtonProps` and `IconButtonVariant` are exported too.
+
+## Accessibility
+
+What you get without doing anything:
+
+- A real `<button>`, named by your `label`, so screen readers say "Refresh Readings, button". The icon is hidden from them.
+- The label shows as a tooltip on hover.
+- 44 × 44px, a comfortable touch target, the same height as `Button`.
+- Keyboard focus shows the kit's 2px dark-blue ring, 4px outside the button.
+- Disabled uses the native `disabled` attribute: skipped by Tab and announced as unavailable.
+
+What's up to you:
+
+- **A clear label.** It's the only name the button has.
+- **A well-known icon.** If in doubt, use `Button` with words.
+- **Space around it.** Leave at least 4px between the button and other things, so the focus ring isn't hidden.
+
+## Styling
+
+| What                    | Token                                                                          |
+| ----------------------- | ------------------------------------------------------------------------------ |
+| Size                    | `--shk-size-11` (44px)                                                         |
+| Corners                 | `--shk-radius-8`                                                               |
+| Icon                    | `--shk-action-secondary-fg`; disabled `--shk-action-disabled-fg`               |
+| Secondary fill, outline | `--shk-action-secondary-bg`, `--shk-action-secondary-border`                   |
+| Hover, pressed          | `--shk-action-subtle-fg-hover` (icon), `--shk-action-subtle-bg-pressed` (fill) |
+| Disabled (secondary)    | `--shk-action-disabled-bg`, `--shk-action-disabled-border`                     |
+| Focus ring              | `--shk-action-focus`, `--shk-border-width-medium`                              |
+
+To change how it looks, set a [design token](../foundations/design-tokens.mdx) on a parent element.
+
+## Related components
+
+- [`Button`](./button.mdx): a button with words. Use it when the icon alone isn't clear.
+- [`TopBar`](../navigation/top-bar.mdx): where IconButtons usually go.
+- [`Icon`](../foundations/icons.mdx): the icons you can use.
