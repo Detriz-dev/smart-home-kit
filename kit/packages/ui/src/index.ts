@@ -45,6 +45,8 @@ export type {
   AssetLabelProps,
   AssetLabelSize,
 } from "./components/context/AssetLabel";
+export { SpaceListItem } from "./components/context/SpaceListItem";
+export type { SpaceListItemProps } from "./components/context/SpaceListItem";
 export { RelativeTime } from "./components/context/RelativeTime";
 export type {
   RelativeTimeFormat,

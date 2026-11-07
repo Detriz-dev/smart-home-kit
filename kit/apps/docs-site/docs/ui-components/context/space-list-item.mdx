@@ -1,0 +1,141 @@
+---
+sidebar_position: 5.7
+sidebar_label: SpaceListItem
+description: One Space as a List row, with its Space Type icon, name, Floor, Modules and a Badge of Active Alerts.
+---
+
+# SpaceListItem
+
+One [Space](/docs/domain-model/glossary#places) as a List row: its Space Type icon, its name, its Floor and how many Modules it has, and a [`Badge`](../feedback/badge.mdx) when Alerts are Active there. Use it to list the rooms of a Site.
+
+```jsx live
+<List>
+  <SpaceListItem
+    name="Kitchen"
+    spaceType="kitchen"
+    floorName="Ground floor"
+    moduleCount={3}
+    activeAlertCount={2}
+    href="#kitchen"
+  />
+</List>
+```
+
+## Import
+
+```tsx
+import { List, SpaceListItem } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+A SpaceListItem is a list row (`<li>`), so put it in a [`List`](../layout/list.mdx). Give it an `href` (or `onClick`) to open the Space:
+
+```jsx live
+<List>
+  <SpaceListItem
+    name="Kitchen"
+    spaceType="kitchen"
+    floorName="Ground floor"
+    moduleCount={3}
+    activeAlertCount={2}
+    href="#kitchen"
+  />
+  <SpaceListItem
+    name="Living room"
+    spaceType="living-room"
+    floorName="Ground floor"
+    moduleCount={2}
+    href="#living-room"
+  />
+  <SpaceListItem
+    name="Bedroom"
+    spaceType="bedroom"
+    floorName="First floor"
+    moduleCount={1}
+    activeAlertCount={1}
+    highestAlertLevel="warning"
+    href="#bedroom"
+  />
+  <SpaceListItem
+    name="Garage"
+    spaceType="garage"
+    moduleCount={0}
+    href="#garage"
+  />
+</List>
+```
+
+## When to use it
+
+Use it for a list of Spaces: a Site overview, or the Spaces of one Floor. For a Space's latest Readings, use [`SpaceCard`](../readings/space-card.mdx). For just a Space's name with its icon (in a header or a picker), use [`SpaceLabel`](./space-label.mdx).
+
+## What it shows
+
+| Part        | From                                    | Shows                                                                           |
+| ----------- | --------------------------------------- | ------------------------------------------------------------------------------- |
+| Icon        | `spaceType`                             | The Space Type's icon, from `SPACE_TYPE_ICONS`                                  |
+| Name        | `name`                                  | The Space's name                                                                |
+| Second line | `floorName`, `moduleCount`              | "Ground floor · 3 Modules", only the parts you pass                             |
+| Badge       | `activeAlertCount`, `highestAlertLevel` | How many Alerts are Active, in the colour of the highest level. Nothing when 0. |
+
+Leave `floorName` out when the Site has no Floors, or when the row is already inside a Floor's section.
+
+## Mapping your data
+
+| Prop                | Domain term                                                                      | Example          |
+| ------------------- | -------------------------------------------------------------------------------- | ---------------- |
+| `name`              | [Space](/docs/domain-model/glossary#places) (its name)                           | `"Kitchen"`      |
+| `spaceType`         | [Space Type](/docs/domain-model/glossary#places)                                 | `"kitchen"`      |
+| `floorName`         | [Floor](/docs/domain-model/glossary#places) the Space is on                      | `"Ground floor"` |
+| `moduleCount`       | Number of [Modules](/docs/domain-model/glossary#devices-and-assets) in the Space | `3`              |
+| `activeAlertCount`  | Number of Active [Alerts](/docs/domain-model/glossary#alerts) in the Space       | `2`              |
+| `highestAlertLevel` | The highest [Alert Level](/docs/domain-model/glossary#alerts) among them         | `"critical"`     |
+
+A Module's Space is its Hub's Space, so count Modules through the Space's Hubs.
+
+## Props
+
+| Prop                | Type                                | Default      | Description                                                               |
+| ------------------- | ----------------------------------- | ------------ | ------------------------------------------------------------------------- |
+| `name`              | `string`                            | –            | **Required.** The Space's name.                                           |
+| `spaceType`         | `SpaceType`                         | –            | **Required.** Decides the icon.                                           |
+| `floorName`         | `string`                            | none         | The Floor the Space is on.                                                |
+| `moduleCount`       | `number`                            | none         | How many Modules are in the Space: "No Modules", "1 Module", "3 Modules". |
+| `activeAlertCount`  | `number`                            | `0`          | How many Alerts are Active. Shown as a Badge; 0 shows nothing.            |
+| `highestAlertLevel` | `"critical" \| "warning" \| "info"` | `"critical"` | Colours the Badge.                                                        |
+| `href`              | `string`                            | none         | Makes the row a link, e.g. to the Space's screen.                         |
+| `onClick`           | `() => void`                        | none         | Makes the row a button. A row is a link or a button, not both.            |
+
+The type `SpaceListItemProps` is exported too.
+
+## Long text
+
+The name and the second line end with `…` when there isn't room. The Badge never shrinks; above 99 it shows "99+".
+
+```jsx live
+<div style={{ maxWidth: 240 }}>
+  <List>
+    <SpaceListItem
+      name="Living room and dining area by the garden"
+      spaceType="living-room"
+      floorName="Ground floor, east wing"
+      moduleCount={12}
+      activeAlertCount={120}
+      href="#long"
+    />
+  </List>
+</div>
+```
+
+## Accessibility
+
+- The icon is hidden from screen readers: the name says which Space it is.
+- The Badge is read as "2 active Alerts", not just "2".
+- A clickable row is one link or button: screen readers hear "Kitchen, link".
+
+## Related components
+
+- [`SpaceLabel`](./space-label.mdx): a Space's icon and name on their own.
+- [`SpaceCard`](../readings/space-card.mdx): a Space's latest Readings.
+- [`Badge`](../feedback/badge.mdx): the count of Active Alerts.
