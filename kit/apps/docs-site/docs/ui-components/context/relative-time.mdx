@@ -1,0 +1,96 @@
+---
+sidebar_position: 6
+sidebar_label: RelativeTime
+description: Shows a moment the way people read it, like "2 min ago", "14:02" or "3 min".
+---
+
+# RelativeTime
+
+Shows a moment the way people read it: **"2 min ago"**, **"14:02"** or a duration like **"3 min"**. Use it next to values and in rows, for when a Detection started, when the last one ended or when an Alert was raised.
+
+```jsx live
+<RelativeTime time={new Date(Date.now() - 2 * 60_000)} />
+```
+
+## Import
+
+```tsx
+import { RelativeTime } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Pass the moment as a `Date`. The text follows the real clock and updates itself every 30 seconds, so "2 min ago" doesn't go out of date while the screen is open.
+
+```jsx live
+function Example() {
+  const lastReading = new Date(Date.now() - 45 * 60_000);
+  return <RelativeTime time={lastReading} />;
+}
+```
+
+## When to use it
+
+Use it for **when something happened**: a Reading, a Detection, an Alert. It never fetches anything: you pass the moment, it writes it.
+
+## Formats
+
+| `format`   | Shows                                                     | Use it for                        |
+| ---------- | --------------------------------------------------------- | --------------------------------- |
+| `relative` | "just now", "3 min ago", "2 h ago", "3 days ago", "6 Nov" | When something happened. Default. |
+| `clock`    | "14:02", or "6 Nov, 14:02" on another day                 | An exact start time               |
+| `duration` | "under 1 min", "3 min", "2 h 5 min", "3 days"             | How long something has lasted     |
+
+```jsx live
+function Formats() {
+  const now = new Date(2026, 10, 7, 14, 5);
+  const started = new Date(2026, 10, 7, 11, 58);
+  return (
+    <StackLayout gap="sm">
+      <RelativeTime time={started} now={now} format="relative" />
+      <RelativeTime time={started} now={now} format="clock" />
+      <RelativeTime time={started} now={now} format="duration" />
+    </StackLayout>
+  );
+}
+```
+
+From 7 days on, `relative` shows the date. `clock` uses the 24-hour clock. The words are English for now.
+
+## Sizes
+
+| `size` | Use it next to                      |
+| ------ | ----------------------------------- |
+| `xs`   | `md` values and list rows. Default. |
+| `sm`   | `lg` values in cards                |
+
+```jsx live
+<StackLayout gap="sm">
+  <RelativeTime time={new Date(Date.now() - 5 * 60_000)} size="xs" />
+  <RelativeTime time={new Date(Date.now() - 5 * 60_000)} size="sm" />
+</StackLayout>
+```
+
+## Fixing the time
+
+Pass `now` to fix the current time, for example in tests, screenshots and docs. The text then never changes and the 30-second timer is skipped.
+
+## Props
+
+| Prop     | Type                                  | Default      | Description                                                                           |
+| -------- | ------------------------------------- | ------------ | ------------------------------------------------------------------------------------- |
+| `time`   | `Date`                                | –            | **Required.** The moment to show, e.g. when a Detection started.                      |
+| `format` | `"relative" \| "clock" \| "duration"` | `"relative"` | How it is written. `duration` is the time from `time` until now.                      |
+| `now`    | `Date`                                | the clock    | The current time. Leave it out to use the real clock, which updates every 30 seconds. |
+| `size`   | `"xs" \| "sm"`                        | `"xs"`       | How big the text is drawn.                                                            |
+
+The types `RelativeTimeProps`, `RelativeTimeFormat` and `RelativeTimeSize` are exported too.
+
+## Accessibility
+
+- It renders a `<time>` element with the exact moment in `dateTime`, so assistive technology gets the precise time.
+- Hovering shows the full date and time, like "7 Nov 2026, 14:02".
+
+## Related components
+
+- [`DetectionStatus`](../readings/detection-status.mdx): uses RelativeTime for "since 14:02 · 3 min" and "Last: 2 h ago".

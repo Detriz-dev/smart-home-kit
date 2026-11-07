@@ -38,6 +38,12 @@ export type {
   LocationPathLayout,
   LocationPathProps,
 } from "./components/navigation/LocationPath";
+export { RelativeTime } from "./components/context/RelativeTime";
+export type {
+  RelativeTimeFormat,
+  RelativeTimeProps,
+  RelativeTimeSize,
+} from "./components/context/RelativeTime";
 export { SensorLabel } from "./components/context/SensorLabel";
 export type {
   SensorLabelMetric,
@@ -71,6 +77,11 @@ export type {
   SensorReadingProps,
   SensorReadingSize,
 } from "./components/readings/SensorReading";
+export { DetectionStatus } from "./components/readings/DetectionStatus";
+export type {
+  DetectionStatusProps,
+  DetectionStatusSize,
+} from "./components/readings/DetectionStatus";
 export { StateValue } from "./components/readings/StateValue";
 export type {
   StateValueProps,

@@ -55,7 +55,7 @@ type Metric = MeasuredMetric | TwoStateMetric;
 | `smoke`       | Two-state | Smoke       | `detected`, `clear`       |
 | `co`          | Two-state | CO          | `detected`, `clear`       |
 
-`co` is carbon monoxide, not CO₂. `DetectionMetric` is the three Metrics that start a Detection: `motion`, `smoke` and `co`.
+`co` is carbon monoxide, not CO₂. `DetectionMetric` is the three Metrics that start a Detection: `motion`, `smoke` and `co`. [`DetectionStatus`](../readings/detection-status.mdx) takes a `DetectionMetric`.
 
 **Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`, any Metric) and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). [`SensorReading`](../readings/sensor-reading.mdx), [`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) show numbers, so they take a `MeasuredMetric` only. `SensorLabelMetric` is the same type as `Metric` under another name.
 
