@@ -61,9 +61,18 @@ export type {
 } from "./components/context/SensorLabel";
 export { SpaceLabel } from "./components/context/SpaceLabel";
 export {
+  ACTION_ICONS,
+  ALERT_ICONS,
+  ALERT_LEVEL_ICONS,
   ASSET_TYPE_ICONS,
+  DEVICE_KIND_ICONS,
+  MESSAGE_TONE_ICONS,
   METRIC_ICONS,
+  NAV_ICONS,
+  PLACE_ICONS,
+  READING_STATUS_ICONS,
   SPACE_TYPE_ICONS,
+  STATE_ICONS,
 } from "./icons/purposeIcons";
 export type {
   SpaceLabelProps,
