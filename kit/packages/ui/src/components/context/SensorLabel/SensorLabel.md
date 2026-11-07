@@ -64,18 +64,25 @@ Pairing Status doesn't apply either: the Metric belongs to the Sensor, not to th
 
 **Metric** (prop `metric`). A fixed list, one value per Metric in the glossary. In Figma this is not a variant property: change the label text and swap the icon on the instance.
 
-| Value         | Label       | Screen reader  | Icon           | In `icons.config.ts`? |
-| ------------- | ----------- | -------------- | -------------- | --------------------- |
-| `temperature` | Temperature | Temperature    | `thermostat`   | yes                   |
-| `humidity`    | Humidity    | Humidity       | `humidity_mid` | yes                   |
-| `illuminance` | Illuminance | Illuminance    | `light_mode`   | yes                   |
-| `co2`         | CO₂         | carbon dioxide | `co2`          | yes                   |
-| `voc`         | VOC         | VOC            | `airwave`      | yes                   |
-| `pm25`        | PM2.5       | PM 2.5         | `grain`        | yes                   |
+| Value         | Label       | Screen reader   | Icon                   | In `icons.config.ts`? |
+| ------------- | ----------- | --------------- | ---------------------- | --------------------- |
+| `temperature` | Temperature | Temperature     | `thermostat`           | yes                   |
+| `humidity`    | Humidity    | Humidity        | `humidity_mid`         | yes                   |
+| `illuminance` | Illuminance | Illuminance     | `light_mode`           | yes                   |
+| `co2`         | CO₂         | carbon dioxide  | `co2`                  | yes                   |
+| `voc`         | VOC         | VOC             | `airwave`              | yes                   |
+| `pm25`        | PM2.5       | PM 2.5          | `grain`                | yes                   |
+| `power`       | Power       | Power           | `power`                | yes                   |
+| `contact`     | Contact     | Contact         | `sensor_door`          | yes                   |
+| `motion`      | Motion      | Motion          | `motion_sensor_active` | yes                   |
+| `smoke`       | Smoke       | Smoke           | `detector_smoke`       | yes                   |
+| `co`          | CO          | carbon monoxide | `detector_co`          | yes                   |
+
+The last five are Two-state Metrics, added for Phase 2. Figma shows all eleven in the frame `SensorLabel / Metrics` (node `574:2388`), below the component set.
 
 The label uses the subscript `₂` (U+2082) in "CO₂", the same character the glossary uses.
 
-The labels and spoken names live in `utils/metricNames.ts`, because `DeviceFaultStatus` needs them too. The icons stay in `SensorLabel.tsx`, because utils can't import icons.
+The labels and spoken names live in `utils/metricNames.ts`, because `DeviceFaultStatus` needs them too. The icons come from `METRIC_ICONS` in `src/icons/purposeIcons.ts`. In Figma, the icon layer is a `MetricIcon` instance (exposed), so the Metric is a dropdown on each SensorLabel instance.
 
 **Size** (Figma variant property `size`, prop `size`). Default `xs`, the same size as `LocationPath`, so the two sit well together in a card header.
 
@@ -106,7 +113,7 @@ root            (size=xs | sm | md | lg)
 
 Long names: the label shrinks and ends with `…`. The icon never shrinks (the `Icon` component already makes sure of that).
 
-In code, the label, icon and spoken name for each Metric live in one table (`METRICS` in `SensorLabel.tsx`), and the icon size for each size in another (`ICON_SIZES`). Adding a Metric means adding one row to `METRICS`; TypeScript complains until it is there.
+In code, the label and spoken name for each Metric live in `METRIC_NAMES` (`utils/metricNames.ts`), the icon in `METRIC_ICONS` (`icons/purposeIcons.ts`), and the icon size for each size in `ICON_SIZES`. Adding a Metric means adding one entry to each map; TypeScript complains until it is there.
 
 ### API
 

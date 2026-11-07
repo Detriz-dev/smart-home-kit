@@ -363,13 +363,13 @@ A few rules:
 
 `SpaceCardReading`:
 
-| Field              | Type                                                       | Default | Description                                                                   |
-| ------------------ | ---------------------------------------------------------- | ------- | ----------------------------------------------------------------------------- |
-| `metric`           | `Metric` (`"temperature"`, `"humidity"`, …)                | –       | **Required.** The Metric the Sensor measures. Also tells the rows apart.      |
-| `value`            | `number \| null`                                           | –       | **Required.** The latest value. `null` while the first Reading is on its way. |
-| `unit`             | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)           | –       | **Required.** The Unit to show. You pick it, so you can choose °C or °F.      |
-| `fractionDigits`   | `number`                                                   | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).    |
-| `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** Connection Status of the Module this Reading comes from.        |
+| Field              | Type                                                       | Default | Description                                                                       |
+| ------------------ | ---------------------------------------------------------- | ------- | --------------------------------------------------------------------------------- |
+| `metric`           | `MeasuredMetric` (`"temperature"`, `"humidity"`, …)        | –       | **Required.** The Measured Metric the Sensor measures. Also tells the rows apart. |
+| `value`            | `number \| null`                                           | –       | **Required.** The latest value. `null` while the first Reading is on its way.     |
+| `unit`             | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)           | –       | **Required.** The Unit to show. You pick it, so you can choose °C or °F.          |
+| `fractionDigits`   | `number`                                                   | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).        |
+| `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** Connection Status of the Module this Reading comes from.            |
 
 The types `SpaceCardProps` and `SpaceCardReading` are exported too:
 

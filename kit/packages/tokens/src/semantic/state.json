@@ -1,0 +1,48 @@
+{
+  "state": {
+    "active": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.blue.50}",
+        "$description": "Background behind an active State: On, Open or Detected. Neutral blue, because On isn't good or bad. A Detected Reading that raises an Alert uses its Alert Level's status colours instead."
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.blue.800}",
+        "$description": "Text and icon of an active State (On, Open, Detected)."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{palette.blue.600}",
+        "$description": "Filled marker of an active State, e.g. a dot or a pill."
+      },
+      "on-solid": {
+        "$type": "color",
+        "$value": "{palette.white}",
+        "$description": "Text and icon on state-active-solid."
+      }
+    },
+    "inactive": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.gray.50}",
+        "$description": "Background behind an inactive State: Off, Closed or Clear."
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.gray.700}",
+        "$description": "Text and icon of an inactive State (Off, Closed, Clear)."
+      },
+      "solid": {
+        "$type": "color",
+        "$value": "{palette.gray.600}",
+        "$description": "Filled marker of an inactive State, e.g. a dot or a pill."
+      },
+      "on-solid": {
+        "$type": "color",
+        "$value": "{palette.white}",
+        "$description": "Text and icon on state-inactive-solid."
+      }
+    }
+  }
+}

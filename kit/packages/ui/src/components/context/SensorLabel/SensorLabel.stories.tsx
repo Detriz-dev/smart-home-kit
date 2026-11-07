@@ -15,7 +15,19 @@ const meta = {
   argTypes: {
     metric: {
       control: "select",
-      options: ["temperature", "humidity", "illuminance", "co2", "voc", "pm25"],
+      options: [
+        "temperature",
+        "humidity",
+        "illuminance",
+        "co2",
+        "voc",
+        "pm25",
+        "power",
+        "contact",
+        "motion",
+        "smoke",
+        "co",
+      ],
     },
     size: { control: "select", options: ["xs", "sm", "md", "lg"] },
   },
@@ -32,6 +44,11 @@ const METRICS: SensorLabelMetric[] = [
   "co2",
   "voc",
   "pm25",
+  "power",
+  "contact",
+  "motion",
+  "smoke",
+  "co",
 ];
 
 // One story per Metric, at the size from the spec's stories table.

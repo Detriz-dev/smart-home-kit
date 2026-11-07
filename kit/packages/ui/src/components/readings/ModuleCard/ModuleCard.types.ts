@@ -1,4 +1,4 @@
-import type { SensorLabelMetric } from "../../context/SensorLabel";
+import type { MeasuredMetric } from "../../../types/metric";
 import type { DeviceFaultStatusProps } from "../../status/DeviceFaultStatus";
 import type { ConnectionStatus } from "../../status/DeviceConnectionStatus";
 import type { UnitLabelUnit } from "../UnitLabel";
@@ -6,7 +6,7 @@ import type { UnitLabelUnit } from "../UnitLabel";
 /** One Sensor in the Module. The same fields SensorReading takes. */
 export interface ModuleCardSensor {
   /** The Metric the Sensor measures. One Sensor per Metric, so it also identifies the Sensor within the Module. */
-  metric: SensorLabelMetric;
+  metric: MeasuredMetric;
   /** The latest value of the Reading. `null` while the first Reading is on its way. */
   value: number | null;
   /** The Unit to show. The parent picks it, so it can choose the display Unit (°C or °F). */

@@ -1,4 +1,5 @@
 import { Icon } from "../../../icons/Icon";
+import { ACTION_ICONS } from "../../../icons/purposeIcons";
 import { KitLink } from "../../../link";
 import styles from "./TopBar.module.css";
 import type { TopBarProps } from "./TopBar.types";
@@ -13,7 +14,7 @@ export function TopBar({
   backLabel = "Back",
 }: TopBarProps) {
   // The arrow is decorative: the back button is named by backLabel.
-  const arrow = <Icon name="arrow_back" />;
+  const arrow = <Icon name={ACTION_ICONS.back} />;
   let back = null;
   if (backHref !== undefined) {
     back = (

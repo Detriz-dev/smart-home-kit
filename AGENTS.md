@@ -34,7 +34,7 @@ pnpm 11 blocks dependency install scripts until they are listed under `allowBuil
 
 The product is described in `docs/product-requirements/product-overview.md`. It is a **software-only** kit for building smart home UI apps quickly, and AI is part of it in two ways: AI tools help build the UI, and apps use an LLM as a feature. The kit has six parts:
 
-1. UI components in Figma (a Figma library, not stored in this repo).
+1. UI components in Figma (a Figma library, not stored in this repo): _DeTriz - Smart Home Kit_, https://www.figma.com/design/8fLoclnMMwrZ0vBoip8iy0/DeTriz---Smart-Home-Kit (file key `8fLoclnMMwrZ0vBoip8iy0`).
 2. UI components in React (`ui`, plus the planned `react` package).
 3. An MCP server, so AI tools can build UIs with the kit's components, tokens and API, and Generative UI, so apps can build screens at runtime from a plain-language request.
 4. An API Simulator: simulated Sensor Readings over REST and WebSocket, so you can build without hardware.

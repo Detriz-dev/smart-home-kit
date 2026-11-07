@@ -112,7 +112,7 @@ function AddModule() {
             gap: "var(--shk-space-2)",
           }}
         >
-          <LocationPath deviceName="Climate Module" />
+          <LocationPath deviceName="Climate Module" deviceKind="module" />
           <DevicePairingStatus status={status} />
         </span>
         {status === "unpaired" && <Button onClick={add}>Add</Button>}

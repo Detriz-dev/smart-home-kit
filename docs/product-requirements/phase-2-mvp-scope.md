@@ -151,7 +151,7 @@ Nothing open right now. New questions go here.
 ## Suggested order of work
 
 1. ✅ Update the Glossary, Data model and Events and commands.
-2. Add shared types, icons and tokens.
+2. ✅ Add shared types, icons and tokens, in code and Figma (`state` collection, 5 Metric icons, `SensorLabel / Metrics` frame).
 3. Build the small parts: `StateValue`, `DetectionStatus`, `RelativeTime`, `AssetLabel`, `Badge`.
 4. Update `ModuleCard` and `SpaceCard`; build `SensorState`.
 5. Build alerts: `AlertListItem`, `AlertBanner`, and a way to show an Alert Rule next to a Reading.

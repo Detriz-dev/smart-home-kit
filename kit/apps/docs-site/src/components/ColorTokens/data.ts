@@ -157,6 +157,52 @@ export const COLOR_GROUPS = {
       },
     ],
   },
+  state: {
+    collection: "state",
+    preview: "fill",
+    tokens: [
+      {
+        figmaName: "active/bg",
+        palette: "blue/50",
+        usage: "Behind an active State: On, Open, Detected.",
+      },
+      {
+        figmaName: "active/fg",
+        palette: "blue/800",
+        usage: "Text and icon of an active State.",
+      },
+      {
+        figmaName: "active/solid",
+        palette: "blue/600",
+        usage: "Filled marker of an active State.",
+      },
+      {
+        figmaName: "active/on-solid",
+        palette: "white",
+        usage: "Text and icon on active/solid.",
+      },
+      {
+        figmaName: "inactive/bg",
+        palette: "gray/50",
+        usage: "Behind an inactive State: Off, Closed, Clear.",
+      },
+      {
+        figmaName: "inactive/fg",
+        palette: "gray/700",
+        usage: "Text and icon of an inactive State.",
+      },
+      {
+        figmaName: "inactive/solid",
+        palette: "gray/600",
+        usage: "Filled marker of an inactive State.",
+      },
+      {
+        figmaName: "inactive/on-solid",
+        palette: "white",
+        usage: "Text and icon on inactive/solid.",
+      },
+    ],
+  },
 } satisfies Record<string, ColorGroup>;
 
 /** The five status roles, each built from one palette hue. */
