@@ -53,7 +53,7 @@ Props are in [`AlertListItem.types.ts`](./AlertListItem.types.ts). Decisions:
 
 - `title` is text from the app. The kit can't word every Alert Rule well ("Contact Open" vs "Front door opened"), so the app writes it.
 - `raisedAt` is required; `endedAt` is optional and only used for Ended and Closed.
-- Clickable rows (`href` or `onClick`) like DeviceListItem, to open the Alert. No close button in the row: a button inside a clickable row is hard to hit and confusing for screen readers. Closing happens on the Alert's own screen or in `AlertBanner`.
+- Clickable rows (`href` or `onClick`) like DeviceListItem, to open the Alert. No close button in the row: a button inside a clickable row is hard to hit and confusing for screen readers. Closing happens on the Alert's own screen or in [`AlertBanner`](../../feedback/AlertBanner/AlertBanner.md).
 
 ### Decisions
 

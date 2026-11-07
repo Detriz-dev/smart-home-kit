@@ -175,6 +175,8 @@ export type {
   StackLayoutGap,
   StackLayoutProps,
 } from "./components/layout/StackLayout";
+export { AlertBanner } from "./components/feedback/AlertBanner";
+export type { AlertBannerProps } from "./components/feedback/AlertBanner";
 export { Badge } from "./components/feedback/Badge";
 export type { BadgeProps, BadgeTone } from "./components/feedback/Badge";
 export { InlineMessage } from "./components/feedback/InlineMessage";
