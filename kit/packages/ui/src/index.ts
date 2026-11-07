@@ -163,6 +163,8 @@ export type {
   StackLayoutGap,
   StackLayoutProps,
 } from "./components/layout/StackLayout";
+export { Badge } from "./components/feedback/Badge";
+export type { BadgeProps, BadgeTone } from "./components/feedback/Badge";
 export { InlineMessage } from "./components/feedback/InlineMessage";
 export type {
   InlineMessageProps,
