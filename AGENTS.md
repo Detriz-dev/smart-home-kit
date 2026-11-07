@@ -41,7 +41,9 @@ The product is described in `docs/product-requirements/product-overview.md`. It 
 5. A Raspberry Pi client: software that runs on a Raspberry Pi (the Hub), reads real Sensors and serves the same API as the simulator, plus a typed SDK (`client`) that connects apps to it.
 6. A ready-made smart home domain model: the Glossary, Data model, Device lifecycle and Events and commands in `kit/apps/docs-site/docs/domain-model/`. Every other part uses it, so builders start without designing the model themselves.
 
-**Dropped from the scope:** custom snap-in Module hardware, Live Studio and Record & Replay. `docs/architecture/project-architecture.md` lists what changed; some other older docs (domain model notes, POC scope) may still describe them.
+**Dropped from the scope:** custom snap-in Module hardware, Live Studio and Record & Replay. `docs/architecture/project-architecture.md` lists what changed; some other older docs (such as domain model notes) may still describe them.
+
+**Roadmap** (`docs/product-requirements/roadmap.md`): Phase 1 (POC) is done. Phase 2 (MVP) is **frontend only**: React and Figma components for mapping a Site and showing Readings, on/off states, detections and alerts. The API, API Simulator, `client` and Hub software are not part of the MVP.
 
 ### Repo structure
 
@@ -117,7 +119,7 @@ General naming rules (PascalCase components, `use<Thing>` hooks, unit suffixes l
 
 ## Domain language
 
-The Glossary (`kit/apps/docs-site/docs/domain-model/glossary.mdx`) is the project's Ubiquitous Language. It lives in the docs site so there is one copy, published for users; internal docs link to it. Use its terms exactly, in code, types, UI copy and docs: Site, Space, Hub, Module, Sensor, Asset, Metric, Unit, Reading, and so on. Device Status is three separate fields: Pairing Status, Connection Status (Connecting / Connected / Stale / Disconnected, for paired Devices only) and Fault. A Sensor is not a Device.
+The Glossary (`kit/apps/docs-site/docs/domain-model/glossary.mdx`) is the project's Ubiquitous Language. It lives in the docs site so there is one copy, published for users; internal docs link to it. Use its terms exactly, in code, types, UI copy and docs: Site, Space, Hub, Module, Sensor, Asset, Metric, Unit, Reading, and so on. A Metric is a Measured Metric (number + Unit) or a Two-state Metric (a State such as On/Off, Open/Closed, Detected/Clear); both produce Readings. Alert Rules (defined in code) raise Alerts with an Alert Level (Critical, Warning, Info). Device Status is three separate fields: Pairing Status, Connection Status (Connecting / Connected / Stale / Disconnected, for paired Devices only) and Fault. A Sensor is not a Device.
 
 ## Repo conventions
 

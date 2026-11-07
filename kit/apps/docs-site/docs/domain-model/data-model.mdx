@@ -35,11 +35,15 @@ erDiagram
     Module ||--|{ Sensor : contains
     Asset |o--|{ Sensor : "is watched by"
     Metric ||--o{ Sensor : "is measured by"
-    Unit ||--o{ Metric : "is canonical for"
+    Unit |o--o{ Metric : "is canonical for"
+    Metric ||--o{ State : allows
     Sensor ||--o{ Reading : produces
     Metric ||--o{ Reading : "is recorded in"
     Space |o--o{ Reading : "is the Subject of"
     Asset |o--o{ Reading : "is the Subject of"
+    Sensor ||--o{ AlertRule : "is checked by"
+    AlertLevel ||--o{ AlertRule : grades
+    AlertRule ||--o{ Alert : raises
 ```
 
 ## Places
@@ -94,12 +98,57 @@ classDiagram
 
 ## Measurements
 
-Metrics, Units and the Readings Sensors produce.
+Metrics, Units, States and the Readings Sensors produce.
 
 - A **Sensor** measures exactly one **Metric**. One Metric can be measured by many Sensors.
-- Each **Metric** has exactly one standard **Unit** in the data. A Unit is the standard for zero or one Metric: `°F`, for example, is only a display Unit.
-- A **Sensor** produces zero or more **Readings**. Each Reading comes from exactly one Sensor and records exactly one Metric.
+- A **Metric** is either a **Measured Metric** (Temperature, CO₂…) or a **Two-state Metric** (Power, Contact, Motion, Smoke, CO).
+- Each **Measured Metric** has exactly one standard **Unit** in the data. A Two-state Metric has no Unit. A Unit is the standard for zero or one Metric: `°F`, for example, is only a display Unit.
+- Each **Two-state Metric** allows exactly two **States**: Power On/Off, Contact Open/Closed, and Motion, Smoke and CO Detected/Clear. A Measured Metric allows none.
+- A **Sensor** produces zero or more **Readings**. Each Reading comes from exactly one Sensor and records exactly one Metric. Its value is a number for a Measured Metric, or one of the Metric's two States for a Two-state Metric.
 - Each **Reading** has exactly one **Subject**: either a Space or an Asset. The diagram shows both links as optional; the rule "exactly one of the two" is in [Rules the diagrams can't show](#rules-the-diagrams-cant-show).
+- A **Detection** isn't stored on its own: it is the run of Detected Readings from one Motion, Smoke or CO Sensor, from the first Detected Reading to the next Clear one.
+
+## Alerts
+
+Alert Rules, the Alerts they raise, and their Alert Level and Alert Status.
+
+```mermaid
+classDiagram
+    class AlertRule {
+        condition
+        alertLevel: AlertLevel
+        isBuiltIn: boolean
+        isEnabled: boolean
+    }
+    class Alert {
+        alertStatus: AlertStatus
+        raisedAt
+        endedAt
+    }
+    class AlertLevel {
+        <<enumeration>>
+        Critical
+        Warning
+        Info
+    }
+    class AlertStatus {
+        <<enumeration>>
+        Active
+        Ended
+        Closed
+    }
+    Sensor "1" --> "0..*" AlertRule : is checked by
+    AlertRule "1" --> "0..*" Alert : raises
+    AlertRule --> AlertLevel
+    Alert --> AlertStatus
+```
+
+- A **Sensor** is checked by zero or more **Alert Rules**. Each Alert Rule checks exactly one Sensor.
+- An Alert Rule's **condition** is one of: the Reading is in a given State (for a Two-state Metric), or is above or below a value (for a Measured Metric).
+- Each **Alert Rule** has exactly one **Alert Level**: Critical, Warning or Info.
+- The app's developer defines Alert Rules in code. Every Smoke and CO Sensor also has one **Built-in Alert Rule** (Critical, condition Detected), on by default; the developer can turn it off.
+- An **Alert Rule** raises zero or more **Alerts** over time, but at most one Active Alert at a time. Each Alert comes from exactly one Alert Rule, so its Sensor, Space and Alert Level follow from that rule.
+- Each **Alert** has exactly one **Alert Status**: Active, Ended or Closed.
 
 ## Device Status
 
@@ -144,31 +193,36 @@ classDiagram
 
 ## Cardinality summary
 
-| From                     | Relationship      | To                | From side | To side                  |
-| ------------------------ | ----------------- | ----------------- | --------- | ------------------------ |
-| Account                  | owns              | Site              | 1         | 0..\*                    |
-| Site                     | is shared with    | Account           | 0..\*     | 0..\*                    |
-| Account                  | owns              | Hub               | 1         | 0..\*                    |
-| Site                     | contains          | Space             | 1         | 0..\*                    |
-| Site                     | is split into     | Floor             | 1         | 0..\*                    |
-| Floor                    | groups            | Space             | 0..1      | 0..\*                    |
-| Space Type               | categorizes       | Space             | 1         | 0..\*                    |
-| Space                    | is home to        | Hub               | 0..1      | 0..\*                    |
-| Hub                      | has wired to it   | Module            | 1         | 0..\*                    |
-| Module Type              | defines           | Module            | 1         | 0..\*                    |
-| Module                   | contains          | Sensor            | 1         | 1..\*                    |
-| Space                    | contains          | Asset             | 1         | 0..\*                    |
-| Asset Type               | categorizes       | Asset             | 1         | 0..\*                    |
-| Asset                    | is watched by     | Sensor            | 0..1      | 1..\*                    |
-| Metric                   | is measured by    | Sensor            | 1         | 0..\*                    |
-| Unit                     | is canonical for  | Metric            | 1         | 0..\*                    |
-| Sensor                   | produces          | Reading           | 1         | 0..\*                    |
-| Metric                   | is recorded in    | Reading           | 1         | 0..\*                    |
-| Subject (Space or Asset) | is the Subject of | Reading           | 1         | 0..\*                    |
-| Device                   | has               | Pairing Status    | 1         | 1                        |
-| Device                   | has               | Connection Status | 1         | 0..1 (only when Paired)  |
-| Device                   | may report        | Fault             | 1         | 0..\* (only when Paired) |
-| Fault                    | identified by     | Fault Code        | 1         | 1                        |
+| From                     | Relationship      | To                | From side | To side                       |
+| ------------------------ | ----------------- | ----------------- | --------- | ----------------------------- |
+| Account                  | owns              | Site              | 1         | 0..\*                         |
+| Site                     | is shared with    | Account           | 0..\*     | 0..\*                         |
+| Account                  | owns              | Hub               | 1         | 0..\*                         |
+| Site                     | contains          | Space             | 1         | 0..\*                         |
+| Site                     | is split into     | Floor             | 1         | 0..\*                         |
+| Floor                    | groups            | Space             | 0..1      | 0..\*                         |
+| Space Type               | categorizes       | Space             | 1         | 0..\*                         |
+| Space                    | is home to        | Hub               | 0..1      | 0..\*                         |
+| Hub                      | has wired to it   | Module            | 1         | 0..\*                         |
+| Module Type              | defines           | Module            | 1         | 0..\*                         |
+| Module                   | contains          | Sensor            | 1         | 1..\*                         |
+| Space                    | contains          | Asset             | 1         | 0..\*                         |
+| Asset Type               | categorizes       | Asset             | 1         | 0..\*                         |
+| Asset                    | is watched by     | Sensor            | 0..1      | 1..\*                         |
+| Metric                   | is measured by    | Sensor            | 1         | 0..\*                         |
+| Unit                     | is canonical for  | Metric            | 0..1      | 0..\*                         |
+| Metric                   | allows            | State             | 1         | 0 (Measured) or 2 (Two-state) |
+| Sensor                   | produces          | Reading           | 1         | 0..\*                         |
+| Metric                   | is recorded in    | Reading           | 1         | 0..\*                         |
+| Subject (Space or Asset) | is the Subject of | Reading           | 1         | 0..\*                         |
+| Sensor                   | is checked by     | Alert Rule        | 1         | 0..\*                         |
+| Alert Level              | grades            | Alert Rule        | 1         | 0..\*                         |
+| Alert Rule               | raises            | Alert             | 1         | 0..\* (at most 1 Active)      |
+| Alert                    | has               | Alert Status      | 1         | 1                             |
+| Device                   | has               | Pairing Status    | 1         | 1                             |
+| Device                   | has               | Connection Status | 1         | 0..1 (only when Paired)       |
+| Device                   | may report        | Fault             | 1         | 0..\* (only when Paired)      |
+| Fault                    | identified by     | Fault Code        | 1         | 1                             |
 
 ## Rules the diagrams can't show
 
@@ -180,7 +234,7 @@ These rules are always true, even where a diagram can't show them.
 4. **A Sensor can only watch an Asset in its own Space.** The Asset's Space must equal the Space of the Sensor's Hub.
 5. **A Reading has exactly one Subject.** If its Sensor watches an Asset, the Subject is that Asset; otherwise it is the Sensor's Space.
 6. **A Reading never changes once recorded.** Its Sensor, Metric, value, Unit and time are fixed.
-7. **A Reading is stored in its Metric's canonical Unit.** Other Units are only for display.
+7. **A Reading of a Measured Metric is stored in its Metric's canonical Unit.** Other Units are only for display. A Reading of a Two-state Metric has no Unit.
 8. **Connection Status exists only when Pairing Status is `Paired`.**
 9. **A Floor and its Spaces belong to the same Site.**
 10. **A Hub gets a Space only after it is Paired.** An Unpaired or Pairing Hub has no Space.
@@ -191,6 +245,15 @@ These rules are always true, even where a diagram can't show them.
 15. **Only Modules can be Stale.** Stale means no Reading arrived within the Expected Interval, and only Modules send Readings. A Hub is Connecting, Connected or Disconnected.
 16. **A Hub belongs to exactly one Account,** the one its Hub Token belongs to. Its Modules belong to the same Account.
 17. **A Hub can only be placed in a Space its Account owns.** The Space's Site must be owned by the Hub's Account.
+18. **A Reading's value matches its Metric.** A number for a Measured Metric; one of the Metric's own two States for a Two-state Metric (a Power Reading is never Open).
+19. **Contact and Power Readings are about an Asset; Motion, Smoke and CO Readings are about the Space.** A Contact Sensor watches a Door or Window, and a Power Sensor watches an Appliance.
+20. **Every Module sends its current Readings at least once per Expected Interval**, even when nothing has changed. A closed door still reports Closed. So no Reading within the Expected Interval always means a problem (Stale).
+21. **An Alert Rule's condition matches its Sensor's Metric.** "In a State" only for a Two-state Metric, and only with one of that Metric's States; "above" or "below" only for a Measured Metric.
+22. **An Alert Rule has at most one Active Alert.** A new Alert is raised only when the condition becomes true again after it was no longer true.
+23. **An Alert ends by itself or is closed.** It becomes Ended when its condition is no longer true, or Closed when the user closes it while it is Active. Neither ever becomes Active again.
+24. **A Closed Alert doesn't hide the problem.** While the condition is still true, the Reading itself still shows it (Smoke Detected on the Module's card).
+25. **Only the Site's owner can close an Alert.** Accounts the Site is shared with only see Alerts (rule 14).
+26. **Every Smoke and CO Sensor has a Built-in Alert Rule**: Critical, condition Detected. It is on by default; the app's developer can turn it off.
 
 ## Related
 
