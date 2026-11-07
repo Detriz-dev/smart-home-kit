@@ -2,6 +2,7 @@ import { useId } from "react";
 import { DeviceConnectionStatus } from "../../status/DeviceConnectionStatus";
 import { DeviceFaultStatus } from "../../status/DeviceFaultStatus";
 import { SensorReading } from "../SensorReading";
+import { SensorState } from "../SensorState";
 import styles from "./ModuleCard.module.css";
 import type { ModuleCardProps } from "./ModuleCard.types";
 
@@ -32,16 +33,25 @@ export function ModuleCard({
         data-sensor-count={sensors.length}
         className={styles.sensors}
       >
-        {sensors.map(({ metric, value, unit, fractionDigits }) => (
-          <li key={metric} className={styles.sensor}>
-            <SensorReading
-              metric={metric}
-              value={value}
-              unit={unit}
-              fractionDigits={fractionDigits}
-              isDisconnected={connectionStatus === "disconnected"}
-              size="md"
-            />
+        {sensors.map((sensor) => (
+          // A Module has one Sensor per Metric, so the Metric is a unique key.
+          <li key={sensor.metric} className={styles.sensor}>
+            {"state" in sensor ? (
+              <SensorState
+                {...sensor}
+                isDisconnected={connectionStatus === "disconnected"}
+                size="md"
+              />
+            ) : (
+              <SensorReading
+                metric={sensor.metric}
+                value={sensor.value}
+                unit={sensor.unit}
+                fractionDigits={sensor.fractionDigits}
+                isDisconnected={connectionStatus === "disconnected"}
+                size="md"
+              />
+            )}
           </li>
         ))}
       </ul>

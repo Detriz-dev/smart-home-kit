@@ -71,4 +71,9 @@
   .unit {
     display: flex;
   }
+
+  /* State rows: the pill has no text baseline to share with a status, so centre it instead. */
+  .row:has(> .reading [data-state]) .reading {
+    align-items: center;
+  }
 }

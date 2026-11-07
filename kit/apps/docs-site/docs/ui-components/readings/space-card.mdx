@@ -324,6 +324,53 @@ Pass only the Metrics a screen needs. For "the temperature in every room", give 
 </ColumnLayout>
 ```
 
+## Rows with States
+
+A row can also show a State: Power, Contact, Motion, Smoke or CO. Pass `state` instead of `value` and `unit`. For a Door, Window or Appliance, pass `asset` so the row is named after it ("Front door"). For Motion, Smoke and CO, pass `detectedSince` or `lastDetectedAt` to add since when, like [`DetectionStatus`](./detection-status.mdx).
+
+```jsx live
+function Hallway() {
+  const now = Date.now();
+  return (
+    <div style={{ maxWidth: 360 }}>
+      <SpaceCard
+        name="Hallway"
+        readings={[
+          {
+            metric: "temperature",
+            value: 19.5,
+            unit: "celsius",
+            connectionStatus: "connected",
+          },
+          {
+            metric: "contact",
+            state: "open",
+            asset: { name: "Front door", assetType: "door" },
+            alertLevel: "info",
+            connectionStatus: "connected",
+          },
+          {
+            metric: "contact",
+            state: "closed",
+            asset: { name: "Hall window", assetType: "window" },
+            connectionStatus: "connected",
+          },
+          {
+            metric: "motion",
+            state: "detected",
+            detectedSince: new Date(now - 3 * 60_000),
+            connectionStatus: "connected",
+          },
+          { metric: "smoke", state: "clear", connectionStatus: "connected" },
+        ]}
+      />
+    </div>
+  );
+}
+```
+
+Two Contact rows in one Space are fine when each has its own `asset`: the Asset's name tells them apart.
+
 ## Mapping your data
 
 | Prop       | Comes from                                                                     | Example                                            |
@@ -332,7 +379,7 @@ Pass only the Metrics a screen needs. For "the temperature in every room", give 
 | `readings` | One latest Reading per Metric, from the Space's Modules                        | see below                                          |
 | `faults`   | The current [Faults](/docs/domain-model/glossary#fault) of the Space's Modules | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
 
-Each item in `readings`:
+Each item in `readings` is a number row (below) or a State row (`metric`, `state`, `connectionStatus`, and optionally `asset`, `alertLevel`, `detectedSince` and `lastDetectedAt`, see [Rows with States](#rows-with-states)). A number row has:
 
 | Field              | Comes from                                                                                                       | Example         |
 | ------------------ | ---------------------------------------------------------------------------------------------------------------- | --------------- |
@@ -347,7 +394,7 @@ Each item in `faults` has the same fields as [`DeviceFaultStatus`](../status/dev
 A few rules:
 
 - **The status belongs to each row.** A Space has no Connection Status, and it can hold several Modules. Pass each Reading with the status of the Module it comes from.
-- **One row per Metric.** The card uses the Metric to tell rows apart, so pass each Metric once.
+- **One row per Metric.** The card uses the Metric to tell rows apart, so pass each Metric once. State rows with an `asset` are told apart by the Asset's name, so several Contact rows are fine.
 - **Two Modules measuring the same Metric?** You choose which Reading to pass. The card shows what it gets and never averages: an average isn't a Reading.
 - **The order is yours.** Rows show in the order of the list.
 - **At least one row.** For a Space with no Paired Modules, show a message instead of the card.
@@ -361,7 +408,9 @@ A few rules:
 | `readings` | `SpaceCardReading[]`       | –       | **Required.** One row per Metric, in display order. At least one.         |
 | `faults`   | `DeviceFaultStatusProps[]` | none    | Current Faults in this Space's Modules. Leave it out when there are none. |
 
-`SpaceCardReading`:
+`SpaceCardReading` is a `SpaceCardMeasuredReading` (below) or a `SpaceCardStateReading` (see [Rows with States](#rows-with-states)).
+
+`SpaceCardMeasuredReading`:
 
 | Field              | Type                                                       | Default | Description                                                                       |
 | ------------------ | ---------------------------------------------------------- | ------- | --------------------------------------------------------------------------------- |
@@ -371,7 +420,7 @@ A few rules:
 | `fractionDigits`   | `number`                                                   | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).        |
 | `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** Connection Status of the Module this Reading comes from.            |
 
-The types `SpaceCardProps` and `SpaceCardReading` are exported too:
+The types `SpaceCardProps`, `SpaceCardReading`, `SpaceCardMeasuredReading` and `SpaceCardStateReading` are exported too:
 
 ```tsx
 import type { SpaceCardProps, SpaceCardReading } from "@detriz-sh-kit/ui";

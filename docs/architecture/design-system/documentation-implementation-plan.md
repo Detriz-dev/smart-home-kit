@@ -4,7 +4,7 @@ Everything that has to be written or aligned before the docs site fully document
 
 How to write each component page: [Component documentation workflow](./workflows/component-documentation.md). Worked examples: [`location-path.mdx`](/kit/apps/docs-site/docs/ui-components/navigation/location-path.mdx) and [`sensor-label.mdx`](/kit/apps/docs-site/docs/ui-components/context/sensor-label.mdx).
 
-Status as of 2026-11-07: all 20 component pages in this table and the overview are written. Phase 2 components are added as they ship.
+Status as of 2026-11-07: all 21 component pages in this table and the overview are written. Phase 2 components are added as they ship.
 
 ## Contents
 
@@ -53,6 +53,7 @@ The order follows what each component is built from: a page links to the pages o
 | 18  | `DetectionStatus`        | Readings   | `readings/detection-status.mdx`       | ✅     | `StateValue`, `RelativeTime`                                   | Phase 2. Motion, Smoke and CO only.                                                                                                                                                                                                                                          |
 | 19  | `AssetLabel`             | Context    | `context/asset-label.mdx`             | ✅     | `AssetTypeIcon`                                                | Phase 2. The Asset twin of `SpaceLabel`.                                                                                                                                                                                                                                     |
 | 20  | `Badge`                  | Feedback   | `feedback/badge.mdx`                  | ✅     | –                                                              | Phase 2. Count of Active Alerts; tone = highest Alert Level.                                                                                                                                                                                                                 |
+| 21  | `SensorState`            | Readings   | `readings/sensor-state.mdx`           | ✅     | `SensorLabel`, `AssetLabel`, `StateValue`                      | Phase 2. The twin of `SensorReading`. `ModuleCard` and `SpaceCard` pages updated for State Sensors and rows.                                                                                                                                                                 |
 
 For each page, the workflow's Step 5 also asks you to:
 

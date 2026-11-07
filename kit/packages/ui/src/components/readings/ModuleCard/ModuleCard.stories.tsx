@@ -107,6 +107,31 @@ export const Stacked: Story = {
   parameters: { width: "192px" },
 };
 
+// Two-state Sensors: a Smoke and CO Module, each Sensor shown as a SensorState.
+export const StateSensors: Story = {
+  args: {
+    name: "Kitchen safety",
+    sensors: [
+      { metric: "smoke", state: "clear" },
+      { metric: "co", state: "detected", alertLevel: "critical" },
+    ],
+  },
+};
+
+// A Power Sensor named after the Appliance it watches.
+export const PowerWithAsset: Story = {
+  args: {
+    name: "Laundry power",
+    sensors: [
+      {
+        metric: "power",
+        state: "on",
+        asset: { name: "Washing machine", assetType: "appliance" },
+      },
+    ],
+  },
+};
+
 // Stress story: a long name the user chose, and the longest value, in a narrow container.
 // The name ends with "…", and the value and its Unit are never cut off.
 export const LongText: Story = {

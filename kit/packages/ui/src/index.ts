@@ -87,6 +87,12 @@ export type {
   DetectionStatusProps,
   DetectionStatusSize,
 } from "./components/readings/DetectionStatus";
+export { SensorState } from "./components/readings/SensorState";
+export type {
+  SensorStateAsset,
+  SensorStateProps,
+  SensorStateSize,
+} from "./components/readings/SensorState";
 export { StateValue } from "./components/readings/StateValue";
 export type {
   StateValueProps,
@@ -97,12 +103,16 @@ export { STATE_NAMES } from "./utils/stateNames";
 export { ModuleCard } from "./components/readings/ModuleCard";
 export type {
   ModuleCardProps,
+  ModuleCardMeasuredSensor,
   ModuleCardSensor,
+  ModuleCardStateSensor,
 } from "./components/readings/ModuleCard";
 export { SpaceCard } from "./components/readings/SpaceCard";
 export type {
   SpaceCardProps,
+  SpaceCardMeasuredReading,
   SpaceCardReading,
+  SpaceCardStateReading,
 } from "./components/readings/SpaceCard";
 export type {
   DetectionMetric,

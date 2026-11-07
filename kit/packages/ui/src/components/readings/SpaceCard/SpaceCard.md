@@ -176,3 +176,10 @@ As in `ModuleCard`, Figma draws the outline inside the card, so in CSS the paddi
 - **Heading.** Should the Space name be a heading? Same question as `ModuleCard`.
 - **Row height per state** (designer's call): loading and disconnected rows are 2px taller than connected rows (the `sm` icon is taller than the `sm` text), so the card grows 8px when four rows lose their values. `SensorReading` keeps one height in every state. **Accepted for now:** the code follows Figma. To change it, give `row` a fixed height in Figma and a `min-block-size` in CSS.
 - **Many Stale announcements.** Each Stale row has its own `role="status"`. If this is too noisy on a Site screen, the card could announce one summary instead.
+
+### State rows (Phase 2, 2026-11-07)
+
+- A row is a number row (unchanged) or a State row: `state`, optional `asset` (names the row with `AssetLabel`), `alertLevel`, and for Motion, Smoke and CO `detectedSince` / `lastDetectedAt` (the row then shows `DetectionStatus` instead of `StateValue`).
+- Row keys are the Metric plus the Asset's name, so several Contact rows (Front door, Hall window) work.
+- State rows centre the pill vertically (`data-kind="state"`), number rows keep baseline alignment.
+- Figma: the `SpaceCard with States` example (node `596:261`) shows the recipe: in a SpaceCard instance, swap the row's SensorLabel to AssetLabel, ReadingValue to StateValue or DetectionStatus, and hide the UnitLabel. The rows aren't components, so the component itself is unchanged.

@@ -202,3 +202,10 @@ The container query widths (332px, 504px) are raw values, an exception to the to
 - **One Sensor per Metric.** The card uses the Metric as each Sensor's key, so it assumes a Module never has two Sensors with the same Metric. The old link for this rule (Domain Analysis) was deleted in the repo cleanup. Add the rule to the Data model, or change the card if it isn't true.
 - **Heading.** Should the Module name be a heading for screen-reader navigation? If yes, the card needs a `headingLevel` prop, because it doesn't know where it sits on the page.
 - **Figma is behind.** Remove the `state=off` variant and the Switch layer from the `ModuleCard` component set (node `349:591`), so Figma matches the code.
+
+### Two-state Sensors (Phase 2, 2026-11-07)
+
+- A Sensor is a number Sensor (`value` + `unit`, shown by `SensorReading`) or a State Sensor (`state`, optional `asset` and `alertLevel`, shown by `SensorState`). Told apart by the `state` field. Existing number Sensors are unchanged.
+- The Module's Connection Status applies to both: Disconnected hides the States too.
+- Figma: the `ModuleCard with States` example (node `596:741`) swaps the SensorReading instances to `SensorState` (Smoke Clear, CO Detected Critical). The component itself is unchanged.
+- Open: the Figma ModuleCard has a Switch row and a `state=off` variant that the code doesn't have. The kit is sensor-only (Switch is for app settings), so these should probably be removed from Figma.

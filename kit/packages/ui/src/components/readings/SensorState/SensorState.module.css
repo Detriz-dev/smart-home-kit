@@ -1,0 +1,25 @@
+@layer detriz {
+  /* The same card as SensorReading: label on top, State below, outline inside the padding.
+     See SensorReading.module.css for why the padding is one border width smaller. */
+  .root {
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-1);
+    min-inline-size: 0;
+    padding: calc(var(--shk-space-2) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+    border-radius: var(--shk-radius-12);
+    background: var(--shk-surface-default);
+  }
+
+  /* Wraps the label so the group has a name. min-inline-size: 0 lets a long name end with "…". */
+  .label {
+    display: flex;
+    min-inline-size: 0;
+  }
+
+  /* Keeps the pill its own width instead of stretching across the card. */
+  .state {
+    display: flex;
+  }
+}
