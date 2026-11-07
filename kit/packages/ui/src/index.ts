@@ -71,6 +71,13 @@ export type {
   SensorReadingProps,
   SensorReadingSize,
 } from "./components/readings/SensorReading";
+export { StateValue } from "./components/readings/StateValue";
+export type {
+  StateValueProps,
+  StateValueReading,
+  StateValueSize,
+} from "./components/readings/StateValue";
+export { STATE_NAMES } from "./utils/stateNames";
 export { ModuleCard } from "./components/readings/ModuleCard";
 export type {
   ModuleCardProps,

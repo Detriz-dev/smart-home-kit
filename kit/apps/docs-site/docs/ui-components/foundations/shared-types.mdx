@@ -71,7 +71,7 @@ type ContactState = StateOf<"contact">; // "open" | "closed"
 
 Use `StateOf` in your own data, so a Power Reading can never be `"open"`.
 
-**Used by:** no component yet. The Phase 2 components for States and Detections will use it.
+**Used by:** [`StateValue`](../readings/state-value.mdx) (`metric` and `state`). The word shown for each State is in the exported `STATE_NAMES` map.
 
 ## Alerts
 
@@ -110,7 +110,7 @@ const wrong: AlertRule = {
 };
 ```
 
-**Used by:** no component yet. The Phase 2 Alert components will use them.
+**Used by:** [`StateValue`](../readings/state-value.mdx) (`alertLevel`). The Phase 2 Alert components will use them too.
 
 ## SpaceType
 

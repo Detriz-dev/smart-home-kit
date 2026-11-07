@@ -4,7 +4,7 @@ Everything that has to be written or aligned before the docs site fully document
 
 How to write each component page: [Component documentation workflow](./workflows/component-documentation.md). Worked examples: [`location-path.mdx`](/kit/apps/docs-site/docs/ui-components/navigation/location-path.mdx) and [`sensor-label.mdx`](/kit/apps/docs-site/docs/ui-components/context/sensor-label.mdx).
 
-Status as of 2026-11-03: all 15 component pages and the overview are written.
+Status as of 2026-11-07: all 16 component pages in this table and the overview are written. Phase 2 components are added as they ship.
 
 ## Contents
 
@@ -48,6 +48,7 @@ The order follows what each component is built from: a page links to the pages o
 | 13  | `ContentSection`         | Layout     | `layout/content-section.mdx`          | ✅     | –                                                              | Spec fixed: it said "Studio's own page owns the `<h1>`"; Live Studio was dropped.                                                                                                                                                                                            |
 | 14  | `Switch`                 | Controls   | `controls/switch.mdx`                 | ✅     | –                                                              | Decided: Switch is for **app settings** (like "Show temperature in °F"), never for controlling a Device, because the kit is sensor-only. Spec rewritten; story and prop comment examples changed from "Heating". Still to update in Figma: the usage frame may show Heating. |
 | 15  | `Button`                 | Controls   | `controls/button.mdx`                 | ✅     | –                                                              | Spec fixed: "Studio uses it" now says apps using Generative UI.                                                                                                                                                                                                              |
+| 16  | `StateValue`             | Readings   | `readings/state-value.mdx`            | ✅     | `StateIcon`, `ReadingStatusIcon`                               | Phase 2. The State twin of `ReadingValue`. Linked from the overview, Shared types, Colors, Icons, SensorLabel and ReadingValue pages.                                                                                                                                        |
 
 For each page, the workflow's Step 5 also asks you to:
 

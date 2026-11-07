@@ -1,0 +1,94 @@
+@layer detriz {
+  /* The pill: icon and word in one row, centred. Fill and text colour come from the state.
+     loading and disconnected have no fill, but keep the same padding, so the height never changes.
+     Default size is md. */
+  .root {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--shk-space-1);
+    padding-block: var(--shk-space-1);
+    padding-inline: var(--shk-space-2);
+    border-radius: var(--shk-radius-full);
+    white-space: nowrap;
+  }
+
+  .root[data-size="lg"] {
+    gap: var(--shk-space-2);
+    padding-inline: var(--shk-space-3);
+  }
+
+  .root[data-state="inactive"] {
+    background: var(--shk-state-inactive-bg);
+    color: var(--shk-state-inactive-fg);
+  }
+
+  .root[data-state="active"] {
+    background: var(--shk-state-active-bg);
+    color: var(--shk-state-active-fg);
+  }
+
+  .root[data-state="alert-critical"] {
+    background: var(--shk-status-danger-bg);
+    color: var(--shk-status-danger-fg);
+  }
+
+  .root[data-state="alert-warning"] {
+    background: var(--shk-status-warning-bg);
+    color: var(--shk-status-warning-fg);
+  }
+
+  /* Info is blue like active, so it gets a thin border to tell them apart. An inset shadow, not a
+     border, so the pill keeps the same size as every other state (Figma: inside stroke, not in layout). */
+  .root[data-state="alert-info"] {
+    background: var(--shk-status-progress-bg);
+    color: var(--shk-status-progress-fg);
+    box-shadow: inset 0 0 0 var(--shk-border-width-thin)
+      var(--shk-status-progress-border);
+  }
+
+  .root[data-state="loading"],
+  .root[data-state="disconnected"] {
+    color: var(--shk-color-text-secondary);
+  }
+
+  /* Wraps the Icon, which takes its colour from the root. */
+  .icon {
+    display: inline-flex;
+  }
+
+  /* The State's name: label text style in md, readout-sm in lg. Never truncated: the words are short. */
+  .label {
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+  }
+
+  .root[data-size="lg"] .label {
+    font-family: var(--shk-typography-readout-sm-font-family);
+    font-size: var(--shk-typography-readout-sm-font-size);
+    font-weight: var(--shk-typography-readout-sm-font-weight);
+    line-height: var(--shk-typography-readout-sm-line-height);
+    letter-spacing: var(--shk-typography-readout-sm-letter-spacing);
+  }
+
+  /* loading: the refresh icon turns, like ReadingValue. */
+  .root[data-state="loading"] .icon {
+    animation: spin var(--shk-motion-duration-spin) linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* Reduced motion: the icon stands still but stays visible. */
+  @media (prefers-reduced-motion: reduce) {
+    .root[data-state="loading"] .icon {
+      animation: none;
+    }
+  }
+}
