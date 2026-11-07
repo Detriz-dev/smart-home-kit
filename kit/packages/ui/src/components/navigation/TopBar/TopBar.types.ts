@@ -7,7 +7,7 @@ interface TopBarBaseProps {
   title: string;
   /** An icon before the title, e.g. `SPACE_TYPE_ICONS.kitchen` on a room's screen. Decorative. */
   icon?: IconName;
-  /** Shown on the right, e.g. a `Button`. Never shrinks. */
+  /** Shown on the right, e.g. `IconButton`s or a `Button`. Never shrinks. */
   actions?: ReactNode;
 }
 

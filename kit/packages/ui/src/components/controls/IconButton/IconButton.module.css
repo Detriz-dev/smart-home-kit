@@ -1,0 +1,54 @@
+@layer detriz {
+  /* A 44px square with the icon centred. Ghost by default: no fill or border until hovered.
+     The transparent border keeps ghost and secondary the same size. */
+  .root {
+    box-sizing: border-box;
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--shk-size-11);
+    block-size: var(--shk-size-11);
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    border: var(--shk-border-width-thin) solid transparent;
+    border-radius: var(--shk-radius-8);
+    background: none;
+    color: var(--shk-action-secondary-fg);
+    cursor: pointer;
+  }
+
+  /* Secondary: Button secondary's white fill and grey outline. */
+  .root[data-variant="secondary"] {
+    border-color: var(--shk-action-secondary-border);
+    background: var(--shk-action-secondary-bg);
+  }
+
+  /* Under the pointer: a blue icon, no fill change. The same as a BottomNav item. */
+  .root:hover:not(:disabled) {
+    color: var(--shk-action-subtle-fg-hover);
+  }
+
+  /* While pressed: a light-blue fill, the icon back to its normal colour. The same as a BottomNav item. */
+  .root:active:not(:disabled) {
+    background: var(--shk-action-subtle-bg-pressed);
+    color: var(--shk-action-secondary-fg);
+  }
+
+  /* A visible ring when reached with the keyboard: the same as Button. */
+  .root:focus-visible {
+    outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+    outline-offset: var(--shk-space-1);
+  }
+
+  /* Disabled: grey icon, no pointer. Secondary also gets the disabled fill and outline. */
+  .root:disabled {
+    color: var(--shk-action-disabled-fg);
+    cursor: not-allowed;
+  }
+
+  .root[data-variant="secondary"]:disabled {
+    border-color: var(--shk-action-disabled-border);
+    background: var(--shk-action-disabled-bg);
+  }
+}
