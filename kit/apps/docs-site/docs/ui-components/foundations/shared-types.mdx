@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
 sidebar_label: Shared types
-description: The TypeScript types for Metrics, Space Types, Units and Device statuses that several components share.
+description: The TypeScript types for Metrics, States, Alerts, Space Types, Units and Device statuses that several components share.
 ---
 
 # Shared types
@@ -11,7 +11,14 @@ Several components take the same kinds of values: a Metric, a Space Type, a Unit
 ```tsx
 import type {
   Metric,
+  MeasuredMetric,
+  TwoStateMetric,
+  State,
+  AlertLevel,
+  AlertRule,
   SpaceType,
+  ModuleType,
+  AssetType,
   DeviceKind,
   UnitLabelUnit,
   ConnectionStatus,
@@ -22,23 +29,88 @@ import type {
 
 ## Metric
 
-What a Sensor measures. A fixed list from the Glossary.
+What a Sensor measures. A fixed list from the Glossary, in two kinds:
+
+- **`MeasuredMetric`**: the value is a number with a Unit.
+- **`TwoStateMetric`**: the value is one of two [States](#state), with no Unit.
 
 ```ts
-type Metric =
+type MeasuredMetric =
   "temperature" | "humidity" | "illuminance" | "co2" | "voc" | "pm25";
+type TwoStateMetric = "power" | "contact" | "motion" | "smoke" | "co";
+type Metric = MeasuredMetric | TwoStateMetric;
 ```
 
-| Value         | Shows as    | Usual Unit (`UnitLabelUnit`) |
-| ------------- | ----------- | ---------------------------- |
-| `temperature` | Temperature | `celsius` or `fahrenheit`    |
-| `humidity`    | Humidity    | `percent-rh`                 |
-| `illuminance` | Illuminance | `lux`                        |
-| `co2`         | CO₂         | `ppm`                        |
-| `voc`         | VOC         | `ppb`                        |
-| `pm25`        | PM2.5       | `ug-m3`                      |
+| Value         | Kind      | Shows as    | Usual Unit or States      |
+| ------------- | --------- | ----------- | ------------------------- |
+| `temperature` | Measured  | Temperature | `celsius` or `fahrenheit` |
+| `humidity`    | Measured  | Humidity    | `percent-rh`              |
+| `illuminance` | Measured  | Illuminance | `lux`                     |
+| `co2`         | Measured  | CO₂         | `ppm`                     |
+| `voc`         | Measured  | VOC         | `ppb`                     |
+| `pm25`        | Measured  | PM2.5       | `ug-m3`                   |
+| `power`       | Two-state | Power       | `on`, `off`               |
+| `contact`     | Two-state | Contact     | `open`, `closed`          |
+| `motion`      | Two-state | Motion      | `detected`, `clear`       |
+| `smoke`       | Two-state | Smoke       | `detected`, `clear`       |
+| `co`          | Two-state | CO          | `detected`, `clear`       |
 
-**Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`), [`SensorReading`](../readings/sensor-reading.mdx), [`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) (each Sensor or row), and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). `SensorLabelMetric` is the same type under another name.
+`co` is carbon monoxide, not CO₂. `DetectionMetric` is the three Metrics that start a Detection: `motion`, `smoke` and `co`.
+
+**Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`, any Metric) and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). [`SensorReading`](../readings/sensor-reading.mdx), [`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) show numbers, so they take a `MeasuredMetric` only. `SensorLabelMetric` is the same type as `Metric` under another name.
+
+## State
+
+One of the two values of a Two-state Metric. Each Metric has its own pair, and `StateOf` gives you the pair for one Metric:
+
+```ts
+type State = "on" | "off" | "open" | "closed" | "detected" | "clear";
+
+type ContactState = StateOf<"contact">; // "open" | "closed"
+```
+
+Use `StateOf` in your own data, so a Power Reading can never be `"open"`.
+
+**Used by:** no component yet. The Phase 2 components for States and Detections will use it.
+
+## Alerts
+
+The types for [Alert Rules and Alerts](/docs/domain-model/glossary#alerts). You define Alert Rules in your code; the kit's components will show them.
+
+```ts
+type AlertLevel = "critical" | "warning" | "info";
+type AlertStatus = "active" | "ended" | "closed";
+
+interface AlertRule {
+  condition: AlertRuleCondition;
+  alertLevel: AlertLevel;
+  isBuiltIn?: boolean; // true for the Built-in Alert Rule of a Smoke or CO Sensor
+}
+```
+
+`AlertRuleCondition` is one of two shapes, and TypeScript checks you use the right one for the Metric:
+
+```ts
+// A Measured Metric: above or below a value, in the Metric's standard Unit.
+const tooWarm: AlertRule = {
+  condition: { metric: "temperature", comparison: "above", value: 28 },
+  alertLevel: "warning",
+};
+
+// A Two-state Metric: one of that Metric's own States.
+const doorOpen: AlertRule = {
+  condition: { metric: "contact", state: "open" },
+  alertLevel: "info",
+};
+
+// ❌ Type error: Power has no "open" State.
+const wrong: AlertRule = {
+  condition: { metric: "power", state: "open" },
+  alertLevel: "info",
+};
+```
+
+**Used by:** no component yet. The Phase 2 Alert components will use them.
 
 ## SpaceType
 
@@ -61,6 +133,34 @@ type SpaceType =
 Each Space Type has one icon, in the exported `SPACE_TYPE_ICONS` map. See [`SpaceLabel`](../context/space-label.mdx#space-types) for the table.
 
 **Used by:** [`SpaceLabel`](../context/space-label.mdx) (`spaceType`), and `SPACE_TYPE_ICONS` for a [`Card`](../layout/card.mdx)'s `icon`.
+
+## ModuleType
+
+The category of a Module, decided by what its board measures. A fixed list from the Glossary.
+
+```ts
+type ModuleType =
+  | "climate"
+  | "light"
+  | "air-quality"
+  | "motion"
+  | "contact"
+  | "power"
+  | "smoke"
+  | "co";
+```
+
+**Used by:** no component yet.
+
+## AssetType
+
+A category of Asset: a thing in a Space that Sensors watch. A Contact Sensor watches a `door` or `window`, and a Power Sensor watches an `appliance`.
+
+```ts
+type AssetType = "plant" | "tap" | "door" | "window" | "appliance";
+```
+
+**Used by:** no component yet.
 
 ## DeviceKind
 
@@ -123,6 +223,7 @@ Type your own data with these types, and TypeScript checks it against the compon
 import type {
   ConnectionStatus,
   FaultCode,
+  MeasuredMetric,
   Metric,
   UnitLabelUnit,
 } from "@detriz-sh-kit/ui";
@@ -132,7 +233,11 @@ interface MyModule {
   name: string;
   connectionStatus: ConnectionStatus;
   faults: { faultCode: FaultCode; metric?: Metric }[];
-  sensors: { metric: Metric; value: number | null; unit: UnitLabelUnit }[];
+  sensors: {
+    metric: MeasuredMetric;
+    value: number | null;
+    unit: UnitLabelUnit;
+  }[];
 }
 
 function MyModuleCard({ module }: { module: MyModule }) {

@@ -44,7 +44,12 @@ export type {
   SensorLabelProps,
   SensorLabelSize,
 } from "./components/context/SensorLabel";
-export { SPACE_TYPE_ICONS, SpaceLabel } from "./components/context/SpaceLabel";
+export { SpaceLabel } from "./components/context/SpaceLabel";
+export {
+  ASSET_TYPE_ICONS,
+  METRIC_ICONS,
+  SPACE_TYPE_ICONS,
+} from "./icons/purposeIcons";
 export type {
   SpaceLabelProps,
   SpaceLabelSize,
@@ -76,7 +81,23 @@ export type {
   SpaceCardProps,
   SpaceCardReading,
 } from "./components/readings/SpaceCard";
-export type { Metric } from "./types/metric";
+export type {
+  DetectionMetric,
+  MeasuredMetric,
+  Metric,
+  TwoStateMetric,
+} from "./types/metric";
+export type { State, StateOf, StatesByMetric } from "./types/state";
+export type {
+  AlertLevel,
+  AlertRule,
+  AlertRuleCondition,
+  AlertRuleStateCondition,
+  AlertRuleThresholdCondition,
+  AlertStatus,
+} from "./types/alert";
+export type { ModuleType } from "./types/moduleType";
+export type { AssetType } from "./types/assetType";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
 export { Switch } from "./components/controls/Switch";

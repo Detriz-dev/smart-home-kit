@@ -1,4 +1,5 @@
 import { Icon } from "../../../icons/Icon";
+import { READING_STATUS_ICONS } from "../../../icons/purposeIcons";
 import { METRIC_NAMES } from "../../../utils/metricNames";
 import styles from "./DeviceFaultStatus.module.css";
 import type {
@@ -30,7 +31,7 @@ export function DeviceFaultStatus({
   return (
     <span role="status" data-fault-code={faultCode} className={styles.root}>
       {/* The icon is decorative: the message next to it says the same thing. */}
-      <Icon name="error" size="xs" />
+      <Icon name={READING_STATUS_ICONS.fault} size="xs" />
       {/* When there is a spoken name, screen readers skip the message and read that instead ("carbon dioxide sensor failure"). */}
       <span
         aria-hidden={names?.spokenName ? "true" : undefined}

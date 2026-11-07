@@ -1,17 +1,11 @@
-import { Icon, type IconName } from "../../../icons/Icon";
-import type { DeviceKind } from "../../../types/deviceKind";
+import { Icon } from "../../../icons/Icon";
+import { DEVICE_KIND_ICONS } from "../../../icons/purposeIcons";
 import { ListItem } from "../../layout/ListItem";
 import { DeviceConnectionStatus } from "../DeviceConnectionStatus";
 import { DeviceFaultStatus } from "../DeviceFaultStatus";
 import { DevicePairingStatus } from "../DevicePairingStatus";
 import styles from "./DeviceListItem.module.css";
 import type { DeviceListItemProps } from "./DeviceListItem.types";
-
-/** The icon for each Device Kind. Moves to DeviceLabel (and gets exported) when that is built. */
-const DEVICE_KIND_ICONS: Record<DeviceKind, IconName> = {
-  hub: "router",
-  module: "developer_board",
-};
 
 /** One Device as a List row: its icon, name and Space, its status on the right, Faults under the name. Takes props only, never fetches data. */
 export function DeviceListItem(props: DeviceListItemProps) {

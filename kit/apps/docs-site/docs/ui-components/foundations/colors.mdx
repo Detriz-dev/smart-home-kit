@@ -36,14 +36,15 @@ So to change what "main text" looks like everywhere, you point one semantic colo
 
 The colors live in six Figma collections. The CSS name is the collection, then the variable's name, with `/` turned into `-` and `--shk-` in front:
 
-| Figma collection | CSS variables          | Colors | What's in it                                               |
-| ---------------- | ---------------------- | ------ | ---------------------------------------------------------- |
-| `palette`        | `--shk-palette-*`      | 57     | Raw colors: five hues in 11 steps, plus white and black    |
-| `color-text`     | `--shk-color-text-*`   | 4      | Text                                                       |
-| `surface`        | `--shk-surface-*`      | 3      | Backgrounds of pages and cards                             |
-| `color-border`   | `--shk-color-border-*` | 1      | Outlines                                                   |
-| `status`         | `--shk-status-*`       | 25     | Device Status and messages: five roles, five parts each    |
-| `action`         | `--shk-action-*`       | 13     | Buttons and other things you click, with hover and pressed |
+| Figma collection | CSS variables          | Colors | What's in it                                                 |
+| ---------------- | ---------------------- | ------ | ------------------------------------------------------------ |
+| `palette`        | `--shk-palette-*`      | 57     | Raw colors: five hues in 11 steps, plus white and black      |
+| `color-text`     | `--shk-color-text-*`   | 4      | Text                                                         |
+| `surface`        | `--shk-surface-*`      | 3      | Backgrounds of pages and cards                               |
+| `color-border`   | `--shk-color-border-*` | 1      | Outlines                                                     |
+| `status`         | `--shk-status-*`       | 25     | Device Status and messages: five roles, five parts each      |
+| `action`         | `--shk-action-*`       | 13     | Buttons and other things you click, with hover and pressed   |
+| `state`          | `--shk-state-*`        | 8      | Two-state Readings: active (On, Open, Detected) and inactive |
 
 ## In Figma
 
@@ -108,6 +109,16 @@ Which state uses which role:
 | `danger`   | A problem: Faults, errors                       | `DeviceFaultStatus`, `InlineMessage` (error)                                           |
 
 Disconnected uses `neutral`, not `danger`. Red is kept for Faults, so "unplugged" and "broken" never look the same.
+
+## State
+
+Colors for the [States](/docs/domain-model/glossary#measurements) of Two-state Metrics. **Active** is On, Open or Detected; **inactive** is Off, Closed or Clear.
+
+Active is blue, not green: On isn't good or bad, it's just on. A Detected Reading that raises an [Alert](/docs/domain-model/glossary#alerts) uses the Status colors of its Alert Level instead: `danger` for Critical, `warning` for Warning and `progress` for Info.
+
+<ColorTokenTable group="state" />
+
+In Figma they are the `state` collection, for example `state/active/bg`.
 
 ## Action
 

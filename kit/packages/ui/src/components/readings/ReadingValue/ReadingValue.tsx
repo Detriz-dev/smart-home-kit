@@ -1,4 +1,5 @@
 import { Icon, type IconName } from "../../../icons/Icon";
+import { READING_STATUS_ICONS } from "../../../icons/purposeIcons";
 import { formatReadingValue } from "../../../utils/formatReadingValue";
 import styles from "./ReadingValue.module.css";
 import type {
@@ -11,8 +12,11 @@ const ICONS: Record<
   Exclude<ReadingValueState, "default">,
   { name: IconName; label: string }
 > = {
-  loading: { name: "refresh", label: "Loading" },
-  disconnected: { name: "link_off", label: "Disconnected" },
+  loading: { name: READING_STATUS_ICONS.loading, label: "Loading" },
+  disconnected: {
+    name: READING_STATUS_ICONS.disconnected,
+    label: "Disconnected",
+  },
 };
 
 /** Shows the latest value of one Metric as a number, or an icon while loading or Disconnected. Takes props only, never fetches data. */

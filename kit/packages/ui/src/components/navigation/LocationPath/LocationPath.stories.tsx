@@ -10,6 +10,7 @@ const meta = {
     floorName: "Level 2",
     spaceName: "Bedroom",
     deviceName: "Climate Module",
+    deviceKind: "module",
     layout: "inline",
   },
   // Show `layout` as a dropdown of the three layouts in the Controls panel.
@@ -28,6 +29,11 @@ export const Grid: Story = {
   args: { layout: "grid" },
 };
 
+// A Hub at the end of the path shows the Hub icon, not the Module one.
+export const HubDevice: Story = {
+  args: { deviceName: "Kitchen Hub", deviceKind: "hub" },
+};
+
 export const Stack: Story = {
   args: { layout: "stack" },
 };
@@ -38,11 +44,16 @@ export const NoFloor: Story = {
 };
 
 export const UpToSpace: Story = {
-  args: { deviceName: undefined },
+  args: { deviceName: undefined, deviceKind: undefined },
 };
 
 export const SiteOnly: Story = {
-  args: { floorName: undefined, spaceName: undefined, deviceName: undefined },
+  args: {
+    floorName: undefined,
+    spaceName: undefined,
+    deviceName: undefined,
+    deviceKind: undefined,
+  },
 };
 
 export const SpaceAndDevice: Story = {
@@ -65,6 +76,7 @@ export const Minimal: Story = {
     floorName: undefined,
     spaceName: undefined,
     deviceName: "Hub",
+    deviceKind: "hub",
   },
 };
 

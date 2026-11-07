@@ -105,7 +105,7 @@ The props are defined in [`SpaceLabel.types.ts`](./SpaceLabel.types.ts), with a 
 Also exported:
 
 - `SpaceType`: the shared type in `src/types/spaceType.ts`, like `Metric`.
-- `SPACE_TYPE_ICONS`: `Record<SpaceType, IconName>`. It lives in the `SpaceLabel` folder, not in `utils/`, because utils can't import icons.
+- `SPACE_TYPE_ICONS`: `Record<SpaceType, IconName>`. It lives in `src/icons/purposeIcons.ts`, next to `METRIC_ICONS` and `ASSET_TYPE_ICONS`, and the `SpaceLabel` folder re-exports it. In Figma it is the `SpaceTypeIcon` component set.
 
 Decisions behind them:
 

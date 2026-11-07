@@ -2,15 +2,16 @@
 title: Events and commands
 sidebar_position: 5
 sidebar_label: Events and commands
-description: The events that move a Device between statuses, and the commands a user can send.
+description: The events that move a Device between statuses, report State changes, Detections and Alerts, and the commands a user can send.
 keywords:
   - smart home events
   - device commands
   - Device Status
   - pairing
+  - alerts
 ---
 
-The events that move a Device (a Hub or a Module) between its statuses, and the commands a user can send. This page is a reference: for how the statuses fit together, with diagrams, see [Device lifecycle](./device-lifecycle.mdx).
+The events that move a Device (a Hub or a Module) between its statuses, the events about Readings and Alerts, and the commands a user can send. This page is a reference: for how the statuses fit together, with diagrams, see [Device lifecycle](./device-lifecycle.mdx).
 
 - An **event** is a fact: it already happened. "Device Paired" means the Device is now Paired.
 - A **command** is a request: it can be refused. "Pair Device" asks for a Device to be paired, and is refused if that isn't allowed.
@@ -69,9 +70,29 @@ See [Hub placement](./device-lifecycle.mdx#hub-placement) in the lifecycle.
 | -------------- | --------------- | ------------------------------------ | ------------------------------------------------------------------- |
 | **Hub Placed** | The Hub's Space | API, after the **Place Hub** command | [Data model rule 10](./data-model.mdx#rules-the-diagrams-cant-show) |
 
+### Readings and Detections
+
+Every Reading raises **Reading Recorded** (see [Connection Status](#connection-status)). These events are raised as well, only for Two-state Metrics, when the State changes. A Reading that repeats the same State (a closed door reporting Closed again) raises only **Reading Recorded**.
+
+| Event                 | Means                                                                    | Raised by                            | Rules                                                               |
+| --------------------- | ------------------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------- |
+| **State Changed**     | A Two-state Reading has a different State from the one before (Off → On) | API, when the Reading arrives        | [Data model rule 18](./data-model.mdx#rules-the-diagrams-cant-show) |
+| **Detection Started** | A Motion, Smoke or CO Sensor changed from Clear to Detected              | API, together with **State Changed** | –                                                                   |
+| **Detection Ended**   | A Motion, Smoke or CO Sensor changed from Detected to Clear              | API, together with **State Changed** | –                                                                   |
+
+### Alerts
+
+See [Alerts](./data-model.mdx#alerts) in the Data model.
+
+| Event            | Changes                               | Raised by                                        | Rules                                                                           |
+| ---------------- | ------------------------------------- | ------------------------------------------------ | ------------------------------------------------------------------------------- |
+| **Alert Raised** | A new Alert, with Alert Status Active | API, when an Alert Rule's condition becomes true | [Data model rules 21, 22 and 26](./data-model.mdx#rules-the-diagrams-cant-show) |
+| **Alert Ended**  | Alert Status → Ended                  | API, when the condition is no longer true        | [Data model rule 23](./data-model.mdx#rules-the-diagrams-cant-show)             |
+| **Alert Closed** | Alert Status → Closed                 | API, after the **Close Alert** command           | [Data model rules 23 and 24](./data-model.mdx#rules-the-diagrams-cant-show)     |
+
 ## Commands
 
-Users send every command. Only the Account a Device belongs to can send commands for it. Accounts a Site is shared with can only view it.
+Users send every command. Only the Account a Device belongs to can send commands for it, and only the Site's owner can close its Alerts. Accounts a Site is shared with can only view it.
 
 | Command            | Refused when                                                                  | Leads to             | Rules                                                                       |
 | ------------------ | ----------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------- |
@@ -79,6 +100,9 @@ Users send every command. Only the Account a Device belongs to can send commands
 | **Dismiss Device** | The Device isn't Unpaired                                                     | **Device Dismissed** | –                                                                           |
 | **Remove Device**  | The Device isn't Paired                                                       | **Device Removed**   | 8, 9                                                                        |
 | **Place Hub**      | The Hub isn't Paired, or the Space is in a Site the Hub's Account doesn't own | **Hub Placed**       | [Data model rules 10 and 17](./data-model.mdx#rules-the-diagrams-cant-show) |
+| **Close Alert**    | The Alert isn't Active, or the Account isn't the Site's owner                 | **Alert Closed**     | [Data model rules 23 and 25](./data-model.mdx#rules-the-diagrams-cant-show) |
+
+Alert Rules have no commands: the app's developer defines them in code, including turning a Built-in Alert Rule off.
 
 ## Related
 

@@ -8,14 +8,14 @@ One limit: style, weight and fill can't change at runtime. If you need a filled 
 
 ## Decisions
 
-| Decision                                        | Choice                                     | Why                                                                                                                                                                                  |
-| ----------------------------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| Style                                           | **Rounded**                                | Soft corners suit a friendly home product.                                                                                                                                           |
-| Weight                                          | **400**                                    | The default; pairs with regular body text. Fixed by the `@material-symbols/svg-400` package.                                                                                         |
-| Sizes                                           | `xs` 16px, `sm` 20px, `md` 24px, `lg` 32px | `--shk-size-4`, `--shk-size-5`, `--shk-size-6`, `--shk-size-8`. Icons are drawn on a 24px grid, so 20, 24 and 32px look sharpest; 16px is for caption-size text.                     |
-| Colour                                          | The surrounding text colour                | The SVG uses `fill: currentColor`. Set `color` with a token on the parent, never on the icon.                                                                                        |
-| Metric → icon map (temperature → `thermometer`) | **Proposed in `SensorLabel`**              | `SensorLabel.md` lists one icon per Metric. When the Metric types exist, move the map next to them, so every app shows the same icon for the same Metric.                            |
-| Space Type → icon map (Kitchen → `countertops`) | **`SPACE_TYPE_ICONS` in `SpaceLabel`**     | One icon per Space Type from the Glossary, so every app shows the same icon for the same room. The code lives in `context/SpaceLabel/spaceTypeIcons.ts`; the table below mirrors it. |
+| Decision            | Choice                                     | Why                                                                                                                                                                                                                                                                                                                      |
+| ------------------- | ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Style               | **Rounded**                                | Soft corners suit a friendly home product.                                                                                                                                                                                                                                                                               |
+| Weight              | **400**                                    | The default; pairs with regular body text. Fixed by the `@material-symbols/svg-400` package.                                                                                                                                                                                                                             |
+| Sizes               | `xs` 16px, `sm` 20px, `md` 24px, `lg` 32px | `--shk-size-4`, `--shk-size-5`, `--shk-size-6`, `--shk-size-8`. Icons are drawn on a 24px grid, so 20, 24 and 32px look sharpest; 16px is for caption-size text.                                                                                                                                                         |
+| Colour              | The surrounding text colour                | The SVG uses `fill: currentColor`. Set `color` with a token on the parent, never on the icon.                                                                                                                                                                                                                            |
+| Naming              | **Two layers**                             | Base icons keep their Material Symbols name (`thermostat`, `door_front`): one drawing, one name. Purpose maps on top say which icon each domain value uses (see "Icons by purpose" below). One drawing can serve several purposes (`door_front` is the Hallway Space Type and the Door Asset Type) without being copied. |
+| Purpose → icon maps | **`src/icons/purposeIcons.ts`**            | `METRIC_ICONS`, `SPACE_TYPE_ICONS` and `ASSET_TYPE_ICONS`, all exported. Figma mirrors them as the `MetricIcon`, `SpaceTypeIcon` and `AssetTypeIcon` component sets (`purpose × size`) on the Icon page. State and Alert maps come with the `StateValue` and Alert components.                                           |
 
 **Space Type → icon** (all in `icons.config.ts`):
 
@@ -26,6 +26,25 @@ One limit: style, weight and fill can't change at runtime. If you need a filled 
 | Kitchen     | `countertops` | Meeting    | `groups`      |
 | Living room | `weekend`     | Outdoor    | `yard`        |
 | Hallway     | `door_front`  | Other      | `home`        |
+
+## Icons by purpose
+
+Two layers keep icons consistent:
+
+1. **Base icons** (`Icon`, `name × size`): every drawing once, with its Material Symbols name.
+2. **Purpose sets**, one per kind of domain value. Each value points to one base icon:
+
+| Purpose    | Code map           | Figma component set                  | Example                               |
+| ---------- | ------------------ | ------------------------------------ | ------------------------------------- |
+| Metric     | `METRIC_ICONS`     | `MetricIcon` (`metric × size`)       | `smoke` → `detector_smoke`            |
+| Space Type | `SPACE_TYPE_ICONS` | `SpaceTypeIcon` (`spaceType × size`) | `hallway` → `door_front`              |
+| Asset Type | `ASSET_TYPE_ICONS` | `AssetTypeIcon` (`assetType × size`) | `appliance` → `local_laundry_service` |
+
+The same pattern covers every other purpose: `STATE_ICONS` (`StateIcon`, `state × size`, with values like `power-on`), `DEVICE_KIND_ICONS`, `PLACE_ICONS`, `READING_STATUS_ICONS`, `MESSAGE_TONE_ICONS`, `ALERT_LEVEL_ICONS`, `ALERT_ICONS`, `NAV_ICONS` and `ACTION_ICONS`, each with a Figma set of the same name without `_ICONS` (`DeviceKindIcon`, `AlertLevelIcon`…). The full list with values is on the docs site's Icons page. **Components never use a base icon name directly**: they read it from a map.
+
+In code: `<Icon name={METRIC_ICONS.smoke} />`. In Figma: place a `MetricIcon` and pick `metric` and `size`. `SensorLabel` uses `MetricIcon` inside, so its Metric is a dropdown on the instance.
+
+**Changing which icon a purpose uses** means changing both: the map in `purposeIcons.ts`, and the nested icon in each size of that variant in Figma.
 
 ## How it works
 
@@ -39,7 +58,7 @@ kit/packages/ui/
 └── src/icons/
     ├── icons.config.ts      ← the list of icons we use (the single source of truth)
     ├── generated/           ← written by the script. Committed, but never edited by hand
-    │   ├── paths.ts         ← { thermostat: "M553-580q…", wifi_off: "M…", … } + the IconName type
+    │   ├── paths.ts         ← { thermostat: "M553-580q…", link_off: "M…", … } + the IconName type
     │   └── LICENSE          ← Apache 2.0 notice for Material Symbols
     └── Icon/
         ├── Icon.tsx         ← the component
@@ -56,7 +75,7 @@ It works like the token pipeline: a raw source goes in, a small curated file com
 ```
 @material-symbols/svg-400        icons.config.ts
 (~3,000 SVG files, in             (our list: "thermostat",
- node_modules, dev only)           "wifi_off", …)
+ node_modules, dev only)           "link_off", …)
             │                            │
             └──────────┬─────────────────┘
                        ▼
@@ -75,7 +94,7 @@ It works like the token pipeline: a raw source goes in, a small curated file com
 2. **The config.** `icons.config.ts` lists the style (`rounded`) and the names we use. Nothing else gets into the kit.
 3. **The script.** For each name, it opens `rounded/<name>.svg`, checks the file exists and uses the expected `viewBox`, and keeps only the shape data (the `d="…"` text of the `<path>`). An SVG file is mostly wrapping; the `d` text is the drawing itself. If a name is wrong or listed twice, the script stops and tells you which one, and writes nothing.
 4. **The generated file.** `paths.ts` is one object: icon name → shape. `IconName` is made from its keys (`keyof typeof iconPaths`), so TypeScript knows every allowed name, and your editor autocompletes them.
-5. **The component.** `<Icon name="wifi_off" />` looks up the shape and draws an `<svg>` with one `<path>`. Size comes from a `--shk-size-*` token, colour from the text around it.
+5. **The component.** `<Icon name="link_off" />` looks up the shape and draws an `<svg>` with one `<path>`. Size comes from a `--shk-size-*` token, colour from the text around it.
 
 Why commit `generated/`? So building, Storybook and CI never need to run the script. You only run it when the config changes, and the diff shows exactly which icons were added.
 
@@ -85,8 +104,8 @@ Why commit `generated/`? So building, Storybook and CI never need to run the scr
 import { Icon } from "@detriz-sh-kit/ui";
 
 <Icon name="thermostat" />                     // decorative: hidden from screen readers
-<Icon name="wifi_off" label="Disconnected" />  // meaningful: role="img" + aria-label
-<Icon name="bolt" size="sm" />                 // sm | md (default) | lg
+<Icon name="link_off" label="Disconnected" />  // meaningful: role="img" + aria-label
+<Icon name="power" size="sm" />                // sm | md (default) | lg
 <Icon name="termostat" />                      // ❌ type error: not in the icon set
 ```
 
@@ -127,5 +146,4 @@ import { Icon } from "@detriz-sh-kit/ui";
 ## Still to do
 
 1. Write an ADR (`docs/adr/0001-icon-system.md`) recording why we use a curated SVG set and the decisions above.
-2. Confirm the Metric → icon map proposed in `SensorLabel.md` once the Metric types exist.
-3. Licence: `generated/LICENSE` keeps the Apache 2.0 notice in the repo. When `ui` is published to npm, also add the notice to the published package (e.g. a `THIRD_PARTY_NOTICES` file listed in `files` in `package.json`).
+2. Licence: `generated/LICENSE` keeps the Apache 2.0 notice in the repo. When `ui` is published to npm, also add the notice to the published package (e.g. a `THIRD_PARTY_NOTICES` file listed in `files` in `package.json`).

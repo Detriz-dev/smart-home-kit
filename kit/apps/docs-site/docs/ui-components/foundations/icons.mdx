@@ -38,27 +38,52 @@ The icons are [Material Symbols](https://fonts.google.com/icons), in the Rounded
 function IconSet() {
   const names = [
     "airwave",
-    "battery_full",
-    "bolt",
+    "arrow_back",
+    "bathtub",
+    "bed",
+    "check_circle-fill",
+    "close",
     "co2",
+    "countertops",
+    "desk",
+    "detector_co",
+    "detector_smoke",
+    "developer_board",
     "door_front",
+    "door_open",
     "error",
+    "error-fill",
+    "faucet",
+    "garage_home",
     "grain",
+    "groups",
     "home",
-    "humidity_percentage",
     "humidity_mid",
+    "info",
+    "info-fill",
     "light_mode",
-    "lightbulb",
-    "lightbulb-fill",
     "link_off",
+    "local_laundry_service",
+    "monitoring",
+    "motion_sensor_active",
+    "motion_sensor_idle",
+    "notifications",
+    "notifications_active",
+    "potted_plant",
+    "power",
+    "power_off",
     "refresh",
+    "router",
+    "sensor_door",
     "sensors",
+    "settings",
     "stairs_2",
-    "thermometer",
     "thermostat",
-    "tv_gen",
-    "wifi",
-    "wifi_off",
+    "warning",
+    "warning-fill",
+    "weekend",
+    "window",
+    "yard",
   ];
   return (
     <div
@@ -86,29 +111,64 @@ function IconSet() {
 }
 ```
 
-### Which component uses which icon
+### Which icon means what
 
-Use the same icon for the same meaning, so people learn it once.
+Every icon a component uses comes from a purpose map (see [Icons by purpose](#icons-by-purpose)), so the same meaning always gets the same icon.
 
-| Means                  | Icon           | Used by                                                  |
-| ---------------------- | -------------- | -------------------------------------------------------- |
-| Site                   | `home`         | [`LocationPath`](../navigation/location-path.mdx)        |
-| Floor                  | `stairs_2`     | `LocationPath`                                           |
-| Space                  | `door_front`   | `LocationPath`                                           |
-| Device (Hub or Module) | `tv_gen`       | `LocationPath`                                           |
-| Temperature            | `thermostat`   | [`SensorLabel`](../context/sensor-label.mdx)             |
-| Humidity               | `humidity_mid` | `SensorLabel`                                            |
-| Illuminance            | `light_mode`   | `SensorLabel`                                            |
-| CO₂                    | `co2`          | `SensorLabel`                                            |
-| VOC                    | `airwave`      | `SensorLabel`                                            |
-| PM2.5                  | `grain`        | `SensorLabel`                                            |
-| Loading                | `refresh`      | [`ReadingValue`](../readings/reading-value.mdx)          |
-| Disconnected           | `link_off`     | `ReadingValue`                                           |
-| Fault                  | `error`        | [`DeviceFaultStatus`](../status/device-fault-status.mdx) |
+| Map                    | Values → icon                                                                                                                                                                                                                      | Used by                                                                                                   |
+| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `METRIC_ICONS`         | temperature `thermostat`, humidity `humidity_mid`, illuminance `light_mode`, co2 `co2`, voc `airwave`, pm25 `grain`, power `power`, contact `sensor_door`, motion `motion_sensor_active`, smoke `detector_smoke`, co `detector_co` | [`SensorLabel`](../context/sensor-label.mdx)                                                              |
+| `STATE_ICONS`          | power on `power` / off `power_off`; contact open `door_open` / closed `sensor_door`; motion detected `motion_sensor_active` / clear `motion_sensor_idle`; smoke and co keep their detector icon in both States                     | The Phase 2 State components                                                                              |
+| `SPACE_TYPE_ICONS`     | bedroom `bed`, bathroom `bathtub`, kitchen `countertops`, living-room `weekend`, hallway `door_front`, garage `garage_home`, office `desk`, meeting `groups`, outdoor `yard`, other `home`                                         | [`SpaceLabel`](../context/space-label.mdx)                                                                |
+| `ASSET_TYPE_ICONS`     | plant `potted_plant`, tap `faucet`, door `door_front`, window `window`, appliance `local_laundry_service`                                                                                                                          | No component yet                                                                                          |
+| `DEVICE_KIND_ICONS`    | hub `router`, module `developer_board`                                                                                                                                                                                             | [`DeviceListItem`](../status/device-list-item.mdx), [`LocationPath`](../navigation/location-path.mdx)     |
+| `PLACE_ICONS`          | site `home`, floor `stairs_2`, space `door_front`                                                                                                                                                                                  | `LocationPath`                                                                                            |
+| `READING_STATUS_ICONS` | loading `refresh`, disconnected `link_off`, fault `error`                                                                                                                                                                          | [`ReadingValue`](../readings/reading-value.mdx), [`DeviceFaultStatus`](../status/device-fault-status.mdx) |
+| `MESSAGE_TONE_ICONS`   | info `info-fill`, success `check_circle-fill`, warning `warning-fill`, error `error-fill`                                                                                                                                          | [`InlineMessage`](../feedback/inline-message.mdx)                                                         |
+| `ALERT_LEVEL_ICONS`    | critical `error-fill`, warning `warning-fill`, info `info-fill`                                                                                                                                                                    | The Phase 2 Alert components                                                                              |
+| `ALERT_ICONS`          | default `notifications`, active `notifications_active`                                                                                                                                                                             | An Alerts tab or button                                                                                   |
+| `NAV_ICONS`            | home `home`, spaces `door_front`, devices `sensors`, history `monitoring`, settings `settings`                                                                                                                                     | [`BottomNav`](../navigation/bottom-nav.mdx) tabs                                                          |
+| `ACTION_ICONS`         | back `arrow_back`, dismiss `close`, retry `refresh`                                                                                                                                                                                | [`TopBar`](../navigation/top-bar.mdx), `InlineMessage`, [`IconButton`](../controls/icon-button.mdx)       |
 
-The other icons in the set aren't used by a component yet.
+Illuminance uses `light_mode` (a sun), not a light bulb, because a bulb looks like a light you can switch, and the kit has no lights to switch.
 
-Illuminance uses `light_mode` (a sun), not `lightbulb`, because a bulb looks like a light you can switch, and the kit has no lights to switch.
+## Icons by purpose
+
+Don't pick icons by their base name: take them from the kit's purpose maps (all twelve are listed in [Which icon means what](#which-icon-means-what)), so every screen shows the same icon for the same thing.
+
+```tsx
+import { ASSET_TYPE_ICONS, Icon, METRIC_ICONS, SPACE_TYPE_ICONS } from "@detriz-sh-kit/ui";
+
+<Icon name={METRIC_ICONS.smoke} />            // detector_smoke
+<Icon name={SPACE_TYPE_ICONS.kitchen} />      // countertops
+<Icon name={ASSET_TYPE_ICONS.appliance} />    // local_laundry_service
+```
+
+| Map                | Keys                                              | Used by                                      |
+| ------------------ | ------------------------------------------------- | -------------------------------------------- |
+| `METRIC_ICONS`     | Every [`Metric`](./shared-types.mdx#metric)       | [`SensorLabel`](../context/sensor-label.mdx) |
+| `SPACE_TYPE_ICONS` | Every [`SpaceType`](./shared-types.mdx#spacetype) | [`SpaceLabel`](../context/space-label.mdx)   |
+| `ASSET_TYPE_ICONS` | Every [`AssetType`](./shared-types.mdx#assettype) | No component yet                             |
+
+```jsx live
+<StackLayout>
+  {Object.entries(ASSET_TYPE_ICONS).map(([assetType, name]) => (
+    <span
+      key={assetType}
+      style={{
+        display: "flex",
+        alignItems: "center",
+        gap: "var(--shk-space-2)",
+      }}
+    >
+      <Icon name={name} />
+      <code>{assetType}</code>
+    </span>
+  ))}
+</StackLayout>
+```
+
+In Figma, each map is a component set on the Icon page, named after it (`MetricIcon`, `StateIcon`, `DeviceKindIcon`, `AlertLevelIcon`…). Pick the value and the size.
 
 ## Sizes
 

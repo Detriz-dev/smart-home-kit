@@ -175,14 +175,14 @@ The props have the same names and types as in [`SensorLabel`](../context/sensor-
 
 ## Props
 
-| Prop             | Type                                                   | Default | Description                                                                                                        |
-| ---------------- | ------------------------------------------------------ | ------- | ------------------------------------------------------------------------------------------------------------------ |
-| `metric`         | `SensorLabelMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Metric the Sensor measures, for example `temperature`. Decides the label and its icon.           |
-| `value`          | `number \| null`                                       | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way.                       |
-| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)       | –       | **Required.** The Unit to show, for example `celsius`. You pick it, so you can choose the display Unit (°C or °F). |
-| `isDisconnected` | `boolean`                                              | `false` | True when the Module's Connection Status is Disconnected. Hides the value and shows the disconnected icon.         |
-| `fractionDigits` | `number`                                               | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                                         |
-| `size`           | `"lg" \| "md"`                                         | `"lg"`  | How big the value and the Unit are drawn.                                                                          |
+| Prop             | Type                                                | Default | Description                                                                                                                                                                                 |
+| ---------------- | --------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `metric`         | `MeasuredMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Measured Metric the Sensor measures, for example `temperature`. Decides the label and its icon. Two-state Metrics (Power, Contact…) aren't accepted: they have no number. |
+| `value`          | `number \| null`                                    | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way.                                                                                                |
+| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)    | –       | **Required.** The Unit to show, for example `celsius`. You pick it, so you can choose the display Unit (°C or °F).                                                                          |
+| `isDisconnected` | `boolean`                                           | `false` | True when the Module's Connection Status is Disconnected. Hides the value and shows the disconnected icon.                                                                                  |
+| `fractionDigits` | `number`                                            | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                                                                                                                  |
+| `size`           | `"lg" \| "md"`                                      | `"lg"`  | How big the value and the Unit are drawn.                                                                                                                                                   |
 
 The types `SensorReadingProps` and `SensorReadingSize` are exported too:
 

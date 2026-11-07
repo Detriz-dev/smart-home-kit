@@ -1,7 +1,7 @@
 import { Icon, type IconSize } from "../../../icons/Icon";
 import styles from "./SpaceLabel.module.css";
 import type { SpaceLabelProps, SpaceLabelSize } from "./SpaceLabel.types";
-import { SPACE_TYPE_ICONS } from "./spaceTypeIcons";
+import { SPACE_TYPE_ICONS } from "../../../icons/purposeIcons";
 
 /** Which Icon size each size uses. The same as SensorLabel: lg keeps the 24px icon next to 18px text. */
 const ICON_SIZES: Record<SpaceLabelSize, IconSize> = {

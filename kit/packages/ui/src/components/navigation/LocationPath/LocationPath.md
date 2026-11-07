@@ -16,12 +16,12 @@ Category: **Context** ("Where is this / what is it?"). The path is a fixed fact 
 
 It shows the location hierarchy from [Where things are](/kit/apps/docs-site/docs/domain-model/glossary.mdx#where-things-are) and the Device it ends at from [How is tracked](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked):
 
-| Part      | Domain term           | Icon         | Example        | Rule                                                                                      |
-| --------- | --------------------- | ------------ | -------------- | ----------------------------------------------------------------------------------------- |
-| 1. Site   | **Site**              | `home`       | My flat        | The top of the hierarchy. Leave out when the Site is already clear from the screen.       |
-| 2. Floor  | **Floor**             | `stairs_2`   | Level 2        | Only Sites that use Floors have one. A name, not a number.                                |
-| 3. Space  | **Space**             | `door_front` | Bedroom        | A Hub has no Space until it is Paired.                                                    |
-| 4. Device | **Hub** or **Module** | `tv_gen`     | Climate Module | The Device the path points to. A Module has no Space of its own: it uses its Hub's Space. |
+| Part      | Domain term           | Icon                                                     | Example        | Rule                                                                                                          |
+| --------- | --------------------- | -------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------- |
+| 1. Site   | **Site**              | `home`                                                   | My flat        | The top of the hierarchy. Leave out when the Site is already clear from the screen.                           |
+| 2. Floor  | **Floor**             | `stairs_2`                                               | Level 2        | Only Sites that use Floors have one. A name, not a number.                                                    |
+| 3. Space  | **Space**             | `door_front`                                             | Bedroom        | A Hub has no Space until it is Paired.                                                                        |
+| 4. Device | **Hub** or **Module** | `router` or `developer_board` (from `DEVICE_KIND_ICONS`) | Climate Module | The Device the path points to. Needs `deviceKind`. A Module has no Space of its own: it uses its Hub's Space. |
 
 Every part is optional. The order is always Site, Floor, Space, Device. Missing parts are skipped, never shown empty. With no names at all, the component renders nothing.
 
@@ -83,7 +83,7 @@ root                      (layout=inline | grid | stack)
 │   ├── icon              door_front
 │   └── label             "Bedroom"
 └── device
-    ├── icon              tv_gen
+    ├── icon              DeviceKindIcon (router / developer_board)
     └── label             "Climate Module"
 ```
 
@@ -101,6 +101,7 @@ The props are defined in [`LocationPath.types.ts`](./LocationPath.types.ts), wit
 The decisions behind them:
 
 - One optional `…Name` string per part (`siteName`, `floorName`, `spaceName`, `deviceName`), not booleans like in Figma: a part is shown when its name is given.
+- `deviceKind` (`hub` or `module`) comes with `deviceName`; TypeScript requires both or neither. It picks the icon from `DEVICE_KIND_ICONS`, the same one `DeviceListItem` uses, and the screen reader prefix ("Hub:" or "Module:"). Decided 2026-11-07: one icon per Device Kind instead of the generic `tv_gen`.
 - `layout` is `"inline" | "grid" | "stack"`, default `inline`, matching the Figma `layout` variant values.
 
 ### Tokens
@@ -129,4 +130,3 @@ The same tokens are bound in Figma.
 ### Open questions
 
 - **Hub.** For a Module, should the path show its Hub too?
-- **Device icon per Device Kind.** One icon (`tv_gen`) for both Hub and Module, or a different one for each?

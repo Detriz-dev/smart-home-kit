@@ -245,12 +245,12 @@ A few rules:
 
 `ModuleCardSensor`:
 
-| Field            | Type                                                   | Default | Description                                                                                  |
-| ---------------- | ------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
-| `metric`         | `SensorLabelMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Metric the Sensor measures. Also tells the Sensors apart.                  |
-| `value`          | `number \| null`                                       | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way. |
-| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)       | –       | **Required.** The Unit to show. You pick it, so you can choose the display Unit (°C or °F).  |
-| `fractionDigits` | `number`                                               | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                   |
+| Field            | Type                                                | Default | Description                                                                                  |
+| ---------------- | --------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `metric`         | `MeasuredMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Measured Metric the Sensor measures. Also tells the Sensors apart.         |
+| `value`          | `number \| null`                                    | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way. |
+| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)    | –       | **Required.** The Unit to show. You pick it, so you can choose the display Unit (°C or °F).  |
+| `fractionDigits` | `number`                                            | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                   |
 
 The types `ModuleCardProps` and `ModuleCardSensor` are exported too:
 

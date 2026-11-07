@@ -113,9 +113,9 @@ The kit has six parts. This table says what each one is, where it lives and whet
 
 The order of work follows the [roadmap](../product-requirements/roadmap.md):
 
-- **Phase 1, POC:** landing page, domain model, Figma library, Storybook, `tokens` and `ui` on npm, developer docs.
-- **Phase 2, MVP:** API design, Raspberry Pi Hub software with one real Sensor, the `client` SDK, components for live Readings (Connection Status and Fault), Figma library v2.
-- **Later:** more Sensors, the API Simulator, the MCP server and Generative UI.
+- **Phase 1, POC (done):** landing page, domain model, Figma library, Storybook, `tokens` and `ui` on npm, developer docs.
+- **Phase 2, MVP (frontend only):** Glossary terms for on/off states, detections and alerts; React and Figma components for mapping a Site (Floors, Spaces, Modules) and showing Readings, on/off states, detections and alerts, with Connection Status and Fault; Storybook and docs pages for them. Components take data as props, so no API is needed yet.
+- **Phase 3, to be decided:** candidates are the API design, the API Simulator, the `client` SDK, the Raspberry Pi Hub software, a camera view, the MCP server and Generative UI.
 
 ---
 
@@ -295,7 +295,7 @@ Internal specs (Figma node IDs, open questions) stay next to each component in `
 
 ## How data will flow (planned)
 
-None of this is built yet. It describes the target for the MVP and later phases.
+None of this is built yet. It describes the target for after the MVP (Phase 3 or later): the MVP is frontend only.
 
 The app gets Readings from **one API**, served by either the real Hub or the API Simulator. Both follow the same contract, so the app doesn't know or care which one it's talking to.
 
@@ -384,7 +384,7 @@ Storybook isn't deployed yet. Packages aren't published to npm yet.
 
 ## Open questions
 
-- **API contract format:** OpenAPI for REST, plus AsyncAPI for the WebSocket stream? To decide when the MVP's API design starts.
+- **API contract format:** OpenAPI for REST, plus AsyncAPI for the WebSocket stream? To decide when the API design starts (after the MVP).
 - **Hub software language and runtime** on the Raspberry Pi (for example Node/TypeScript, so it can share types with the kit, or Python, for Sensor libraries).
 - **Where the planned parts live:** folder names for the API Simulator, the MCP server and Generative UI, and the Hub software inside `kit/`.
 - **How the browser reaches the Hub:** a page served over HTTPS can't call a plain HTTP address on the local network (mixed content). Does the Hub need its own certificate, or do apps run locally during prototyping?

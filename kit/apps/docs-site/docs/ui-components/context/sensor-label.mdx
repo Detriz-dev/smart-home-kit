@@ -77,6 +77,11 @@ Each Metric has a fixed label and icon. You can't change them, so a Metric looks
 | `co2`         | CO₂         | carbon dioxide     |
 | `voc`         | VOC         | VOC                |
 | `pm25`        | PM2.5       | PM 2.5             |
+| `power`       | Power       | Power              |
+| `contact`     | Contact     | Contact            |
+| `motion`      | Motion      | Motion             |
+| `smoke`       | Smoke       | Smoke              |
+| `co`          | CO          | carbon monoxide    |
 
 ```jsx live
 <StackLayout>
@@ -86,6 +91,11 @@ Each Metric has a fixed label and icon. You can't change them, so a Metric looks
   <SensorLabel metric="co2" />
   <SensorLabel metric="voc" />
   <SensorLabel metric="pm25" />
+  <SensorLabel metric="power" />
+  <SensorLabel metric="contact" />
+  <SensorLabel metric="motion" />
+  <SensorLabel metric="smoke" />
+  <SensorLabel metric="co" />
 </StackLayout>
 ```
 
@@ -120,7 +130,7 @@ Pass the [Metric](/docs/domain-model/glossary#measurements) of the Sensor as `me
 A few rules from the domain model:
 
 - **One Sensor, one Metric.** A Sensor produces Readings for exactly one Metric, so naming the Metric names the Sensor. There is no separate Sensor name.
-- **A fixed list.** `metric` only accepts the six Metrics above. TypeScript tells you if you pass anything else. The list is exported as the [`Metric` type](../foundations/shared-types.mdx#metric), so you can use it in your own data:
+- **A fixed list.** `metric` only accepts the eleven Metrics above: the six Measured Metrics and the five Two-state Metrics. TypeScript tells you if you pass anything else. The list is exported as the [`Metric` type](../foundations/shared-types.mdx#metric), so you can use it in your own data:
 
   ```tsx
   import type { Metric } from "@detriz-sh-kit/ui";
@@ -130,10 +140,10 @@ A few rules from the domain model:
 
 ## Props
 
-| Prop     | Type                                                                       | Default | Description                                                                               |
-| -------- | -------------------------------------------------------------------------- | ------- | ----------------------------------------------------------------------------------------- |
-| `metric` | `"temperature" \| "humidity" \| "illuminance" \| "co2" \| "voc" \| "pm25"` | –       | **Required.** The Metric the Sensor measures. The label text and the icon follow from it. |
-| `size`   | `"xs" \| "sm" \| "md" \| "lg"`                                             | `"xs"`  | How big the label is drawn.                                                               |
+| Prop     | Type                                                         | Default | Description                                                                               |
+| -------- | ------------------------------------------------------------ | ------- | ----------------------------------------------------------------------------------------- |
+| `metric` | `Metric` (`"temperature"`, `"co2"`, `"power"`, `"smoke"`, …) | –       | **Required.** The Metric the Sensor measures. The label text and the icon follow from it. |
+| `size`   | `"xs" \| "sm" \| "md" \| "lg"`                               | `"xs"`  | How big the label is drawn.                                                               |
 
 The types `SensorLabelProps`, `SensorLabelMetric` and `SensorLabelSize` are exported too:
 

@@ -24,7 +24,7 @@ export const Default: Story = {};
 
 // Meaningful: screen readers announce "Disconnected".
 export const WithLabel: Story = {
-  args: { name: "wifi_off", label: "Disconnected" },
+  args: { name: "link_off", label: "Disconnected" },
 };
 
 export const ExtraSmall: Story = {

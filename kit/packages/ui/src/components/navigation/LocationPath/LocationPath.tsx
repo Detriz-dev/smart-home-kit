@@ -1,4 +1,5 @@
 import { Icon, type IconName } from "../../../icons/Icon";
+import { DEVICE_KIND_ICONS, PLACE_ICONS } from "../../../icons/purposeIcons";
 import styles from "./LocationPath.module.css";
 import type { LocationPathProps } from "./LocationPath.types";
 
@@ -9,12 +10,11 @@ interface PathPart {
   kind: string;
 }
 
-/** The parts in their fixed order: Site, Floor, Space, Device. */
-const PARTS: PathPart[] = [
-  { key: "site", icon: "home", kind: "Site" },
-  { key: "floor", icon: "stairs_2", kind: "Floor" },
-  { key: "space", icon: "door_front", kind: "Space" },
-  { key: "device", icon: "tv_gen", kind: "Device" },
+/** The place parts in their fixed order: Site, Floor, Space. The Device comes last and is added below. */
+const PLACE_PARTS: PathPart[] = [
+  { key: "site", icon: PLACE_ICONS.site, kind: "Site" },
+  { key: "floor", icon: PLACE_ICONS.floor, kind: "Floor" },
+  { key: "space", icon: PLACE_ICONS.space, kind: "Space" },
 ];
 
 /** Shows where a Device is: its Site, Floor, Space and the Device itself, each with an icon. Takes props only, never fetches data. */
@@ -23,6 +23,7 @@ export function LocationPath({
   floorName,
   spaceName,
   deviceName,
+  deviceKind,
   layout = "inline",
 }: LocationPathProps) {
   const names = {
@@ -32,7 +33,17 @@ export function LocationPath({
     device: deviceName,
   };
   // Parts without a name are skipped, never shown empty.
-  const shownParts = PARTS.filter((part) => names[part.key]);
+  const parts: PathPart[] = deviceKind
+    ? [
+        ...PLACE_PARTS,
+        {
+          key: "device",
+          icon: DEVICE_KIND_ICONS[deviceKind],
+          kind: deviceKind === "hub" ? "Hub" : "Module",
+        },
+      ]
+    : PLACE_PARTS;
+  const shownParts = parts.filter((part) => names[part.key]);
 
   if (shownParts.length === 0) {
     return null;

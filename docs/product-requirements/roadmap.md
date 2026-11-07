@@ -2,9 +2,11 @@
 
 ## Phase 1 — POC (proof of concept)
 
-**Goal:** show that designers and developers can design and build smart home UIs with the kit's components, and test whether the product idea resonates.
+**Status:** done.
 
-**Scope:** only the components needed to build a small, minimal app that shows Sensor Readings. Anything beyond that comes in later phases.
+**Goal:** check that we can deliver every part needed to run the product, and that designers and developers can design and build smart home UIs with the kit's components.
+
+**Scope:** only the parts and components needed to build a small, minimal app that shows Sensor Readings.
 
 #### Deliverables
 
@@ -17,14 +19,34 @@
 
 ## Phase 2 — MVP (minimum viable product)
 
-**Goal:** connect the kit to real hardware for the first time: read a real Sensor on a Raspberry Pi and show its Readings in an app built with the kit.
+**Goal:** give designers and developers the tools to build the frontend of a smart home app: map a Site, then show Readings, detections and whether things are on or off.
 
-**Scope:** one Sensor connected to one Hub (a Raspberry Pi), an API to get its Readings, and a client that apps use to call that API. More Sensors, the API Simulator, the MCP server and Generative UI come in later phases.
+**Scope:** frontend only: UI components in React and Figma, plus the docs and Storybook that explain them. Components take their data as props, so they work with any data source. The components cover three kinds of information:
+
+- **Readings** — measured values, such as temperature, humidity and air quality (CO₂, VOC, PM2.5).
+- **On/off states** — whether something is on or off, or open or closed, such as electricity or a window.
+- **Detections** — something was detected, such as motion, smoke or carbon monoxide, which raises an alert.
+
+The API, the API Simulator, the client, real hardware, camera video, the MCP server and Generative UI come in later phases.
 
 #### Deliverables
 
-1. **API design** — the contract between the Hub and apps: which endpoints exist, what a Reading looks like, and how live updates arrive (REST and WebSocket). It follows the domain model, and it is designed first because the Hub software and the client both depend on it.
-2. **Raspberry Pi Hub software** — runs on the Raspberry Pi, reads the first real Sensor and serves its Readings through the API.
-3. **Client** — a typed SDK (`@detriz-sh-kit/client`) that connects an app to the Hub, so developers get Readings without writing network code themselves.
-4. **UI packages v2** — new and improved components needed to show live Readings from a real Sensor, including the Connection Status states (Connected, Stale, Disconnected) and Fault.
-5. **Figma library v2** — the same new and updated components in Figma, kept in sync with the React components.
+1. **Domain model v2** — adds the new concepts to the Glossary: on/off states, detections and alerts. It is updated first, because components, props and UI copy use its terms.
+2. **UI packages v2** — new and improved React components for:
+   - mapping a Site: Floors, Spaces and the Modules in each Space;
+   - showing Readings, on/off states and detections;
+   - showing alerts when something is detected;
+   - the Connection Status states (Connected, Stale, Disconnected) and Fault.
+3. **Figma library v2** — the same new and updated components in Figma, kept in sync with the React components.
+4. **Storybook and developer documentation** — the new components in Storybook, and a docs page for each one.
+
+## Phase 3 — to be decided
+
+Not planned yet. Candidates moved here from earlier versions of the roadmap:
+
+- **API design** — the contract between the data source and apps: endpoints, what a Reading, a state and a detection look like, and how live updates and alerts arrive (REST and WebSocket).
+- **API Simulator** — simulated Readings, states and detections served over the API, so developers can build without hardware.
+- **Client** — a typed SDK (`@detriz-sh-kit/client`) that connects an app to the API.
+- **Real hardware** — Raspberry Pi Hub software that reads real Sensors and serves the same API as the simulator.
+- **Camera** — a live camera view, next to motion detection.
+- **MCP server and Generative UI** — so AI tools can build UIs with the kit, and apps can build screens from a plain-language request.

@@ -14,4 +14,9 @@ export const METRIC_NAMES: Record<
   co2: { label: "CO₂", spokenName: "carbon dioxide" },
   voc: { label: "VOC" },
   pm25: { label: "PM2.5", spokenName: "PM 2.5" },
+  power: { label: "Power" },
+  contact: { label: "Contact" },
+  motion: { label: "Motion" },
+  smoke: { label: "Smoke" },
+  co: { label: "CO", spokenName: "carbon monoxide" },
 };

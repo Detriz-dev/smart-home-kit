@@ -1,4 +1,4 @@
-import type { Metric } from "../../../types/metric";
+import type { MeasuredMetric } from "../../../types/metric";
 import type { ConnectionStatus } from "../../status/DeviceConnectionStatus";
 import type { DeviceFaultStatusProps } from "../../status/DeviceFaultStatus";
 import type { UnitLabelUnit } from "../UnitLabel";
@@ -6,7 +6,7 @@ import type { UnitLabelUnit } from "../UnitLabel";
 /** One row: the latest Reading of one Metric in the Space. */
 export interface SpaceCardReading {
   /** The Metric the Sensor measures. One row per Metric, so it also identifies the row. */
-  metric: Metric;
+  metric: MeasuredMetric;
   /** The latest value. `null` while the first Reading is on its way. */
   value: number | null;
   /** The Unit to show. The parent picks it, so it can choose the display Unit (°C or °F). */

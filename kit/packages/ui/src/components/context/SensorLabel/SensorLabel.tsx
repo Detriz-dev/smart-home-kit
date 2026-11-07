@@ -1,21 +1,8 @@
-import { Icon, type IconName, type IconSize } from "../../../icons/Icon";
+import { Icon, type IconSize } from "../../../icons/Icon";
+import { METRIC_ICONS } from "../../../icons/purposeIcons";
 import { METRIC_NAMES } from "../../../utils/metricNames";
 import styles from "./SensorLabel.module.css";
-import type {
-  SensorLabelMetric,
-  SensorLabelProps,
-  SensorLabelSize,
-} from "./SensorLabel.types";
-
-/** The icon for each Metric. The names live in utils, because other components need them too. */
-const METRIC_ICONS: Record<SensorLabelMetric, IconName> = {
-  temperature: "thermostat",
-  humidity: "humidity_mid",
-  illuminance: "light_mode",
-  co2: "co2",
-  voc: "airwave",
-  pm25: "grain",
-};
+import type { SensorLabelProps, SensorLabelSize } from "./SensorLabel.types";
 
 /** Which Icon size each size uses. lg keeps the 24px icon: a 32px one looked too heavy next to 18px text. */
 const ICON_SIZES: Record<SensorLabelSize, IconSize> = {
