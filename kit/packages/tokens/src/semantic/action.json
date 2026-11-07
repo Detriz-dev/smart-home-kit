@@ -82,7 +82,12 @@
       "bg-pressed": {
         "$type": "color",
         "$value": "{palette.blue.200}",
-        "$description": "Light fill behind a navigation item while pressed, e.g. a BottomNav section."
+        "$description": "Light fill behind a subtle action or navigation item while pressed, e.g. IconButton, a BottomNav section."
+      },
+      "fg-hover": {
+        "$type": "color",
+        "$value": "{palette.blue.600}",
+        "$description": "Icon of a subtle action under the pointer, e.g. IconButton."
       }
     },
     "focus": {
