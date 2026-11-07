@@ -90,7 +90,7 @@ root (header)            the bar: padding, line under it
 | `backHref`  | `string`     | no       | Shows a back button that links here, e.g. `/`. Uses `LinkProvider`.             |
 | `onBack`    | `() => void` | no       | Shows a back button that calls this, e.g. `router.back()`. Not with `backHref`. |
 | `backLabel` | `string`     | no       | The back button's name for screen readers. Defaults to "Back".                  |
-| `actions`   | `ReactNode`  | no       | Shown on the right, e.g. a `Button`.                                            |
+| `actions`   | `ReactNode`  | no       | Shown on the right, e.g. `IconButton`s (ghost) or a `Button`.                   |
 
 Decisions behind them:
 
@@ -138,5 +138,4 @@ Decisions behind them:
 
 ### Open questions
 
-- **Icon-only actions** (refresh, more) need the planned `IconButton`. Until then, `actions` takes a `Button`.
 - **A larger title** on top-level screens (like iOS large titles). Not in v1.
