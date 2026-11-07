@@ -186,6 +186,8 @@ export { AlertBanner } from "./components/feedback/AlertBanner";
 export type { AlertBannerProps } from "./components/feedback/AlertBanner";
 export { Badge } from "./components/feedback/Badge";
 export type { BadgeProps, BadgeTone } from "./components/feedback/Badge";
+export { EmptyState } from "./components/feedback/EmptyState";
+export type { EmptyStateProps } from "./components/feedback/EmptyState";
 export { InlineMessage } from "./components/feedback/InlineMessage";
 export type {
   InlineMessageProps,

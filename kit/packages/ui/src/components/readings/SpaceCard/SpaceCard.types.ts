@@ -40,7 +40,7 @@ export type SpaceCardReading = SpaceCardMeasuredReading | SpaceCardStateReading;
 export interface SpaceCardProps {
   /** The Space name, e.g. "Bedroom". */
   name: string;
-  /** One row per Metric, in display order. At least one: a Space with no Paired Modules gets a `Notice` from the renderer instead. */
+  /** One row per Metric, in display order. At least one: a Space with no Paired Modules gets an `EmptyState` from the parent instead. */
   readings: SpaceCardReading[];
   /** Current Faults in this Space's Modules. Leave it out when there are none. */
   faults?: DeviceFaultStatusProps[];

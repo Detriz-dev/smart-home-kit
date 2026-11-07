@@ -155,7 +155,7 @@ Nothing open right now. New questions go here.
 3. Build the small parts: ✅ `StateValue`, ✅ `DetectionStatus` (State + since when), ✅ `RelativeTime`, ✅ `AssetLabel`, ✅ `Badge` (all in Figma, code and docs).
 4. ✅ Update `ModuleCard` and `SpaceCard` (State Sensors and rows, in code, Figma examples and docs); build `SensorState`.
 5. Build alerts: ✅ `AlertListItem`, ✅ `AlertBanner`, and a way to show an Alert Rule next to a Reading (still to do).
-6. Build Site display: ✅ `SpaceListItem`, ✅ `FloorSection`, `EmptyState`.
+6. ✅ Build Site display: `SpaceListItem`, `FloorSection`, `EmptyState`.
 7. Figma, Storybook and docs alongside each step; example screens last.
 
 ## Left over from Phase 1

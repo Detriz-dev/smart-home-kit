@@ -1,0 +1,97 @@
+---
+sidebar_position: 4
+sidebar_label: EmptyState
+description: What a list or screen shows when there is nothing in it yet, like "No Spaces yet" or "All clear".
+---
+
+# EmptyState
+
+What a list or screen shows when there is nothing in it yet: an icon, a title, a short message and one optional action. People should never wonder whether something is still loading or broken.
+
+```jsx live
+<EmptyState
+  icon={NAV_ICONS.spaces}
+  title="No Spaces yet"
+  message="Spaces you add to the Site in your app show up here."
+  actionLabel="View setup guide"
+  onAction={() => {}}
+/>
+```
+
+## Import
+
+```tsx
+import { EmptyState } from "@detriz-sh-kit/ui";
+```
+
+## When to use it
+
+Use it where a list or screen would otherwise be blank:
+
+- a Site with no Spaces,
+- a Space with no Paired Modules (instead of a [`SpaceCard`](../readings/space-card.mdx)),
+- an Alerts screen with no Alerts ("All clear"),
+- a Floor with no Spaces.
+
+Don't use it for:
+
+- **Loading.** Each component has its own loading state.
+- **Errors.** Use [`InlineMessage`](./inline-message.mdx) with `tone="error"`.
+
+## Examples
+
+```jsx live
+<ColumnLayout>
+  <EmptyState
+    icon={ALERT_ICONS.default}
+    title="All clear"
+    message="No Alerts are Active."
+  />
+  <EmptyState title="No Modules" />
+</ColumnLayout>
+```
+
+Take the icon from one of the kit's [purpose maps](../foundations/icons.mdx#icons-by-purpose), so it matches the rest of the app: `NAV_ICONS.spaces` for Spaces, `ALERT_ICONS.default` for Alerts, `DEVICE_KIND_ICONS.module` for Modules.
+
+## Writing the text
+
+- **Title:** what is missing, short: "No Spaces yet", "No Modules", "All clear".
+- **Message:** why, or what will appear here. One or two sentences.
+- **Action:** one step that helps people move on, like "View setup guide". In this kit, Sites, Floors and Spaces are built in your app's code, so the action never creates one.
+
+## Props
+
+| Prop          | Type         | Default | Description                                                       |
+| ------------- | ------------ | ------- | ----------------------------------------------------------------- |
+| `title`       | `string`     | –       | **Required.** What is missing.                                    |
+| `message`     | `string`     | none    | Why it's empty, or what will show up here.                        |
+| `icon`        | `IconName`   | none    | A large grey icon above the title. Take it from a purpose map.    |
+| `actionLabel` | `string`     | none    | The action's text. Shows only with `onAction`.                    |
+| `onAction`    | `() => void` | none    | Called when the action is clicked. Shows only with `actionLabel`. |
+
+The type `EmptyStateProps` is exported too.
+
+## Long text
+
+The title and message wrap and stay centred.
+
+```jsx live
+<div style={{ maxWidth: 220 }}>
+  <EmptyState
+    icon={DEVICE_KIND_ICONS.module}
+    title="This Space doesn't have any Paired Modules yet"
+    message="Once a Module is wired to the Hub in this Space and paired, its Readings show up here."
+  />
+</div>
+```
+
+## Accessibility
+
+- The icon is decorative: the title says what is missing.
+- The title is a paragraph, not a heading, because EmptyState sits inside a section that already has one.
+- It isn't announced like a status message: an empty list isn't news, so it's read in order with the rest of the page.
+
+## Related components
+
+- [`InlineMessage`](./inline-message.mdx): for errors and what the app did.
+- [`SpaceListItem`](../context/space-list-item.mdx) and [`FloorSection`](../layout/floor-section.mdx): the lists EmptyState stands in for.

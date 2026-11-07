@@ -397,7 +397,7 @@ A few rules:
 - **One row per Metric.** The card uses the Metric to tell rows apart, so pass each Metric once. State rows with an `asset` are told apart by the Asset's name, so several Contact rows are fine.
 - **Two Modules measuring the same Metric?** You choose which Reading to pass. The card shows what it gets and never averages: an average isn't a Reading.
 - **The order is yours.** Rows show in the order of the list.
-- **At least one row.** For a Space with no Paired Modules, show a message instead of the card.
+- **At least one row.** For a Space with no Paired Modules, show an [`EmptyState`](../feedback/empty-state.mdx) instead of the card.
 - **Before the first Readings,** pass `connectionStatus: "connecting"` and `null` values.
 
 ## Props
