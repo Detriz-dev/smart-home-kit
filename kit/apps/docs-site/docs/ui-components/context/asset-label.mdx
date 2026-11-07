@@ -1,0 +1,143 @@
+---
+sidebar_position: 5.5
+sidebar_label: AssetLabel
+description: Names an Asset with the icon of its Asset Type and the Asset's name, like Front door or Washing machine.
+---
+
+# AssetLabel
+
+Names an [Asset](/docs/domain-model/glossary#devices-and-assets): the icon of its Asset Type and the Asset's name, like Front door or Washing machine. An Asset is a thing in a Space that Sensors watch but that isn't connected itself. Use AssetLabel above its State or Reading, so people know what the value is about.
+
+```jsx live
+<AssetLabel name="Front door" assetType="door" />
+```
+
+## Import
+
+```tsx
+import { AssetLabel } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Pass the Asset's name and its Asset Type. The icon follows from the Asset Type:
+
+```jsx live
+<StackLayout gap="sm">
+  <AssetLabel name="Washing machine" assetType="appliance" size="sm" />
+  <StateValue metric="power" state="on" />
+</StackLayout>
+```
+
+## When to use it
+
+Use AssetLabel for what a Reading is about when its [Subject](/docs/domain-model/glossary#devices-and-assets) is an Asset:
+
+- **Contact** Readings are about a Door or Window: "Front door · Open".
+- **Power** Readings are about an Appliance: "Washing machine · On".
+- Some Measured Readings too, like illuminance on an Office plant.
+
+Don't use it for:
+
+- **What is measured.** Use [`SensorLabel`](./sensor-label.mdx) ("Power", "Contact").
+- **A room.** Use [`SpaceLabel`](./space-label.mdx). Motion, Smoke and CO Readings are about the Space.
+
+## Variants
+
+### Asset Types
+
+One icon per [Asset Type](/docs/domain-model/glossary#devices-and-assets). The name is always the one you pass.
+
+| `assetType` | Asset Type | Icon                    |
+| ----------- | ---------- | ----------------------- |
+| `plant`     | Plant      | `potted_plant`          |
+| `tap`       | Tap        | `faucet`                |
+| `door`      | Door       | `door_front`            |
+| `window`    | Window     | `window`                |
+| `appliance` | Appliance  | `local_laundry_service` |
+
+```jsx live
+<StackLayout gap="sm">
+  <AssetLabel name="Office plant" assetType="plant" size="sm" />
+  <AssetLabel name="Kitchen tap" assetType="tap" size="sm" />
+  <AssetLabel name="Front door" assetType="door" size="sm" />
+  <AssetLabel name="Bedroom window" assetType="window" size="sm" />
+  <AssetLabel name="Washing machine" assetType="appliance" size="sm" />
+</StackLayout>
+```
+
+### Sizes
+
+The same sizes as [`SensorLabel`](./sensor-label.mdx) and [`SpaceLabel`](./space-label.mdx#sizes), so they sit well together. The default is `xs`.
+
+| `size` | Text | Icon | Use it when                        |
+| ------ | ---- | ---- | ---------------------------------- |
+| `xs`   | 12px | 16px | List rows, small headers. Default. |
+| `sm`   | 14px | 20px | Roomier lists, cards.              |
+| `md`   | 16px | 24px | Detail views.                      |
+| `lg`   | 18px | 24px | The main heading of a page.        |
+
+```jsx live
+<StackLayout>
+  <AssetLabel name="Bedroom window" assetType="window" size="xs" />
+  <AssetLabel name="Bedroom window" assetType="window" size="sm" />
+  <AssetLabel name="Bedroom window" assetType="window" size="md" />
+  <AssetLabel name="Bedroom window" assetType="window" size="lg" />
+</StackLayout>
+```
+
+## The icon on its own
+
+`ASSET_TYPE_ICONS` is the kit's map from Asset Type to icon, the one AssetLabel uses. Use it wherever you need the icon without the name, for example a [`Card`](../layout/card.mdx)'s `icon`:
+
+```tsx
+import { ASSET_TYPE_ICONS, Card } from "@detriz-sh-kit/ui";
+
+<Card icon={ASSET_TYPE_ICONS[asset.assetType]} title={asset.name} …>
+```
+
+## Mapping your data
+
+| Prop        | Domain term                                                        | Example        |
+| ----------- | ------------------------------------------------------------------ | -------------- |
+| `name`      | [Asset](/docs/domain-model/glossary#devices-and-assets) (its name) | `"Front door"` |
+| `assetType` | [Asset Type](/docs/domain-model/glossary#devices-and-assets)       | `"door"`       |
+
+- **Every Asset has exactly one Asset Type.** The list is exported as the [`AssetType` type](../foundations/shared-types.mdx#assettype).
+- **The name is the user's.** Two doors can be "Front door" and "Garden door", with the same icon.
+
+## Props
+
+| Prop        | Type                           | Default | Description                                                                         |
+| ----------- | ------------------------------ | ------- | ----------------------------------------------------------------------------------- |
+| `name`      | `string`                       | –       | **Required.** The Asset's name, e.g. "Front door" or "Washing machine". Plain text. |
+| `assetType` | `AssetType`                    | –       | **Required.** The Asset's Asset Type, e.g. `door`. Decides the icon.                |
+| `size`      | `"xs" \| "sm" \| "md" \| "lg"` | `"xs"`  | How big the label is drawn.                                                         |
+
+The types `AssetLabelProps`, `AssetLabelSize` and `AssetType` are exported too, and so is the `ASSET_TYPE_ICONS` map.
+
+## Long names
+
+AssetLabel never wraps or overflows its container. When there isn't enough room, the name is shortened with `…` and the icon stays whole. The full name shows as a tooltip on hover.
+
+```jsx live
+<div style={{ maxWidth: 160 }}>
+  <AssetLabel
+    name="Grandma's old washing machine in the cellar"
+    assetType="appliance"
+    size="sm"
+  />
+</div>
+```
+
+## Accessibility
+
+- The icon is hidden from screen readers. The name already says which Asset it is.
+- The Asset Type is told apart by the icon's shape, not by colour.
+- AssetLabel is a plain `<span>`. When it's a heading, wrap it in a heading element.
+
+## Related components
+
+- [`StateValue`](../readings/state-value.mdx): the State of a Door, Window or Appliance, to put under it.
+- [`SpaceLabel`](./space-label.mdx): the same look for a room.
+- [`SensorLabel`](./sensor-label.mdx): the same look for what a Sensor measures.

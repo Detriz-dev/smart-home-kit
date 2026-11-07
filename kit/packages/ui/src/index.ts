@@ -38,6 +38,11 @@ export type {
   LocationPathLayout,
   LocationPathProps,
 } from "./components/navigation/LocationPath";
+export { AssetLabel } from "./components/context/AssetLabel";
+export type {
+  AssetLabelProps,
+  AssetLabelSize,
+} from "./components/context/AssetLabel";
 export { RelativeTime } from "./components/context/RelativeTime";
 export type {
   RelativeTimeFormat,
