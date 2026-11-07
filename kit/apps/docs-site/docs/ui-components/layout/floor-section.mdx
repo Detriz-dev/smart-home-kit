@@ -1,0 +1,150 @@
+---
+sidebar_position: 3.5
+sidebar_label: FloorSection
+description: The Spaces of one Floor under a heading with the Floor's icon and a Space count.
+---
+
+# FloorSection
+
+The Spaces of one [Floor](/docs/domain-model/glossary#places) under a heading: the Floor's icon, its name and how many Spaces it has. Use it on a Site's screen when the Site has Floors.
+
+```jsx live
+<FloorSection name="Ground floor" spaceCount={2}>
+  <List>
+    <SpaceListItem
+      name="Kitchen"
+      spaceType="kitchen"
+      moduleCount={3}
+      activeAlertCount={2}
+      href="#kitchen"
+    />
+    <SpaceListItem
+      name="Living room"
+      spaceType="living-room"
+      moduleCount={2}
+      href="#living-room"
+    />
+  </List>
+</FloorSection>
+```
+
+## Import
+
+```tsx
+import { FloorSection } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Pass the Floor's name and its Spaces as children, usually a [`List`](./list.mdx) of [`SpaceListItem`](../context/space-list-item.mdx). One FloorSection per Floor makes a Site overview:
+
+```jsx live
+<StackLayout gap="lg">
+  <FloorSection name="Ground floor" spaceCount={2}>
+    <List>
+      <SpaceListItem
+        name="Kitchen"
+        spaceType="kitchen"
+        moduleCount={3}
+        activeAlertCount={2}
+        href="#kitchen"
+      />
+      <SpaceListItem
+        name="Living room"
+        spaceType="living-room"
+        moduleCount={2}
+        href="#living-room"
+      />
+    </List>
+  </FloorSection>
+  <FloorSection name="First floor" spaceCount={2}>
+    <List>
+      <SpaceListItem
+        name="Bedroom"
+        spaceType="bedroom"
+        moduleCount={1}
+        activeAlertCount={1}
+        highestAlertLevel="warning"
+        href="#bedroom"
+      />
+      <SpaceListItem
+        name="Bathroom"
+        spaceType="bathroom"
+        moduleCount={1}
+        href="#bathroom"
+      />
+    </List>
+  </FloorSection>
+</StackLayout>
+```
+
+Inside a FloorSection, leave `floorName` out of the SpaceListItems: the heading already says which Floor they're on.
+
+## When to use it
+
+Use it only when the Site has Floors. Floors are optional: for a Site without them, list the Spaces directly. For any other group with a heading, use [`ContentSection`](./content-section.mdx).
+
+## Heading levels
+
+The heading level follows how deep the section sits on the page. The default is `3`, because Floors are usually groups on a Site's screen under its `<h2>`.
+
+| `headingLevel` | Element | Use it for                            |
+| -------------- | ------- | ------------------------------------- |
+| `2`            | `<h2>`  | A screen that is only about one Floor |
+| `3`            | `<h3>`  | Floors on a Site overview. Default.   |
+| `4`            | `<h4>`  | Floors inside another section         |
+
+## Mapping your data
+
+| Prop         | Domain term                                                         | Example                 |
+| ------------ | ------------------------------------------------------------------- | ----------------------- |
+| `name`       | [Floor](/docs/domain-model/glossary#places) (its name)              | `"Ground floor"`        |
+| `spaceCount` | Number of [Spaces](/docs/domain-model/glossary#places) on the Floor | `4`                     |
+| `children`   | The Floor's Spaces                                                  | a List of SpaceListItem |
+
+The count shows as "No Spaces", "1 Space" or "4 Spaces".
+
+## Props
+
+| Prop           | Type          | Default | Description                                                        |
+| -------------- | ------------- | ------- | ------------------------------------------------------------------ |
+| `name`         | `string`      | –       | **Required.** The Floor's name, shown as the heading.              |
+| `spaceCount`   | `number`      | none    | How many Spaces are on the Floor. Leave it out to hide the count.  |
+| `headingLevel` | `2 \| 3 \| 4` | `3`     | Which heading element to use, set from nesting.                    |
+| `children`     | `ReactNode`   | –       | **Required.** The Floor's Spaces, usually a List of SpaceListItem. |
+
+The types `FloorSectionProps` and `FloorSectionHeadingLevel` are exported too.
+
+## Long names
+
+A long Floor name ends with `…`; the full name shows on hover. The count always stays whole.
+
+```jsx live
+<div style={{ maxWidth: 240 }}>
+  <FloorSection
+    name="Ground floor of the east wing by the garden"
+    spaceCount={12}
+  >
+    <List>
+      <SpaceListItem
+        name="Kitchen"
+        spaceType="kitchen"
+        moduleCount={3}
+        href="#kitchen"
+      />
+    </List>
+  </FloorSection>
+</div>
+```
+
+## Accessibility
+
+- It's a `<section>` named by its heading, so screen reader users can jump from Floor to Floor.
+- The icon is decorative: the heading says it's a Floor.
+- Pick `headingLevel` so the headings on the page go in order (h2 → h3 → h4).
+
+## Related components
+
+- [`SpaceListItem`](../context/space-list-item.mdx): one Space as a row, the usual content.
+- [`ContentSection`](./content-section.mdx): the same idea for any group.
+- [`LocationPath`](../navigation/location-path.mdx): uses the same Floor icon.

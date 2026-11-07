@@ -151,6 +151,11 @@ export type {
   ColumnLayoutProps,
   ColumnLayoutRatio,
 } from "./components/layout/ColumnLayout";
+export { FloorSection } from "./components/layout/FloorSection";
+export type {
+  FloorSectionHeadingLevel,
+  FloorSectionProps,
+} from "./components/layout/FloorSection";
 export { ContentSection } from "./components/layout/ContentSection";
 export type {
   ContentSectionHeadingLevel,

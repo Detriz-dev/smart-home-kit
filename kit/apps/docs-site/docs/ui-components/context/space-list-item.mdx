@@ -79,7 +79,7 @@ Use it for a list of Spaces: a Site overview, or the Spaces of one Floor. For a 
 | Second line | `floorName`, `moduleCount`              | "Ground floor · 3 Modules", only the parts you pass                             |
 | Badge       | `activeAlertCount`, `highestAlertLevel` | How many Alerts are Active, in the colour of the highest level. Nothing when 0. |
 
-Leave `floorName` out when the Site has no Floors, or when the row is already inside a Floor's section.
+Leave `floorName` out when the Site has no Floors, or when the row is already inside a [`FloorSection`](../layout/floor-section.mdx).
 
 ## Mapping your data
 
@@ -136,6 +136,7 @@ The name and the second line end with `…` when there isn't room. The Badge nev
 
 ## Related components
 
+- [`FloorSection`](../layout/floor-section.mdx): groups SpaceListItems under their Floor.
 - [`SpaceLabel`](./space-label.mdx): a Space's icon and name on their own.
 - [`SpaceCard`](../readings/space-card.mdx): a Space's latest Readings.
 - [`Badge`](../feedback/badge.mdx): the count of Active Alerts.

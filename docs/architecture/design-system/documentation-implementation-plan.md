@@ -4,7 +4,7 @@ Everything that has to be written or aligned before the docs site fully document
 
 How to write each component page: [Component documentation workflow](./workflows/component-documentation.md). Worked examples: [`location-path.mdx`](/kit/apps/docs-site/docs/ui-components/navigation/location-path.mdx) and [`sensor-label.mdx`](/kit/apps/docs-site/docs/ui-components/context/sensor-label.mdx).
 
-Status as of 2026-11-07: all 24 component pages in this table and the overview are written. Phase 2 components are added as they ship.
+Status as of 2026-11-07: all 25 component pages in this table and the overview are written. Phase 2 components are added as they ship.
 
 ## Contents
 
@@ -57,6 +57,7 @@ The order follows what each component is built from: a page links to the pages o
 | 22  | `AlertListItem`          | Status     | `status/alert-list-item.mdx`          | ✅     | `ListItem`, `AlertLevelIcon`, `RelativeTime`                   | Phase 2. One Alert as a List row.                                                                                                                                                                                                                                            |
 | 23  | `AlertBanner`            | Feedback   | `feedback/alert-banner.mdx`           | ✅     | `AlertLevelIcon`, `RelativeTime`, `Button`, `ActionIcon`       | Phase 2. One Active Alert at the top of a screen. Critical is solid red.                                                                                                                                                                                                     |
 | 24  | `SpaceListItem`          | Context    | `context/space-list-item.mdx`         | ✅     | `ListItem`, `SpaceTypeIcon`, `Badge`                           | Phase 2. A Space as a List row.                                                                                                                                                                                                                                              |
+| 25  | `FloorSection`           | Layout     | `layout/floor-section.mdx`            | ✅     | `PlaceIcon`, `SpaceListItem` (as children)                     | Phase 2. A Floor's Spaces under a heading.                                                                                                                                                                                                                                   |
 
 For each page, the workflow's Step 5 also asks you to:
 
