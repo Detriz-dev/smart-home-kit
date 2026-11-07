@@ -1,0 +1,43 @@
+@layer detriz {
+  /* The level icon: the level's fg colour while Active (fg, not solid: solid amber and blue are
+     below 3:1 on white, and the icon carries the level), grey once Ended or Closed. */
+  .level,
+  .status {
+    color: var(--shk-color-text-secondary);
+  }
+
+  .level {
+    display: inline-flex;
+  }
+
+  .level[data-tone="critical"],
+  .status[data-tone="critical"] .word {
+    color: var(--shk-status-danger-fg);
+  }
+
+  .level[data-tone="warning"],
+  .status[data-tone="warning"] .word {
+    color: var(--shk-status-warning-fg);
+  }
+
+  .level[data-tone="info"],
+  .status[data-tone="info"] .word {
+    color: var(--shk-status-progress-fg);
+  }
+
+  /* The status word above the time, both right-aligned. */
+  .status {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+  }
+
+  .word {
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    white-space: nowrap;
+  }
+}
