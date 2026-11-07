@@ -154,7 +154,7 @@ Nothing open right now. New questions go here.
 2. ✅ Add shared types, icons and tokens, in code and Figma (`state` collection, 5 Metric icons, `SensorLabel / Metrics` frame).
 3. Build the small parts: ✅ `StateValue`, ✅ `DetectionStatus` (State + since when), ✅ `RelativeTime`, ✅ `AssetLabel`, ✅ `Badge` (all in Figma, code and docs).
 4. ✅ Update `ModuleCard` and `SpaceCard` (State Sensors and rows, in code, Figma examples and docs); build `SensorState`.
-5. Build alerts: ✅ `AlertListItem`, ✅ `AlertBanner`, and a way to show an Alert Rule next to a Reading (still to do).
+5. ✅ Build alerts: `AlertListItem`, `AlertBanner`, and `AlertRuleLabel` to show an Alert Rule next to a Reading.
 6. ✅ Build Site display: `SpaceListItem`, `FloorSection`, `EmptyState`.
 7. Figma, Storybook and docs alongside each step; example screens last.
 

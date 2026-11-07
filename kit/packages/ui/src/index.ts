@@ -40,6 +40,11 @@ export type {
   LocationPathLayout,
   LocationPathProps,
 } from "./components/navigation/LocationPath";
+export { AlertRuleLabel } from "./components/context/AlertRuleLabel";
+export type {
+  AlertRuleLabelProps,
+  AlertRuleLabelSize,
+} from "./components/context/AlertRuleLabel";
 export { AssetLabel } from "./components/context/AssetLabel";
 export type {
   AssetLabelProps,

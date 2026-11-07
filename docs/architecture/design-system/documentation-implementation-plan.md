@@ -4,7 +4,7 @@ Everything that has to be written or aligned before the docs site fully document
 
 How to write each component page: [Component documentation workflow](./workflows/component-documentation.md). Worked examples: [`location-path.mdx`](/kit/apps/docs-site/docs/ui-components/navigation/location-path.mdx) and [`sensor-label.mdx`](/kit/apps/docs-site/docs/ui-components/context/sensor-label.mdx).
 
-Status as of 2026-11-07: all 26 component pages in this table and the overview are written. Phase 2 components are added as they ship.
+Status as of 2026-11-07: all 27 component pages in this table and the overview are written. Phase 2 components are added as they ship.
 
 ## Contents
 
@@ -59,6 +59,7 @@ The order follows what each component is built from: a page links to the pages o
 | 24  | `SpaceListItem`          | Context    | `context/space-list-item.mdx`         | ✅     | `ListItem`, `SpaceTypeIcon`, `Badge`                           | Phase 2. A Space as a List row.                                                                                                                                                                                                                                              |
 | 25  | `FloorSection`           | Layout     | `layout/floor-section.mdx`            | ✅     | `PlaceIcon`, `SpaceListItem` (as children)                     | Phase 2. A Floor's Spaces under a heading.                                                                                                                                                                                                                                   |
 | 26  | `EmptyState`             | Feedback   | `feedback/empty-state.mdx`            | ✅     | `Button`                                                       | Phase 2. Nothing here yet. Not for loading or errors.                                                                                                                                                                                                                        |
+| 27  | `AlertRuleLabel`         | Context    | `context/alert-rule-label.mdx`        | ✅     | `AlertIcon`, `UnitLabel` symbols                               | Phase 2. An Alert Rule in a few words, next to its Reading. Optional.                                                                                                                                                                                                        |
 
 For each page, the workflow's Step 5 also asks you to:
 
