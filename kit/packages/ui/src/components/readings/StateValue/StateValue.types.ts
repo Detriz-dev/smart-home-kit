@@ -1,5 +1,5 @@
 import type { AlertLevel } from "../../../types/alert";
-import type { TwoStateMetric } from "../../../types/metric";
+import type { StateMetric } from "../../../types/metric";
 import type { StateOf } from "../../../types/state";
 
 /** How big the pill is drawn: `md` for list rows, `lg` for cards. */
@@ -17,13 +17,13 @@ export type StateValueVisualState =
 
 /** The Metric and its State. TypeScript checks the State belongs to the Metric: Power can't be `open`. */
 export type StateValueReading = {
-  [M in TwoStateMetric]: {
-    /** The Two-state Metric the Sensor measures, e.g. `power`. Decides the icon. */
+  [M in StateMetric]: {
+    /** The State Metric the Sensor measures, e.g. `power`. Decides the icon. */
     metric: M;
     /** The latest State, e.g. `on`. `null` while the first Reading is on its way. */
     state: StateOf<M> | null;
   };
-}[TwoStateMetric];
+}[StateMetric];
 
 /** The props of `StateValue`. */
 export type StateValueProps = StateValueReading & {

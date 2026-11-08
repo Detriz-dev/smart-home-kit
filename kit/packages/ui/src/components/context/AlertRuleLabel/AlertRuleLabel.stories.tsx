@@ -32,7 +32,7 @@ export const Below: Story = {
   },
 };
 
-// A rule on a Two-state Metric: no Unit.
+// A rule on a State Metric: no Unit.
 export const WhenState: Story = {
   args: {
     condition: { metric: "contact", state: "open" },

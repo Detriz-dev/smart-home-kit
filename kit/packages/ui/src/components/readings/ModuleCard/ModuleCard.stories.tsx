@@ -107,7 +107,7 @@ export const Stacked: Story = {
   parameters: { width: "192px" },
 };
 
-// Two-state Sensors: a Smoke and CO Module, each Sensor shown as a SensorState.
+// State Sensors: a Smoke and CO Module, each Sensor shown as a SensorState.
 export const StateSensors: Story = {
   args: {
     name: "Kitchen safety",

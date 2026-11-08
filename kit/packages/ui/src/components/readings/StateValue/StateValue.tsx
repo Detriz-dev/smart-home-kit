@@ -12,7 +12,7 @@ import type {
 /** Which Icon size each size uses. */
 const ICON_SIZES: Record<StateValueSize, IconSize> = { md: "sm", lg: "md" };
 
-/** Shows the latest State of a Two-state Metric as a pill: an icon and the State's name, like "On". Read-only. Takes props only, never fetches data. */
+/** Shows the latest State of a State Metric as a pill: an icon and the State's name, like "On". Read-only. Takes props only, never fetches data. */
 export function StateValue({
   metric,
   state,

@@ -5,7 +5,7 @@ import { StateValue } from "../StateValue";
 import styles from "./SensorState.module.css";
 import type { SensorStateProps } from "./SensorState.types";
 
-/** The latest State of one Two-state Sensor as a small card: what it is about on top, the State below. The twin of SensorReading. Takes props only, never fetches data. */
+/** The latest State of one State Sensor as a small card: what it is about on top, the State below. The twin of SensorReading. Takes props only, never fetches data. */
 export function SensorState({
   asset,
   isDisconnected = false,

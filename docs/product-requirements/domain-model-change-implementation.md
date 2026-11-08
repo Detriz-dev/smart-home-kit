@@ -141,6 +141,14 @@ All in `kit/apps/docs-site/docs/domain-model/`. These pages are for kit users: n
 
 ## Step 3: Update shared types
 
+✅ Done on 2026-11-08. `ui` and the docs site typecheck and build. Notes:
+
+- Metric ids: `battery`, `setpoint`, `position` (Measured); `open-close`, `mode`, `operational-state` (State). `DeviceKind` adds `standalone`.
+- New files: `capability.ts` (`CapabilityKind`), `command.ts` (`CommandsByMetric`, `CommandOf`, `ControlCommand`, `ControlMetric`, `CommandStatus`), `operationalState.ts` (`OperationalState`, `OperationalCommand`, `ErrorReason`, `GeneralErrorReason`), `connectionType.ts`. `moduleType.ts` became `deviceType.ts`.
+- The new Metrics and States forced entries in `METRIC_ICONS`, `STATE_ICONS`, `DEVICE_KIND_ICONS`, `METRIC_NAMES`, `STATE_NAMES` and `ACTIVE_STATES` (active: opening, closing, heat, running). 11 icons were added to `icons.config.ts` in code. **Figma still needs them** (Step 6).
+- Docs site: `foundations/shared-types.mdx` and `foundations/icons.mdx` updated.
+- Not done here (Step 4): a `%` Unit in `UnitLabel` for Battery and Position; how `StateValue` shows `error`.
+
 All in `kit/packages/ui/src/types/`. The packages aren't published yet, so renames don't need deprecated aliases.
 
 | File                              | Change                                                                                                                                                                                                                                                                                                       |

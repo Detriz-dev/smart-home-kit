@@ -136,7 +136,7 @@ export type {
   DetectionMetric,
   MeasuredMetric,
   Metric,
-  TwoStateMetric,
+  StateMetric,
 } from "./types/metric";
 export type { State, StateOf, StatesByMetric } from "./types/state";
 export type {
@@ -147,7 +147,22 @@ export type {
   AlertRuleThresholdCondition,
   AlertStatus,
 } from "./types/alert";
-export type { ModuleType } from "./types/moduleType";
+export type { DeviceType } from "./types/deviceType";
+export type { ConnectionType } from "./types/connectionType";
+export type { CapabilityKind } from "./types/capability";
+export type {
+  CommandOf,
+  CommandStatus,
+  CommandsByMetric,
+  ControlCommand,
+  ControlMetric,
+} from "./types/command";
+export type {
+  ErrorReason,
+  GeneralErrorReason,
+  OperationalCommand,
+  OperationalState,
+} from "./types/operationalState";
 export type { AssetType } from "./types/assetType";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";

@@ -18,7 +18,7 @@ export interface ModuleCardMeasuredSensor {
   fractionDigits?: number;
 }
 
-/** A Sensor with two States (Power, Contact, Motion, Smoke, CO). The same fields SensorState takes. */
+/** A Sensor with a State Metric (Power, Contact, Motion, Smoke, CO…). The same fields SensorState takes. */
 export type ModuleCardStateSensor = StateValueReading & {
   /** The Asset the Sensor watches, e.g. the Front door. Names its card instead of the Metric. */
   asset?: SensorStateAsset;

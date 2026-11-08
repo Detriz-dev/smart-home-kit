@@ -1,7 +1,7 @@
 ---
 sidebar_position: 8
 sidebar_label: Shared types
-description: The TypeScript types for Metrics, States, Alerts, Space Types, Units and Device statuses that several components share.
+description: The TypeScript types for Metrics, States, Alerts, Space Types, Device Kinds and Types, Units, Device statuses, Controls and Operational State that several components share.
 ---
 
 # Shared types
@@ -12,14 +12,20 @@ Several components take the same kinds of values: a Metric, a Space Type, a Unit
 import type {
   Metric,
   MeasuredMetric,
-  TwoStateMetric,
+  StateMetric,
   State,
   AlertLevel,
   AlertRule,
   SpaceType,
-  ModuleType,
+  DeviceType,
   AssetType,
   DeviceKind,
+  ConnectionType,
+  CapabilityKind,
+  CommandOf,
+  CommandStatus,
+  OperationalState,
+  ErrorReason,
   UnitLabelUnit,
   ConnectionStatus,
   PairingStatus,
@@ -29,31 +35,53 @@ import type {
 
 ## Metric
 
-What a Sensor measures. A fixed list from the Glossary, in two kinds:
+What a Capability reports. A fixed list from the Glossary, in two kinds:
 
 - **`MeasuredMetric`**: the value is a number with a Unit.
-- **`TwoStateMetric`**: the value is one of two [States](#state), with no Unit.
+- **`StateMetric`**: the value is one of its own [States](#state) (two or more), with no Unit.
 
 ```ts
 type MeasuredMetric =
-  "temperature" | "humidity" | "illuminance" | "co2" | "voc" | "pm25";
-type TwoStateMetric = "power" | "contact" | "motion" | "smoke" | "co";
-type Metric = MeasuredMetric | TwoStateMetric;
+  | "temperature"
+  | "humidity"
+  | "illuminance"
+  | "co2"
+  | "voc"
+  | "pm25"
+  | "battery"
+  | "setpoint"
+  | "position";
+type StateMetric =
+  | "power"
+  | "contact"
+  | "open-close"
+  | "mode"
+  | "operational-state"
+  | "motion"
+  | "smoke"
+  | "co";
+type Metric = MeasuredMetric | StateMetric;
 ```
 
-| Value         | Kind      | Shows as    | Usual Unit or States      |
-| ------------- | --------- | ----------- | ------------------------- |
-| `temperature` | Measured  | Temperature | `celsius` or `fahrenheit` |
-| `humidity`    | Measured  | Humidity    | `percent-rh`              |
-| `illuminance` | Measured  | Illuminance | `lux`                     |
-| `co2`         | Measured  | CO₂         | `ppm`                     |
-| `voc`         | Measured  | VOC         | `ppb`                     |
-| `pm25`        | Measured  | PM2.5       | `ug-m3`                   |
-| `power`       | Two-state | Power       | `on`, `off`               |
-| `contact`     | Two-state | Contact     | `open`, `closed`          |
-| `motion`      | Two-state | Motion      | `detected`, `clear`       |
-| `smoke`       | Two-state | Smoke       | `detected`, `clear`       |
-| `co`          | Two-state | CO          | `detected`, `clear`       |
+| Value               | Kind     | Shows as          | Usual Unit or States                            |
+| ------------------- | -------- | ----------------- | ----------------------------------------------- |
+| `temperature`       | Measured | Temperature       | `celsius` or `fahrenheit`                       |
+| `humidity`          | Measured | Humidity          | `percent-rh`                                    |
+| `illuminance`       | Measured | Illuminance       | `lux`                                           |
+| `co2`               | Measured | CO₂               | `ppm`                                           |
+| `voc`               | Measured | VOC               | `ppb`                                           |
+| `pm25`              | Measured | PM2.5             | `ug-m3`                                         |
+| `battery`           | Measured | Battery           | % (not in `UnitLabelUnit` yet)                  |
+| `setpoint`          | Measured | Setpoint          | The Unit of what it sets: `celsius` for heating |
+| `position`          | Measured | Position          | % (not in `UnitLabelUnit` yet)                  |
+| `power`             | State    | Power             | `on`, `off`                                     |
+| `contact`           | State    | Contact           | `open`, `closed`                                |
+| `open-close`        | State    | Open / Close      | `open`, `closed`, `opening`, `closing`          |
+| `mode`              | State    | Mode              | `off`, `heat`                                   |
+| `operational-state` | State    | Operational State | `stopped`, `running`, `paused`, `error`         |
+| `motion`            | State    | Motion            | `detected`, `clear`                             |
+| `smoke`             | State    | Smoke             | `detected`, `clear`                             |
+| `co`                | State    | CO                | `detected`, `clear`                             |
 
 `co` is carbon monoxide, not CO₂. `DetectionMetric` is the three Metrics that start a Detection: `motion`, `smoke` and `co`. [`DetectionStatus`](../readings/detection-status.mdx) takes a `DetectionMetric`.
 
@@ -61,21 +89,20 @@ type Metric = MeasuredMetric | TwoStateMetric;
 
 ## State
 
-One of the two values of a Two-state Metric. Each Metric has its own pair, and `StateOf` gives you the pair for one Metric:
+One of the values of a State Metric. Each Metric has its own list, and `StateOf` gives you the list for one Metric:
 
 ```ts
-type State = "on" | "off" | "open" | "closed" | "detected" | "clear";
-
 type ContactState = StateOf<"contact">; // "open" | "closed"
+type OpenCloseState = StateOf<"open-close">; // "open" | "closed" | "opening" | "closing"
 ```
 
-Use `StateOf` in your own data, so a Power Reading can never be `"open"`.
+Use `StateOf` in your own data, so a Power Reading can never be `"open"`. `State` is every State of every State Metric.
 
 **Used by:** [`StateValue`](../readings/state-value.mdx) (`metric` and `state`). The word shown for each State is in the exported `STATE_NAMES` map.
 
 ## Alerts
 
-The types for [Alert Rules and Alerts](/docs/domain-model/glossary#alerts). You define Alert Rules in your code; the kit's components will show them.
+The types for [Alert Rules and Alerts](/docs/domain-model/glossary#alerts). You define Alert Rules in your code; the kit's components show them. A rule checks one Capability, and a range is two rules (one `below`, one `above`).
 
 ```ts
 type AlertLevel = "critical" | "warning" | "info";
@@ -97,7 +124,7 @@ const tooWarm: AlertRule = {
   alertLevel: "warning",
 };
 
-// A Two-state Metric: one of that Metric's own States.
+// A State Metric: one of that Metric's own States.
 const doorOpen: AlertRule = {
   condition: { metric: "contact", state: "open" },
   alertLevel: "info",
@@ -134,12 +161,13 @@ Each Space Type has one icon, in the exported `SPACE_TYPE_ICONS` map. See [`Spac
 
 **Used by:** [`SpaceLabel`](../context/space-label.mdx) (`spaceType`), and `SPACE_TYPE_ICONS` for a [`Card`](../layout/card.mdx)'s `icon`.
 
-## ModuleType
+## DeviceType
 
-The category of a Module, decided by what its board measures. A fixed list from the Glossary.
+What a Device is: one fixed list for every Device, from the Glossary. Use `other` when nothing fits. It replaces the earlier `ModuleType`.
 
 ```ts
-type ModuleType =
+type DeviceType =
+  | "hub"
   | "climate"
   | "light"
   | "air-quality"
@@ -147,7 +175,13 @@ type ModuleType =
   | "contact"
   | "power"
   | "smoke"
-  | "co";
+  | "co"
+  | "kettle"
+  | "power-strip"
+  | "blinds"
+  | "thermostat"
+  | "washing-machine"
+  | "other";
 ```
 
 **Used by:** no component yet.
@@ -164,13 +198,24 @@ type AssetType = "plant" | "tap" | "door" | "window" | "appliance";
 
 ## DeviceKind
 
-Which sort of Device it is. From the Glossary.
+_How_ a Device connects. From the Glossary. Not the same as [`DeviceType`](#devicetype), which says _what_ it is.
 
 ```ts
-type DeviceKind = "hub" | "module";
+type DeviceKind = "hub" | "module" | "standalone";
 ```
 
-**Used by:** [`DeviceListItem`](../status/device-list-item.mdx) (`deviceKind`), which picks the icon from it: `router` for a Hub, `developer_board` for a Module.
+**Used by:** [`DeviceListItem`](../status/device-list-item.mdx) (`deviceKind`), which picks the icon from it: `router` for a Hub, `developer_board` for a Module, `devices` for a Standalone Device.
+
+## ConnectionType
+
+How a Device connects, for information only. No rule depends on it.
+
+```ts
+type ConnectionType =
+  "wired" | "wifi" | "zigbee" | "thread" | "bluetooth" | "other";
+```
+
+**Used by:** no component yet.
 
 ## UnitLabelUnit
 
@@ -214,6 +259,59 @@ type FaultCode = "sensor_failure" | "calibration_required";
 Fault Codes are written in `snake_case`, the way the Glossary and the API write them.
 
 **Used by:** `DeviceFaultStatus` (`faultCode`), and the `faults` lists of `ModuleCard` and `SpaceCard`.
+
+## Controls and commands
+
+The types for [Capabilities and Controls](/docs/domain-model/glossary#capabilities).
+
+```ts
+type CapabilityKind = "sensor" | "state-control" | "value-control";
+type CommandStatus = "pending" | "confirmed" | "failed";
+```
+
+`CommandOf` gives you the commands a Control's Metric can accept. Use it for a Control's Allowed Commands, so a Power Control can never list `"open"`:
+
+```ts
+type PowerCommand = CommandOf<"power">; // "turn-on" | "turn-off"
+type BlindsCommand = CommandOf<"open-close">; // "open" | "close" | "stop"
+
+// A kettle that can only be stopped:
+const kettleCommands: CommandOf<"operational-state">[] = ["stop"];
+```
+
+| Control Metric      | Commands                           |
+| ------------------- | ---------------------------------- |
+| `power`             | `turn-on`, `turn-off`              |
+| `open-close`        | `open`, `close`, `stop`            |
+| `mode`              | `set-mode`                         |
+| `operational-state` | `start`, `pause`, `resume`, `stop` |
+| `position`          | `set-position`                     |
+| `setpoint`          | `set-setpoint`                     |
+
+**Used by:** no component yet.
+
+## OperationalState
+
+What a Device that runs a task is doing, following Matter. See [Operational State](/docs/domain-model/glossary#operational-state) in the Glossary.
+
+```ts
+type OperationalState = "stopped" | "running" | "paused" | "error";
+type OperationalCommand = "start" | "pause" | "resume" | "stop";
+```
+
+When the state is `error`, an `ErrorReason` says why: one of the kit's general reasons, or the Device's own reason with a label. If a Fault caused it, `faultCode` points to it:
+
+```ts
+const noWater: ErrorReason = { code: "no-water", label: "No water" };
+const brokenSensor: ErrorReason = {
+  code: "unable-to-start-or-resume",
+  faultCode: "sensor_failure",
+};
+```
+
+The general reasons are `unable-to-start-or-resume`, `unable-to-complete` and `command-invalid-in-state` (`GeneralErrorReason`).
+
+**Used by:** no component yet.
 
 ## Using them in your data
 

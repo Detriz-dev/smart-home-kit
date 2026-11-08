@@ -40,7 +40,9 @@ function IconSet() {
     "airwave",
     "arrow_back",
     "bathtub",
+    "battery_full",
     "bed",
+    "blinds",
     "check_circle-fill",
     "close",
     "co2",
@@ -49,6 +51,7 @@ function IconSet() {
     "detector_co",
     "detector_smoke",
     "developer_board",
+    "devices",
     "door_front",
     "door_open",
     "error",
@@ -64,21 +67,29 @@ function IconSet() {
     "light_mode",
     "link_off",
     "local_laundry_service",
+    "mode_heat",
+    "mode_off_on",
     "monitoring",
     "motion_sensor_active",
     "motion_sensor_idle",
     "notifications",
     "notifications_active",
+    "pause_circle",
+    "play_circle",
     "potted_plant",
     "power",
     "power_off",
     "refresh",
+    "roller_shades",
+    "roller_shades_closed",
     "router",
     "sensor_door",
     "sensors",
     "settings",
     "stairs_2",
+    "stop_circle",
     "thermostat",
+    "thermostat_auto",
     "warning",
     "warning-fill",
     "weekend",
@@ -115,20 +126,20 @@ function IconSet() {
 
 Every icon a component uses comes from a purpose map (see [Icons by purpose](#icons-by-purpose)), so the same meaning always gets the same icon.
 
-| Map                    | Values → icon                                                                                                                                                                                                                      | Used by                                                                                                   |
-| ---------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
-| `METRIC_ICONS`         | temperature `thermostat`, humidity `humidity_mid`, illuminance `light_mode`, co2 `co2`, voc `airwave`, pm25 `grain`, power `power`, contact `sensor_door`, motion `motion_sensor_active`, smoke `detector_smoke`, co `detector_co` | [`SensorLabel`](../context/sensor-label.mdx)                                                              |
-| `STATE_ICONS`          | power on `power` / off `power_off`; contact open `door_open` / closed `sensor_door`; motion detected `motion_sensor_active` / clear `motion_sensor_idle`; smoke and co keep their detector icon in both States                     | [`StateValue`](../readings/state-value.mdx)                                                               |
-| `SPACE_TYPE_ICONS`     | bedroom `bed`, bathroom `bathtub`, kitchen `countertops`, living-room `weekend`, hallway `door_front`, garage `garage_home`, office `desk`, meeting `groups`, outdoor `yard`, other `home`                                         | [`SpaceLabel`](../context/space-label.mdx)                                                                |
-| `ASSET_TYPE_ICONS`     | plant `potted_plant`, tap `faucet`, door `door_front`, window `window`, appliance `local_laundry_service`                                                                                                                          | [`AssetLabel`](../context/asset-label.mdx)                                                                |
-| `DEVICE_KIND_ICONS`    | hub `router`, module `developer_board`                                                                                                                                                                                             | [`DeviceListItem`](../status/device-list-item.mdx), [`LocationPath`](../navigation/location-path.mdx)     |
-| `PLACE_ICONS`          | site `home`, floor `stairs_2`, space `door_front`                                                                                                                                                                                  | `LocationPath`                                                                                            |
-| `READING_STATUS_ICONS` | loading `refresh`, disconnected `link_off`, fault `error`                                                                                                                                                                          | [`ReadingValue`](../readings/reading-value.mdx), [`DeviceFaultStatus`](../status/device-fault-status.mdx) |
-| `MESSAGE_TONE_ICONS`   | info `info-fill`, success `check_circle-fill`, warning `warning-fill`, error `error-fill`                                                                                                                                          | [`InlineMessage`](../feedback/inline-message.mdx)                                                         |
-| `ALERT_LEVEL_ICONS`    | critical `error-fill`, warning `warning-fill`, info `info-fill`                                                                                                                                                                    | [`AlertListItem`](../status/alert-list-item.mdx)                                                          |
-| `ALERT_ICONS`          | default `notifications`, active `notifications_active`                                                                                                                                                                             | An Alerts tab or button, with a [`Badge`](../feedback/badge.mdx)                                          |
-| `NAV_ICONS`            | home `home`, spaces `door_front`, devices `sensors`, history `monitoring`, settings `settings`                                                                                                                                     | [`BottomNav`](../navigation/bottom-nav.mdx) tabs                                                          |
-| `ACTION_ICONS`         | back `arrow_back`, dismiss `close`, retry `refresh`                                                                                                                                                                                | [`TopBar`](../navigation/top-bar.mdx), `InlineMessage`, [`IconButton`](../controls/icon-button.mdx)       |
+| Map                    | Values → icon                                                                                                                                                                                                                                                                                                                                                                                                                                               | Used by                                                                                                   |
+| ---------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------- |
+| `METRIC_ICONS`         | temperature `thermostat`, humidity `humidity_mid`, illuminance `light_mode`, co2 `co2`, voc `airwave`, pm25 `grain`, battery `battery_full`, setpoint `thermostat_auto`, position `blinds`, power `power`, contact `sensor_door`, open-close `roller_shades`, mode `mode_heat`, operational-state `play_circle`, motion `motion_sensor_active`, smoke `detector_smoke`, co `detector_co`                                                                    | [`SensorLabel`](../context/sensor-label.mdx)                                                              |
+| `STATE_ICONS`          | power on `power` / off `power_off`; contact open `door_open` / closed `sensor_door`; open-close open and opening `roller_shades` / closed and closing `roller_shades_closed`; mode off `mode_off_on` / heat `mode_heat`; operational-state stopped `stop_circle` / running `play_circle` / paused `pause_circle` / error `error`; motion detected `motion_sensor_active` / clear `motion_sensor_idle`; smoke and co keep their detector icon in both States | [`StateValue`](../readings/state-value.mdx)                                                               |
+| `SPACE_TYPE_ICONS`     | bedroom `bed`, bathroom `bathtub`, kitchen `countertops`, living-room `weekend`, hallway `door_front`, garage `garage_home`, office `desk`, meeting `groups`, outdoor `yard`, other `home`                                                                                                                                                                                                                                                                  | [`SpaceLabel`](../context/space-label.mdx)                                                                |
+| `ASSET_TYPE_ICONS`     | plant `potted_plant`, tap `faucet`, door `door_front`, window `window`, appliance `local_laundry_service`                                                                                                                                                                                                                                                                                                                                                   | [`AssetLabel`](../context/asset-label.mdx)                                                                |
+| `DEVICE_KIND_ICONS`    | hub `router`, module `developer_board`, standalone `devices`                                                                                                                                                                                                                                                                                                                                                                                                | [`DeviceListItem`](../status/device-list-item.mdx), [`LocationPath`](../navigation/location-path.mdx)     |
+| `PLACE_ICONS`          | site `home`, floor `stairs_2`, space `door_front`                                                                                                                                                                                                                                                                                                                                                                                                           | `LocationPath`                                                                                            |
+| `READING_STATUS_ICONS` | loading `refresh`, disconnected `link_off`, fault `error`                                                                                                                                                                                                                                                                                                                                                                                                   | [`ReadingValue`](../readings/reading-value.mdx), [`DeviceFaultStatus`](../status/device-fault-status.mdx) |
+| `MESSAGE_TONE_ICONS`   | info `info-fill`, success `check_circle-fill`, warning `warning-fill`, error `error-fill`                                                                                                                                                                                                                                                                                                                                                                   | [`InlineMessage`](../feedback/inline-message.mdx)                                                         |
+| `ALERT_LEVEL_ICONS`    | critical `error-fill`, warning `warning-fill`, info `info-fill`                                                                                                                                                                                                                                                                                                                                                                                             | [`AlertListItem`](../status/alert-list-item.mdx)                                                          |
+| `ALERT_ICONS`          | default `notifications`, active `notifications_active`                                                                                                                                                                                                                                                                                                                                                                                                      | An Alerts tab or button, with a [`Badge`](../feedback/badge.mdx)                                          |
+| `NAV_ICONS`            | home `home`, spaces `door_front`, devices `sensors`, history `monitoring`, settings `settings`                                                                                                                                                                                                                                                                                                                                                              | [`BottomNav`](../navigation/bottom-nav.mdx) tabs                                                          |
+| `ACTION_ICONS`         | back `arrow_back`, dismiss `close`, retry `refresh`                                                                                                                                                                                                                                                                                                                                                                                                         | [`TopBar`](../navigation/top-bar.mdx), `InlineMessage`, [`IconButton`](../controls/icon-button.mdx)       |
 
 Illuminance uses `light_mode` (a sun), not a light bulb, because a bulb looks like a light you can switch, and the kit has no lights to switch.
 
