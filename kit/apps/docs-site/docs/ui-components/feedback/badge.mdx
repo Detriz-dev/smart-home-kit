@@ -64,9 +64,20 @@ Use the highest [Alert Level](/docs/domain-model/glossary#alerts) among the Aler
 </ColumnLayout>
 ```
 
+## Built into other components
+
+These components already place a Badge for you, so pass the count to them instead of adding one yourself:
+
+| Component                                         | Prop                                    | Where the Badge goes     |
+| ------------------------------------------------- | --------------------------------------- | ------------------------ |
+| [`BottomNav`](../navigation/bottom-nav.mdx)       | `badge` on an item                      | On the icon's corner     |
+| [`SpaceCard`](../readings/space-card.mdx)         | `activeAlertCount`, `highestAlertLevel` | Next to the Space name   |
+| [`SpaceListItem`](../context/space-list-item.mdx) | `activeAlertCount`, `highestAlertLevel` | At the end of the row    |
+| [`Card`](../layout/card.mdx)                      | `headerEnd={<Badge … />}`               | At the end of the header |
+
 ## On an icon
 
-The Badge doesn't place itself: put it next to a label, or over the corner of an icon with your own positioning:
+Anywhere else, the Badge doesn't place itself: put it next to a label, or over the corner of an icon with your own positioning:
 
 ```jsx live
 <span
@@ -118,7 +129,8 @@ The types `BadgeProps` and `BadgeTone` are exported too.
 
 ## Related components
 
-- [`SpaceListItem`](../context/space-list-item.mdx): a Space row with a Badge of its Active Alerts.
+- [`SpaceListItem`](../context/space-list-item.mdx) and [`SpaceCard`](../readings/space-card.mdx): a Space with a Badge of its Active Alerts.
+- [`BottomNav`](../navigation/bottom-nav.mdx): a Badge on a tab, e.g. Alerts.
 - [`AlertListItem`](../status/alert-list-item.mdx): one Alert as a list row.
 - [`AlertBanner`](./alert-banner.mdx): the most urgent Alert at the top of a screen.
 - [`InlineMessage`](./inline-message.mdx): a message that says what happened.

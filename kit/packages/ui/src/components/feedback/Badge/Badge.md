@@ -58,5 +58,8 @@ Padding inline `space/1`, radius `radius/full`, text `typography/caption` with t
 
 ### Open questions
 
-- `BottomNav` items don't take a Badge yet. Add a `badge` slot to `BottomNavItem` when the Alerts screen is built.
 - A dot-only Badge (no number) for "something new"? Not needed in the MVP.
+
+### Used by (2026-11-07)
+
+`SpaceListItem` (end of the row), `SpaceCard` (next to the name) and `BottomNav` (`badge` on an item, on the icon's corner). The "N active Alert(s)" wording is shared in `utils/alertCountLabel.ts`.

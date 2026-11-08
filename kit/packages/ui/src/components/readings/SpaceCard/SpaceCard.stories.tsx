@@ -116,6 +116,7 @@ export const OneMetric: Story = {
 // message, in a narrow container. The name ends with "…" and the reading wraps under its label.
 export const LongText: Story = {
   args: {
+    activeAlertCount: 120,
     name: "Living room by the garden window",
     readings: [
       {
@@ -174,10 +175,12 @@ export const WithStates: Story = {
   args: { name: "Hallway", readings: HALLWAY_READINGS },
 };
 
-// A Critical Alert: Smoke Detected in the Kitchen.
+// A Critical Alert: Smoke Detected in the Kitchen. The Badge next to the name counts it.
 export const SmokeAlert: Story = {
   args: {
     name: "Kitchen",
+    activeAlertCount: 1,
+    highestAlertLevel: "critical",
     readings: [
       BEDROOM_READINGS[0],
       {
@@ -189,6 +192,11 @@ export const SmokeAlert: Story = {
       },
     ],
   },
+};
+
+// Active Alerts on Readings the card shows normally, e.g. two Warning rules (too warm, too humid).
+export const ActiveAlerts: Story = {
+  args: { activeAlertCount: 2, highestAlertLevel: "warning" },
 };
 
 // Stress story: the smallest case, one row and a zero value.

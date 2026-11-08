@@ -1,6 +1,7 @@
 import { Icon } from "../../../icons/Icon";
 import { SPACE_TYPE_ICONS } from "../../../icons/purposeIcons";
 import { Badge } from "../../feedback/Badge";
+import { activeAlertsLabel } from "../../../utils/alertCountLabel";
 import { ListItem } from "../../layout/ListItem";
 import type { SpaceListItemProps } from "./SpaceListItem.types";
 
@@ -40,11 +41,7 @@ export function SpaceListItem(props: SpaceListItemProps) {
         <Badge
           count={activeAlertCount}
           tone={highestAlertLevel}
-          label={
-            activeAlertCount === 1
-              ? "1 active Alert"
-              : `${activeAlertCount} active Alerts`
-          }
+          label={activeAlertsLabel(activeAlertCount)}
         />
       ) : undefined,
   };

@@ -282,6 +282,37 @@ Pass the Faults of the Space's Modules in `faults`. The card shows one message p
 
 SpaceCard doesn't name Modules, so pass `metric` with each Fault when you can. "CO₂ sensor failure" tells people which Sensor; "Sensor failure" alone doesn't, in a Space with several Modules.
 
+## Active Alerts
+
+Pass how many Alerts are Active in the Space in `activeAlertCount`, and the highest [Alert Level](/docs/domain-model/glossary#alerts) among them in `highestAlertLevel`. A [`Badge`](../feedback/badge.mdx) shows the count next to the name; 0 shows nothing.
+
+```jsx live
+<div style={{ maxWidth: 320 }}>
+  <SpaceCard
+    name="Server room"
+    activeAlertCount={2}
+    highestAlertLevel="warning"
+    readings={[
+      {
+        metric: "temperature",
+        value: 29.1,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+      {
+        metric: "humidity",
+        value: 24,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+    ]}
+  />
+</div>
+```
+
+The Badge counts the Alerts; the rows still show the Readings that caused them. Show the Alerts themselves on the Space's screen with [`AlertListItem`](../status/alert-list-item.mdx). These are the same two props as [`SpaceListItem`](../context/space-list-item.mdx).
+
 ## One Metric across Spaces
 
 Pass only the Metrics a screen needs. For "the temperature in every room", give each Space one row:
@@ -373,11 +404,13 @@ Two Contact rows in one Space are fine when each has its own `asset`: the Asset'
 
 ## Mapping your data
 
-| Prop       | Comes from                                                                     | Example                                            |
-| ---------- | ------------------------------------------------------------------------------ | -------------------------------------------------- |
-| `name`     | The [Space](/docs/domain-model/glossary#places)'s name                         | `"Bedroom"`                                        |
-| `readings` | One latest Reading per Metric, from the Space's Modules                        | see below                                          |
-| `faults`   | The current [Faults](/docs/domain-model/glossary#fault) of the Space's Modules | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
+| Prop                | Comes from                                                                     | Example                                            |
+| ------------------- | ------------------------------------------------------------------------------ | -------------------------------------------------- |
+| `name`              | The [Space](/docs/domain-model/glossary#places)'s name                         | `"Bedroom"`                                        |
+| `readings`          | One latest Reading per Metric, from the Space's Modules                        | see below                                          |
+| `faults`            | The current [Faults](/docs/domain-model/glossary#fault) of the Space's Modules | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
+| `activeAlertCount`  | Number of Active [Alerts](/docs/domain-model/glossary#alerts) in the Space     | `2`                                                |
+| `highestAlertLevel` | Highest [Alert Level](/docs/domain-model/glossary#alerts) among them           | `"warning"`                                        |
 
 Each item in `readings` is a number row (below) or a State row (`metric`, `state`, `connectionStatus`, and optionally `asset`, `alertLevel`, `detectedSince` and `lastDetectedAt`, see [Rows with States](#rows-with-states)). A number row has:
 
@@ -402,11 +435,13 @@ A few rules:
 
 ## Props
 
-| Prop       | Type                       | Default | Description                                                               |
-| ---------- | -------------------------- | ------- | ------------------------------------------------------------------------- |
-| `name`     | `string`                   | –       | **Required.** The Space name, for example "Bedroom".                      |
-| `readings` | `SpaceCardReading[]`       | –       | **Required.** One row per Metric, in display order. At least one.         |
-| `faults`   | `DeviceFaultStatusProps[]` | none    | Current Faults in this Space's Modules. Leave it out when there are none. |
+| Prop                | Type                       | Default      | Description                                                                                  |
+| ------------------- | -------------------------- | ------------ | -------------------------------------------------------------------------------------------- |
+| `name`              | `string`                   | –            | **Required.** The Space name, for example "Bedroom".                                         |
+| `readings`          | `SpaceCardReading[]`       | –            | **Required.** One row per Metric, in display order. At least one.                            |
+| `faults`            | `DeviceFaultStatusProps[]` | none         | Current Faults in this Space's Modules. Leave it out when there are none.                    |
+| `activeAlertCount`  | `number`                   | `0`          | How many Alerts are Active in the Space. Shown as a Badge next to the name; 0 shows nothing. |
+| `highestAlertLevel` | `AlertLevel`               | `"critical"` | The highest Alert Level among them. Colours the Badge.                                       |
 
 `SpaceCardReading` is a `SpaceCardMeasuredReading` (below) or a `SpaceCardStateReading` (see [Rows with States](#rows-with-states)).
 
@@ -463,6 +498,7 @@ A row that loses its value (Loading or Disconnected) is 2px taller than one that
 What you get without doing anything:
 
 - The card is a group named by the Space name, so screen readers announce "Bedroom" first.
+- The Alert Badge is read in words after the name: "2 active Alerts".
 - The Faults and the rows are real lists, so screen readers say how many there are.
 - Each row reads label first, then the status when Stale, then the value: "Temperature, Stale, 21.5 degrees Celsius".
 - Not color alone: Stale has a text label, Disconnected its own icon, and a Fault its icon and message.

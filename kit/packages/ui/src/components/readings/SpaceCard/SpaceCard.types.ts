@@ -44,4 +44,8 @@ export interface SpaceCardProps {
   readings: SpaceCardReading[];
   /** Current Faults in this Space's Modules. Leave it out when there are none. */
   faults?: DeviceFaultStatusProps[];
+  /** How many Alerts are Active in the Space. Shown as a Badge next to the name; 0 or unset shows nothing. */
+  activeAlertCount?: number;
+  /** The highest Alert Level among the Active Alerts. Colours the Badge. Defaults to `critical`. */
+  highestAlertLevel?: AlertLevel;
 }
