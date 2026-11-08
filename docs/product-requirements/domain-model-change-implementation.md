@@ -169,6 +169,19 @@ Places that import the renamed types today (found with a search; recheck when yo
 
 ## Step 4: Update existing components
 
+🟡 Partly done on 2026-11-08 (code, stories, specs and docs; **Figma not yet**). `pnpm build` passes.
+
+- [x] `UnitLabel`: new `percent` Unit (%), for Battery and Position.
+- [x] `StateValue`: new States in `AllStates`; new `error` visual state (red `status/danger`, like a Fault) and an `OperationalError` story.
+- [x] `LocationPath`: Standalone Device support. Screen readers hear "Device:". Fixes a bug where a Standalone Device would have been read as "Module:". New `StandaloneDevice` story.
+- [x] `DeviceListItem`: `Standalone` story; "Hub is never Stale" reworded.
+- [x] `DeviceConnectionStatus`, `DevicePairingStatus`, `SensorLabel`, `SensorState`, `ModuleCard`, `EmptyState`, `InlineMessage`, colours page: wording ("Two-state", "Modules only", "wired", "New module found").
+- [x] `AlertRuleLabel`: `TwoRulesForARange` story and a docs section "A range is two rules".
+- [x] Broken Glossary anchors fixed in 5 specs (`SensorLabel`, `LocationPath`, `UnitLabel`, `ReadingValue`, `SensorReading`).
+- [ ] Figma: `StateValue` `error` variant, new `UnitLabel` `percent`, `SensorLabel / Metrics` (6 new Metrics), new icons. Moves to Step 6.
+- [x] Decided (2026-11-08): **rename `ModuleCard` to `DeviceCard`** and extend it to show Sensors, Controls and Operational State for any Device (one card, not two). **`PowerControl` wraps the existing `Switch`**; `Switch`'s spec drops the "app settings only" rule.
+- [ ] `SpaceCard`: rows for Controls and Operational State. Waits for the new components (Step 5).
+
 Each change follows the [component workflow](../architecture/design-system/workflows/component-building.md): spec (`<Name>.md`), code, stories, Figma, docs page.
 
 | Component                                     | Why it changes                                                             | Change                                                                                                                                                                                 |
@@ -202,16 +215,16 @@ New components follow the component conventions in `AGENTS.md`: one folder, `<Na
 
 Proposed components (names are working names until Step 0 is done):
 
-| Component                        | Category | What it does                                                                                                        | Example                             |
-| -------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------- | ----------------------------------- |
-| `PowerControl`                   | Controls | On / Off State Control, with allowed commands (both, or Turn off only).                                             | Power strip socket, washing machine |
-| `OpenCloseControl`               | Controls | Open, Close, Stop buttons; shows Open, Closed, Opening, Closing.                                                    | Motorized blinds (case B)           |
-| `StateSelectControl`             | Controls | Pick one of a few States (segmented control), with allowed commands. Generic: reusable for fan speed or programmes. | Heating Mode (Off, Heat)            |
-| `ValueControl`                   | Controls | Slider or stepper for a number in a range (min, max, step, Unit). Shows the set value and the reported value.       | Heating setpoint, blinds position   |
-| `OperationalStateControl`        | Controls | Shows Stopped, Running (with Phase), Paused, Error; Start, Pause, Resume, Stop buttons per allowed commands.        | Kettle                              |
-| `OperationalStateValue`          | Readings | Read-only Operational State and Phase, for lists and cards.                                                         | "Running · Heating"                 |
-| `DeviceCard`                     | Readings | A card for one Device with mixed Capabilities: Sensors, Controls and Operational State.                             | Kettle, heating, power strip        |
-| `ConnectionTypeLabel` (optional) | Context  | Shows how a Device connects.                                                                                        | "Zigbee", "Wired"                   |
+| Component                        | Category | What it does                                                                                                                   | Example                             |
+| -------------------------------- | -------- | ------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------- |
+| `PowerControl`                   | Controls | On / Off State Control, with allowed commands (both, or Turn off only). Wraps the existing `Switch` (decision 25).             | Power strip socket, washing machine |
+| `OpenCloseControl`               | Controls | Open, Close, Stop buttons; shows Open, Closed, Opening, Closing.                                                               | Motorized blinds (case B)           |
+| `StateSelectControl`             | Controls | Pick one of a few States (segmented control), with allowed commands. Generic: reusable for fan speed or programmes.            | Heating Mode (Off, Heat)            |
+| `ValueControl`                   | Controls | Slider or stepper for a number in a range (min, max, step, Unit). Shows the set value and the reported value.                  | Heating setpoint, blinds position   |
+| `OperationalStateControl`        | Controls | Shows Stopped, Running (with Phase), Paused, Error; Start, Pause, Resume, Stop buttons per allowed commands.                   | Kettle                              |
+| `OperationalStateValue`          | Readings | Read-only Operational State and Phase, for lists and cards.                                                                    | "Running · Heating"                 |
+| `DeviceCard`                     | Readings | A card for any Device: Sensors, Controls and Operational State. **Replaces `ModuleCard`** (renamed and extended, decision 24). | Kettle, heating, power strip        |
+| `ConnectionTypeLabel` (optional) | Context  | Shows how a Device connects.                                                                                                   | "Zigbee", "Wired"                   |
 
 Order: `OperationalStateValue` and `PowerControl` first (smallest, and they set the pending and failed pattern), then `OpenCloseControl`, `ValueControl`, `OperationalStateControl`, and `DeviceCard` last, because it uses the others.
 

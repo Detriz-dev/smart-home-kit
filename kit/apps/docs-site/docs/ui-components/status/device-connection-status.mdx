@@ -148,7 +148,7 @@ A few rules from the domain model:
 
 - **Paired Devices only.** Only a Paired Device has a Connection Status. For a Device that isn't Paired, don't render this component: show [`DevicePairingStatus`](./device-pairing-status.mdx) instead.
 - **Before the first status arrives,** pass `connecting`. A Device is always Connecting after it powers up, so this is true, and there is no separate "unknown" or loading state.
-- **Stale depends on the Expected Interval.** A Module is Stale when no Reading arrived within the interval the user set for it. Only Modules can be Stale: never pass `stale` for a Hub. Work this out in your app (or let the API do it) and pass `stale`.
+- **Stale depends on the Expected Interval.** A Device is Stale when no Reading arrived within the interval the user set for it. Only Devices with Capabilities can be Stale: never pass `stale` for a Hub without Capabilities. Work this out in your app (or let the API do it) and pass `stale`.
 - **It's one of three fields.** Pairing Status, Connection Status and Fault are independent. See [Device lifecycle](/docs/domain-model/device-lifecycle#connection-status) for how a Device moves between Connection Statuses.
 
 ## Props

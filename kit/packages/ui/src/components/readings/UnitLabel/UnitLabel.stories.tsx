@@ -21,6 +21,7 @@ const meta = {
         "celsius",
         "fahrenheit",
         "percent-rh",
+        "percent",
         "lux",
         "ppm",
         "ppb",
@@ -137,6 +138,11 @@ export const LongText: Story = {
 // Stress story: the smallest case, the shortest symbol at the smallest size, on its own.
 export const Minimal: Story = {
   args: { unit: "lux", size: "xs" },
+};
+
+// Battery and Position. The shortest symbol in the list.
+export const Percent: Story = {
+  args: { unit: "percent", size: "md" },
 };
 
 // VOC, provisional until the Air Quality Module's sensor is chosen.

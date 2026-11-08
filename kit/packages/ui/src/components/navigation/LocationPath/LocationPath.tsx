@@ -1,3 +1,4 @@
+import type { DeviceKind } from "../../../types/deviceKind";
 import { Icon, type IconName } from "../../../icons/Icon";
 import { DEVICE_KIND_ICONS, PLACE_ICONS } from "../../../icons/purposeIcons";
 import styles from "./LocationPath.module.css";
@@ -16,6 +17,13 @@ const PLACE_PARTS: PathPart[] = [
   { key: "floor", icon: PLACE_ICONS.floor, kind: "Floor" },
   { key: "space", icon: PLACE_ICONS.space, kind: "Space" },
 ];
+
+/** What screen readers hear before the Device's name. A Standalone Device is just "Device", which is shorter to hear. */
+const DEVICE_KIND_SPOKEN: Record<DeviceKind, string> = {
+  hub: "Hub",
+  module: "Module",
+  standalone: "Device",
+};
 
 /** Shows where a Device is: its Site, Floor, Space and the Device itself, each with an icon. Takes props only, never fetches data. */
 export function LocationPath({
@@ -39,7 +47,7 @@ export function LocationPath({
         {
           key: "device",
           icon: DEVICE_KIND_ICONS[deviceKind],
-          kind: deviceKind === "hub" ? "Hub" : "Module",
+          kind: DEVICE_KIND_SPOKEN[deviceKind],
         },
       ]
     : PLACE_PARTS;

@@ -44,7 +44,7 @@ export const LongText: Story = {
   args: {
     title: "This Space doesn't have any Paired Modules yet",
     message:
-      "Once a Module is wired to the Hub in this Space and paired, its Readings show up here.",
+      "Once a Device in this Space is paired, its Readings show up here.",
   },
   decorators: [
     (Story) => (

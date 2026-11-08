@@ -12,13 +12,14 @@ export type StateValueVisualState =
   | "alert-critical"
   | "alert-warning"
   | "alert-info"
+  | "error"
   | "loading"
   | "disconnected";
 
 /** The Metric and its State. TypeScript checks the State belongs to the Metric: Power can't be `open`. */
 export type StateValueReading = {
   [M in StateMetric]: {
-    /** The State Metric the Sensor measures, e.g. `power`. Decides the icon. */
+    /** The State Metric the Capability reports, e.g. `power`. Decides the icon. */
     metric: M;
     /** The latest State, e.g. `on`. `null` while the first Reading is on its way. */
     state: StateOf<M> | null;
@@ -27,7 +28,7 @@ export type StateValueReading = {
 
 /** The props of `StateValue`. */
 export type StateValueProps = StateValueReading & {
-  /** True when the Module's Connection Status is Disconnected. Hides the State and shows the disconnected icon. */
+  /** True when the Device's Connection Status is Disconnected. Hides the State and shows the disconnected icon. */
   isDisconnected?: boolean;
   /** The Alert Level of an Active Alert about this Reading. Colours the pill with that level's status colours. Leave it out when there is none. */
   alertLevel?: AlertLevel;

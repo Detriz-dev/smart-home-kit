@@ -18,7 +18,7 @@ Figma: `ReadingValue` component set in _DeTriz - Smart Home Kit_ (node `197:31`)
 
 Category: **Readings** ("What is it right now?"). The value changes every time a new Reading arrives.
 
-It shows one part of a [Reading](/kit/apps/docs-site/docs/domain-model/glossary.mdx#what-is-tracked):
+It shows one part of a [Reading](/kit/apps/docs-site/docs/domain-model/glossary.mdx#measurements):
 
 | Part  | Domain term | Example | Rule                                                                                                       |
 | ----- | ----------- | ------- | ---------------------------------------------------------------------------------------------------------- |

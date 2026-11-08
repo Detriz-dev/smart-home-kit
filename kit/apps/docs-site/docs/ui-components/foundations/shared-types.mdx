@@ -71,9 +71,9 @@ type Metric = MeasuredMetric | StateMetric;
 | `co2`               | Measured | CO₂               | `ppm`                                           |
 | `voc`               | Measured | VOC               | `ppb`                                           |
 | `pm25`              | Measured | PM2.5             | `ug-m3`                                         |
-| `battery`           | Measured | Battery           | % (not in `UnitLabelUnit` yet)                  |
+| `battery`           | Measured | Battery           | `percent`                                       |
 | `setpoint`          | Measured | Setpoint          | The Unit of what it sets: `celsius` for heating |
-| `position`          | Measured | Position          | % (not in `UnitLabelUnit` yet)                  |
+| `position`          | Measured | Position          | `percent`                                       |
 | `power`             | State    | Power             | `on`, `off`                                     |
 | `contact`           | State    | Contact           | `open`, `closed`                                |
 | `open-close`        | State    | Open / Close      | `open`, `closed`, `opening`, `closing`          |
@@ -223,7 +223,14 @@ How a Metric's value is shown. See [`UnitLabel`](../readings/unit-label.mdx#unit
 
 ```ts
 type UnitLabelUnit =
-  "celsius" | "fahrenheit" | "percent-rh" | "lux" | "ppm" | "ppb" | "ug-m3";
+  | "celsius"
+  | "fahrenheit"
+  | "percent-rh"
+  | "percent"
+  | "lux"
+  | "ppm"
+  | "ppb"
+  | "ug-m3";
 ```
 
 **Used by:** `UnitLabel` (`unit`), and every card's `unit` field. You choose the display Unit: for Temperature, `celsius` or `fahrenheit`.

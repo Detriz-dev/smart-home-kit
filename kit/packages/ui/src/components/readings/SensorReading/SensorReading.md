@@ -18,11 +18,11 @@ Category: **Readings** ("What is it right now?"). A composite keeps the category
 
 It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx):
 
-| Part  | Domain term                                                                                        | Example     | Shown by       |
-| ----- | -------------------------------------------------------------------------------------------------- | ----------- | -------------- |
-| label | **Metric** (names the [Sensor](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked)) | Temperature | `SensorLabel`  |
-| value | **Reading** (its value)                                                                            | 22.4        | `ReadingValue` |
-| unit  | **Unit**                                                                                           | °C          | `UnitLabel`    |
+| Part  | Domain term                                                                                      | Example     | Shown by       |
+| ----- | ------------------------------------------------------------------------------------------------ | ----------- | -------------- |
+| label | **Metric** (names the [Sensor](/kit/apps/docs-site/docs/domain-model/glossary.mdx#capabilities)) | Temperature | `SensorLabel`  |
+| value | **Reading** (its value)                                                                          | 22.4        | `ReadingValue` |
+| unit  | **Unit**                                                                                         | °C          | `UnitLabel`    |
 
 A Sensor measures exactly one Metric, so the Metric name is enough to name the Sensor (same reasoning as in `SensorLabel`).
 

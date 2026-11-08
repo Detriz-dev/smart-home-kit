@@ -64,6 +64,28 @@ export const UnderAReading: Story = {
   ),
 };
 
+// A comfort range is two Alert Rules on the same Capability: one "below", one "above".
+export const TwoRulesForARange: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: "var(--shk-space-2)", width: 200 }}>
+      <SensorReading
+        metric="temperature"
+        value={22.4}
+        unit="celsius"
+        size="md"
+      />
+      <AlertRuleLabel
+        condition={{ metric: "temperature", comparison: "below", value: 20 }}
+        unit="celsius"
+      />
+      <AlertRuleLabel
+        condition={{ metric: "temperature", comparison: "above", value: 30 }}
+        unit="celsius"
+      />
+    </div>
+  ),
+};
+
 export const UnderAState: Story = {
   render: () => (
     <div style={{ display: "grid", gap: "var(--shk-space-2)", width: 200 }}>

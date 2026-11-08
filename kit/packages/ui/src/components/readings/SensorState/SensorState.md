@@ -4,7 +4,7 @@
 
 ### Purpose
 
-Shows the latest State of one Two-state Sensor as a small card: what it is about on top ("Power" or "Front door"), the State below (🔌 **On**). It is the twin of [`SensorReading`](../SensorReading/SensorReading.md): same card, same sizes, but a [`StateValue`](../StateValue/StateValue.md) instead of a number and Unit. `ModuleCard` uses one per Two-state Sensor.
+Shows the latest State of one State Sensor as a small card: what it is about on top ("Power" or "Front door"), the State below (🔌 **On**). It is the twin of [`SensorReading`](../SensorReading/SensorReading.md): same card, same sizes, but a [`StateValue`](../StateValue/StateValue.md) instead of a number and Unit. `ModuleCard` uses one per State Sensor.
 
 Figma: `SensorState` component set in _DeTriz - Smart Home Kit_ (node `595:1773`), page `SensorState` (after SensorReading). Built from a copy of SensorReading, so the card is identical. `SensorLabel` and `StateValue` are exposed: pick the Metric on the first, and the State, icon and Alert colours on the second.
 

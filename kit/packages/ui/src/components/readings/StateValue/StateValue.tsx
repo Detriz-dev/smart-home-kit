@@ -40,11 +40,14 @@ export function StateValue({
 
   // `metric` and `state` always match (the props type checks it), so this lookup is safe.
   const icons: Partial<Record<State, IconName>> = STATE_ICONS[metric];
+  // An Active Alert wins; then Operational State Error (red, like a Fault); then active or inactive.
   const visual: StateValueVisualState = alertLevel
     ? `alert-${alertLevel}`
-    : ACTIVE_STATES.has(state)
-      ? "active"
-      : "inactive";
+    : state === "error"
+      ? "error"
+      : ACTIVE_STATES.has(state)
+        ? "active"
+        : "inactive";
 
   return (
     <span data-state={visual} data-size={size} className={styles.root}>

@@ -56,7 +56,12 @@ export const Large: Story = {
   args: { size: "lg" },
 };
 
-// Every Metric in both States, so the icons and words can be checked together.
+// Operational State Error: red, like a Fault, with the error icon.
+export const OperationalError: Story = {
+  args: { metric: "operational-state", state: "error" },
+};
+
+// Every Metric in each of its States, so the icons and words can be checked together.
 export const AllStates: Story = {
   render: (args) => (
     <div style={{ display: "grid", gap: "var(--shk-space-2)" }}>
@@ -79,6 +84,22 @@ export const AllStates: Story = {
       <div style={{ display: "flex", gap: "var(--shk-space-2)" }}>
         <StateValue {...args} metric="co" state="detected" />
         <StateValue {...args} metric="co" state="clear" />
+      </div>
+      <div style={{ display: "flex", gap: "var(--shk-space-2)" }}>
+        <StateValue {...args} metric="open-close" state="open" />
+        <StateValue {...args} metric="open-close" state="opening" />
+        <StateValue {...args} metric="open-close" state="closing" />
+        <StateValue {...args} metric="open-close" state="closed" />
+      </div>
+      <div style={{ display: "flex", gap: "var(--shk-space-2)" }}>
+        <StateValue {...args} metric="mode" state="heat" />
+        <StateValue {...args} metric="mode" state="off" />
+      </div>
+      <div style={{ display: "flex", gap: "var(--shk-space-2)" }}>
+        <StateValue {...args} metric="operational-state" state="running" />
+        <StateValue {...args} metric="operational-state" state="paused" />
+        <StateValue {...args} metric="operational-state" state="stopped" />
+        <StateValue {...args} metric="operational-state" state="error" />
       </div>
     </div>
   ),

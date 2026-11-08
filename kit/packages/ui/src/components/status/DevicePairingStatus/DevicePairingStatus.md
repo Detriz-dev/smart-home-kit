@@ -95,7 +95,7 @@ The decisions behind them:
 
 | Use                                        | status     | Shows                                                                             |
 | ------------------------------------------ | ---------- | --------------------------------------------------------------------------------- |
-| Default story: "New module found"          | `unpaired` | Unpaired ●                                                                        |
+| Default story: "New device found"          | `unpaired` | Unpaired ●                                                                        |
 | The user tapped "Add", setup is running    | `pairing`  | Pairing ●                                                                         |
 | The Climate Module is in the Kitchen Space | `paired`   | Paired ●                                                                          |
 | `LongText` story                           | `unpaired` | The longest label, in a 96px container: stays on one line, the dot keeps its size |

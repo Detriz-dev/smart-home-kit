@@ -33,8 +33,8 @@ A Module has **one or more** Sensors ([Data model](/kit/apps/docs-site/docs/doma
 
 What it does **not** show, and why:
 
-- **Several Modules side by side.** A Hub can have several Modules wired to it. Placing those cards is the job of a separate Layout component, because a card shouldn't know about its neighbours.
-- **Pairing Status.** Only Paired Modules have a Connection Status, so only Paired Modules get a ModuleCard. An Unpaired Module ("New module found") belongs to another component.
+- **Several Modules side by side.** A Hub can have several Modules connected to it. Placing those cards is the job of a separate Layout component, because a card shouldn't know about its neighbours.
+- **Pairing Status.** Only Paired Modules have a Connection Status, so only Paired Modules get a ModuleCard. An Unpaired Module ("New device found") belongs to another component.
 - **Hub, Space, Site.** Where the Module sits is `LocationPath`.
 - **Time of the Reading** ("Last update 5 min ago"). Context, not part of this card yet.
 
@@ -202,7 +202,7 @@ The container query widths (332px, 504px) are raw values, an exception to the to
 - **One Sensor per Metric.** The card uses the Metric as each Sensor's key, so it assumes a Module never has two Sensors with the same Metric. The old link for this rule (Domain Analysis) was deleted in the repo cleanup. Add the rule to the Data model, or change the card if it isn't true.
 - **Heading.** Should the Module name be a heading for screen-reader navigation? If yes, the card needs a `headingLevel` prop, because it doesn't know where it sits on the page.
 
-### Two-state Sensors (Phase 2, 2026-11-07)
+### State Sensors (Phase 2, 2026-11-07)
 
 - A Sensor is a number Sensor (`value` + `unit`, shown by `SensorReading`) or a State Sensor (`state`, optional `asset` and `alertLevel`, shown by `SensorState`). Told apart by the `state` field. Existing number Sensors are unchanged.
 - The Module's Connection Status applies to both: Disconnected hides the States too.

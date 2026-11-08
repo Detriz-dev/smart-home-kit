@@ -1,12 +1,12 @@
 ---
 sidebar_position: 1.5
 sidebar_label: StateValue
-description: Shows the latest State of a Two-state Metric, like On, Open or Detected, as a small pill.
+description: Shows the latest State of a State Metric, like On, Open or Detected, as a small pill.
 ---
 
 # StateValue
 
-Shows the latest [State](/docs/domain-model/glossary#measurements) of a Two-state Metric as a small pill: an icon and a word, like **On**, **Open** or **Detected**. It is the State twin of [`ReadingValue`](./reading-value.mdx): ReadingValue shows a number, StateValue shows a State.
+Shows the latest [State](/docs/domain-model/glossary#measurements) of a State Metric as a small pill: an icon and a word, like **On**, **Open** or **Detected**. It is the State twin of [`ReadingValue`](./reading-value.mdx): ReadingValue shows a number, StateValue shows a State.
 
 ```jsx live
 <StateValue metric="power" state="on" />
@@ -34,19 +34,20 @@ The icon and the word follow from the Metric and the State, so they look the sam
 
 ## When to use it
 
-Use StateValue for **Two-state Metrics**: Power, Contact (doors and windows), Motion, Smoke and CO. It is read-only: it shows a State and never switches anything. For numbers like Temperature, use [`ReadingValue`](./reading-value.mdx).
+Use StateValue for **State Metrics**: Power, Contact (doors and windows), Motion, Smoke and CO. It is read-only: it shows a State and never switches anything. For numbers like Temperature, use [`ReadingValue`](./reading-value.mdx).
 
 Don't use it for app settings: that's [`Switch`](../controls/switch.mdx).
 
 ## States
 
-| What you pass                               | Shows                                  |
-| ------------------------------------------- | -------------------------------------- |
-| An active State: `on`, `open`, `detected`   | Blue pill                              |
-| An inactive State: `off`, `closed`, `clear` | Grey pill                              |
-| `alertLevel` (an Active Alert)              | Pill in the Alert Level's colours      |
-| `state={null}`                              | Spinning loading icon, no pill         |
-| `isDisconnected`                            | Disconnected icon, the State is hidden |
+| What you pass                                                                      | Shows                                  |
+| ---------------------------------------------------------------------------------- | -------------------------------------- |
+| An active State: `on`, `open`, `opening`, `closing`, `heat`, `running`, `detected` | Blue pill                              |
+| An inactive State: `off`, `closed`, `stopped`, `paused`, `clear`                   | Grey pill                              |
+| `error` (Operational State)                                                        | Red pill with the error icon           |
+| `alertLevel` (an Active Alert)                                                     | Pill in the Alert Level's colours      |
+| `state={null}`                                                                     | Spinning loading icon, no pill         |
+| `isDisconnected`                                                                   | Disconnected icon, the State is hidden |
 
 ```jsx live
 <StackLayout>
@@ -62,7 +63,11 @@ Don't use it for app settings: that's [`Switch`](../controls/switch.mdx).
 
 ### Active and inactive
 
-On, Open and Detected are **active** and shown in blue. Off, Closed and Clear are **inactive** and shown in grey. Blue doesn't mean good or bad: it just means "on".
+On, Open, Opening, Closing, Heat, Running and Detected are **active** and shown in blue. Off, Closed, Stopped, Paused and Clear are **inactive** and shown in grey. Blue doesn't mean good or bad: it just means "on" or "happening".
+
+### Error
+
+An [Operational State](/docs/domain-model/glossary#operational-state) of `error` is shown in red, like a Fault, with the error icon. To say _why_ (the Error Reason), show it next to the pill. An Active Alert still wins over Error.
 
 ### Alerts
 
@@ -74,7 +79,7 @@ Pass `state={null}` while the first Reading is on its way.
 
 ### Disconnected
 
-Pass `isDisconnected` when the Module's Connection Status is Disconnected. The last State is hidden, because an old State would look current.
+Pass `isDisconnected` when the Device's Connection Status is Disconnected. The last State is hidden, because an old State would look current.
 
 ## Sizes
 
@@ -129,7 +134,7 @@ The words are short, so the pill never wraps or shortens. In a narrow card it ke
 
 | Prop             | Domain term                                                                        | Example      |
 | ---------------- | ---------------------------------------------------------------------------------- | ------------ |
-| `metric`         | [Two-state Metric](/docs/domain-model/glossary#measurements)                       | `"contact"`  |
+| `metric`         | [State Metric](/docs/domain-model/glossary#measurements)                           | `"contact"`  |
 | `state`          | [State](/docs/domain-model/glossary#measurements) of the latest Reading            | `"open"`     |
 | `isDisconnected` | [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected | `false`      |
 | `alertLevel`     | [Alert Level](/docs/domain-model/glossary#alerts) of an Active Alert               | `"critical"` |
@@ -145,7 +150,7 @@ The State must belong to the Metric. TypeScript tells you if it doesn't:
 
 | Prop             | Type                                | Default | Description                                                                   |
 | ---------------- | ----------------------------------- | ------- | ----------------------------------------------------------------------------- |
-| `metric`         | `TwoStateMetric`                    | –       | **Required.** The Two-state Metric the Sensor measures. Decides the icon.     |
+| `metric`         | `StateMetric`                       | –       | **Required.** The State Metric the Capability reports. Decides the icon.      |
 | `state`          | `StateOf<metric> \| null`           | –       | **Required.** The latest State. `null` while the first Reading is on its way. |
 | `isDisconnected` | `boolean`                           | `false` | Hides the State and shows the disconnected icon.                              |
 | `alertLevel`     | `"critical" \| "warning" \| "info"` | none    | The Alert Level of an Active Alert about this Reading. Colours the pill.      |

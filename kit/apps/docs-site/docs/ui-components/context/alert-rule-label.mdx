@@ -54,11 +54,11 @@ Don't use it for:
 
 The text follows from the condition, the same two kinds as an [Alert Rule](/docs/domain-model/glossary#alerts):
 
-| Condition                     | Text               | Needs `unit` |
-| ----------------------------- | ------------------ | ------------ |
-| Above a value (Measured)      | Alert above 28 °C  | Yes          |
-| Below a value (Measured)      | Alert below 30 %RH | Yes          |
-| In a State (Two-state Metric) | Alert when Open    | No           |
+| Condition                 | Text               | Needs `unit` |
+| ------------------------- | ------------------ | ------------ |
+| Above a value (Measured)  | Alert above 28 °C  | Yes          |
+| Below a value (Measured)  | Alert below 30 %RH | Yes          |
+| In a State (State Metric) | Alert when Open    | No           |
 
 ```jsx live
 <StackLayout gap="sm">
@@ -72,6 +72,23 @@ The text follows from the condition, the same two kinds as an [Alert Rule](/docs
   />
   <AlertRuleLabel condition={{ metric: "contact", state: "open" }} />
   <AlertRuleLabel condition={{ metric: "power", state: "on" }} />
+</StackLayout>
+```
+
+### A range is two rules
+
+A comfort range, like "between 20 °C and 30 °C", is two Alert Rules on the same Capability: one `below` and one `above`. Show one AlertRuleLabel for each, under the Reading. A rule can check any Capability, a Sensor or a Control.
+
+```jsx live
+<StackLayout gap="sm">
+  <AlertRuleLabel
+    condition={{ metric: "temperature", comparison: "below", value: 20 }}
+    unit="celsius"
+  />
+  <AlertRuleLabel
+    condition={{ metric: "temperature", comparison: "above", value: 30 }}
+    unit="celsius"
+  />
 </StackLayout>
 ```
 

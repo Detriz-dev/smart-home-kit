@@ -1,12 +1,12 @@
 ---
 sidebar_position: 3.5
 sidebar_label: SensorState
-description: The latest State of one Two-state Sensor as a small card, like Power On or Front door Open.
+description: The latest State of one State Sensor as a small card, like Power On or Front door Open.
 ---
 
 # SensorState
 
-The latest State of one Two-state Sensor as a small card: what it is about on top, the State below. It is the twin of [`SensorReading`](./sensor-reading.mdx), for Power, Contact, Motion, Smoke and CO.
+The latest State of one State Sensor as a small card: what it is about on top, the State below. It is the twin of [`SensorReading`](./sensor-reading.mdx), for Power, Contact, Motion, Smoke and CO.
 
 ```jsx live
 <div style={{ maxWidth: 160 }}>
@@ -42,7 +42,7 @@ Pass the Metric and its latest State. For Contact and Power, pass the `asset` th
 
 ## When to use it
 
-Use SensorState for one Two-state Sensor on its own or in a grid of Sensors. [`ModuleCard`](./module-card.mdx) uses it for its Two-state Sensors. For numbers, use [`SensorReading`](./sensor-reading.mdx). To show since when something is detected, use [`DetectionStatus`](./detection-status.mdx).
+Use SensorState for one State Sensor on its own or in a grid of Sensors. [`ModuleCard`](./module-card.mdx) uses it for its State Sensors. For numbers, use [`SensorReading`](./sensor-reading.mdx). To show since when something is detected, use [`DetectionStatus`](./detection-status.mdx).
 
 ## States
 
@@ -77,7 +77,7 @@ Stale and Fault belong to the Module: [`ModuleCard`](./module-card.mdx) shows th
 
 | Prop             | Domain term                                                                    | Example                                     |
 | ---------------- | ------------------------------------------------------------------------------ | ------------------------------------------- |
-| `metric`         | [Two-state Metric](/docs/domain-model/glossary#measurements)                   | `"contact"`                                 |
+| `metric`         | [State Metric](/docs/domain-model/glossary#measurements)                       | `"contact"`                                 |
 | `state`          | [State](/docs/domain-model/glossary#measurements) of the latest Reading        | `"open"`                                    |
 | `asset`          | The [Asset](/docs/domain-model/glossary#devices-and-assets) the Sensor watches | `{ name: "Front door", assetType: "door" }` |
 | `isDisconnected` | The Module's Connection Status is Disconnected                                 | `false`                                     |
@@ -87,7 +87,7 @@ Stale and Fault belong to the Module: [`ModuleCard`](./module-card.mdx) shows th
 
 | Prop             | Type                                     | Default | Description                                                                   |
 | ---------------- | ---------------------------------------- | ------- | ----------------------------------------------------------------------------- |
-| `metric`         | `TwoStateMetric`                         | –       | **Required.** The Two-state Metric the Sensor measures.                       |
+| `metric`         | `StateMetric`                            | –       | **Required.** The State Metric the Sensor measures.                           |
 | `state`          | `StateOf<metric> \| null`                | –       | **Required.** The latest State. `null` while the first Reading is on its way. |
 | `asset`          | `{ name: string; assetType: AssetType }` | none    | The Asset the Sensor watches. Names the card instead of the Metric.           |
 | `isDisconnected` | `boolean`                                | `false` | Hides the State and shows the disconnected icon.                              |
