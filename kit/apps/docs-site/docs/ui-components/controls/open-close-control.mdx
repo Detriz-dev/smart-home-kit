@@ -1,0 +1,202 @@
+---
+sidebar_position: 1.6
+sidebar_label: OpenCloseControl
+description: Opens, closes or stops something that moves, like motorized blinds, with the Open / Close State the Device reports.
+---
+
+# OpenCloseControl
+
+Opens, closes or stops something that moves, like motorized blinds. It shows the State the Device reports (Open, Closed, Opening, Closing) and a button for each command the Device allows.
+
+```jsx live
+<OpenCloseControl
+  name="Living room blinds"
+  state="opening"
+  allowedCommands={["open", "stop", "close"]}
+  onCommand={() => {}}
+/>
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { OpenCloseControl } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+```tsx
+import { OpenCloseControl } from "@detriz-sh-kit/ui";
+
+function Blinds({ blinds, sendCommand }) {
+  return (
+    <OpenCloseControl
+      name="Living room blinds"
+      state={blinds.openClose} // "open", "closed", "opening" or "closing"
+      allowedCommands={blinds.allowedCommands}
+      onCommand={(command) => sendCommand(blinds.id, command)}
+      command={blinds.lastCommand}
+    />
+  );
+}
+```
+
+The examples below leave out the `import` lines. In your app, you need them.
+
+Commands work like every Control: the State shown is always what the Device reports, and `command` says when one is Pending or Failed. See [How commands work](./power-control.mdx#how-commands-work).
+
+## When to use it
+
+Use OpenCloseControl for **something the user can open and close remotely**: motorized blinds or curtains, and later a garage door, a gate or a valve.
+
+Don't use it for:
+
+- **Manual blinds, a door or a window** watched by a Contact Sensor. Nothing can be changed: use [`SensorState`](../readings/sensor-state.mdx).
+- **How far it's open** (0–100 %). Use [`ValueControl`](./value-control.mdx) with `input="slider"` next to it.
+
+## States
+
+| What you pass              | Buttons                                                       |
+| -------------------------- | ------------------------------------------------------------- |
+| `state="closed"`           | Open                                                          |
+| `state="opening"`          | Stop, Close                                                   |
+| `state="open"`             | Close                                                         |
+| `state="closing"`          | Open, Stop                                                    |
+| `command.status="pending"` | All disabled; "Opening…", "Closing…" or "Stopping…"           |
+| `command.status="failed"`  | As for the State; "Couldn't open. The device didn't respond." |
+| `isViewOnly`               | All disabled; "View only"                                     |
+| `state={null}`             | Loading icon, no buttons                                      |
+| `isDisconnected`           | Disconnected icon, no buttons                                 |
+
+A command that doesn't fit the current State stays visible but disabled, so the buttons don't jump around while the blinds move.
+
+```jsx live
+<StackLayout gap="md">
+  {/* Closed */}
+  <OpenCloseControl
+    name="Living room blinds"
+    state="closed"
+    allowedCommands={["open", "stop", "close"]}
+    onCommand={() => {}}
+  />
+  {/* Pending */}
+  <OpenCloseControl
+    name="Living room blinds"
+    state="closed"
+    allowedCommands={["open", "stop", "close"]}
+    onCommand={() => {}}
+    command={{ command: "open", status: "pending" }}
+  />
+  {/* Failed */}
+  <OpenCloseControl
+    name="Living room blinds"
+    state="closed"
+    allowedCommands={["open", "stop", "close"]}
+    onCommand={() => {}}
+    command={{ command: "open", status: "failed" }}
+  />
+  {/* Disconnected */}
+  <OpenCloseControl
+    name="Living room blinds"
+    state="open"
+    allowedCommands={["open", "stop", "close"]}
+    onCommand={() => {}}
+    isDisconnected
+  />
+</StackLayout>
+```
+
+## Commands the Device doesn't allow
+
+A command the Device **never** allows isn't shown at all. Blinds without Stop get two buttons:
+
+```jsx live
+<OpenCloseControl
+  name="Bedroom blinds"
+  state="closed"
+  allowedCommands={["open", "close"]}
+  onCommand={() => {}}
+/>
+```
+
+A command is **Confirmed** when the Device reports the matching State: Opening or Open for `open`, Closing or Closed for `close`, and Open or Closed for `stop`.
+
+## Mapping your data
+
+| Prop              | Domain term                                                          | Example                     |
+| ----------------- | -------------------------------------------------------------------- | --------------------------- |
+| `state`           | The Open / Close [Reading](/docs/domain-model/glossary#measurements) | `"opening"`                 |
+| `allowedCommands` | [Allowed Commands](/docs/domain-model/glossary#capabilities)         | `["open", "stop", "close"]` |
+| `command.status`  | [Command Status](/docs/domain-model/glossary#command-status)         | `"pending"`                 |
+
+## Props
+
+| Prop              | Type                                                   | Default | Description                                                                                         |
+| ----------------- | ------------------------------------------------------ | ------- | --------------------------------------------------------------------------------------------------- |
+| `name`            | `string`                                               | –       | **Required.** What it opens and closes, e.g. "Living room blinds". Also names the group of buttons. |
+| `state`           | `"open" \| "closed" \| "opening" \| "closing" \| null` | –       | **Required.** The State the Device reports. `null` while the first Reading is on its way.           |
+| `allowedCommands` | `("open" \| "close" \| "stop")[]`                      | –       | **Required.** The commands the Device accepts. A command not listed isn't shown.                    |
+| `onCommand`       | `(command: "open" \| "close" \| "stop") => void`       | –       | **Required.** Called when the user presses a button. Your app sends the command.                    |
+| `command`         | `OpenCloseControlCommand`                              | none    | The last command and its Command Status: `{ command, status, failureMessage? }`.                    |
+| `isDisconnected`  | `boolean`                                              | `false` | The Device's Connection Status is Disconnected.                                                     |
+| `isViewOnly`      | `boolean`                                              | `false` | The Account can only view this Site. Disables the buttons.                                          |
+
+The types `OpenCloseControlProps` and `OpenCloseControlCommand` are exported too.
+
+## Long text
+
+The name is shortened with "…". The buttons and the message wrap.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <OpenCloseControl
+    name="Bedroom blackout blinds by the balcony door"
+    state="closed"
+    allowedCommands={["open", "stop", "close"]}
+    onCommand={() => {}}
+    command={{ command: "open", status: "failed" }}
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The buttons are a group named by `name`: "Living room blinds, group, Open, button".
+- The State is real text, and Pending and Failed messages are announced.
+- While a command is Pending, every button is disabled, so a second command can't be sent.
+
+What's up to you:
+
+- **A clear `name`.** It names the group screen readers hear.
+
+## Styling
+
+| What          | Token                                               |
+| ------------- | --------------------------------------------------- |
+| State         | from [`StateValue`](../readings/state-value.mdx)    |
+| Buttons       | from [`Button`](./button.mdx) (`secondary`)         |
+| Name, message | as in [`PowerControl`](./power-control.mdx#styling) |
+| Gaps          | `--shk-space-2`, `--shk-space-3`                    |
+
+## Related components
+
+- [`ValueControl`](./value-control.mdx): the blinds' Position, as a slider.
+- [`DeviceCard`](../readings/device-card.mdx): the blinds as a card, with both Controls.
+- [`SensorState`](../readings/sensor-state.mdx): a door or window that can only be read.

@@ -1,0 +1,249 @@
+---
+sidebar_position: 1.5
+sidebar_label: PowerControl
+description: Turns a Device's Power on or off, like a socket on a power strip, and shows when a command is on its way or failed.
+---
+
+# PowerControl
+
+Turns one **Power** Control of a Device on or off: a socket on a power strip, or the power of a washing machine. It always shows what the Device **reports**, and says when a command is on its way ("Turning on…") or failed.
+
+```jsx live
+function Socket() {
+  const [state, setState] = useState("off");
+  const [command, setCommand] = useState();
+  const send = (next) => {
+    setCommand({ command: next, status: "pending" });
+    // Pretend the Device answers after a second.
+    setTimeout(() => {
+      setState(next === "turn-on" ? "on" : "off");
+      setCommand({ command: next, status: "confirmed" });
+    }, 1000);
+  };
+  return (
+    <PowerControl
+      name="Desk lamp"
+      state={state}
+      allowedCommands={["turn-on", "turn-off"]}
+      onCommand={send}
+      command={command}
+    />
+  );
+}
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { PowerControl } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+PowerControl never sends a command itself. When the user flips the switch, it calls `onCommand` with `"turn-on"` or `"turn-off"`. Your app sends the command and passes back how it's going in `command`:
+
+```tsx
+import { PowerControl } from "@detriz-sh-kit/ui";
+
+function DeskLamp({ socket, sendCommand }) {
+  return (
+    <PowerControl
+      name="Desk lamp"
+      state={socket.power} // what the Device reports: "on" or "off"
+      allowedCommands={socket.allowedCommands}
+      onCommand={(command) => sendCommand(socket.id, command)}
+      command={socket.lastCommand} // { command, status: "pending" | "confirmed" | "failed" }
+    />
+  );
+}
+```
+
+The examples below leave out the `import` lines. In your app, you need them.
+
+## When to use it
+
+Use PowerControl for **a Device's Power that the user can change**: a socket, a smart plug, a washing machine's power button.
+
+Don't use it for:
+
+- **Power that can only be read.** That is a Sensor: use [`StateValue`](../readings/state-value.mdx) or [`SensorState`](../readings/sensor-state.mdx).
+- **Starting or stopping a task**, like boiling a kettle. Use [`OperationalStateControl`](./operational-state-control.mdx).
+- **A setting in your app.** Use [`Switch`](./switch.mdx).
+
+## How commands work
+
+This is how every Control in the kit works, not only PowerControl.
+
+1. **The switch shows what the Device reports** (`state`), never what the user asked for.
+2. The user flips it. PowerControl calls `onCommand("turn-on")`.
+3. Your app sends the command and passes `command={{ command: "turn-on", status: "pending" }}`. The switch stays where it was and is disabled, and "Turning on…" shows under it.
+4. When the Device reports On, your app passes `state="on"` and `status: "confirmed"`. The message goes away.
+5. If the Device refuses or doesn't answer in time, your app passes `status: "failed"`. The switch is usable again, and a message says what happened.
+
+The switch never jumps ahead of the Device, so it never shows something that isn't true. This follows the [Command Status](/docs/domain-model/glossary#command-status) in the domain model.
+
+## States
+
+| What you pass                               | Shows                                                         |
+| ------------------------------------------- | ------------------------------------------------------------- |
+| `state="on"` or `"off"`                     | The switch                                                    |
+| `command.status="pending"`                  | Switch disabled, "Turning on…" with a spinning icon           |
+| `command.status="failed"`                   | Switch usable, "Couldn't turn on. The device didn't respond." |
+| A direction that isn't in `allowedCommands` | Switch disabled, "Can't be turned on from the app"            |
+| `isViewOnly`                                | Switch disabled, "View only"                                  |
+| `state={null}`                              | Spinning loading icon instead of the switch                   |
+| `isDisconnected`                            | Disconnected icon instead of the switch                       |
+
+```jsx live
+<StackLayout gap="md">
+  {/* Pending */}
+  <PowerControl
+    name="Socket 3"
+    state="off"
+    allowedCommands={["turn-on", "turn-off"]}
+    onCommand={() => {}}
+    command={{ command: "turn-on", status: "pending" }}
+  />
+  {/* Failed, with your own reason */}
+  <PowerControl
+    name="Socket 4"
+    state="off"
+    allowedCommands={["turn-on", "turn-off"]}
+    onCommand={() => {}}
+    command={{
+      command: "turn-on",
+      status: "failed",
+      failureMessage: "The power strip refused the command.",
+    }}
+  />
+  {/* Only Turn off is allowed */}
+  <PowerControl
+    name="Power"
+    state="off"
+    allowedCommands={["turn-off"]}
+    onCommand={() => {}}
+  />
+  {/* View only: the Site was shared with this Account */}
+  <PowerControl
+    name="Desk lamp"
+    state="on"
+    allowedCommands={["turn-on", "turn-off"]}
+    onCommand={() => {}}
+    isViewOnly
+  />
+  {/* Loading */}
+  <PowerControl
+    name="Desk lamp"
+    state={null}
+    allowedCommands={["turn-on", "turn-off"]}
+    onCommand={() => {}}
+  />
+  {/* Disconnected */}
+  <PowerControl
+    name="Desk lamp"
+    state="on"
+    allowedCommands={["turn-on", "turn-off"]}
+    onCommand={() => {}}
+    isDisconnected
+  />
+</StackLayout>
+```
+
+A Stale Device can still get commands, so Stale changes nothing here. Show it with [`DeviceConnectionStatus`](../status/device-connection-status.mdx).
+
+## Mapping your data
+
+| Prop              | Domain term                                                                                      | Example                   |
+| ----------------- | ------------------------------------------------------------------------------------------------ | ------------------------- |
+| `name`            | The Control's Subject (an [Asset](/docs/domain-model/glossary#devices-and-assets)) or its Metric | `"Desk lamp"`, `"Power"`  |
+| `state`           | The Power [Reading](/docs/domain-model/glossary#measurements): `on` or `off`                     | `"on"`                    |
+| `allowedCommands` | [Allowed Commands](/docs/domain-model/glossary#capabilities)                                     | `["turn-on", "turn-off"]` |
+| `command.status`  | [Command Status](/docs/domain-model/glossary#command-status)                                     | `"pending"`               |
+| `isViewOnly`      | The Site was [shared](/docs/domain-model/glossary#ownership) with this Account                   | `false`                   |
+| `isDisconnected`  | [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected               | `false`                   |
+
+- **Allowed Commands depend on the Device's model,** not its type: two kettles can allow different commands. Take them from the Device.
+- **A Power that can never be changed is a Sensor.** If `allowedCommands` would be empty, use `StateValue` instead.
+
+## Props
+
+| Prop              | Type                                         | Default | Description                                                                                                           |
+| ----------------- | -------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------- |
+| `name`            | `string`                                     | –       | **Required.** What it switches, e.g. "Desk lamp". Shown on the left and used as the switch's name for screen readers. |
+| `state`           | `"on" \| "off" \| null`                      | –       | **Required.** The Power State the Device reports. `null` while the first Reading is on its way.                       |
+| `allowedCommands` | `("turn-on" \| "turn-off")[]`                | –       | **Required.** The commands this Control accepts: both, or only one.                                                   |
+| `onCommand`       | `(command: "turn-on" \| "turn-off") => void` | –       | **Required.** Called when the user flips the switch. Your app sends the command.                                      |
+| `command`         | `PowerControlCommand`                        | none    | The last command and its Command Status: `{ command, status, failureMessage? }`.                                      |
+| `isDisconnected`  | `boolean`                                    | `false` | The Device's Connection Status is Disconnected.                                                                       |
+| `isViewOnly`      | `boolean`                                    | `false` | The Account can only view this Site. Disables the switch.                                                             |
+
+The types `PowerControlProps` and `PowerControlCommand` are exported too, and so are `CommandOf` and `CommandStatus`. See [Shared types](../foundations/shared-types.mdx#controls-and-commands).
+
+## Long text
+
+The name is shortened with "…" (the full name shows on hover). The switch never shrinks, and the message wraps.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <PowerControl
+    name="Socket 4 · Bedside lamp on the left"
+    state="off"
+    allowedCommands={["turn-on", "turn-off"]}
+    onCommand={() => {}}
+    command={{
+      command: "turn-on",
+      status: "failed",
+      failureMessage: "The power strip refused the command.",
+    }}
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- It's a real switch: screen readers say "Desk lamp, switch, on".
+- **"Turning on…" and failures are announced** without moving focus (the message line is a live region).
+- **Screen readers hear why it's disabled:** "View only" or "Can't be turned on from the app" is linked to the switch.
+- While a command is Pending, the switch is disabled, so a second tap can't send a second command.
+- The loading icons stop spinning when the user prefers reduced motion.
+
+What's up to you:
+
+- **A clear `name`.** It's what people see and hear. Use the thing it switches ("Desk lamp"), not "Socket 1", when you know it.
+- **Pass `command` back.** Without it, nothing shows that the command is on its way.
+
+## Styling
+
+| What           | Token                                                      |
+| -------------- | ---------------------------------------------------------- |
+| Switch         | from [`Switch`](./switch.mdx#styling)                      |
+| Name           | `--shk-typography-label-*`, `--shk-color-text-primary`     |
+| Message        | `--shk-typography-caption-*`, `--shk-color-text-secondary` |
+| Failed message | `--shk-status-danger-fg`                                   |
+| Gaps           | `--shk-space-1`, `--shk-space-3`                           |
+
+See [Design tokens](../foundations/design-tokens.mdx) for how to override a token.
+
+## Related components
+
+- [`DeviceCard`](../readings/device-card.mdx): put several PowerControls in one card, like a power strip.
+- [`OperationalStateControl`](./operational-state-control.mdx): start and stop a task, like boiling a kettle.
+- [`Switch`](./switch.mdx): the switch inside it, for app settings.
+- [`StateValue`](../readings/state-value.mdx): a Power State that can only be read.

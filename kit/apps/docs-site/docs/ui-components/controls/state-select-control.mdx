@@ -1,0 +1,193 @@
+---
+sidebar_position: 1.7
+sidebar_label: StateSelectControl
+description: Picks one of a few States of a Device, like the heating Mode (Off, Heat).
+---
+
+# StateSelectControl
+
+Picks one of a few States of a Device: today the heating **Mode** (Off or Heat). The selected option is always the State the Device reports.
+
+```jsx live
+function Mode() {
+  const [mode, setMode] = useState("heat");
+  return (
+    <StateSelectControl
+      name="Mode"
+      metric="mode"
+      state={mode}
+      onSelect={setMode}
+    />
+  );
+}
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { StateSelectControl } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+```tsx
+import { StateSelectControl } from "@detriz-sh-kit/ui";
+
+function HeatingMode({ heating, sendCommand }) {
+  return (
+    <StateSelectControl
+      name="Mode"
+      metric="mode"
+      state={heating.mode} // "off" or "heat", as the Device reports it
+      onSelect={(mode) => sendCommand(heating.id, "set-mode", mode)}
+      command={heating.lastModeCommand} // { state, status }
+    />
+  );
+}
+```
+
+The examples below leave out the `import` lines. In your app, you need them.
+
+Commands work like every Control: see [How commands work](./power-control.mdx#how-commands-work). Here `command` holds the State the user asked for: `{ state: "heat", status: "pending" }`.
+
+## When to use it
+
+Use StateSelectControl for **a State Control with a few options**, all visible at once. Today that's the heating Mode. It's built to take more later, such as Cool and Auto, or a fan speed.
+
+Don't use it for:
+
+- **On and Off of a Device's Power.** Use [`PowerControl`](./power-control.mdx).
+- **A number,** like a temperature. Use [`ValueControl`](./value-control.mdx).
+- **A State that can only be read.** Use [`StateValue`](../readings/state-value.mdx).
+
+## States
+
+| What you pass              | Shows                                                                 |
+| -------------------------- | --------------------------------------------------------------------- |
+| `state="heat"` or `"off"`  | That option selected                                                  |
+| `command.status="pending"` | Options disabled; "Switching to Heat…"                                |
+| `command.status="failed"`  | Options usable; "Couldn't switch to Heat. The device didn't respond." |
+| `isViewOnly`               | Options disabled; "View only"                                         |
+| `state={null}`             | Loading icon instead of the options                                   |
+| `isDisconnected`           | Disconnected icon instead of the options                              |
+
+```jsx live
+<StackLayout gap="md">
+  {/* Off */}
+  <StateSelectControl
+    name="Mode"
+    metric="mode"
+    state="off"
+    onSelect={() => {}}
+  />
+  {/* Pending */}
+  <StateSelectControl
+    name="Mode"
+    metric="mode"
+    state="off"
+    onSelect={() => {}}
+    command={{ state: "heat", status: "pending" }}
+  />
+  {/* Failed */}
+  <StateSelectControl
+    name="Mode"
+    metric="mode"
+    state="off"
+    onSelect={() => {}}
+    command={{ state: "heat", status: "failed" }}
+  />
+  {/* View only */}
+  <StateSelectControl
+    name="Mode"
+    metric="mode"
+    state="heat"
+    onSelect={() => {}}
+    isViewOnly
+  />
+</StackLayout>
+```
+
+The selected option uses the same colours as [`StateValue`](../readings/state-value.mdx): blue for Heat, grey for Off.
+
+## Mapping your data
+
+| Prop             | Domain term                                                  | Example     |
+| ---------------- | ------------------------------------------------------------ | ----------- |
+| `metric`         | The [State Metric](/docs/domain-model/glossary#measurements) | `"mode"`    |
+| `state`          | The Mode [Reading](/docs/domain-model/glossary#measurements) | `"heat"`    |
+| `command.status` | [Command Status](/docs/domain-model/glossary#command-status) | `"pending"` |
+
+- **Mode is not the measured temperature, nor the Setpoint.** Show those next to it, with [`SensorReading`](../readings/sensor-reading.mdx) and [`ValueControl`](./value-control.mdx).
+
+## Props
+
+| Prop             | Type                               | Default | Description                                                                               |
+| ---------------- | ---------------------------------- | ------- | ----------------------------------------------------------------------------------------- |
+| `name`           | `string`                           | –       | **Required.** What it sets, e.g. "Mode". Also names the group of options.                 |
+| `metric`         | `"mode"`                           | –       | **Required.** The State Metric. Decides the options and their icons.                      |
+| `state`          | `"off" \| "heat" \| null`          | –       | **Required.** The State the Device reports. `null` while the first Reading is on its way. |
+| `onSelect`       | `(state: "off" \| "heat") => void` | –       | **Required.** Called with the State the user picked. Your app sends `set-mode`.           |
+| `command`        | `StateSelectControlCommand`        | none    | The State asked for and its Command Status: `{ state, status, failureMessage? }`.         |
+| `isDisconnected` | `boolean`                          | `false` | The Device's Connection Status is Disconnected.                                           |
+| `isViewOnly`     | `boolean`                          | `false` | The Account can only view this Site. Disables the options.                                |
+
+The types `StateSelectControlProps`, `StateSelectControlCommand` and `StateSelectMetric` are exported too.
+
+## Long text
+
+The name is shortened with "…". When there isn't room, the options move under the name. The option words never shrink.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <StateSelectControl
+    name="Heating mode in the children's bedroom"
+    metric="mode"
+    state="off"
+    onSelect={() => {}}
+    command={{ state: "heat", status: "pending" }}
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The options are toggle buttons in a group named by `name`: "Mode, group, Heat, toggle button, pressed".
+- **Keyboard:** Tab moves between options, and Enter or Space picks one. The arrow keys don't change the Mode, because every change sends a command to the Device.
+- The selected option is shown by its fill **and** announced as pressed, not by colour alone.
+- Pending and Failed messages are announced.
+
+What's up to you:
+
+- **A clear `name`.**
+
+## Styling
+
+| What                | Token                                                    |
+| ------------------- | -------------------------------------------------------- |
+| Outline             | `--shk-status-neutral-border`                            |
+| Selected Heat / Off | `--shk-state-active-*` / `--shk-state-inactive-*`        |
+| Option text         | `--shk-typography-label-*`, `--shk-color-text-secondary` |
+| Name, message       | as in [`PowerControl`](./power-control.mdx#styling)      |
+
+## Related components
+
+- [`ValueControl`](./value-control.mdx): the heating's Setpoint.
+- [`DeviceCard`](../readings/device-card.mdx): heating as a card, with the Temperature, Setpoint and Mode.
+- [`StateValue`](../readings/state-value.mdx): a State that can only be read.

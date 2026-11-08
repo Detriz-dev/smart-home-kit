@@ -1,0 +1,251 @@
+---
+sidebar_position: 1.9
+sidebar_label: OperationalStateControl
+description: Starts, pauses, resumes and stops the task of a Device that runs one, like a kettle or a washing machine.
+---
+
+# OperationalStateControl
+
+Starts, pauses, resumes and stops the task of a Device that runs one: a kettle boiling water, a washing machine running a programme. It shows what the Device is doing and only the buttons that make sense right now.
+
+```jsx live
+function WashingMachine() {
+  const [state, setState] = useState("stopped");
+  const [command, setCommand] = useState();
+  const send = (next) => {
+    setCommand({ command: next, status: "pending" });
+    // Pretend the Device answers after a second.
+    setTimeout(() => {
+      const after = {
+        start: "running",
+        resume: "running",
+        pause: "paused",
+        stop: "stopped",
+      };
+      setState(after[next]);
+      setCommand({ command: next, status: "confirmed" });
+    }, 1000);
+  };
+  return (
+    <OperationalStateControl
+      name="Washing machine"
+      state={state}
+      phase={state === "running" ? "Washing" : undefined}
+      allowedCommands={["start", "pause", "resume", "stop"]}
+      onCommand={send}
+      command={command}
+    />
+  );
+}
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { OperationalStateControl } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+```tsx
+import { OperationalStateControl } from "@detriz-sh-kit/ui";
+
+function Kettle({ kettle, sendCommand }) {
+  return (
+    <OperationalStateControl
+      name="Kettle"
+      state={kettle.operationalState} // "stopped", "running", "paused" or "error"
+      phase={kettle.phase}
+      errorReason={kettle.errorReason}
+      allowedCommands={kettle.allowedCommands}
+      onCommand={(command) => sendCommand(kettle.id, command)}
+      command={kettle.lastCommand}
+    />
+  );
+}
+```
+
+The examples below leave out the `import` lines. In your app, you need them.
+
+Commands work like every Control: see [How commands work](./power-control.mdx#how-commands-work).
+
+## When to use it
+
+Use OperationalStateControl for **a Device that runs a task the user can start or stop**: a kettle, a washing machine, a dishwasher.
+
+Don't use it for:
+
+- **A task the user can only watch.** If the Device allows no commands, use [`OperationalStateValue`](../readings/operational-state-value.mdx).
+- **A Device's power.** Use [`PowerControl`](./power-control.mdx). A Device that runs a task gets a Power Control only if the real device has a separate power button.
+
+## Which buttons show
+
+Only commands the Device allows, and only those that fit what it's doing:
+
+| Operational State | Buttons (if allowed) |
+| ----------------- | -------------------- |
+| Stopped           | Start                |
+| Running           | Pause, Stop          |
+| Paused            | Resume, Stop         |
+| Error             | Stop                 |
+
+```jsx live
+<StackLayout gap="md">
+  {/* A kettle that allows Start and Stop, while Running: only Stop */}
+  <OperationalStateControl
+    name="Kettle"
+    state="running"
+    phase="Heating"
+    allowedCommands={["start", "stop"]}
+    onCommand={() => {}}
+  />
+  {/* A kettle that can only be stopped, while Stopped: no buttons */}
+  <OperationalStateControl
+    name="Kettle"
+    state="stopped"
+    allowedCommands={["stop"]}
+    onCommand={() => {}}
+  />
+  {/* Error: Stop */}
+  <OperationalStateControl
+    name="Washing machine"
+    state="error"
+    errorReason={{ code: "door-open", label: "Door open" }}
+    allowedCommands={["start", "pause", "resume", "stop"]}
+    onCommand={() => {}}
+  />
+</StackLayout>
+```
+
+**Power Off.** If the Device also has a [`PowerControl`](./power-control.mdx) and its Power is Off, pass `isPoweredOff`. Start isn't offered, and "Turn the power on to start" shows instead.
+
+## States
+
+| What you pass              | Shows                                                                 |
+| -------------------------- | --------------------------------------------------------------------- |
+| `command.status="pending"` | Buttons disabled; "Starting…", "Pausing…", "Resuming…" or "Stopping…" |
+| `command.status="failed"`  | Buttons usable; "Couldn't start. The device didn't respond."          |
+| `isViewOnly`               | Buttons disabled; "View only"                                         |
+| `isPoweredOff` (Stopped)   | No Start; "Turn the power on to start"                                |
+| `state={null}`             | Loading icon, no buttons                                              |
+| `isDisconnected`           | Disconnected icon, no buttons                                         |
+
+```jsx live
+<StackLayout gap="md">
+  {/* Pending */}
+  <OperationalStateControl
+    name="Washing machine"
+    state="running"
+    phase="Washing"
+    allowedCommands={["start", "pause", "resume", "stop"]}
+    onCommand={() => {}}
+    command={{ command: "stop", status: "pending" }}
+  />
+  {/* Failed */}
+  <OperationalStateControl
+    name="Washing machine"
+    state="stopped"
+    allowedCommands={["start", "pause", "resume", "stop"]}
+    onCommand={() => {}}
+    command={{ command: "start", status: "failed" }}
+  />
+  {/* Power is Off */}
+  <OperationalStateControl
+    name="Washing machine"
+    state="stopped"
+    allowedCommands={["start", "pause", "resume", "stop"]}
+    onCommand={() => {}}
+    isPoweredOff
+  />
+</StackLayout>
+```
+
+A command is **Confirmed** when the Device reports the matching State: Running for Start and Resume, Paused for Pause, Stopped for Stop.
+
+## Mapping your data
+
+| Prop              | Domain term                                                        | Example                                   |
+| ----------------- | ------------------------------------------------------------------ | ----------------------------------------- |
+| `state`           | [Operational State](/docs/domain-model/glossary#operational-state) | `"running"`                               |
+| `phase`           | [Phase](/docs/domain-model/glossary#operational-state)             | `"Heating"`                               |
+| `errorReason`     | [Error Reason](/docs/domain-model/glossary#operational-state)      | `{ code: "no-water", label: "No water" }` |
+| `allowedCommands` | [Allowed Commands](/docs/domain-model/glossary#capabilities)       | `["start", "stop"]`                       |
+| `isPoweredOff`    | The Device's Power Control is Off                                  | `false`                                   |
+
+## Props
+
+| Prop              | Type                                                    | Default | Description                                                                           |
+| ----------------- | ------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------- |
+| `name`            | `string`                                                | –       | **Required.** The Device or its task, e.g. "Kettle". Also names the group of buttons. |
+| `state`           | `"stopped" \| "running" \| "paused" \| "error" \| null` | –       | **Required.** The Operational State the Device reports.                               |
+| `phase`           | `string`                                                | none    | What kind of Running, e.g. "Heating". Shown only while `running`.                     |
+| `errorReason`     | `ErrorReason`                                           | none    | Why it is Error. Shown only while `error`.                                            |
+| `allowedCommands` | `("start" \| "pause" \| "resume" \| "stop")[]`          | –       | **Required.** The commands the Device accepts. A command not listed isn't shown.      |
+| `onCommand`       | `(command) => void`                                     | –       | **Required.** Called when the user presses a button. Your app sends the command.      |
+| `command`         | `OperationalStateControlCommand`                        | none    | The last command and its Command Status: `{ command, status, failureMessage? }`.      |
+| `isPoweredOff`    | `boolean`                                               | `false` | The Device's Power Control is Off: Start isn't offered.                               |
+| `isDisconnected`  | `boolean`                                               | `false` | The Device's Connection Status is Disconnected.                                       |
+| `isViewOnly`      | `boolean`                                               | `false` | The Account can only view this Site. Disables the buttons.                            |
+
+The types `OperationalStateControlProps` and `OperationalStateControlCommand` are exported too, and so are `OperationalState`, `OperationalCommand` and `ErrorReason`.
+
+## Long text
+
+The name is shortened with "…". The Error Reason wraps under the pill, and the buttons wrap.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <OperationalStateControl
+    name="Kettle in the office kitchen on the second floor"
+    state="error"
+    errorReason={{
+      code: "unable-to-start-or-resume",
+      faultCode: "sensor_failure",
+    }}
+    allowedCommands={["start", "stop"]}
+    onCommand={() => {}}
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- The buttons are a group named by `name`: "Kettle, group, Stop, button".
+- **Focus isn't lost when the buttons change.** After Start, the Start button is replaced by Pause and Stop; keyboard focus moves to the first new button.
+- Pending and Failed messages are announced.
+- While a command is Pending, every button is disabled, so a second command can't be sent.
+
+What's up to you:
+
+- **A clear `name`.**
+
+## Styling
+
+| What          | Token                                                                           |
+| ------------- | ------------------------------------------------------------------------------- |
+| State         | from [`OperationalStateValue`](../readings/operational-state-value.mdx#styling) |
+| Buttons       | from [`Button`](./button.mdx) (`secondary`)                                     |
+| Name, message | as in [`PowerControl`](./power-control.mdx#styling)                             |
+
+## Related components
+
+- [`OperationalStateValue`](../readings/operational-state-value.mdx): the same, read-only.
+- [`PowerControl`](./power-control.mdx): a Device's separate power button.
+- [`DeviceCard`](../readings/device-card.mdx): a Device as a card, with its Controls.

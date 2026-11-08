@@ -62,7 +62,7 @@ Use Switch for **a setting in your app that is on or off**, and that takes effec
 
 Don't use it for:
 
-- **Controlling a Device.** The kit reads Sensors: it has no command to turn a Device or anything in the home on or off.
+- **Turning a Device on or off.** Use [`PowerControl`](./power-control.mdx). It uses a Switch inside, and adds what a Device needs: the value the Device reports, a Pending and a Failed message, and view-only.
 - **An action** like "Add" or "Remove Device". Use [`Button`](./button.mdx).
 - **A choice between more than two options.** A Switch is only on or off.
 

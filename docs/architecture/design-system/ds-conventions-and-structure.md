@@ -104,17 +104,17 @@ types  ←  utils  ←  hooks  ←  components
 
 Components in the DeTriz Home design system are grouped by **the question they answer** for the person looking at the screen, not by sensor type. Components are sensor-agnostic: the sensor is passed in through props (e.g. `<ReadingCard sensor="temperature" />`).
 
-| Category       | Question it answers                    | What belongs here                                                                                                                                   | Components |
-| -------------- | -------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| **Context**    | "What is it?"                          | Static, descriptive information about sensors, devices and time. (Where things are is Navigation.) Never changes on its own.                        |            |
-| **Readings**   | "What is it right now?"                | The current values of a single measurement or a single Module.                                                                                      |            |
-| **History**    | "How has it changed?"                  | Data over time: trends, past values, summaries.                                                                                                     |            |
-| **Comparison** | "How do sensors relate to each other?" | Several sensors or metrics shown together.                                                                                                          |            |
-| **Status**     | "Is everything OK?"                    | Changing state of the physical world or hardware: health, connection, alerts.                                                                       |            |
-| **Feedback**   | "What is the interface doing?"         | State of the UI and data flow: loading, empty, errors, confirmations.                                                                               |            |
-| **Controls**   | "How do I change what I see?"          | Inputs that change the view or settings.                                                                                                            |            |
-| **Layout**     | "How is it arranged?"                  | Structure and spacing for placing other components.                                                                                                 |            |
-| **Navigation** | "Where am I, and where can I go?"      | Wayfinding: where the person is (Site → Floor → Space → Device) and ways to move between screens or views (tabs, bottom nav, top bar, breadcrumbs). |            |
+| Category       | Question it answers                        | What belongs here                                                                                                                                   | Components |
+| -------------- | ------------------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| **Context**    | "What is it?"                              | Static, descriptive information about sensors, devices and time. (Where things are is Navigation.) Never changes on its own.                        |            |
+| **Readings**   | "What is it right now?"                    | The current values of a single measurement or a single Module.                                                                                      |            |
+| **History**    | "How has it changed?"                      | Data over time: trends, past values, summaries.                                                                                                     |            |
+| **Comparison** | "How do sensors relate to each other?"     | Several sensors or metrics shown together.                                                                                                          |            |
+| **Status**     | "Is everything OK?"                        | Changing state of the physical world or hardware: health, connection, alerts.                                                                       |            |
+| **Feedback**   | "What is the interface doing?"             | State of the UI and data flow: loading, empty, errors, confirmations.                                                                               |            |
+| **Controls**   | "How do I change what I see, or a Device?" | Inputs that change the view or settings, and Device Controls that send commands to a Device (ADR 0002).                                             |            |
+| **Layout**     | "How is it arranged?"                      | Structure and spacing for placing other components.                                                                                                 |            |
+| **Navigation** | "Where am I, and where can I go?"          | Wayfinding: where the person is (Site → Floor → Space → Device) and ways to move between screens or views (tabs, bottom nav, top bar, breadcrumbs). |            |
 
 ## Rules for placing a component
 

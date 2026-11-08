@@ -257,6 +257,8 @@ Order: `OperationalStateValue` and `PowerControl` first (smallest, and they set 
 
 ## Step 7: Storybook, docs site and example screens
 
+🟡 In progress (2026-11-08): docs pages written for the 6 new components (`readings/operational-state-value.mdx`, `controls/power-control.mdx`, `open-close-control.mdx`, `state-select-control.mdx`, `value-control.mdx`, `operational-state-control.mdx`); `DeviceCard` page links `PowerControl`; overview, `Switch` page and the conventions' Controls definition updated; `documentation-implementation-plan.md` rows 28–33. Docs site builds with no broken links. Not checked in a browser. Next: example screens.
+
 - [ ] Storybook: stories for every updated and new component (Step 4 and 5).
 - [ ] Docs site `docs/ui-components/`: pages for the new components, with ` ```jsx live ` examples; update pages of changed components. See [component documentation workflow](../architecture/design-system/workflows/component-documentation.md).
 - [ ] Update `documentation-implementation-plan.md` with the new pages.
