@@ -1,6 +1,6 @@
 # StateSelectControl
 
-> Spec for the team. Status: **reviewed** (2026-11-08). In Figma, not built in code yet. Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md) (decision 22), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md).
+> Spec for the team. Status: **reviewed** (2026-11-08). In Figma and built in code (`pnpm build` passes). Not checked in a browser yet; no user docs page yet. Shared parts (message line, status icon, Failed text) live in [`ControlParts`](../ControlParts/ControlParts.md). Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md) (decision 22), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md).
 
 Figma: `StateSelectControl` component set (node `658:97`, page `StateSelectControl`), property `state` with 7 values: `heat`, `off`, `pending`, `view-only`, `failed`, `loading`, `disconnected`. Segments are built from tokens (no separate segment component yet), with the new `StateIcon` `mode-*` icons. The row wraps: when narrow, the segments move under the name (name min width 96px). Usage: `StateSelectControl / usage` (node `659:478`).
 
@@ -52,9 +52,9 @@ Interaction states per segment: hover, focus ring, pressed, disabled. Target sta
 StateSelectControl        <div>
 ├── row
 │   ├── name              "Mode"            (id used as the group's label)
-│   └── options           <div role="radiogroup" aria-labelledby=name>
-│       ├── option        <button role="radio" aria-checked>  icon + "Off"
-│       └── option        <button role="radio" aria-checked>  icon + "Heat"
+│   └── options           <div role="group" aria-labelledby=name>
+│       ├── option        <button aria-pressed>  icon + "Off"
+│       └── option        <button aria-pressed>  icon + "Heat"
 └── message               role="status"
 ```
 
@@ -82,9 +82,8 @@ As `PowerControl` for name and message. Segments: container `radius/full` with `
 
 ### Accessibility
 
-- A `radiogroup` named by the name: "Mode, radio group, Heat, selected, 2 of 2".
-- Arrow keys move between options, as native radios do; Tab enters and leaves the group.
-- Selection is not colour alone: the selected segment has a fill **and** `aria-checked`.
+- A `group` of toggle buttons named by the name: "Mode, group, Heat, toggle button, pressed". **Not a radio group** (changed while building, 2026-11-08): in a radio group the arrow keys change the selection, and here every change sends a command to the Device. With toggle buttons, Tab moves between options and Enter or Space picks one.
+- Selection is not colour alone: the selected option has a fill **and** `aria-pressed`.
 
 ### Open questions
 

@@ -1,6 +1,6 @@
 # ValueControl
 
-> Spec for the team. Status: **reviewed** (2026-11-08). In Figma, not built in code yet. Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md).
+> Spec for the team. Status: **reviewed** (2026-11-08). In Figma and built in code (`pnpm build` passes). Not checked in a browser yet; no user docs page yet. Shared parts (message line, status icon, Failed text) live in [`ControlParts`](../ControlParts/ControlParts.md). Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md).
 
 Figma: `ValueControl` component set (node `659:177`, page `ValueControl`), properties `input` (`stepper`, `slider`) × `state` (`default`, `draft`, `pending`, `view-only`, `failed`, `loading`, `disconnected`) = 14 variants. − / + are `IconButton` `secondary` with the new `Icon` `remove` / `add`; the Unit is a `UnitLabel` instance (new `percent` variant). Usage: `ValueControl / usage` (node `659:512`), incl. at max (+ disabled).
 

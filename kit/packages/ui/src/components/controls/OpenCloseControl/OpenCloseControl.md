@@ -1,6 +1,6 @@
 # OpenCloseControl
 
-> Spec for the team. Status: **reviewed** (2026-11-08). In Figma, not built in code yet. Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md): reported value, Pending, Failed, view-only, loading, Disconnected.
+> Spec for the team. Status: **reviewed** (2026-11-08). In Figma and built in code (`pnpm build` passes). Not checked in a browser yet; no user docs page yet. Shared parts (message line, status icon, Failed text) live in [`ControlParts`](../ControlParts/ControlParts.md). Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md): reported value, Pending, Failed, view-only, loading, Disconnected.
 
 Figma: `OpenCloseControl` component set (node `657:154`, page `OpenCloseControl`), property `state` with 9 values: `closed`, `opening`, `open`, `closing`, `pending`, `view-only`, `failed`, `loading`, `disconnected`. Buttons are `Button` `secondary` instances; the pill is a `StateValue` instance with the new `StateIcon` `open-close-*` icons. Usage: `OpenCloseControl / usage` (node `659:401`), incl. a Device without Stop (button hidden) and a long name.
 

@@ -1,0 +1,65 @@
+@layer detriz {
+  /* The segmented control: a rounded outline around the options. */
+  .options {
+    display: inline-flex;
+    flex-shrink: 0;
+    gap: var(--shk-space-1);
+    padding: var(--shk-space-1);
+    border: var(--shk-border-width-thin) solid var(--shk-status-neutral-border);
+    border-radius: var(--shk-radius-full);
+  }
+
+  /* One option: icon and word. Unselected: no fill, secondary text. */
+  .option {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--shk-space-1);
+    margin: var(--shk-space-0);
+    padding-block: var(--shk-space-1);
+    padding-inline: var(--shk-space-3);
+    border: var(--shk-border-width-0);
+    border-radius: var(--shk-radius-full);
+    background: none;
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    white-space: nowrap;
+    cursor: pointer;
+  }
+
+  /* The selected option: the same colours as StateValue (active for Heat, inactive for Off). */
+  .option[aria-pressed="true"] {
+    background: var(--shk-state-inactive-bg);
+    color: var(--shk-state-inactive-fg);
+    cursor: default;
+  }
+
+  .option[aria-pressed="true"][data-active="true"] {
+    background: var(--shk-state-active-bg);
+    color: var(--shk-state-active-fg);
+  }
+
+  .option:hover:not(:disabled, [aria-pressed="true"]) {
+    color: var(--shk-color-text-primary);
+  }
+
+  .option:focus-visible {
+    outline: var(--shk-border-width-medium) solid
+      var(--shk-status-progress-border);
+    outline-offset: var(--shk-space-0);
+  }
+
+  /* Disabled (Pending, view-only): the selected option keeps a grey fill, the others use the disabled text colour. */
+  .option:disabled {
+    color: var(--shk-color-text-disabled);
+    cursor: not-allowed;
+  }
+
+  .option:disabled[aria-pressed="true"] {
+    background: var(--shk-state-inactive-bg);
+    color: var(--shk-state-inactive-fg);
+  }
+}

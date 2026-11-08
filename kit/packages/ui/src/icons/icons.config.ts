@@ -7,6 +7,7 @@ export const iconConfig = {
   style: "rounded",
   /** Keep this list in alphabetical order, so it's easy to scan in reviews. */
   icons: [
+    "add",
     "airwave",
     "arrow_back",
     "bathtub",
@@ -50,6 +51,7 @@ export const iconConfig = {
     "power",
     "power_off",
     "refresh",
+    "remove",
     "roller_shades",
     "roller_shades_closed",
     "router",

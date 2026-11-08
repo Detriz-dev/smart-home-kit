@@ -1,6 +1,6 @@
 # OperationalStateControl
 
-> Spec for the team. Status: **reviewed** (2026-11-08). In Figma, not built in code yet. Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md) (decisions 11 and 14), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md).
+> Spec for the team. Status: **reviewed** (2026-11-08). In Figma and built in code (`pnpm build` passes). Not checked in a browser yet; no user docs page yet. Shared parts (message line, status icon, Failed text) live in [`ControlParts`](../ControlParts/ControlParts.md). Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md) (decisions 11 and 14), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md).
 
 Figma: `OperationalStateControl` component set (node `659:342`, page `OperationalStateControl`), property `state` with 10 values: `stopped`, `running`, `paused`, `error`, `pending`, `view-only`, `powered-off`, `failed`, `loading`, `disconnected` (washing machine, all four commands). The value is an `OperationalStateValue` instance; buttons are `Button` `secondary`. Usage: `OperationalStateControl / usage` (node `659:572`): kettle Running [Stop], Stop-only kettle while Stopped (no buttons), long name.
 

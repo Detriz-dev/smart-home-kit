@@ -1,16 +1,13 @@
 import { useId } from "react";
-import { Icon } from "../../../icons/Icon";
-import { READING_STATUS_ICONS } from "../../../icons/purposeIcons";
+import {
+  ControlMessage,
+  type ControlMessageData,
+  ControlStatusIcon,
+  controlStyles as styles,
+  failedText,
+} from "../ControlParts";
 import { Switch } from "../Switch";
-import styles from "./PowerControl.module.css";
 import type { PowerControlProps } from "./PowerControl.types";
-
-/** The message under the switch, if any: its text, colour and icon. */
-interface Message {
-  text: string;
-  tone: "secondary" | "danger";
-  icon?: "loading" | "fault";
-}
 
 /** Turns one Power Control of a Device on or off. Always shows the reported value; says when a command is on its way or failed. Wraps Switch. Takes props only, never sends commands itself. */
 export function PowerControl({
@@ -30,7 +27,7 @@ export function PowerControl({
   const isAllowed = allowedCommands.includes(flip);
 
   // First match wins, as in the spec's States table.
-  let message: Message | null = null;
+  let message: ControlMessageData | null = null;
   if (isDisconnected || state === null) {
     message = null;
   } else if (isPending) {
@@ -50,9 +47,9 @@ export function PowerControl({
       tone: "secondary",
     };
   } else if (command?.status === "failed") {
-    const what = command.command === "turn-on" ? "turn on" : "turn off";
+    const verb = command.command === "turn-on" ? "turn on" : "turn off";
     message = {
-      text: `Couldn't ${what}. ${command.failureMessage ?? "The device didn't respond."}`,
+      text: failedText(verb, command.failureMessage),
       tone: "danger",
       icon: "fault",
     };
@@ -66,19 +63,13 @@ export function PowerControl({
       : null;
 
   return (
-    <div className={styles.root}>
+    <div data-gap="tight" className={styles.root}>
       <div className={styles.row}>
         <span className={styles.name} title={name}>
           {name}
         </span>
         {status ? (
-          <span data-status={status} className={styles.status}>
-            <Icon
-              name={READING_STATUS_ICONS[status]}
-              label={status === "loading" ? "Loading" : "Disconnected"}
-              size="sm"
-            />
-          </span>
+          <ControlStatusIcon status={status} />
         ) : (
           <Switch
             isOn={isOn}
@@ -89,20 +80,7 @@ export function PowerControl({
           />
         )}
       </div>
-      {/* Always rendered, so screen readers announce "Turning on…" and failures when they appear. */}
-      <div
-        id={messageId}
-        role="status"
-        data-tone={message?.tone}
-        className={styles.message}
-      >
-        {message?.icon && (
-          <span data-icon={message.icon} className={styles.messageIcon}>
-            <Icon name={READING_STATUS_ICONS[message.icon]} size="xs" />
-          </span>
-        )}
-        {message?.text}
-      </div>
+      <ControlMessage id={messageId} message={message} />
     </div>
   );
 }

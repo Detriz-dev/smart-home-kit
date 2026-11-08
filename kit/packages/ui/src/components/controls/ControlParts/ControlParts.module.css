@@ -1,23 +1,31 @@
 @layer detriz {
-  /* One column: the row, then the message line when there is one. */
+  /* One column: the rows of a Control, then the message line when there is one. */
   .root {
+    position: relative;
     display: flex;
     flex-direction: column;
+    gap: var(--shk-space-2);
     min-inline-size: 0;
   }
 
-  /* Name on the left, switch on the right. The min height keeps the row steady when the switch is swapped for a status icon. */
+  /* PowerControl, StateSelectControl and ValueControl's stepper sit closer to their message, as in Figma. */
+  .root[data-gap="tight"] {
+    gap: var(--shk-space-1);
+  }
+
+  /* Name on the left, the value or input on the right. Wraps when narrow, so the input moves under the name. The min height keeps it steady when the input is swapped for a status icon. */
   .row {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: var(--shk-space-3);
+    gap: var(--shk-space-1) var(--shk-space-3);
     min-block-size: var(--shk-size-6);
   }
 
-  /* The name: label text style, one line, shortened with "…" (the full name is in the tooltip). */
+  /* The Control's name: label text style, one line, shortened with "…" (the full name is in the tooltip). */
   .name {
-    flex: 1;
+    flex: 1 1 var(--shk-size-24);
     min-inline-size: 0;
     overflow: hidden;
     color: var(--shk-color-text-primary);
@@ -30,14 +38,14 @@
     white-space: nowrap;
   }
 
-  /* The loading or disconnected icon, in place of the switch. */
-  .status {
-    display: inline-flex;
-    flex-shrink: 0;
-    color: var(--shk-color-text-secondary);
+  /* A row of Buttons; wraps when narrow. */
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--shk-space-2);
   }
 
-  /* The message line: caption text style. Empty most of the time; the space above appears only with a message. */
+  /* The message line: caption text style. Empty most of the time; it takes no space then. */
   .message {
     display: flex;
     align-items: flex-start;
@@ -50,8 +58,13 @@
     letter-spacing: var(--shk-typography-caption-letter-spacing);
   }
 
-  .message:not(:empty) {
-    margin-block-start: var(--shk-space-1);
+  /* Empty: kept in the accessibility tree (so new messages are announced) but takes no space. */
+  .message:empty {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
   }
 
   /* Failed: danger colour, like DeviceFaultStatus. */
@@ -59,14 +72,21 @@
     color: var(--shk-status-danger-fg);
   }
 
-  .messageIcon {
+  .icon {
     display: inline-flex;
     flex-shrink: 0;
   }
 
-  /* The loading icons turn, like ReadingValue. */
+  /* The loading or disconnected icon in place of the input. */
+  .status {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--shk-color-text-secondary);
+  }
+
+  /* Loading icons turn, like ReadingValue. */
   .status[data-status="loading"],
-  .messageIcon[data-icon="loading"] {
+  .icon[data-icon="loading"] {
     animation: spin var(--shk-motion-duration-spin) linear infinite;
   }
 
@@ -79,7 +99,7 @@
   /* Reduced motion: the icons stand still but stay visible. */
   @media (prefers-reduced-motion: reduce) {
     .status[data-status="loading"],
-    .messageIcon[data-icon="loading"] {
+    .icon[data-icon="loading"] {
       animation: none;
     }
   }
