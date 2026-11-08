@@ -9,8 +9,8 @@ interface SpaceListItemBaseProps {
   spaceType: SpaceType;
   /** The Floor the Space is on, e.g. "Ground floor". Leave it out when the Site has no Floors, or inside a Floor section. */
   floorName?: string;
-  /** How many Modules are in the Space (through its Hubs). Shown as "3 Modules". Leave it out to hide it. */
-  moduleCount?: number;
+  /** How many Devices are in the Space: Hubs and Standalone Devices placed there, and Modules through their Hub. Shown as "3 Devices". Leave it out to hide it. */
+  deviceCount?: number;
   /** How many Alerts are Active in the Space. Shown as a Badge; 0 or unset shows nothing. */
   activeAlertCount?: number;
   /** The highest Alert Level among the Active Alerts. Colours the Badge. Defaults to `critical`. */

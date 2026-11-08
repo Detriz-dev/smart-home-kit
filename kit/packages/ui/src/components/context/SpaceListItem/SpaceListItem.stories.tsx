@@ -10,7 +10,7 @@ const meta: Meta<typeof SpaceListItem> = {
     name: "Kitchen",
     spaceType: "kitchen",
     floorName: "Ground floor",
-    moduleCount: 3,
+    deviceCount: 3,
     href: "#/spaces/kitchen",
   },
   argTypes: {
@@ -46,7 +46,7 @@ export const WarningAlert: Story = {
     name: "Bedroom",
     spaceType: "bedroom",
     floorName: "First floor",
-    moduleCount: 1,
+    deviceCount: 1,
     activeAlertCount: 1,
     highestAlertLevel: "warning",
   },
@@ -61,7 +61,7 @@ export const Empty: Story = {
     name: "Garage",
     spaceType: "garage",
     floorName: undefined,
-    moduleCount: 0,
+    deviceCount: 0,
   },
 };
 
@@ -71,7 +71,7 @@ export const LongText: Story = {
     name: "Living room and dining area by the garden",
     spaceType: "living-room",
     floorName: "Ground floor, east wing",
-    moduleCount: 12,
+    deviceCount: 12,
     activeAlertCount: 120,
   },
   decorators: [
@@ -89,7 +89,7 @@ export const Minimal: Story = {
     name: "Attic",
     spaceType: "other",
     floorName: undefined,
-    moduleCount: undefined,
+    deviceCount: undefined,
     href: undefined,
   },
 };
