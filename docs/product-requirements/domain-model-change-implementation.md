@@ -179,7 +179,7 @@ Places that import the renamed types today (found with a search; recheck when yo
 - [x] `AlertRuleLabel`: `TwoRulesForARange` story and a docs section "A range is two rules".
 - [x] Broken Glossary anchors fixed in 5 specs (`SensorLabel`, `LocationPath`, `UnitLabel`, `ReadingValue`, `SensorReading`).
 - [x] Figma (2026-11-08): `StateValue` `error` variant; `Icon` `play_circle`, `pause_circle`, `stop_circle`; `StateIcon` `operational-state-stopped/running/paused/error`.
-- [ ] Figma, still to do (Step 6): `SensorLabel / Metrics` (6 new Metrics), icons `battery_full`, `blinds`, `devices`, `thermostat_auto`, and the new `MetricIcon` / `DeviceKindIcon` variants.
+- [x] Figma (Step 6, 2026-11-08): `SensorLabel / Metrics` has the 6 new Metrics (and says "State Metrics"); icons `battery_full`, `blinds`, `devices`, `thermostat_auto`; `MetricIcon` has the 6 new Metrics; `DeviceKindIcon` has `standalone`.
 - [x] Decided (2026-11-08): **rename `ModuleCard` to `DeviceCard`** and extend it to show Sensors, Controls and Operational State for any Device (one card, not two). **`PowerControl` wraps the existing `Switch`**; `Switch`'s spec drops the "app settings only" rule.
 - [ ] `SpaceCard`: rows for Controls and Operational State. Waits for the new components (Step 5).
 
@@ -246,6 +246,8 @@ Order: `OperationalStateValue` and `PowerControl` first (smallest, and they set 
 **Done when:** every new component has its spec, code, stories (all states + `LongText` + `Minimal`), export, Figma component and docs page.
 
 ## Step 6: Icons, tokens and Figma
+
+✅ Done on 2026-11-08. Every new icon, Metric and State from Steps 3–5 is in code and Figma. No new tokens were needed: the Controls use existing `status`, `state`, `space`, `size` and typography tokens. Device Type icons are left for later (DeviceCard decision).
 
 - [ ] **Icons:** new Metrics (Open / Close, Position, Setpoint, Battery), new States (Opening, Closing), Operational States (Stopped, Running, Paused, Error), Device kind "connected directly", Connection Types (if shown), command icons (Start, Pause, Stop, Open, Close).
 - [ ] **Tokens** (`kit/packages/tokens`): semantic tokens for Control states if the existing ones don't fit (pending, failed, disabled). Reuse the existing `state` collection where possible.

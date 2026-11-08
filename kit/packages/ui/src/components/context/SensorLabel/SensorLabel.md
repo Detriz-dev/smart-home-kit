@@ -84,7 +84,7 @@ Pairing Status doesn't apply either: the Metric belongs to the Sensor, not to th
 | `mode`              | Mode              | Mode              | `mode_heat`            | yes                   |
 | `operational-state` | Operational State | Operational State | `play_circle`          | yes                   |
 
-`power` to `co` are State Metrics, added for Phase 2. Figma shows those eleven in the frame `SensorLabel / Metrics` (node `574:2388`), below the component set. The last six (Battery to Operational State) were added on 2026-11-08 (ADR 0002) and **aren't in Figma yet**.
+`power` to `co` are State Metrics, added for Phase 2. Figma shows those eleven in the frame `SensorLabel / Metrics` (node `574:2388`), below the component set. The last six (Battery to Operational State) were added on 2026-11-08 (ADR 0002), in code and in Figma (the frame now groups them as Measured Metrics and State Metrics).
 
 The label uses the subscript `₂` (U+2082) in "CO₂", the same character the glossary uses.
 
