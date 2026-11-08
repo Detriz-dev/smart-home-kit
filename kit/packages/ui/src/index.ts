@@ -112,6 +112,11 @@ export type {
   SensorStateSize,
 } from "./components/readings/SensorState";
 export { StateValue } from "./components/readings/StateValue";
+export { OperationalStateValue } from "./components/readings/OperationalStateValue";
+export type {
+  OperationalStateValueProps,
+  OperationalStateValueSize,
+} from "./components/readings/OperationalStateValue";
 export type {
   StateValueProps,
   StateValueReading,
@@ -168,6 +173,11 @@ export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
 export { Switch } from "./components/controls/Switch";
 export type { SwitchProps } from "./components/controls/Switch";
+export { PowerControl } from "./components/controls/PowerControl";
+export type {
+  PowerControlCommand,
+  PowerControlProps,
+} from "./components/controls/PowerControl";
 export { IconButton } from "./components/controls/IconButton";
 export type {
   IconButtonProps,

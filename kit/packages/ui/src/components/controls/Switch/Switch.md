@@ -4,7 +4,7 @@
 
 ### Purpose
 
-An on/off control for a **setting in the app**, with "On" or "Off" next to it: for example "Show temperature in °F" or "Notifications". It is the simplest control in the kit: one value, two positions.
+An on/off control with "On" or "Off" next to it: for a **setting in the app** ("Show temperature in °F") or, inside [`PowerControl`](../PowerControl/PowerControl.md), for a Device's Power (decision 25, 2026-11-08). It is the simplest control in the kit: one value, two positions.
 
 It is presentational only. The parent keeps the value (`isOn`) and decides what happens in `onChange`.
 
@@ -18,13 +18,13 @@ Storybook: `Controls/Switch`.
 
 Category: **Controls** ("How do I change what I see?"): inputs that change the view or settings, as the [conventions](/docs/architecture/design-system/ds-conventions-and-structure.md) define it.
 
-Switch shows no domain terms of its own. The kit is **sensor-only**: it reads Sensors and has no command to turn a Device or anything in the home on or off. So Switch is for app settings, never for controlling a Device. (Earlier drafts used "turning Heating on or off" as the example. On / Off left the domain, so that example was removed.)
+Switch shows no domain terms of its own. Since [ADR 0002](/docs/adr/0002-devices-and-capabilities.md) the kit can control Devices, but **don't use Switch on its own for a Device**: use `PowerControl`, which wraps it and adds what a Device needs (the reported value, Pending, Failed, Allowed Commands, view-only). On its own, Switch is for app settings.
 
 A setting that fits the domain: the display Unit. The Glossary calls showing °C or °F "a formatting choice", and `UnitLabel` expects a setting for it later.
 
 What it does **not** do, and why:
 
-- **Control a Device.** There are no Device commands for on / off in the domain. The commands that exist (Pair Device, Remove Device…) are actions, so they are `Button`s.
+- **Control a Device on its own.** `PowerControl` does that, with Switch inside it.
 - **Show the setting's name.** The parent owns the visible text, so the Switch fits in any layout (a settings list, a card).
 - **Save the setting.** It takes props only. The parent stores the value and passes it back in.
 - **Show a third state** ("mixed"). A setting is on or off.
@@ -87,6 +87,7 @@ The decisions behind them:
 - `ariaLabel` is required: a switch without a name is unusable for screen reader users. It is not shown, because the parent shows its own text.
 - `isDisabled` defaults to `false`.
 - No `label` prop: the visible name belongs to the parent's layout.
+- `ariaDescribedBy` (optional, added 2026-11-08): links the switch to text that explains it, e.g. why it is disabled. `PowerControl` uses it for its message line.
 
 ### Example values
 

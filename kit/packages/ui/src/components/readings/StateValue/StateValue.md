@@ -43,7 +43,7 @@ What it does **not** show, and why:
 
 ### States
 
-Figma variant property `state` (8 values) × `size` (2) = 16 variants. The `error` variant is new (2026-11-08) and not in Figma yet.
+Figma variant property `state` (8 values) × `size` (2) = 16 variants. The `error` variant was added on 2026-11-08 (with the `StateIcon` `operational-state-*` icons).
 
 | Figma `state`    | When                                                                            | Shows                                             | Colours (bg / fg)                                                            | Screen reader  |
 | ---------------- | ------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------- | -------------- |

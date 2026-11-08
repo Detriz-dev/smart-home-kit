@@ -1,0 +1,40 @@
+@layer detriz {
+  /* The pill and the detail text in one row. When space is tight, the detail moves under the pill (flex-wrap). */
+  .root {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--shk-space-2);
+    max-inline-size: 100%;
+  }
+
+  /* The Phase or Error Reason. It may wrap but is never truncated: it is the only place that says why. md uses the label text style. */
+  .detail {
+    min-inline-size: 0;
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    overflow-wrap: anywhere;
+  }
+
+  /* lg uses the body text style. */
+  .root[data-size="lg"] .detail {
+    font-family: var(--shk-typography-body-font-family);
+    font-size: var(--shk-typography-body-font-size);
+    font-weight: var(--shk-typography-body-font-weight);
+    line-height: var(--shk-typography-body-line-height);
+    letter-spacing: var(--shk-typography-body-letter-spacing);
+  }
+
+  /* A Phase is extra information: secondary colour. */
+  .detail[data-tone="phase"] {
+    color: var(--shk-color-text-secondary);
+  }
+
+  /* An Error Reason says what is wrong: danger colour, like the pill. */
+  .detail[data-tone="error"] {
+    color: var(--shk-status-danger-fg);
+  }
+}

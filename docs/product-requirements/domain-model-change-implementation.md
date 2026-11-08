@@ -178,7 +178,8 @@ Places that import the renamed types today (found with a search; recheck when yo
 - [x] `DeviceConnectionStatus`, `DevicePairingStatus`, `SensorLabel`, `SensorState`, `ModuleCard`, `EmptyState`, `InlineMessage`, colours page: wording ("Two-state", "Modules only", "wired", "New module found").
 - [x] `AlertRuleLabel`: `TwoRulesForARange` story and a docs section "A range is two rules".
 - [x] Broken Glossary anchors fixed in 5 specs (`SensorLabel`, `LocationPath`, `UnitLabel`, `ReadingValue`, `SensorReading`).
-- [ ] Figma: `StateValue` `error` variant, new `UnitLabel` `percent`, `SensorLabel / Metrics` (6 new Metrics), new icons. Moves to Step 6.
+- [x] Figma (2026-11-08): `StateValue` `error` variant; `Icon` `play_circle`, `pause_circle`, `stop_circle`; `StateIcon` `operational-state-stopped/running/paused/error`.
+- [ ] Figma, still to do (Step 6): `UnitLabel` `percent`, `SensorLabel / Metrics` (6 new Metrics), the other 8 new icons (battery_full, blinds, devices, mode_heat, mode_off_on, roller_shades, roller_shades_closed, thermostat_auto) and their `MetricIcon` / `StateIcon` / `DeviceKindIcon` variants.
 - [x] Decided (2026-11-08): **rename `ModuleCard` to `DeviceCard`** and extend it to show Sensors, Controls and Operational State for any Device (one card, not two). **`PowerControl` wraps the existing `Switch`**; `Switch`'s spec drops the "app settings only" rule.
 - [ ] `SpaceCard`: rows for Controls and Operational State. Waits for the new components (Step 5).
 
@@ -200,6 +201,13 @@ Each change follows the [component workflow](../architecture/design-system/workf
 **Done when:** every component above typechecks, its stories show the new cases, and its spec and docs page use the new terms.
 
 ## Step 5: Build new components
+
+🟡 In progress (2026-11-08):
+
+- [x] `OperationalStateValue`: spec, Figma (node `652:3315`), code, stories, export. Fault wording moved to `utils/faultNames.ts` (shared with `DeviceFaultStatus`).
+- [x] `PowerControl`: spec, Figma (node `653:73`), code, stories (incl. `Interactive`), export. `Switch` got an optional `ariaDescribedBy` prop; its spec no longer says "settings only".
+- [ ] Both: open questions in the specs (copy, disable vs. hide, Phase while Paused), browser check, user docs pages.
+- [ ] `OpenCloseControl`, `StateSelectControl`, `ValueControl`, `OperationalStateControl`, `DeviceCard`.
 
 New components follow the component conventions in `AGENTS.md`: one folder, `<Name>.md` spec, typed props with comments, CSS Modules with `--shk-` tokens only, export from `src/index.ts`, one story per state, plus `LongText` and `Minimal` stories.
 

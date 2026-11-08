@@ -1,0 +1,86 @@
+@layer detriz {
+  /* One column: the row, then the message line when there is one. */
+  .root {
+    display: flex;
+    flex-direction: column;
+    min-inline-size: 0;
+  }
+
+  /* Name on the left, switch on the right. The min height keeps the row steady when the switch is swapped for a status icon. */
+  .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--shk-space-3);
+    min-block-size: var(--shk-size-6);
+  }
+
+  /* The name: label text style, one line, shortened with "…" (the full name is in the tooltip). */
+  .name {
+    flex: 1;
+    min-inline-size: 0;
+    overflow: hidden;
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  /* The loading or disconnected icon, in place of the switch. */
+  .status {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--shk-color-text-secondary);
+  }
+
+  /* The message line: caption text style. Empty most of the time; the space above appears only with a message. */
+  .message {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--shk-space-1);
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+  }
+
+  .message:not(:empty) {
+    margin-block-start: var(--shk-space-1);
+  }
+
+  /* Failed: danger colour, like DeviceFaultStatus. */
+  .message[data-tone="danger"] {
+    color: var(--shk-status-danger-fg);
+  }
+
+  .messageIcon {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  /* The loading icons turn, like ReadingValue. */
+  .status[data-status="loading"],
+  .messageIcon[data-icon="loading"] {
+    animation: spin var(--shk-motion-duration-spin) linear infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(1turn);
+    }
+  }
+
+  /* Reduced motion: the icons stand still but stay visible. */
+  @media (prefers-reduced-motion: reduce) {
+    .status[data-status="loading"],
+    .messageIcon[data-icon="loading"] {
+      animation: none;
+    }
+  }
+}
