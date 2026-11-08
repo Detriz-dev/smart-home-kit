@@ -1,7 +1,7 @@
 @layer detriz {
-  /* The banner: the content row, then × on the right. Warning and Info have a thin border in the
-     level colour; the padding subtracts it, so every level is the same size (Figma: inside stroke,
-     not in layout). Critical has no border: its solid fill is strong enough. */
+  /* The banner: the content row, then × on the right. Every level has a light fill and a thin
+     border in the level colour; the padding subtracts the border, so the banner keeps its size
+     (Figma: inside stroke, not in layout). */
   .root {
     display: flex;
     align-items: center;
@@ -12,21 +12,19 @@
     border-radius: var(--shk-radius-8);
   }
 
-  /* Critical: solid red, everything in the dark on-solid colour. */
-  .root[data-level="critical"] {
-    background: var(--shk-status-danger-solid);
-    color: var(--shk-status-danger-on-solid);
-    --alert-banner-icon: var(--shk-status-danger-on-solid);
-    --alert-banner-title: var(--shk-status-danger-on-solid);
-    --alert-banner-meta: var(--shk-status-danger-on-solid);
-  }
-
+  .root[data-level="critical"],
   .root[data-level="warning"],
   .root[data-level="info"] {
     padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
     border: var(--shk-border-width-thin) solid var(--alert-banner-border);
     --alert-banner-title: var(--shk-color-text-primary);
     --alert-banner-meta: var(--shk-color-text-secondary);
+  }
+
+  .root[data-level="critical"] {
+    background: var(--shk-status-danger-bg);
+    --alert-banner-border: var(--shk-status-danger-border);
+    --alert-banner-icon: var(--shk-status-danger-fg);
   }
 
   .root[data-level="warning"] {
@@ -94,7 +92,7 @@
     color: inherit;
   }
 
-  /* The ×: a 32px square button, like InlineMessage's. Dark on Critical, grey on the others. */
+  /* The ×: a 32px square button, like InlineMessage's, grey on every level. */
   .close {
     display: inline-flex;
     flex-shrink: 0;

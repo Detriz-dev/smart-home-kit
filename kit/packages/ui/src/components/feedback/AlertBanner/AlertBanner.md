@@ -6,7 +6,7 @@
 
 A strong message at the top of a screen for one **Active** [Alert](/kit/apps/docs-site/docs/domain-model/glossary.mdx#alerts) that needs attention now: 🔴 **Smoke detected** · Kitchen · 2 min ago [View] [×]. It is the loudest Alert component: use it for the most urgent Active Alert, and list the rest with [`AlertListItem`](../../status/AlertListItem/AlertListItem.md).
 
-It looks like [`InlineMessage`](../InlineMessage/InlineMessage.md) (icon, text, action, ×), but it is about an Alert, not about what the app did, and it is filled with the Alert Level's colour.
+It looks like [`InlineMessage`](../InlineMessage/InlineMessage.md) (icon, text, action, ×), but it is about an Alert, not about what the app did, and it is tinted with the Alert Level's colour.
 
 Figma: `AlertBanner` component set in _DeTriz - Smart Home Kit_ (node `603:56`, page `AlertBanner` in the Feedback section after Badge). Text properties `title`, `place`; booleans `hasPlace`, `hasAction`, `isClosable`.
 
@@ -28,13 +28,13 @@ Only Active Alerts get a banner. When the Alert Ends or is Closed, the parent re
 
 Figma variant property `alertLevel` (3), plus booleans `hasPlace`, `hasAction` and `isClosable`, and text properties `title`, `place`. Feedback, so the target states don't apply.
 
-| `alertLevel` | Fill                  | Border                   | Icon                     | Title                    | Meta                     | Screen reader   |
-| ------------ | --------------------- | ------------------------ | ------------------------ | ------------------------ | ------------------------ | --------------- |
-| `critical`   | `status/danger/solid` | none                     | `status/danger/on-solid` | `status/danger/on-solid` | `status/danger/on-solid` | `role="alert"`  |
-| `warning`    | `status/warning/bg`   | `status/warning/border`  | `status/warning/fg`      | `color-text/primary`     | `color-text/secondary`   | `role="alert"`  |
-| `info`       | `status/progress/bg`  | `status/progress/border` | `status/progress/fg`     | `color-text/primary`     | `color-text/secondary`   | `role="status"` |
+| `alertLevel` | Fill                 | Border                   | Icon                 | Title                | Meta                   | Screen reader   |
+| ------------ | -------------------- | ------------------------ | -------------------- | -------------------- | ---------------------- | --------------- |
+| `critical`   | `status/danger/bg`   | `status/danger/border`   | `status/danger/fg`   | `color-text/primary` | `color-text/secondary` | `role="alert"`  |
+| `warning`    | `status/warning/bg`  | `status/warning/border`  | `status/warning/fg`  | `color-text/primary` | `color-text/secondary` | `role="alert"`  |
+| `info`       | `status/progress/bg` | `status/progress/border` | `status/progress/fg` | `color-text/primary` | `color-text/secondary` | `role="status"` |
 
-Critical is filled solid red: the strongest look in the kit, kept for Smoke, CO and other Critical Alerts. Contrast: gray/950 on red/400 is 5.53:1; text on the light fills is 5.9:1 or more.
+All three levels share one look: a light fill with a thin border in the level colour. The red colour, the icon and `role="alert"` mark Critical Alerts. Contrast: text on the light fills is 5.9:1 or more.
 
 ### Layout and anatomy
 
