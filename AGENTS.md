@@ -43,7 +43,7 @@ The product is described in `docs/product-requirements/product-overview.md`. It 
 
 **Dropped from the scope:** custom snap-in Module hardware, Live Studio and Record & Replay. `docs/architecture/project-architecture.md` lists what changed; some other older docs (such as domain model notes) may still describe them.
 
-**Roadmap** (`docs/product-requirements/roadmap.md`): Phase 1 (POC) is done. Phase 2 (MVP) is **frontend only**: React and Figma components for mapping a Site and showing Readings, on/off states, detections and alerts. The API, API Simulator, `client` and Hub software are not part of the MVP.
+**Roadmap** (`docs/product-requirements/roadmap.md`): Phase 1 (POC) is done. Phase 2 (MVP) is **frontend only**: React and Figma components for mapping a Site, showing Readings, on/off states, detections and alerts, and controlling Devices (Controls and Operational State, see `docs/adr/0002-devices-and-capabilities.md`). The API, API Simulator, `client` and Hub software are not part of the MVP.
 
 ### Repo structure
 

@@ -2,16 +2,17 @@
 title: Events and commands
 sidebar_position: 5
 sidebar_label: Events and commands
-description: The events that move a Device between statuses, report State changes, Detections and Alerts, and the commands a user can send.
+description: The events that move a Device between statuses, report State changes, Detections, commands and Alerts, and the commands a user can send, including commands to Controls.
 keywords:
   - smart home events
   - device commands
   - Device Status
   - pairing
+  - controls
   - alerts
 ---
 
-The events that move a Device (a Hub or a Module) between its statuses, the events about Readings and Alerts, and the commands a user can send. This page is a reference: for how the statuses fit together, with diagrams, see [Device lifecycle](./device-lifecycle.mdx).
+The events that move a Device (a Hub, a Module or a Standalone Device) between its statuses, the events about Readings, commands and Alerts, and the commands a user can send. This page is a reference: for how the statuses fit together, with diagrams, see [Device lifecycle](./device-lifecycle.mdx).
 
 - An **event** is a fact: it already happened. "Device Paired" means the Device is now Paired.
 - A **command** is a request: it can be refused. "Pair Device" asks for a Device to be paired, and is refused if that isn't allowed.
@@ -26,59 +27,79 @@ The API isn't built yet, so these names can still change.
 
 ## Events
 
-Grouped by the Device Status field they change. The **Rules** column points to the [lifecycle rules](./device-lifecycle.mdx#rules) the event follows.
+Grouped by what they change. The **Rules** column points to the [lifecycle rules](./device-lifecycle.mdx#rules) the event follows, unless it says Data model.
 
 ### Pairing Status
 
 See [Pairing Status](./device-lifecycle.mdx#pairing-status) in the lifecycle.
 
-| Event                | Changes                                                         | Raised by                                 | Rules  |
-| -------------------- | --------------------------------------------------------------- | ----------------------------------------- | ------ |
-| **Device Detected**  | Pairing Status → Unpaired                                       | Hub (for a Module) or API (for a new Hub) | 11, 12 |
-| **Pairing Started**  | Pairing Status → Pairing                                        | API, after the **Pair Device** command    | 3      |
-| **Device Paired**    | Pairing Status → Paired; Connection Status starts at Connecting | Hub, when setup finishes                  | 1, 2   |
-| **Pairing Failed**   | Pairing Status → Unpaired                                       | Hub, when setup fails                     | –      |
-| **Device Dismissed** | Leaves the lifecycle                                            | API, after the **Dismiss Device** command | –      |
-| **Device Removed**   | Leaves the lifecycle                                            | API, after the **Remove Device** command  | 8      |
+| Event                | Changes                                                         | Raised by                                                                                            | Rules  |
+| -------------------- | --------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------ |
+| **Device Detected**  | Pairing Status → Unpaired                                       | Hub (for a Module, from its settings or during a search) or API (for a new Hub or Standalone Device) | 11, 12 |
+| **Pairing Started**  | Pairing Status → Pairing                                        | API, after the **Pair Device** command                                                               | 3      |
+| **Device Paired**    | Pairing Status → Paired; Connection Status starts at Connecting | Hub or Standalone Device, when setup finishes                                                        | 1, 2   |
+| **Pairing Failed**   | Pairing Status → Unpaired                                       | Hub or Standalone Device, when setup fails                                                           | –      |
+| **Device Dismissed** | Leaves the lifecycle                                            | API, after the **Dismiss Device** command                                                            | –      |
+| **Device Removed**   | Leaves the lifecycle                                            | API, after the **Remove Device** command                                                             | 8      |
+
+### Search
+
+See [Finding wireless Modules](./device-lifecycle.mdx#finding-wireless-modules) in the lifecycle.
+
+| Event              | Means                                             | Raised by                               | Rules |
+| ------------------ | ------------------------------------------------- | --------------------------------------- | ----- |
+| **Search Started** | The Hub is listening for new wireless Modules     | Hub, after the **Start Search** command | 12    |
+| **Search Ended**   | The Hub stopped listening, because the time is up | Hub                                     | 12    |
 
 ### Connection Status
 
 See [Connection Status](./device-lifecycle.mdx#connection-status) in the lifecycle.
 
-| Event                    | Changes                                                | Raised by                                              | Rules |
-| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------ | ----- |
-| **Device Connected**     | Connection Status → Connected                          | Hub or API                                             | –     |
-| **Device Went Stale**    | Connection Status → Stale (Modules only)               | API, when the Expected Interval passes with no Reading | 6     |
-| **Reading Recorded**     | Connection Status → Connected, if the Module was Stale | API, every time a Reading arrives                      | 6     |
-| **Device Disconnected**  | Connection Status → Disconnected                       | API (the link is lost) or Hub (a Module is unplugged)  | 4, 5  |
-| **Connection Timed Out** | Connection Status → Disconnected                       | API, when Connecting takes too long                    | –     |
-| **Reconnect Started**    | Connection Status → Connecting                         | Hub or API                                             | 4     |
+| Event                    | Changes                                                | Raised by                                                    | Rules |
+| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------ | ----- |
+| **Device Connected**     | Connection Status → Connected                          | Hub, Standalone Device or API                                | –     |
+| **Device Went Stale**    | Connection Status → Stale (Devices with Capabilities)  | API, when the Expected Interval passes with no Reading       | 6     |
+| **Reading Recorded**     | Connection Status → Connected, if the Device was Stale | API, every time a Reading arrives                            | 6     |
+| **Device Disconnected**  | Connection Status → Disconnected                       | API (the link is lost) or Hub (a Module lost its connection) | 4, 5  |
+| **Connection Timed Out** | Connection Status → Disconnected                       | API, when Connecting takes too long                          | –     |
+| **Reconnect Started**    | Connection Status → Connecting                         | Hub, Standalone Device or API                                | 4     |
 
 ### Fault
 
 See [Fault](./device-lifecycle.mdx#fault) in the lifecycle.
 
-| Event                                | Changes                       | Raised by                   | Rules |
-| ------------------------------------ | ----------------------------- | --------------------------- | ----- |
-| **Fault Raised** / **Fault Cleared** | Adds or clears one Fault Code | Hub (the Device reports it) | 7, 10 |
+| Event                                | Changes                       | Raised by             | Rules |
+| ------------------------------------ | ----------------------------- | --------------------- | ----- |
+| **Fault Raised** / **Fault Cleared** | Adds or clears one Fault Code | The Device reports it | 7, 10 |
 
-### Hub placement
+### Placement
 
-See [Hub placement](./device-lifecycle.mdx#hub-placement) in the lifecycle.
+See [Placement](./device-lifecycle.mdx#placement) in the lifecycle.
 
-| Event          | Changes         | Raised by                            | Rules                                                               |
-| -------------- | --------------- | ------------------------------------ | ------------------------------------------------------------------- |
-| **Hub Placed** | The Hub's Space | API, after the **Place Hub** command | [Data model rule 10](./data-model.mdx#rules-the-diagrams-cant-show) |
+| Event             | Changes                                 | Raised by                               | Rules                                                               |
+| ----------------- | --------------------------------------- | --------------------------------------- | ------------------------------------------------------------------- |
+| **Device Placed** | The Space of a Hub or Standalone Device | API, after the **Place Device** command | [Data model rule 10](./data-model.mdx#rules-the-diagrams-cant-show) |
 
 ### Readings and Detections
 
-Every Reading raises **Reading Recorded** (see [Connection Status](#connection-status)). These events are raised as well, only for Two-state Metrics, when the State changes. A Reading that repeats the same State (a closed door reporting Closed again) raises only **Reading Recorded**.
+Every Reading raises **Reading Recorded** (see [Connection Status](#connection-status)). These events are raised as well, only for State Metrics, when the State changes. A Reading that repeats the same State (a closed door reporting Closed again) raises only **Reading Recorded**.
 
-| Event                 | Means                                                                    | Raised by                            | Rules                                                               |
-| --------------------- | ------------------------------------------------------------------------ | ------------------------------------ | ------------------------------------------------------------------- |
-| **State Changed**     | A Two-state Reading has a different State from the one before (Off → On) | API, when the Reading arrives        | [Data model rule 18](./data-model.mdx#rules-the-diagrams-cant-show) |
-| **Detection Started** | A Motion, Smoke or CO Sensor changed from Clear to Detected              | API, together with **State Changed** | –                                                                   |
-| **Detection Ended**   | A Motion, Smoke or CO Sensor changed from Detected to Clear              | API, together with **State Changed** | –                                                                   |
+| Event                 | Means                                                                                          | Raised by                            | Rules                                                               |
+| --------------------- | ---------------------------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------------------- |
+| **State Changed**     | A State Metric Reading has a different State from the one before (Off → On, Stopped → Running) | API, when the Reading arrives        | [Data model rule 18](./data-model.mdx#rules-the-diagrams-cant-show) |
+| **Phase Changed**     | An Operational State that is Running reports a different Phase (Heating → Keeping warm)        | API, when the Reading arrives        | [Data model rule 31](./data-model.mdx#rules-the-diagrams-cant-show) |
+| **Detection Started** | A Motion, Smoke or CO Sensor changed from Clear to Detected                                    | API, together with **State Changed** | –                                                                   |
+| **Detection Ended**   | A Motion, Smoke or CO Sensor changed from Detected to Clear                                    | API, together with **State Changed** | –                                                                   |
+
+### Commands to Controls
+
+See [Commands to a Control](./device-lifecycle.mdx#commands-to-a-control) in the lifecycle.
+
+| Event                 | Changes                                                            | Raised by                                                              | Rules                                                                   |
+| --------------------- | ------------------------------------------------------------------ | ---------------------------------------------------------------------- | ----------------------------------------------------------------------- |
+| **Command Sent**      | Command Status → Pending                                           | API, after any [Control command](#control-commands) that isn't refused | 13, 14                                                                  |
+| **Command Confirmed** | Command Status → Confirmed                                         | API, when a Reading shows the new value                                | 13; [Data model rule 34](./data-model.mdx#rules-the-diagrams-cant-show) |
+| **Command Failed**    | Command Status → Failed. The Control keeps its last reported value | API, when the Device refuses the command or doesn't report in time     | 13                                                                      |
 
 ### Alerts
 
@@ -94,18 +115,49 @@ See [Alerts](./data-model.mdx#alerts) in the Data model.
 
 Users send every command. Only the Account a Device belongs to can send commands for it, and only the Site's owner can close its Alerts. Accounts a Site is shared with can only view it.
 
-| Command            | Refused when                                                                  | Leads to             | Rules                                                                       |
-| ------------------ | ----------------------------------------------------------------------------- | -------------------- | --------------------------------------------------------------------------- |
-| **Pair Device**    | The Device isn't Unpaired, or it's a Module whose Hub isn't Paired            | **Pairing Started**  | 3                                                                           |
-| **Dismiss Device** | The Device isn't Unpaired                                                     | **Device Dismissed** | –                                                                           |
-| **Remove Device**  | The Device isn't Paired                                                       | **Device Removed**   | 8, 9                                                                        |
-| **Place Hub**      | The Hub isn't Paired, or the Space is in a Site the Hub's Account doesn't own | **Hub Placed**       | [Data model rules 10 and 17](./data-model.mdx#rules-the-diagrams-cant-show) |
-| **Close Alert**    | The Alert isn't Active, or the Account isn't the Site's owner                 | **Alert Closed**     | [Data model rules 23 and 25](./data-model.mdx#rules-the-diagrams-cant-show) |
+### Device and Alert commands
+
+| Command            | Refused when                                                                                     | Leads to             | Rules                                                                       |
+| ------------------ | ------------------------------------------------------------------------------------------------ | -------------------- | --------------------------------------------------------------------------- |
+| **Pair Device**    | The Device isn't Unpaired, or it's a Module whose Hub isn't Paired                               | **Pairing Started**  | 3                                                                           |
+| **Dismiss Device** | The Device isn't Unpaired                                                                        | **Device Dismissed** | –                                                                           |
+| **Remove Device**  | The Device isn't Paired                                                                          | **Device Removed**   | 8, 9                                                                        |
+| **Place Device**   | The Device is a Module, isn't Paired, or the Space is in a Site the Device's Account doesn't own | **Device Placed**    | [Data model rules 10 and 17](./data-model.mdx#rules-the-diagrams-cant-show) |
+| **Start Search**   | The Device isn't a Hub, the Hub isn't Paired and Connected, or a search is already running       | **Search Started**   | 12                                                                          |
+| **Close Alert**    | The Alert isn't Active, or the Account isn't the Site's owner                                    | **Alert Closed**     | [Data model rules 23 and 25](./data-model.mdx#rules-the-diagrams-cant-show) |
 
 Alert Rules have no commands: the app's developer defines them in code, including turning a Built-in Alert Rule off.
+
+### Control commands
+
+Commands that change a Control. Every one of them is **refused** when:
+
+- the Control doesn't list it in its Allowed Commands ([Data model rule 29](./data-model.mdx#rules-the-diagrams-cant-show));
+- the Device isn't Connected or Stale (rule 14);
+- another command to the same Control is still Pending ([Data model rule 35](./data-model.mdx#rules-the-diagrams-cant-show));
+- the Account isn't the Device's Account, for example an Account the Site is shared with ([Data model rule 14](./data-model.mdx#rules-the-diagrams-cant-show)).
+
+A command that isn't refused leads to **Command Sent**, then **Command Confirmed** or **Command Failed**.
+
+| Command          | For               | Also refused when                                                                                               |
+| ---------------- | ----------------- | --------------------------------------------------------------------------------------------------------------- |
+| **Turn on**      | Power             | Power is already On                                                                                             |
+| **Turn off**     | Power             | Power is already Off                                                                                            |
+| **Open**         | Open / Close      | Already Open or Opening                                                                                         |
+| **Close**        | Open / Close      | Already Closed or Closing                                                                                       |
+| **Stop**         | Open / Close      | Not Opening or Closing                                                                                          |
+| **Set position** | Position          | The value is outside the range or not on the step                                                               |
+| **Set setpoint** | Setpoint          | The value is outside the range or not on the step                                                               |
+| **Set mode**     | Mode              | The Mode isn't one of the Metric's States                                                                       |
+| **Start**        | Operational State | Not Stopped, or the Device's Power is Off ([Data model rule 32](./data-model.mdx#rules-the-diagrams-cant-show)) |
+| **Pause**        | Operational State | Not Running                                                                                                     |
+| **Resume**       | Operational State | Not Paused                                                                                                      |
+| **Stop**         | Operational State | Already Stopped                                                                                                 |
+
+**Stop** appears twice: it stops blinds that are moving, or stops the task of a Device that runs one. Which one it means depends on the Control it's sent to.
 
 ## Related
 
 - [Device lifecycle](./device-lifecycle.mdx): the statuses, the diagrams and the [rules](./device-lifecycle.mdx#rules).
-- [Data model](./data-model.mdx): what a Device, a Hub and a Module are, and the [rules the diagrams can't show](./data-model.mdx#rules-the-diagrams-cant-show).
+- [Data model](./data-model.mdx): what a Device, a Capability and a Control are, and the [rules the diagrams can't show](./data-model.mdx#rules-the-diagrams-cant-show).
 - [Glossary](./glossary.mdx): every term used on this page.

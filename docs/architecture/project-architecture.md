@@ -114,7 +114,7 @@ The kit has six parts. This table says what each one is, where it lives and whet
 The order of work follows the [roadmap](../product-requirements/roadmap.md):
 
 - **Phase 1, POC (done):** landing page, domain model, Figma library, Storybook, `tokens` and `ui` on npm, developer docs.
-- **Phase 2, MVP (frontend only):** Glossary terms for on/off states, detections and alerts; React and Figma components for mapping a Site (Floors, Spaces, Modules) and showing Readings, on/off states, detections and alerts, with Connection Status and Fault; Storybook and docs pages for them. Components take data as props, so no API is needed yet.
+- **Phase 2, MVP (frontend only):** Glossary terms for on/off states, detections and alerts; React and Figma components for mapping a Site (Floors, Spaces, Devices), showing Readings, on/off states, detections and alerts, with Connection Status and Fault, and controlling Devices (Controls and Operational State, [ADR 0002](../adr/0002-devices-and-capabilities.md)); Storybook and docs pages for them. Components take data as props, so no API is needed yet.
 - **Phase 3, to be decided:** candidates are the API design, the API Simulator, the `client` SDK, the Raspberry Pi Hub software, a camera view, the MCP server and Generative UI.
 
 ---
