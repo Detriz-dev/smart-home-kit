@@ -29,12 +29,12 @@ What it does **not** do: Position (ValueControl), Tilt (later, not in the MVP), 
 
 ### Visual idea
 
-| Question                        | Answer                                                                                                                                                |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | Row 1: name on the left, the State pill on the right. Row 2: the buttons, left-aligned: [Open] [Stop] [Close]. Row 3: the message, when there is one. |
-| Buttons                         | `Button` `secondary`, text only (no icons needed). In this order: Open, Stop, Close, so Stop sits between the two directions.                         |
-| More than one size?             | One size.                                                                                                                                             |
-| When space is tight             | The name is shortened with `…`; the buttons wrap to a second line.                                                                                    |
+| Question                        | Answer                                                                                                                                                                  |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | Row 1: name on the left, the State pill on the right. Row 2: the buttons, sharing the full width equally: [Open] [Stop] [Close]. Row 3: the message, when there is one. |
+| Buttons                         | `Button` `secondary`, text only (no icons needed). In this order: Open, Stop, Close, so Stop sits between the two directions.                                           |
+| More than one size?             | One size.                                                                                                                                                               |
+| When space is tight             | The name is shortened with `…`; the buttons wrap to a second line.                                                                                                      |
 
 ### States
 

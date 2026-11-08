@@ -45,6 +45,11 @@
     gap: var(--shk-space-2);
   }
 
+  /* Add to .actions to share the full width equally between the Buttons (Figma: each Button set to Fill). */
+  .actionsFill > * {
+    flex: 1 1 0;
+  }
+
   /* The message line: caption text style. Empty most of the time; it takes no space then. */
   .message {
     display: flex;

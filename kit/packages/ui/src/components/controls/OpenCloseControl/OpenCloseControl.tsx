@@ -84,7 +84,7 @@ export function OpenCloseControl({
           role="group"
           aria-label={name}
           aria-describedby={message ? messageId : undefined}
-          className={styles.actions}
+          className={`${styles.actions} ${styles.actionsFill}`}
         >
           {COMMANDS.filter((c) => allowedCommands.includes(c.command)).map(
             (c) => (

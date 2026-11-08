@@ -82,7 +82,7 @@ export const Disconnected: Story = {
   args: { isDisconnected: true },
 };
 
-// A kettle that allows Start and Stop: while Running, only Stop.
+// A kettle that allows Start and Stop: while Running, Start is disabled.
 export const KettleRunning: Story = {
   args: {
     name: "Kettle",
@@ -91,7 +91,7 @@ export const KettleRunning: Story = {
   },
 };
 
-// A kettle that can only be stopped, while Stopped: no buttons at all.
+// A kettle that can only be stopped, while Stopped: one disabled Stop.
 export const KettleStopOnly: Story = {
   args: {
     name: "Kettle",
@@ -101,7 +101,7 @@ export const KettleStopOnly: Story = {
   },
 };
 
-// Try it with the keyboard: Start, then Pause. Focus moves to the new buttons when they swap.
+// Try it with the keyboard: Start, then Pause. When the pressed button gets disabled, focus moves to the first enabled one.
 export const Interactive: Story = {
   render: (args) => {
     const [state, setState] = useState<OperationalState>("stopped");
