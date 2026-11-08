@@ -112,7 +112,7 @@ Disconnected uses `neutral`, not `danger`. Red is kept for Faults, so "unplugged
 
 ## State
 
-Colors for the [States](/docs/domain-model/glossary#measurements) of Two-state Metrics. **Active** is On, Open or Detected; **inactive** is Off, Closed or Clear.
+Colors for the [States](/docs/domain-model/glossary#measurements) of Two-state Metrics. **Active** is On, Open or Detected; **inactive** is Off, Closed or Clear. [`StateValue`](../readings/state-value.mdx) uses them.
 
 Active is blue, not green: On isn't good or bad, it's just on. A Detected Reading that raises an [Alert](/docs/domain-model/glossary#alerts) uses the Status colors of its Alert Level instead: `danger` for Critical, `warning` for Warning and `progress` for Info.
 

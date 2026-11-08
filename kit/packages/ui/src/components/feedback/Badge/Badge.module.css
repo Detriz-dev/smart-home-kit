@@ -1,0 +1,52 @@
+@layer detriz {
+  /* A pill at least as wide as it is tall, so one digit makes a circle. Caption text with tabular
+     figures, so "11" and "18" are the same width. Fill and text colour come from the tone. */
+  .root {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    min-inline-size: var(--shk-typography-caption-line-height);
+    block-size: var(--shk-typography-caption-line-height);
+    padding-inline: var(--shk-space-1);
+    border-radius: var(--shk-radius-full);
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .root[data-tone="critical"] {
+    background: var(--shk-status-danger-solid);
+    color: var(--shk-status-danger-on-solid);
+  }
+
+  .root[data-tone="warning"] {
+    background: var(--shk-status-warning-solid);
+    color: var(--shk-status-warning-on-solid);
+  }
+
+  .root[data-tone="info"] {
+    background: var(--shk-status-progress-solid);
+    color: var(--shk-status-progress-on-solid);
+  }
+
+  .root[data-tone="neutral"] {
+    background: var(--shk-status-neutral-solid);
+    color: var(--shk-status-neutral-on-solid);
+  }
+
+  /* Read by screen readers, not shown. */
+  .visuallyHidden {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

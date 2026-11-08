@@ -1,10 +1,13 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import type { ConnectionStatus } from "../../status/DeviceConnectionStatus";
 import { SpaceCard } from "./SpaceCard";
-import type { SpaceCardReading } from "./SpaceCard.types";
+import type {
+  SpaceCardMeasuredReading,
+  SpaceCardReading,
+} from "./SpaceCard.types";
 
 // The four rows of the Figma variants: one per Metric, all from Connected Modules.
-const BEDROOM_READINGS: SpaceCardReading[] = [
+const BEDROOM_READINGS: SpaceCardMeasuredReading[] = [
   {
     metric: "temperature",
     value: 21.5,
@@ -113,6 +116,7 @@ export const OneMetric: Story = {
 // message, in a narrow container. The name ends with "…" and the reading wraps under its label.
 export const LongText: Story = {
   args: {
+    activeAlertCount: 120,
     name: "Living room by the garden window",
     readings: [
       {
@@ -133,6 +137,66 @@ export const LongText: Story = {
     faults: [{ faultCode: "calibration_required", metric: "co2" }],
   },
   parameters: { width: "240px" },
+};
+
+// Numbers and States together: a door, a window, Motion with since-when, and Smoke.
+const NOW = new Date(2026, 10, 7, 14, 5);
+const HALLWAY_READINGS: SpaceCardReading[] = [
+  {
+    metric: "temperature",
+    value: 19.5,
+    unit: "celsius",
+    fractionDigits: 1,
+    connectionStatus: "connected",
+  },
+  {
+    metric: "contact",
+    state: "open",
+    asset: { name: "Front door", assetType: "door" },
+    alertLevel: "info",
+    connectionStatus: "connected",
+  },
+  {
+    metric: "contact",
+    state: "closed",
+    asset: { name: "Hall window", assetType: "window" },
+    connectionStatus: "connected",
+  },
+  {
+    metric: "motion",
+    state: "detected",
+    detectedSince: new Date(NOW.getTime() - 3 * 60_000),
+    connectionStatus: "connected",
+  },
+  { metric: "smoke", state: "clear", connectionStatus: "connected" },
+];
+
+export const WithStates: Story = {
+  args: { name: "Hallway", readings: HALLWAY_READINGS },
+};
+
+// A Critical Alert: Smoke Detected in the Kitchen. The Badge next to the name counts it.
+export const SmokeAlert: Story = {
+  args: {
+    name: "Kitchen",
+    activeAlertCount: 1,
+    highestAlertLevel: "critical",
+    readings: [
+      BEDROOM_READINGS[0],
+      {
+        metric: "smoke",
+        state: "detected",
+        alertLevel: "critical",
+        detectedSince: new Date(NOW.getTime() - 60_000),
+        connectionStatus: "connected",
+      },
+    ],
+  },
+};
+
+// Active Alerts on Readings the card shows normally, e.g. two Warning rules (too warm, too humid).
+export const ActiveAlerts: Story = {
+  args: { activeAlertCount: 2, highestAlertLevel: "warning" },
 };
 
 // Stress story: the smallest case, one row and a zero value.

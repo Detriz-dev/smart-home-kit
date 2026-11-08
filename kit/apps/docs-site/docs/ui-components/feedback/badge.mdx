@@ -1,0 +1,137 @@
+---
+sidebar_position: 2
+sidebar_label: Badge
+description: A small count in a pill, like the number of Active Alerts, coloured by the highest Alert Level.
+---
+
+# Badge
+
+A small count in a pill, like **3**, that tells people how many things need their attention: Active [Alerts](/docs/domain-model/glossary#alerts) on an Alerts tab, on a Space card or next to a Module.
+
+```jsx live
+<Badge count={3} label="3 active Alerts" tone="critical" />
+```
+
+## Import
+
+```tsx
+import { Badge } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Pass the count and a `label` that says what is counted. Screen readers read the label instead of the bare number:
+
+```jsx live
+<Badge count={2} label="2 active Alerts" tone="warning" />
+```
+
+## When to use it
+
+Use a Badge to show **how many** of something need attention, on or next to the thing they belong to. It never says **what** they are: that's [`AlertListItem`](../status/alert-list-item.mdx) or [`InlineMessage`](./inline-message.mdx).
+
+## Tones
+
+Use the highest [Alert Level](/docs/domain-model/glossary#alerts) among the Alerts you count: Critical beats Warning beats Info. Use `neutral` for counts that aren't Alerts.
+
+```jsx live
+<ColumnLayout>
+  <Badge count={3} label="3 active Alerts" tone="critical" />
+  <Badge count={3} label="3 active Alerts" tone="warning" />
+  <Badge count={3} label="3 active Alerts" tone="info" />
+  <Badge count={3} label="3 new Modules" tone="neutral" />
+</ColumnLayout>
+```
+
+| `tone`     | Use it when                            |
+| ---------- | -------------------------------------- |
+| `critical` | At least one Critical Alert is Active  |
+| `warning`  | The highest Active Alert is a Warning  |
+| `info`     | The highest Active Alert is Info       |
+| `neutral`  | The count isn't about Alerts. Default. |
+
+## Counts
+
+- **0 shows nothing.** You can always render the Badge; it disappears when there's nothing to count.
+- **Above `max` it shows "99+".** `max` defaults to 99.
+
+```jsx live
+<ColumnLayout>
+  <Badge count={1} label="1 active Alert" tone="critical" />
+  <Badge count={12} label="12 active Alerts" tone="critical" />
+  <Badge count={1234} label="1,234 active Alerts" tone="critical" />
+  <Badge count={0} label="No active Alerts" tone="critical" />
+</ColumnLayout>
+```
+
+## Built into other components
+
+These components already place a Badge for you, so pass the count to them instead of adding one yourself:
+
+| Component                                         | Prop                                    | Where the Badge goes     |
+| ------------------------------------------------- | --------------------------------------- | ------------------------ |
+| [`BottomNav`](../navigation/bottom-nav.mdx)       | `badge` on an item                      | On the icon's corner     |
+| [`SpaceCard`](../readings/space-card.mdx)         | `activeAlertCount`, `highestAlertLevel` | Next to the Space name   |
+| [`SpaceListItem`](../context/space-list-item.mdx) | `activeAlertCount`, `highestAlertLevel` | At the end of the row    |
+| [`Card`](../layout/card.mdx)                      | `headerEnd={<Badge … />}`               | At the end of the header |
+
+## On an icon
+
+Anywhere else, the Badge doesn't place itself: put it next to a label, or over the corner of an icon with your own positioning:
+
+```jsx live
+<span
+  style={{
+    position: "relative",
+    display: "inline-flex",
+    padding: "var(--shk-space-1)",
+  }}
+>
+  <Icon name={ALERT_ICONS.active} label="Alerts" />
+  <span
+    style={{
+      position: "absolute",
+      insetBlockStart: 0,
+      insetInlineEnd: "calc(var(--shk-space-2) * -1)",
+    }}
+  >
+    <Badge count={2} label="2 active Alerts" tone="critical" />
+  </span>
+</span>
+```
+
+## Mapping your data
+
+| Prop    | Domain term                                                          | Example             |
+| ------- | -------------------------------------------------------------------- | ------------------- |
+| `count` | Number of Active [Alerts](/docs/domain-model/glossary#alerts)        | `3`                 |
+| `tone`  | Highest [Alert Level](/docs/domain-model/glossary#alerts) among them | `"critical"`        |
+| `label` | What is counted, in words                                            | `"3 active Alerts"` |
+
+Count only **Active** Alerts. Ended and Closed Alerts don't need attention.
+
+## Props
+
+| Prop    | Type                                             | Default     | Description                                                                          |
+| ------- | ------------------------------------------------ | ----------- | ------------------------------------------------------------------------------------ |
+| `count` | `number`                                         | –           | **Required.** How many. 0 or less shows nothing.                                     |
+| `label` | `string`                                         | –           | **Required.** What screen readers say instead of the number, e.g. "3 active Alerts". |
+| `tone`  | `"critical" \| "warning" \| "info" \| "neutral"` | `"neutral"` | The colour: the highest Alert Level counted.                                         |
+| `max`   | `number`                                         | `99`        | The largest number shown. Above it the Badge shows "99+".                            |
+
+The types `BadgeProps` and `BadgeTone` are exported too.
+
+## Accessibility
+
+- Screen readers read `label`, not the number: "3 active Alerts" instead of "3".
+- The number's contrast on every tone meets WCAG AA.
+- The tone adds urgency, but never alone: the label says what is counted.
+
+## Related components
+
+- [`SpaceListItem`](../context/space-list-item.mdx) and [`SpaceCard`](../readings/space-card.mdx): a Space with a Badge of its Active Alerts.
+- [`BottomNav`](../navigation/bottom-nav.mdx): a Badge on a tab, e.g. Alerts.
+- [`AlertListItem`](../status/alert-list-item.mdx): one Alert as a list row.
+- [`AlertBanner`](./alert-banner.mdx): the most urgent Alert at the top of a screen.
+- [`InlineMessage`](./inline-message.mdx): a message that says what happened.
+- [`StateValue`](../readings/state-value.mdx): shows one Reading's State in its Alert colours.

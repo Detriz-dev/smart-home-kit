@@ -1,0 +1,185 @@
+---
+sidebar_position: 1.6
+sidebar_label: DetectionStatus
+description: Shows the latest State of a Motion, Smoke or CO Sensor and when, like "Detected since 14:02 · 3 min".
+---
+
+# DetectionStatus
+
+Shows the latest State of a **Motion, Smoke or CO** Sensor together with **when**: since when something is detected, or when it was last detected.
+
+```jsx live
+<DetectionStatus
+  metric="motion"
+  state="detected"
+  detectedSince={new Date(Date.now() - 3 * 60_000)}
+/>
+```
+
+## Import
+
+```tsx
+import { DetectionStatus } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Pass the Metric, the latest State, and the time that goes with it:
+
+```jsx live
+function Example() {
+  const now = new Date(2026, 10, 7, 14, 5);
+  return (
+    <StackLayout gap="sm">
+      <DetectionStatus
+        metric="motion"
+        state="detected"
+        detectedSince={new Date(2026, 10, 7, 14, 2)}
+        now={now}
+      />
+      <DetectionStatus
+        metric="motion"
+        state="clear"
+        lastDetectedAt={new Date(2026, 10, 7, 12, 0)}
+        now={now}
+      />
+    </StackLayout>
+  );
+}
+```
+
+It is built from [`StateValue`](./state-value.mdx) (the pill) and [`RelativeTime`](../context/relative-time.mdx) (the time).
+
+## When to use it
+
+Use it for the three Detection Metrics: Motion, Smoke and CO. People don't only ask "is there smoke?" but "since when?" and "when was the last time?". For Power and Contact, use [`StateValue`](./state-value.mdx) on its own.
+
+## States
+
+```jsx live
+function States() {
+  const now = new Date(2026, 10, 7, 14, 5);
+  return (
+    <StackLayout gap="sm">
+      <DetectionStatus
+        metric="smoke"
+        state="detected"
+        detectedSince={new Date(2026, 10, 7, 14, 2)}
+        alertLevel="critical"
+        now={now}
+      />
+      <DetectionStatus
+        metric="smoke"
+        state="clear"
+        lastDetectedAt={new Date(2026, 10, 5, 9, 30)}
+        now={now}
+      />
+      <DetectionStatus metric="smoke" state="clear" now={now} />
+      <DetectionStatus metric="smoke" state={null} now={now} />
+      <DetectionStatus metric="smoke" state="clear" isDisconnected now={now} />
+    </StackLayout>
+  );
+}
+```
+
+| What you pass                        | Shows                                                |
+| ------------------------------------ | ---------------------------------------------------- |
+| `state="detected"` + `detectedSince` | The pill and "since 14:02 · 3 min"                   |
+| `state="clear"` + `lastDetectedAt`   | The pill and "Last: 2 days ago"                      |
+| `state="clear"`, no `lastDetectedAt` | The pill and "None yet": there was never a Detection |
+| `state={null}`                       | Loading icon, no time                                |
+| `isDisconnected`                     | Disconnected icon. The State and the time are hidden |
+
+When the Reading has an Active [Alert](/docs/domain-model/glossary#alerts), pass `alertLevel`, as for `StateValue`. Smoke and CO always raise a Critical Alert when Detected (their Built-in Alert Rule), unless the app's developer turned it off.
+
+## Sizes
+
+```jsx live
+function Sizes() {
+  const now = new Date(2026, 10, 7, 14, 5);
+  const since = new Date(2026, 10, 7, 14, 2);
+  return (
+    <StackLayout gap="sm">
+      <DetectionStatus
+        metric="co"
+        state="detected"
+        detectedSince={since}
+        now={now}
+        size="md"
+      />
+      <DetectionStatus
+        metric="co"
+        state="detected"
+        detectedSince={since}
+        now={now}
+        size="lg"
+      />
+    </StackLayout>
+  );
+}
+```
+
+`md` is for rows (default), `lg` for cards.
+
+## Mapping your data
+
+| Prop             | Domain term                                                                        | Example                |
+| ---------------- | ---------------------------------------------------------------------------------- | ---------------------- |
+| `metric`         | A [Detection](/docs/domain-model/glossary#measurements) Metric                     | `"smoke"`              |
+| `state`          | [State](/docs/domain-model/glossary#measurements) of the latest Reading            | `"detected"`           |
+| `detectedSince`  | Time of the first Detected Reading of the current Detection                        | `2026-11-07T14:02:00Z` |
+| `lastDetectedAt` | Time of the Clear Reading that ended the last Detection                            | `2026-11-07T12:00:00Z` |
+| `isDisconnected` | [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected | `false`                |
+| `alertLevel`     | [Alert Level](/docs/domain-model/glossary#alerts) of an Active Alert               | `"critical"`           |
+
+You work out `detectedSince` and `lastDetectedAt` from the Readings: a Detection starts with the first Detected Reading and ends with the next Clear one.
+
+## Props
+
+| Prop             | Type                                | Default   | Description                                                                    |
+| ---------------- | ----------------------------------- | --------- | ------------------------------------------------------------------------------ |
+| `metric`         | `"motion" \| "smoke" \| "co"`       | –         | **Required.** The Detection Metric the Sensor measures. Decides the icon.      |
+| `state`          | `"detected" \| "clear" \| null`     | –         | **Required.** The latest State. `null` while the first Reading is on its way.  |
+| `detectedSince`  | `Date`                              | none      | When the current Detection started. Shown while Detected.                      |
+| `lastDetectedAt` | `Date`                              | none      | When the last Detection ended. Shown while Clear; leave it out for "None yet". |
+| `isDisconnected` | `boolean`                           | `false`   | Hides the State and the time.                                                  |
+| `alertLevel`     | `"critical" \| "warning" \| "info"` | none      | The Alert Level of an Active Alert about this Reading. Colours the pill.       |
+| `now`            | `Date`                              | the clock | The current time. Leave it out to use the real clock.                          |
+| `size`           | `"md" \| "lg"`                      | `"md"`    | How big it is drawn.                                                           |
+
+The types `DetectionStatusProps` and `DetectionStatusSize` are exported too.
+
+## In a narrow space
+
+The time never gets shortened. When there isn't room, it moves under the pill:
+
+```jsx live
+<div
+  style={{
+    inlineSize: "12rem",
+    border: "1px dashed var(--shk-color-border-subtle)",
+    padding: "var(--shk-space-2)",
+  }}
+>
+  <DetectionStatus
+    metric="co"
+    state="detected"
+    alertLevel="critical"
+    detectedSince={new Date(2026, 10, 6, 11, 48)}
+    now={new Date(2026, 10, 7, 14, 5)}
+    size="lg"
+  />
+</div>
+```
+
+## Accessibility
+
+- It reads as one phrase: "Detected, since 14:02, 2 h 3 min" or "Clear, Last: 2 h ago".
+- The times are `<time>` elements with the exact moment.
+- The State is never shown by colour alone: the word always says it.
+
+## Related components
+
+- [`StateValue`](./state-value.mdx): the State pill on its own, for Power and Contact.
+- [`RelativeTime`](../context/relative-time.mdx): the time on its own.
+- [`SensorLabel`](../context/sensor-label.mdx): what the Sensor measures, to put above it.

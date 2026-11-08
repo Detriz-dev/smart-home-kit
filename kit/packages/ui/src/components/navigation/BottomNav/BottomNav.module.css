@@ -81,6 +81,15 @@
     padding-inline: var(--shk-space-4);
   }
 
+  /* The Badge sits on the icon's top-right corner: the icon is 24px wide in the middle of the item,
+     so the Badge starts 4px left of the icon's right edge (50% + 12px - 8px), at the top of the icon's area. */
+  .badge {
+    position: absolute;
+    inset-block-start: var(--shk-space-2);
+    inset-inline-start: calc(50% + var(--shk-space-1));
+    display: flex;
+  }
+
   /* The label in the caption style, centred, on one line with "…". */
   .label {
     overflow: hidden;

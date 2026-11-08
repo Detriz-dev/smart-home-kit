@@ -1,0 +1,44 @@
+@layer detriz {
+  /* Centred, no background or border: it sits inside the list or card that is empty. */
+  .root {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--shk-space-2);
+    padding-block: var(--shk-space-6);
+    padding-inline: var(--shk-space-4);
+    text-align: center;
+  }
+
+  .icon {
+    display: inline-flex;
+    color: var(--shk-color-text-secondary);
+  }
+
+  .title {
+    margin: var(--shk-space-0);
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-h4-font-family);
+    font-size: var(--shk-typography-h4-font-size);
+    font-weight: var(--shk-typography-h4-font-weight);
+    line-height: var(--shk-typography-h4-line-height);
+    letter-spacing: var(--shk-typography-h4-letter-spacing);
+    overflow-wrap: break-word;
+  }
+
+  .message {
+    margin: var(--shk-space-0);
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+    overflow-wrap: break-word;
+  }
+
+  /* 8px more space above the action, 16px in total, like Figma. */
+  .action {
+    padding-block-start: var(--shk-space-2);
+  }
+}

@@ -13,6 +13,15 @@
     background: var(--shk-surface-default);
   }
 
+  /* The name on the left, the Badge of Active Alerts on the right. The name shrinks, the Badge never does. */
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--shk-space-2);
+    min-inline-size: 0;
+  }
+
   /* The Space name stays on one line and ends with "…". The full name is in the title (shown on hover). */
   .name {
     overflow: hidden;
@@ -70,5 +79,10 @@
      flex keeps it the same height as UnitLabel, with no extra line box (same as SensorReading). */
   .unit {
     display: flex;
+  }
+
+  /* State rows: the pill has no text baseline to share with a status, so centre it instead. */
+  .row:has(> .reading [data-state]) .reading {
+    align-items: center;
   }
 }

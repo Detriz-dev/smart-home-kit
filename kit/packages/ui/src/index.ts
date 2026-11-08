@@ -9,6 +9,8 @@ export type {
   ConnectionStatus,
   DeviceConnectionStatusProps,
 } from "./components/status/DeviceConnectionStatus";
+export { AlertListItem } from "./components/status/AlertListItem";
+export type { AlertListItemProps } from "./components/status/AlertListItem";
 export { DeviceListItem } from "./components/status/DeviceListItem";
 export type {
   DeviceListItemProps,
@@ -38,6 +40,24 @@ export type {
   LocationPathLayout,
   LocationPathProps,
 } from "./components/navigation/LocationPath";
+export { AlertRuleLabel } from "./components/context/AlertRuleLabel";
+export type {
+  AlertRuleLabelProps,
+  AlertRuleLabelSize,
+} from "./components/context/AlertRuleLabel";
+export { AssetLabel } from "./components/context/AssetLabel";
+export type {
+  AssetLabelProps,
+  AssetLabelSize,
+} from "./components/context/AssetLabel";
+export { SpaceListItem } from "./components/context/SpaceListItem";
+export type { SpaceListItemProps } from "./components/context/SpaceListItem";
+export { RelativeTime } from "./components/context/RelativeTime";
+export type {
+  RelativeTimeFormat,
+  RelativeTimeProps,
+  RelativeTimeSize,
+} from "./components/context/RelativeTime";
 export { SensorLabel } from "./components/context/SensorLabel";
 export type {
   SensorLabelMetric,
@@ -46,9 +66,18 @@ export type {
 } from "./components/context/SensorLabel";
 export { SpaceLabel } from "./components/context/SpaceLabel";
 export {
+  ACTION_ICONS,
+  ALERT_ICONS,
+  ALERT_LEVEL_ICONS,
   ASSET_TYPE_ICONS,
+  DEVICE_KIND_ICONS,
+  MESSAGE_TONE_ICONS,
   METRIC_ICONS,
+  NAV_ICONS,
+  PLACE_ICONS,
+  READING_STATUS_ICONS,
   SPACE_TYPE_ICONS,
+  STATE_ICONS,
 } from "./icons/purposeIcons";
 export type {
   SpaceLabelProps,
@@ -71,15 +100,37 @@ export type {
   SensorReadingProps,
   SensorReadingSize,
 } from "./components/readings/SensorReading";
+export { DetectionStatus } from "./components/readings/DetectionStatus";
+export type {
+  DetectionStatusProps,
+  DetectionStatusSize,
+} from "./components/readings/DetectionStatus";
+export { SensorState } from "./components/readings/SensorState";
+export type {
+  SensorStateAsset,
+  SensorStateProps,
+  SensorStateSize,
+} from "./components/readings/SensorState";
+export { StateValue } from "./components/readings/StateValue";
+export type {
+  StateValueProps,
+  StateValueReading,
+  StateValueSize,
+} from "./components/readings/StateValue";
+export { STATE_NAMES } from "./utils/stateNames";
 export { ModuleCard } from "./components/readings/ModuleCard";
 export type {
   ModuleCardProps,
+  ModuleCardMeasuredSensor,
   ModuleCardSensor,
+  ModuleCardStateSensor,
 } from "./components/readings/ModuleCard";
 export { SpaceCard } from "./components/readings/SpaceCard";
 export type {
   SpaceCardProps,
+  SpaceCardMeasuredReading,
   SpaceCardReading,
+  SpaceCardStateReading,
 } from "./components/readings/SpaceCard";
 export type {
   DetectionMetric,
@@ -114,6 +165,11 @@ export type {
   ColumnLayoutProps,
   ColumnLayoutRatio,
 } from "./components/layout/ColumnLayout";
+export { FloorSection } from "./components/layout/FloorSection";
+export type {
+  FloorSectionHeadingLevel,
+  FloorSectionProps,
+} from "./components/layout/FloorSection";
 export { ContentSection } from "./components/layout/ContentSection";
 export type {
   ContentSectionHeadingLevel,
@@ -140,6 +196,12 @@ export type {
   StackLayoutGap,
   StackLayoutProps,
 } from "./components/layout/StackLayout";
+export { AlertBanner } from "./components/feedback/AlertBanner";
+export type { AlertBannerProps } from "./components/feedback/AlertBanner";
+export { Badge } from "./components/feedback/Badge";
+export type { BadgeProps, BadgeTone } from "./components/feedback/Badge";
+export { EmptyState } from "./components/feedback/EmptyState";
+export type { EmptyStateProps } from "./components/feedback/EmptyState";
 export { InlineMessage } from "./components/feedback/InlineMessage";
 export type {
   InlineMessageProps,

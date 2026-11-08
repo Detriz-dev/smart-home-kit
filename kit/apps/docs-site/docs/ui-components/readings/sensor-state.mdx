@@ -1,0 +1,125 @@
+---
+sidebar_position: 3.5
+sidebar_label: SensorState
+description: The latest State of one Two-state Sensor as a small card, like Power On or Front door Open.
+---
+
+# SensorState
+
+The latest State of one Two-state Sensor as a small card: what it is about on top, the State below. It is the twin of [`SensorReading`](./sensor-reading.mdx), for Power, Contact, Motion, Smoke and CO.
+
+```jsx live
+<div style={{ maxWidth: 160 }}>
+  <SensorState metric="power" state="on" />
+</div>
+```
+
+## Import
+
+```tsx
+import { SensorState } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Pass the Metric and its latest State. For Contact and Power, pass the `asset` the Sensor watches, so the card says "Front door" instead of "Contact":
+
+```jsx live
+<ColumnLayout>
+  <SensorState
+    metric="contact"
+    state="open"
+    asset={{ name: "Front door", assetType: "door" }}
+  />
+  <SensorState
+    metric="power"
+    state="off"
+    asset={{ name: "Washing machine", assetType: "appliance" }}
+  />
+  <SensorState metric="motion" state="clear" />
+</ColumnLayout>
+```
+
+## When to use it
+
+Use SensorState for one Two-state Sensor on its own or in a grid of Sensors. [`ModuleCard`](./module-card.mdx) uses it for its Two-state Sensors. For numbers, use [`SensorReading`](./sensor-reading.mdx). To show since when something is detected, use [`DetectionStatus`](./detection-status.mdx).
+
+## States
+
+```jsx live
+<ColumnLayout>
+  <SensorState metric="smoke" state="detected" alertLevel="critical" />
+  <SensorState metric="smoke" state={null} />
+  <SensorState metric="smoke" state="clear" isDisconnected />
+</ColumnLayout>
+```
+
+| What you pass    | Shows                                                |
+| ---------------- | ---------------------------------------------------- |
+| A State          | The State pill, in active, inactive or Alert colours |
+| `state={null}`   | Loading icon                                         |
+| `isDisconnected` | Disconnected icon. The State is hidden               |
+
+Stale and Fault belong to the Module: [`ModuleCard`](./module-card.mdx) shows them once for all its Sensors.
+
+## Sizes
+
+`lg` (default) for cards on their own, `md` for tighter grids. The same sizes as SensorReading.
+
+```jsx live
+<ColumnLayout>
+  <SensorState metric="power" state="on" size="lg" />
+  <SensorState metric="power" state="on" size="md" />
+</ColumnLayout>
+```
+
+## Mapping your data
+
+| Prop             | Domain term                                                                    | Example                                     |
+| ---------------- | ------------------------------------------------------------------------------ | ------------------------------------------- |
+| `metric`         | [Two-state Metric](/docs/domain-model/glossary#measurements)                   | `"contact"`                                 |
+| `state`          | [State](/docs/domain-model/glossary#measurements) of the latest Reading        | `"open"`                                    |
+| `asset`          | The [Asset](/docs/domain-model/glossary#devices-and-assets) the Sensor watches | `{ name: "Front door", assetType: "door" }` |
+| `isDisconnected` | The Module's Connection Status is Disconnected                                 | `false`                                     |
+| `alertLevel`     | [Alert Level](/docs/domain-model/glossary#alerts) of an Active Alert           | `"critical"`                                |
+
+## Props
+
+| Prop             | Type                                     | Default | Description                                                                   |
+| ---------------- | ---------------------------------------- | ------- | ----------------------------------------------------------------------------- |
+| `metric`         | `TwoStateMetric`                         | –       | **Required.** The Two-state Metric the Sensor measures.                       |
+| `state`          | `StateOf<metric> \| null`                | –       | **Required.** The latest State. `null` while the first Reading is on its way. |
+| `asset`          | `{ name: string; assetType: AssetType }` | none    | The Asset the Sensor watches. Names the card instead of the Metric.           |
+| `isDisconnected` | `boolean`                                | `false` | Hides the State and shows the disconnected icon.                              |
+| `alertLevel`     | `"critical" \| "warning" \| "info"`      | none    | The Alert Level of an Active Alert about this Reading. Colours the State.     |
+| `size`           | `"lg" \| "md"`                           | `"lg"`  | How big the State is drawn.                                                   |
+
+The types `SensorStateProps`, `SensorStateAsset` and `SensorStateSize` are exported too.
+
+## Long names
+
+A long name ends with `…`. The State keeps its size.
+
+```jsx live
+<div style={{ maxWidth: 160 }}>
+  <SensorState
+    metric="power"
+    state="off"
+    asset={{
+      name: "Grandma's old washing machine in the cellar",
+      assetType: "appliance",
+    }}
+  />
+</div>
+```
+
+## Accessibility
+
+- The card is a group named by its label: screen readers say "Front door, group, Open".
+- Everything about the State itself comes from [`StateValue`](./state-value.mdx#accessibility).
+
+## Related components
+
+- [`SensorReading`](./sensor-reading.mdx): the same card for numbers.
+- [`StateValue`](./state-value.mdx): the State on its own.
+- [`ModuleCard`](./module-card.mdx): all Sensors of a Module, numbers and States.

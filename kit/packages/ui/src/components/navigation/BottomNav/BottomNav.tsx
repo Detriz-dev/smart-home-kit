@@ -1,5 +1,6 @@
 import { Icon } from "../../../icons/Icon";
 import { KitLink } from "../../../link";
+import { Badge } from "../../feedback/Badge";
 import styles from "./BottomNav.module.css";
 import type { BottomNavProps } from "./BottomNav.types";
 
@@ -23,6 +24,12 @@ export function BottomNav({ items, label = "Main" }: BottomNavProps) {
               <span className={styles.label} title={item.label}>
                 {item.label}
               </span>
+              {/* After the label in the code, so screen readers hear "Alerts, 3 active Alerts"; drawn on the icon's corner. */}
+              {item.badge && (
+                <span className={styles.badge}>
+                  <Badge {...item.badge} />
+                </span>
+              )}
             </KitLink>
           </li>
         ))}

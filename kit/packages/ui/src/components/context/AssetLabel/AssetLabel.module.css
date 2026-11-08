@@ -1,0 +1,56 @@
+@layer detriz {
+  /* Icon and name in one row, centred vertically, the same as SensorLabel. No padding or background:
+     spacing around it belongs to the parent. The icon takes the text colour. max-inline-size keeps it
+     inside a narrow parent, so the name can shrink. Default size is xs. */
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--shk-space-1);
+    max-inline-size: 100%;
+    color: var(--shk-color-text-primary);
+  }
+
+  /* md and lg have a wider gap between the icon and the name. */
+  .root[data-size="md"],
+  .root[data-size="lg"] {
+    gap: var(--shk-space-2);
+  }
+
+  /* The Asset's name in the caption text style (xs). Long names end with "…".
+     Only the name shrinks when space runs out: Icon never does. */
+  .label {
+    min-inline-size: 0;
+    overflow: hidden;
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .root[data-size="sm"] .label {
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+  }
+
+  .root[data-size="md"] .label {
+    font-family: var(--shk-typography-body-font-family);
+    font-size: var(--shk-typography-body-font-size);
+    font-weight: var(--shk-typography-body-font-weight);
+    line-height: var(--shk-typography-body-line-height);
+    letter-spacing: var(--shk-typography-body-letter-spacing);
+  }
+
+  .root[data-size="lg"] .label {
+    font-family: var(--shk-typography-body-lg-font-family);
+    font-size: var(--shk-typography-body-lg-font-size);
+    font-weight: var(--shk-typography-body-lg-font-weight);
+    line-height: var(--shk-typography-body-lg-line-height);
+    letter-spacing: var(--shk-typography-body-lg-letter-spacing);
+  }
+}

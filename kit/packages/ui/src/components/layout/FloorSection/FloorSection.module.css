@@ -1,0 +1,63 @@
+@layer detriz {
+  /* The header, then the children, in one column as wide as the parent. Like ContentSection, but
+     closer together (8px): the content is usually a list whose rows have their own padding. */
+  .root {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    gap: var(--shk-space-2);
+    inline-size: 100%;
+  }
+
+  /* Icon, heading and count in one row. The heading takes the free space and ends with "…". */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: var(--shk-space-2);
+    min-inline-size: 0;
+    color: var(--shk-color-text-primary);
+  }
+
+  .heading {
+    flex: 1;
+    min-inline-size: 0;
+    margin: 0;
+    overflow: hidden;
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-h3-font-family);
+    font-size: var(--shk-typography-h3-font-size);
+    font-weight: var(--shk-typography-h3-font-weight);
+    line-height: var(--shk-typography-h3-line-height);
+    letter-spacing: var(--shk-typography-h3-letter-spacing);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .root[data-heading-level="2"] .heading {
+    font-family: var(--shk-typography-h2-font-family);
+    font-size: var(--shk-typography-h2-font-size);
+    font-weight: var(--shk-typography-h2-font-weight);
+    line-height: var(--shk-typography-h2-line-height);
+    letter-spacing: var(--shk-typography-h2-letter-spacing);
+  }
+
+  .root[data-heading-level="4"] .heading {
+    font-family: var(--shk-typography-h4-font-family);
+    font-size: var(--shk-typography-h4-font-size);
+    font-weight: var(--shk-typography-h4-font-weight);
+    line-height: var(--shk-typography-h4-line-height);
+    letter-spacing: var(--shk-typography-h4-letter-spacing);
+  }
+
+  /* "4 Spaces": quiet text on the right, never shrinks. */
+  .count {
+    flex-shrink: 0;
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+    white-space: nowrap;
+  }
+}

@@ -55,7 +55,7 @@ type Metric = MeasuredMetric | TwoStateMetric;
 | `smoke`       | Two-state | Smoke       | `detected`, `clear`       |
 | `co`          | Two-state | CO          | `detected`, `clear`       |
 
-`co` is carbon monoxide, not CO₂. `DetectionMetric` is the three Metrics that start a Detection: `motion`, `smoke` and `co`.
+`co` is carbon monoxide, not CO₂. `DetectionMetric` is the three Metrics that start a Detection: `motion`, `smoke` and `co`. [`DetectionStatus`](../readings/detection-status.mdx) takes a `DetectionMetric`.
 
 **Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`, any Metric) and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). [`SensorReading`](../readings/sensor-reading.mdx), [`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) show numbers, so they take a `MeasuredMetric` only. `SensorLabelMetric` is the same type as `Metric` under another name.
 
@@ -71,7 +71,7 @@ type ContactState = StateOf<"contact">; // "open" | "closed"
 
 Use `StateOf` in your own data, so a Power Reading can never be `"open"`.
 
-**Used by:** no component yet. The Phase 2 components for States and Detections will use it.
+**Used by:** [`StateValue`](../readings/state-value.mdx) (`metric` and `state`). The word shown for each State is in the exported `STATE_NAMES` map.
 
 ## Alerts
 
@@ -110,7 +110,7 @@ const wrong: AlertRule = {
 };
 ```
 
-**Used by:** no component yet. The Phase 2 Alert components will use them.
+**Used by:** [`StateValue`](../readings/state-value.mdx) (`alertLevel`). [`AlertListItem`](../status/alert-list-item.mdx) uses `AlertLevel` and `AlertStatus`.
 
 ## SpaceType
 
@@ -160,7 +160,7 @@ A category of Asset: a thing in a Space that Sensors watch. A Contact Sensor wat
 type AssetType = "plant" | "tap" | "door" | "window" | "appliance";
 ```
 
-**Used by:** no component yet.
+**Used by:** [`AssetLabel`](../context/asset-label.mdx) (`assetType`), and `ASSET_TYPE_ICONS` for an icon on its own.
 
 ## DeviceKind
 

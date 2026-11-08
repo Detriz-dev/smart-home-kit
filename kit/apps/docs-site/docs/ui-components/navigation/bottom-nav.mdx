@@ -148,12 +148,13 @@ const items = sections.map((section) => ({
 
 `BottomNavItem`:
 
-| Field       | Type       | Default | Description                                                                                         |
-| ----------- | ---------- | ------- | --------------------------------------------------------------------------------------------------- |
-| `label`     | `string`   | –       | **Required.** The section's name, e.g. "Devices". Short: one word if you can.                       |
-| `icon`      | `IconName` | –       | **Required.** The section's icon, e.g. `sensors`. Decorative: the label names the section.          |
-| `href`      | `string`   | –       | **Required.** Where the section is, e.g. `/devices`. Uses your router through `LinkProvider`.       |
-| `isCurrent` | `boolean`  | `false` | True for the section the person is in, also on its sub-screens. Exactly one item should be current. |
+| Field       | Type         | Default | Description                                                                                                     |
+| ----------- | ------------ | ------- | --------------------------------------------------------------------------------------------------------------- |
+| `label`     | `string`     | –       | **Required.** The section's name, e.g. "Devices". Short: one word if you can.                                   |
+| `icon`      | `IconName`   | –       | **Required.** The section's icon, e.g. `sensors`. Decorative: the label names the section.                      |
+| `href`      | `string`     | –       | **Required.** Where the section is, e.g. `/devices`. Uses your router through `LinkProvider`.                   |
+| `isCurrent` | `boolean`    | `false` | True for the section the person is in, also on its sub-screens. Exactly one item should be current.             |
+| `badge`     | `BadgeProps` | none    | A count on the icon's corner, e.g. `{ count: 3, label: "3 active Alerts", tone: "critical" }`. 0 shows nothing. |
 
 The types `BottomNavProps` and `BottomNavItem` are exported too.
 
@@ -177,6 +178,28 @@ A long label stays on one line and ends with "…". The icons stay whole. Keep l
 </div>
 ```
 
+## A Badge on an item
+
+Give an item a `badge` to show a count on its icon's corner, like the number of Active Alerts on an Alerts tab. It takes the same props as [`Badge`](../feedback/badge.mdx): the `tone` is the highest Alert Level counted, and a count of 0 shows nothing.
+
+```jsx live
+<BottomNav
+  items={[
+    { label: "Home", icon: NAV_ICONS.home, href: "#", isCurrent: true },
+    { label: "Spaces", icon: NAV_ICONS.spaces, href: "#spaces" },
+    {
+      label: "Alerts",
+      icon: ALERT_ICONS.active,
+      href: "#alerts",
+      badge: { count: 3, label: "3 active Alerts", tone: "critical" },
+    },
+    { label: "Settings", icon: NAV_ICONS.settings, href: "#settings" },
+  ]}
+/>
+```
+
+Use `ALERT_ICONS.active` for the Alerts tab while any Alert is Active, and `ALERT_ICONS.default` when none is. Keep Badges for what needs attention: a Badge on every tab means none of them stands out.
+
 ## Accessibility
 
 What you get without doing anything:
@@ -184,6 +207,7 @@ What you get without doing anything:
 - The bar is a `<nav>` named "Main" (or your `label`), so screen readers list it as a landmark.
 - The items are a list, and each is a link named by its label. The icons are hidden from screen readers.
 - The current item has `aria-current="page"`, so screen readers say "current page".
+- A Badge is read after the label, in words: "Alerts, 3 active Alerts".
 - The current item is marked by the bar, the heavier label and the colour, not by colour alone. Hover and focus turn items blue too, but never add the bar, so they can't be mistaken for current.
 - Each item is 70px tall and an equal share of the width: a comfortable touch target.
 - Keyboard focus shows a 2px dark-blue ring around the whole item, drawn inside it so the screen's edge doesn't cut it off. It's the same ring as every other component in the kit.

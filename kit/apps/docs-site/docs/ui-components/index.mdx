@@ -35,31 +35,31 @@ The groups differ in **where their content comes from** and **how often it chang
 
 **How is it arranged?** Structure and spacing for the other components. Layout shows no data and never changes on its own: it only places what's inside it.
 
-[`ContentSection`](./layout/content-section.mdx) · [`ColumnLayout`](./layout/column-layout.mdx) · [`StackLayout`](./layout/stack-layout.mdx) · [`Card`](./layout/card.mdx) · [`List`](./layout/list.mdx)
+[`ContentSection`](./layout/content-section.mdx) · [`FloorSection`](./layout/floor-section.mdx) · [`ColumnLayout`](./layout/column-layout.mdx) · [`StackLayout`](./layout/stack-layout.mdx) · [`Card`](./layout/card.mdx) · [`List`](./layout/list.mdx)
 
 ### 2. Context
 
 **What is it?** Fixed facts, like what a Sensor measures. They almost never change: only when the user renames or moves something.
 
-[`SensorLabel`](./context/sensor-label.mdx) · [`SpaceLabel`](./context/space-label.mdx)
+[`SensorLabel`](./context/sensor-label.mdx) · [`SpaceLabel`](./context/space-label.mdx) · [`AssetLabel`](./context/asset-label.mdx) · [`AlertRuleLabel`](./context/alert-rule-label.mdx) · [`SpaceListItem`](./context/space-list-item.mdx) · [`RelativeTime`](./context/relative-time.mdx)
 
 ### 3. Readings
 
 **What is it right now?** Current values, from a single number up to a card for a whole Space. They change with every new Reading, often every few seconds.
 
-[`ReadingValue`](./readings/reading-value.mdx) · [`UnitLabel`](./readings/unit-label.mdx) · [`SensorReading`](./readings/sensor-reading.mdx) · [`ModuleCard`](./readings/module-card.mdx) · [`SpaceCard`](./readings/space-card.mdx)
+[`ReadingValue`](./readings/reading-value.mdx) · [`StateValue`](./readings/state-value.mdx) · [`DetectionStatus`](./readings/detection-status.mdx) · [`UnitLabel`](./readings/unit-label.mdx) · [`SensorReading`](./readings/sensor-reading.mdx) · [`SensorState`](./readings/sensor-state.mdx) · [`ModuleCard`](./readings/module-card.mdx) · [`SpaceCard`](./readings/space-card.mdx)
 
 ### 4. Status
 
 **Is everything OK?** The state of a Device: its Pairing Status, Connection Status and Faults. They change when a Device's health changes, for example when it goes Stale, disconnects or reports a Fault.
 
-[`DeviceConnectionStatus`](./status/device-connection-status.mdx) · [`DevicePairingStatus`](./status/device-pairing-status.mdx) · [`DeviceFaultStatus`](./status/device-fault-status.mdx) · [`DeviceListItem`](./status/device-list-item.mdx)
+[`DeviceConnectionStatus`](./status/device-connection-status.mdx) · [`DevicePairingStatus`](./status/device-pairing-status.mdx) · [`DeviceFaultStatus`](./status/device-fault-status.mdx) · [`DeviceListItem`](./status/device-list-item.mdx) · [`AlertListItem`](./status/alert-list-item.mdx)
 
 ### 5. Feedback
 
 **What is the interface doing?** Messages about your app, not the hardware: a request failed, or a change was saved. They appear when your app finishes or fails at something.
 
-[`InlineMessage`](./feedback/inline-message.mdx)
+[`InlineMessage`](./feedback/inline-message.mdx) · [`Badge`](./feedback/badge.mdx) · [`AlertBanner`](./feedback/alert-banner.mdx) · [`EmptyState`](./feedback/empty-state.mdx)
 
 ### 6. Controls
 

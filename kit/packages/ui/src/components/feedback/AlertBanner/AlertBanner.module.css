@@ -1,0 +1,126 @@
+@layer detriz {
+  /* The banner: the content row, then × on the right. Warning and Info have a thin border in the
+     level colour; the padding subtracts it, so every level is the same size (Figma: inside stroke,
+     not in layout). Critical has no border: its solid fill is strong enough. */
+  .root {
+    display: flex;
+    align-items: center;
+    gap: var(--shk-space-2);
+    box-sizing: border-box;
+    inline-size: 100%;
+    padding: var(--shk-space-4);
+    border-radius: var(--shk-radius-8);
+  }
+
+  /* Critical: solid red, everything in the dark on-solid colour. */
+  .root[data-level="critical"] {
+    background: var(--shk-status-danger-solid);
+    color: var(--shk-status-danger-on-solid);
+    --alert-banner-icon: var(--shk-status-danger-on-solid);
+    --alert-banner-title: var(--shk-status-danger-on-solid);
+    --alert-banner-meta: var(--shk-status-danger-on-solid);
+  }
+
+  .root[data-level="warning"],
+  .root[data-level="info"] {
+    padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid var(--alert-banner-border);
+    --alert-banner-title: var(--shk-color-text-primary);
+    --alert-banner-meta: var(--shk-color-text-secondary);
+  }
+
+  .root[data-level="warning"] {
+    background: var(--shk-status-warning-bg);
+    --alert-banner-border: var(--shk-status-warning-border);
+    --alert-banner-icon: var(--shk-status-warning-fg);
+  }
+
+  .root[data-level="info"] {
+    background: var(--shk-status-progress-bg);
+    --alert-banner-border: var(--shk-status-progress-border);
+    --alert-banner-icon: var(--shk-status-progress-fg);
+  }
+
+  /* Icon, text and action in a row that wraps: when the text would get narrower than 96px, the
+     action moves to the next line. The × stays outside, on the right. Same as InlineMessage. */
+  .content {
+    display: flex;
+    flex: 1;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--shk-space-3);
+    row-gap: var(--shk-space-2);
+    min-inline-size: var(--shk-space-0);
+  }
+
+  .icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    color: var(--alert-banner-icon);
+  }
+
+  .text {
+    display: flex;
+    flex: 1 1 var(--shk-size-24);
+    flex-direction: column;
+    gap: var(--shk-space-1);
+    min-inline-size: var(--shk-size-24);
+  }
+
+  .title {
+    margin: var(--shk-space-0);
+    color: var(--alert-banner-title);
+    font-family: var(--shk-typography-label-font-family);
+    font-size: var(--shk-typography-label-font-size);
+    font-weight: var(--shk-typography-label-font-weight);
+    line-height: var(--shk-typography-label-line-height);
+    letter-spacing: var(--shk-typography-label-letter-spacing);
+    overflow-wrap: break-word;
+  }
+
+  /* Place · time. The time (RelativeTime) takes the same colour as the place. */
+  .meta {
+    margin: var(--shk-space-0);
+    color: var(--alert-banner-meta);
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+    overflow-wrap: break-word;
+  }
+
+  .meta time {
+    color: inherit;
+  }
+
+  /* The ×: a 32px square button, like InlineMessage's. Dark on Critical, grey on the others. */
+  .close {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--shk-size-8);
+    block-size: var(--shk-size-8);
+    margin: var(--shk-space-0);
+    padding: var(--shk-space-0);
+    border: none;
+    border-radius: var(--shk-radius-4);
+    background: transparent;
+    color: var(--alert-banner-meta);
+    cursor: pointer;
+  }
+
+  .close:hover {
+    background: var(--shk-action-secondary-bg-hover);
+  }
+
+  .close:active {
+    background: var(--shk-action-secondary-bg-pressed);
+  }
+
+  .close:focus-visible {
+    outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
+    outline-offset: var(--shk-space-0);
+  }
+}

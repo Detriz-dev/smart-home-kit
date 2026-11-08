@@ -1,0 +1,169 @@
+---
+sidebar_position: 1.5
+sidebar_label: StateValue
+description: Shows the latest State of a Two-state Metric, like On, Open or Detected, as a small pill.
+---
+
+# StateValue
+
+Shows the latest [State](/docs/domain-model/glossary#measurements) of a Two-state Metric as a small pill: an icon and a word, like **On**, **Open** or **Detected**. It is the State twin of [`ReadingValue`](./reading-value.mdx): ReadingValue shows a number, StateValue shows a State.
+
+```jsx live
+<StateValue metric="power" state="on" />
+```
+
+## Import
+
+```tsx
+import { StateValue } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Pass the Metric and its latest State:
+
+```jsx live
+<StackLayout>
+  <StateValue metric="power" state="off" />
+  <StateValue metric="contact" state="open" />
+  <StateValue metric="motion" state="detected" />
+</StackLayout>
+```
+
+The icon and the word follow from the Metric and the State, so they look the same everywhere in your app.
+
+## When to use it
+
+Use StateValue for **Two-state Metrics**: Power, Contact (doors and windows), Motion, Smoke and CO. It is read-only: it shows a State and never switches anything. For numbers like Temperature, use [`ReadingValue`](./reading-value.mdx).
+
+Don't use it for app settings: that's [`Switch`](../controls/switch.mdx).
+
+## States
+
+| What you pass                               | Shows                                  |
+| ------------------------------------------- | -------------------------------------- |
+| An active State: `on`, `open`, `detected`   | Blue pill                              |
+| An inactive State: `off`, `closed`, `clear` | Grey pill                              |
+| `alertLevel` (an Active Alert)              | Pill in the Alert Level's colours      |
+| `state={null}`                              | Spinning loading icon, no pill         |
+| `isDisconnected`                            | Disconnected icon, the State is hidden |
+
+```jsx live
+<StackLayout>
+  <StateValue metric="power" state="on" />
+  <StateValue metric="power" state="off" />
+  <StateValue metric="smoke" state="detected" alertLevel="critical" />
+  <StateValue metric="contact" state="open" alertLevel="warning" />
+  <StateValue metric="motion" state="detected" alertLevel="info" />
+  <StateValue metric="power" state={null} />
+  <StateValue metric="power" state="on" isDisconnected />
+</StackLayout>
+```
+
+### Active and inactive
+
+On, Open and Detected are **active** and shown in blue. Off, Closed and Clear are **inactive** and shown in grey. Blue doesn't mean good or bad: it just means "on".
+
+### Alerts
+
+When the Reading has an Active [Alert](/docs/domain-model/glossary#alerts), pass its `alertLevel`. The pill then uses that level's colours: red for Critical, amber for Warning and blue with a thin border for Info (the border tells it apart from an active State). Keep passing it while the condition is still true, even if the user closed the Alert: a closed Alert doesn't hide the problem.
+
+### Loading
+
+Pass `state={null}` while the first Reading is on its way.
+
+### Disconnected
+
+Pass `isDisconnected` when the Module's Connection Status is Disconnected. The last State is hidden, because an old State would look current.
+
+## Sizes
+
+```jsx live
+<StackLayout>
+  <StateValue metric="contact" state="closed" size="md" />
+  <StateValue metric="contact" state="closed" size="lg" />
+</StackLayout>
+```
+
+| `size` | Use it in                                                   |
+| ------ | ----------------------------------------------------------- |
+| `md`   | List rows and SpaceCard rows. Default.                      |
+| `lg`   | Cards, under a [`SensorLabel`](../context/sensor-label.mdx) |
+
+## With SensorLabel
+
+StateValue shows the State only. Put a [`SensorLabel`](../context/sensor-label.mdx) above it to say what it is about:
+
+```jsx live
+<StackLayout gap="sm">
+  <SensorLabel metric="smoke" />
+  <StateValue metric="smoke" state="clear" size="lg" />
+</StackLayout>
+```
+
+## In a narrow space
+
+The words are short, so the pill never wraps or shortens. In a narrow card it keeps its size; leave room for "Detected" at `lg`:
+
+```jsx live
+<div
+  style={{
+    inlineSize: "8rem",
+    border: "1px dashed var(--shk-color-border-subtle)",
+    padding: "var(--shk-space-2)",
+  }}
+>
+  <StackLayout gap="sm">
+    <SensorLabel metric="smoke" />
+    <StateValue
+      metric="smoke"
+      state="detected"
+      alertLevel="critical"
+      size="lg"
+    />
+  </StackLayout>
+</div>
+```
+
+## Mapping your data
+
+| Prop             | Domain term                                                                        | Example      |
+| ---------------- | ---------------------------------------------------------------------------------- | ------------ |
+| `metric`         | [Two-state Metric](/docs/domain-model/glossary#measurements)                       | `"contact"`  |
+| `state`          | [State](/docs/domain-model/glossary#measurements) of the latest Reading            | `"open"`     |
+| `isDisconnected` | [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected | `false`      |
+| `alertLevel`     | [Alert Level](/docs/domain-model/glossary#alerts) of an Active Alert               | `"critical"` |
+
+The State must belong to the Metric. TypeScript tells you if it doesn't:
+
+```tsx
+<StateValue metric="contact" state="open" />  // ✅
+<StateValue metric="power" state="open" />    // ❌ type error: Power is On or Off
+```
+
+## Props
+
+| Prop             | Type                                | Default | Description                                                                   |
+| ---------------- | ----------------------------------- | ------- | ----------------------------------------------------------------------------- |
+| `metric`         | `TwoStateMetric`                    | –       | **Required.** The Two-state Metric the Sensor measures. Decides the icon.     |
+| `state`          | `StateOf<metric> \| null`           | –       | **Required.** The latest State. `null` while the first Reading is on its way. |
+| `isDisconnected` | `boolean`                           | `false` | Hides the State and shows the disconnected icon.                              |
+| `alertLevel`     | `"critical" \| "warning" \| "info"` | none    | The Alert Level of an Active Alert about this Reading. Colours the pill.      |
+| `size`           | `"md" \| "lg"`                      | `"md"`  | How big the pill is drawn.                                                    |
+
+The types `StateValueProps`, `StateValueReading` and `StateValueSize` are exported too, and so is `STATE_NAMES`, the word for each State.
+
+## Accessibility
+
+- The word is real text, so screen readers read "On" or "Detected". The icon is hidden from them.
+- Loading and Disconnected have no word, so their icon is announced as "Loading" or "Disconnected".
+- The State is never shown by colour alone: the word always says it.
+- The loading icon stops spinning when the user prefers reduced motion.
+
+## Related components
+
+- [`ReadingValue`](./reading-value.mdx): the same idea for numbers.
+- [`AssetLabel`](../context/asset-label.mdx): the Door, Window or Appliance a Contact or Power State is about.
+- [`DetectionStatus`](./detection-status.mdx): for Motion, Smoke and CO, the State plus since when.
+- [`SensorLabel`](../context/sensor-label.mdx): what the State is about.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx): shows Stale and Disconnected as a label.

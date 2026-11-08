@@ -1,0 +1,42 @@
+@layer detriz {
+  /* Bell icon and the rule in one row, in the secondary colour: it describes a setting, not
+     what is happening now, so it stays quieter than the Reading above it. No padding or
+     background: spacing around it belongs to the parent. Default size is xs. */
+  .root {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--shk-space-1);
+    max-inline-size: 100%;
+    color: var(--shk-color-text-secondary);
+  }
+
+  /* The rule in the caption text style (xs). It wraps instead of truncating: a rule cut off
+     at "Alert above 1,0…" would say the wrong thing. min-inline-size lets it shrink. */
+  .text {
+    min-inline-size: 0;
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+    overflow-wrap: anywhere;
+  }
+
+  .root[data-size="sm"] .text {
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+  }
+
+  /* Read by screen readers, invisible on screen ("degrees Celsius"). Same rule as UnitLabel. */
+  .spokenName {
+    position: absolute;
+    inline-size: 1px;
+    block-size: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}

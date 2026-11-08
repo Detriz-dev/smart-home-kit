@@ -1,0 +1,157 @@
+---
+sidebar_position: 3
+sidebar_label: AlertBanner
+description: A strong message at the top of a screen for one Active Alert, coloured by its Alert Level.
+---
+
+# AlertBanner
+
+A strong message at the top of a screen for one **Active** [Alert](/docs/domain-model/glossary#alerts): what happened, where, when, an action and ×. It is the loudest Alert component: use it for the Alert that needs attention right now.
+
+```jsx live
+<AlertBanner
+  title="Smoke detected"
+  alertLevel="critical"
+  raisedAt={new Date(Date.now() - 2 * 60_000)}
+  spaceName="Kitchen"
+  actionLabel="View"
+  onAction={() => {}}
+  onClose={() => {}}
+/>
+```
+
+## Import
+
+```tsx
+import { AlertBanner } from "@detriz-sh-kit/ui";
+```
+
+## When to use it
+
+- **One urgent Alert at the top of a screen**, usually the most urgent Active one.
+- **Remove it** when the Alert Ends or is Closed.
+- List all Alerts with [`AlertListItem`](../status/alert-list-item.mdx), and count them with a [`Badge`](./badge.mdx).
+- For messages about what the app did or couldn't do ("Couldn't load Readings"), use [`InlineMessage`](./inline-message.mdx).
+
+## Alert Levels
+
+```jsx live
+function Levels() {
+  const now = new Date(2026, 10, 7, 14, 5);
+  const ago = (m) => new Date(now.getTime() - m * 60_000);
+  return (
+    <StackLayout gap="sm">
+      <AlertBanner
+        title="Smoke detected"
+        alertLevel="critical"
+        raisedAt={ago(2)}
+        spaceName="Kitchen"
+        now={now}
+        actionLabel="View"
+        onAction={() => {}}
+        onClose={() => {}}
+      />
+      <AlertBanner
+        title="Kitchen above 28 °C"
+        alertLevel="warning"
+        raisedAt={ago(15)}
+        spaceName="Kitchen"
+        now={now}
+        actionLabel="View"
+        onAction={() => {}}
+        onClose={() => {}}
+      />
+      <AlertBanner
+        title="Front door opened"
+        alertLevel="info"
+        raisedAt={ago(0.2)}
+        spaceName="Hallway"
+        now={now}
+        actionLabel="View"
+        onAction={() => {}}
+        onClose={() => {}}
+      />
+    </StackLayout>
+  );
+}
+```
+
+| `alertLevel` | Looks like                | Screen readers              |
+| ------------ | ------------------------- | --------------------------- |
+| `critical`   | Solid red, dark text      | Announced straight away     |
+| `warning`    | Light amber with a border | Announced straight away     |
+| `info`       | Light blue with a border  | Announced when they're idle |
+
+## Closing
+
+× is the Close Alert command. Only the Site's owner may close an Alert, so pass `onClose` only to them. For anyone the Site is shared with, leave it out and there is no ×:
+
+```jsx live
+<AlertBanner
+  title="Kitchen above 28 °C"
+  alertLevel="warning"
+  raisedAt={new Date(Date.now() - 15 * 60_000)}
+  spaceName="Kitchen"
+  actionLabel="View"
+  onAction={() => {}}
+/>
+```
+
+A closed Alert never comes back, but the problem can still be there: keep showing the Reading's State (for example with [`StateValue`](../readings/state-value.mdx)) until it ends.
+
+## Mapping your data
+
+| Prop         | Domain term                                                                  | Example            |
+| ------------ | ---------------------------------------------------------------------------- | ------------------ |
+| `title`      | What the [Alert Rule](/docs/domain-model/glossary#alerts) caught, your words | `"Smoke detected"` |
+| `alertLevel` | [Alert Level](/docs/domain-model/glossary#alerts)                            | `"critical"`       |
+| `raisedAt`   | When the Alert was raised                                                    | `2026-11-07T14:02` |
+| `spaceName`  | The [Space](/docs/domain-model/glossary#places) the Alert is about           | `"Kitchen"`        |
+| `onClose`    | The **Close Alert** command, for the Site's owner                            | `() => close(id)`  |
+
+## Props
+
+| Prop          | Type                                | Default         | Description                                                                     |
+| ------------- | ----------------------------------- | --------------- | ------------------------------------------------------------------------------- |
+| `title`       | `string`                            | –               | **Required.** What happened, in your app's words.                               |
+| `alertLevel`  | `"critical" \| "warning" \| "info"` | –               | **Required.** Decides the icon, the colours and how screen readers announce it. |
+| `raisedAt`    | `Date`                              | –               | **Required.** When the Alert was raised.                                        |
+| `spaceName`   | `string`                            | none            | Where the Alert is.                                                             |
+| `actionLabel` | `string`                            | none            | The action's text, e.g. "View". Shows only with `onAction`.                     |
+| `onAction`    | `() => void`                        | none            | Called when the action is clicked. Shows only with `actionLabel`.               |
+| `onClose`     | `() => void`                        | none            | Called when × is clicked. Left out, there is no ×.                              |
+| `closeLabel`  | `string`                            | `"Close alert"` | What screen readers say for ×.                                                  |
+| `now`         | `Date`                              | the clock       | The current time. Pass it to fix the text, e.g. in tests.                       |
+
+The type `AlertBannerProps` is exported too.
+
+## Long text
+
+The title and place wrap instead of being cut off. When there isn't room, the action moves under the text; × stays on the right.
+
+```jsx live
+<div style={{ maxWidth: 260 }}>
+  <AlertBanner
+    title="Carbon monoxide detected next to the boiler in the basement"
+    alertLevel="critical"
+    raisedAt={new Date(Date.now() - 60_000)}
+    spaceName="Basement utility room"
+    actionLabel="View"
+    onAction={() => {}}
+    onClose={() => {}}
+  />
+</div>
+```
+
+## Accessibility
+
+- Critical and Warning banners are announced as soon as they appear (`role="alert"`); Info waits until the screen reader is idle (`role="status"`).
+- The colour adds urgency, but the title always says what happened.
+- × has a label, "Close alert". Change it with `closeLabel` for other languages.
+- All text meets WCAG AA contrast on every level, including dark text on the red Critical banner.
+
+## Related components
+
+- [`AlertListItem`](../status/alert-list-item.mdx): every Alert, as list rows.
+- [`Badge`](./badge.mdx): how many Alerts are Active.
+- [`InlineMessage`](./inline-message.mdx): a message about what the app did.

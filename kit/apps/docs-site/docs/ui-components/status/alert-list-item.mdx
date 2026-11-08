@@ -1,0 +1,199 @@
+---
+sidebar_position: 5
+sidebar_label: AlertListItem
+description: One Alert as a List row, with its level, what happened, where, its status and when.
+---
+
+# AlertListItem
+
+One [Alert](/docs/domain-model/glossary#alerts) as a List row: its Alert Level, what happened, where, whether it is still Active, and when. Use it on an Alerts screen or in an Alerts section of a Space's page.
+
+```jsx live
+<List>
+  <AlertListItem
+    title="Smoke detected"
+    alertLevel="critical"
+    alertStatus="active"
+    raisedAt={new Date(Date.now() - 2 * 60_000)}
+    spaceName="Kitchen"
+  />
+</List>
+```
+
+## Import
+
+```tsx
+import { AlertListItem, List } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+An AlertListItem is a list row (`<li>`), so put it in a [`List`](../layout/list.mdx):
+
+```jsx live
+function Alerts() {
+  const now = new Date(2026, 10, 7, 14, 5);
+  const ago = (m) => new Date(now.getTime() - m * 60_000);
+  return (
+    <List>
+      <AlertListItem
+        title="Smoke detected"
+        alertLevel="critical"
+        alertStatus="active"
+        raisedAt={ago(2)}
+        spaceName="Kitchen"
+        now={now}
+        href="#smoke"
+      />
+      <AlertListItem
+        title="Kitchen above 28 °C"
+        alertLevel="warning"
+        alertStatus="active"
+        raisedAt={ago(15)}
+        spaceName="Kitchen"
+        now={now}
+        href="#temperature"
+      />
+      <AlertListItem
+        title="Front door opened"
+        alertLevel="info"
+        alertStatus="ended"
+        raisedAt={ago(70)}
+        endedAt={ago(60)}
+        spaceName="Hallway"
+        now={now}
+        href="#door"
+      />
+    </List>
+  );
+}
+```
+
+## When to use it
+
+Use it to list Alerts. For one urgent Alert at the top of a screen, use [`AlertBanner`](../feedback/alert-banner.mdx). For how many Alerts are Active, use a [`Badge`](../feedback/badge.mdx).
+
+## Variants
+
+| What you pass                                   | Icon                   | Status             |
+| ----------------------------------------------- | ---------------------- | ------------------ |
+| `alertStatus="active"`, `alertLevel="critical"` | Red error icon         | **Active** (red)   |
+| `alertStatus="active"`, `alertLevel="warning"`  | Amber warning icon     | **Active** (amber) |
+| `alertStatus="active"`, `alertLevel="info"`     | Blue info icon         | **Active** (blue)  |
+| `alertStatus="ended"`                           | The level's icon, grey | **Ended** (grey)   |
+| `alertStatus="closed"`                          | The level's icon, grey | **Closed** (grey)  |
+
+```jsx live
+function Variants() {
+  const now = new Date(2026, 10, 7, 14, 5);
+  const ago = (m) => new Date(now.getTime() - m * 60_000);
+  return (
+    <List>
+      <AlertListItem
+        title="CO detected"
+        alertLevel="critical"
+        alertStatus="active"
+        raisedAt={ago(1)}
+        spaceName="Basement"
+        now={now}
+      />
+      <AlertListItem
+        title="Bedroom above 26 °C"
+        alertLevel="warning"
+        alertStatus="active"
+        raisedAt={ago(30)}
+        spaceName="Bedroom"
+        now={now}
+      />
+      <AlertListItem
+        title="Motion in the hallway"
+        alertLevel="info"
+        alertStatus="active"
+        raisedAt={ago(0.2)}
+        spaceName="Hallway"
+        now={now}
+      />
+      <AlertListItem
+        title="Smoke detected"
+        alertLevel="critical"
+        alertStatus="ended"
+        raisedAt={ago(130)}
+        endedAt={ago(120)}
+        spaceName="Kitchen"
+        now={now}
+      />
+      <AlertListItem
+        title="Kitchen above 28 °C"
+        alertLevel="warning"
+        alertStatus="closed"
+        raisedAt={ago(26 * 60)}
+        endedAt={ago(25 * 60)}
+        spaceName="Kitchen"
+        now={now}
+      />
+    </List>
+  );
+}
+```
+
+The time shows when an Active Alert was raised, and when an Ended or Closed one ended.
+
+## Mapping your data
+
+| Prop          | Domain term                                                                  | Example            |
+| ------------- | ---------------------------------------------------------------------------- | ------------------ |
+| `title`       | What the [Alert Rule](/docs/domain-model/glossary#alerts) caught, your words | `"Smoke detected"` |
+| `alertLevel`  | [Alert Level](/docs/domain-model/glossary#alerts)                            | `"critical"`       |
+| `alertStatus` | [Alert Status](/docs/domain-model/glossary#alerts)                           | `"active"`         |
+| `raisedAt`    | When the Alert was raised                                                    | `2026-11-07T14:02` |
+| `endedAt`     | When it ended or was closed                                                  | `2026-11-07T14:10` |
+| `spaceName`   | The [Space](/docs/domain-model/glossary#places) the Alert is about           | `"Kitchen"`        |
+
+Write `title` the way your users talk: "Smoke detected", "Front door opened", "Kitchen above 28 °C". Order the list yourself: usually Active first, newest first.
+
+## Props
+
+| Prop          | Type                                | Default   | Description                                                                   |
+| ------------- | ----------------------------------- | --------- | ----------------------------------------------------------------------------- |
+| `title`       | `string`                            | –         | **Required.** What happened, in your app's words.                             |
+| `alertLevel`  | `"critical" \| "warning" \| "info"` | –         | **Required.** Decides the icon and, while Active, its colour.                 |
+| `alertStatus` | `"active" \| "ended" \| "closed"`   | –         | **Required.** Where the Alert is in its life.                                 |
+| `raisedAt`    | `Date`                              | –         | **Required.** When the Alert was raised.                                      |
+| `endedAt`     | `Date`                              | none      | When it ended or was closed. Falls back to `raisedAt`.                        |
+| `spaceName`   | `string`                            | none      | Where the Alert is. Leave it out when the screen is already about that place. |
+| `now`         | `Date`                              | the clock | The current time. Pass it to fix the text, e.g. in tests.                     |
+| `href`        | `string`                            | none      | Makes the row a link, e.g. to the Alert's screen.                             |
+| `onClick`     | `() => void`                        | none      | Makes the row a button. A row is a link or a button, not both.                |
+
+The type `AlertListItemProps` is exported too.
+
+## Long text
+
+The title and the place end with `…` when there isn't room. The status and time on the right never shrink.
+
+```jsx live
+<div style={{ maxWidth: 260 }}>
+  <List>
+    <AlertListItem
+      title="Carbon monoxide detected next to the boiler in the basement"
+      alertLevel="critical"
+      alertStatus="active"
+      raisedAt={new Date(Date.now() - 60_000)}
+      spaceName="Basement utility room by the garden stairs"
+    />
+  </List>
+</div>
+```
+
+## Accessibility
+
+- The level icon is announced ("Critical", "Warning", "Info"), because nothing else on the row says the level.
+- The status is a word, never only a colour.
+- A clickable row is one link or button, so screen readers announce the title once.
+
+## Related components
+
+- [`AlertRuleLabel`](../context/alert-rule-label.mdx): the Alert Rule behind an Alert, shown next to its Reading before anything happens.
+- [`Badge`](../feedback/badge.mdx): how many Alerts are Active.
+- [`DeviceListItem`](./device-list-item.mdx): the same kind of row for a Device.
+- [`StateValue`](../readings/state-value.mdx): the Reading's State in its Alert colours.

@@ -98,7 +98,9 @@ Target states:
 
 ```
 root               <div role="group">     card: background, outline, padding
-├── name           <span id>              Space name, names the group
+├── header         <div>                  name left, Badge right
+│   ├── name       <span id>              Space name, names the group
+│   └── Badge                             only when activeAlertCount > 0
 ├── faults         <ul>                   only when there are Faults
 │   └── fault      <li>                   DeviceFaultStatus
 └── readings       <ul>                   one row per Metric
@@ -121,7 +123,7 @@ The decisions behind them:
 - `readings` is a list with one row per Metric, not one prop per Metric, so the card works for any set of Metrics. The Metric is the row's React key, so each Metric appears once.
 - `connectionStatus` sits on each row, not on the card: a Space has no status, and its rows can come from different Modules.
 - Each item in `faults` is the same `faultCode` and `metric` that `DeviceFaultStatus` takes, passed on unchanged.
-- At least one row. A Space with no Paired Modules gets a message instead of the card (the user docs page says so; the renderer's `Notice` is planned).
+- At least one row. A Space with no Paired Modules gets an `EmptyState` from the parent instead of the card.
 
 ### Example values
 
@@ -176,3 +178,16 @@ As in `ModuleCard`, Figma draws the outline inside the card, so in CSS the paddi
 - **Heading.** Should the Space name be a heading? Same question as `ModuleCard`.
 - **Row height per state** (designer's call): loading and disconnected rows are 2px taller than connected rows (the `sm` icon is taller than the `sm` text), so the card grows 8px when four rows lose their values. `SensorReading` keeps one height in every state. **Accepted for now:** the code follows Figma. To change it, give `row` a fixed height in Figma and a `min-block-size` in CSS.
 - **Many Stale announcements.** Each Stale row has its own `role="status"`. If this is too noisy on a Site screen, the card could announce one summary instead.
+
+### State rows (Phase 2, 2026-11-07)
+
+- A row is a number row (unchanged) or a State row: `state`, optional `asset` (names the row with `AssetLabel`), `alertLevel`, and for Motion, Smoke and CO `detectedSince` / `lastDetectedAt` (the row then shows `DetectionStatus` instead of `StateValue`).
+- Row keys are the Metric plus the Asset's name, so several Contact rows (Front door, Hall window) work.
+- State rows centre the pill vertically (`data-kind="state"`), number rows keep baseline alignment.
+- Figma: the `SpaceCard with States` example (node `596:261`) shows the recipe: in a SpaceCard instance, swap the row's SensorLabel to AssetLabel, ReadingValue to StateValue or DetectionStatus, and hide the UnitLabel. The rows aren't components, so the component itself is unchanged.
+
+### Active Alerts Badge (Phase 2, 2026-11-07)
+
+- `activeAlertCount` and `highestAlertLevel`, the same props as `SpaceListItem`, show a `Badge` at the right of the name. 0 or unset shows nothing. The name shrinks, the Badge never does.
+- The Badge counts; the rows still show the Readings. The card doesn't list Alerts: that's `AlertListItem` on the Space's screen.
+- Figma: every variant has a `header` frame (name + Badge) and a boolean `hasAlerts` (default off). The Badge instance is exposed, so tone and count are set on the card instance. Examples: `Active Alerts` (2, Warning) and `LongText` (99+).

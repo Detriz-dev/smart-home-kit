@@ -1,0 +1,146 @@
+---
+sidebar_position: 5.6
+sidebar_label: AlertRuleLabel
+description: Shows an Alert Rule in a few words next to the Reading it watches, like Alert above 28 °C or Alert when Open.
+---
+
+# AlertRuleLabel
+
+Shows an [Alert Rule](/docs/domain-model/glossary#alerts) in a few words, next to the Reading it watches: "Alert above 28 °C" under a temperature, "Alert when Open" under a front door. People see what the app is watching for before anything happens.
+
+```jsx live
+<AlertRuleLabel
+  condition={{ metric: "temperature", comparison: "above", value: 28 }}
+  unit="celsius"
+/>
+```
+
+## Import
+
+```tsx
+import { AlertRuleLabel } from "@detriz-sh-kit/ui";
+```
+
+## Basic usage
+
+Put it under the Reading the rule checks, and pass the rule's `condition`:
+
+```jsx live
+<div style={{ display: "grid", gap: "var(--shk-space-2)", maxWidth: 200 }}>
+  <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
+  <AlertRuleLabel
+    condition={{ metric: "temperature", comparison: "above", value: 28 }}
+    unit="celsius"
+  />
+</div>
+```
+
+## When to use it
+
+You define Alert Rules in code. Showing them is **optional**: use AlertRuleLabel when knowing the limit helps people read the value.
+
+- **A limit people might not guess**: "Alert above 28 °C" on a server room, "Alert below 30 %RH" on a humidity Sensor.
+- **A State that isn't obvious**: "Alert when On" for an iron, "Alert when Open" for a door at night.
+
+Leave it out when the rule goes without saying, like Smoke or CO (their Built-in Alert Rule raises a Critical Alert when they detect anything).
+
+Don't use it for:
+
+- **An Alert that is happening.** Use [`AlertBanner`](../feedback/alert-banner.mdx) or [`AlertListItem`](../status/alert-list-item.mdx). A rule is a setting, not an Alert, so the label stays grey and never shows the Alert Level's colour.
+
+## Variants
+
+### Kinds of rules
+
+The text follows from the condition, the same two kinds as an [Alert Rule](/docs/domain-model/glossary#alerts):
+
+| Condition                     | Text               | Needs `unit` |
+| ----------------------------- | ------------------ | ------------ |
+| Above a value (Measured)      | Alert above 28 °C  | Yes          |
+| Below a value (Measured)      | Alert below 30 %RH | Yes          |
+| In a State (Two-state Metric) | Alert when Open    | No           |
+
+```jsx live
+<StackLayout gap="sm">
+  <AlertRuleLabel
+    condition={{ metric: "temperature", comparison: "above", value: 28 }}
+    unit="celsius"
+  />
+  <AlertRuleLabel
+    condition={{ metric: "humidity", comparison: "below", value: 30 }}
+    unit="percent-rh"
+  />
+  <AlertRuleLabel condition={{ metric: "contact", state: "open" }} />
+  <AlertRuleLabel condition={{ metric: "power", state: "on" }} />
+</StackLayout>
+```
+
+### Sizes
+
+The default is `xs`.
+
+| `size` | Text | Icon | Use it when                        |
+| ------ | ---- | ---- | ---------------------------------- |
+| `xs`   | 12px | 16px | Under a Reading on a card. Default |
+| `sm`   | 14px | 20px | A Sensor's own screen.             |
+
+```jsx live
+<StackLayout gap="sm">
+  <AlertRuleLabel
+    condition={{ metric: "co2", comparison: "above", value: 1000 }}
+    unit="ppm"
+    size="xs"
+  />
+  <AlertRuleLabel
+    condition={{ metric: "co2", comparison: "above", value: 1000 }}
+    unit="ppm"
+    size="sm"
+  />
+</StackLayout>
+```
+
+## Mapping your data
+
+| Prop        | Domain term                                                      | Example          |
+| ----------- | ---------------------------------------------------------------- | ---------------- |
+| `condition` | the [Alert Rule](/docs/domain-model/glossary#alerts)'s condition | `rule.condition` |
+| `unit`      | [Unit](/docs/domain-model/glossary) of the Reading               | `"celsius"`      |
+
+- **Pass `rule.condition`**, not the whole rule. The Alert Level isn't shown.
+- **Use the same Unit as the Reading next to it.** Thresholds are stored in the Metric's standard Unit (°C for Temperature). If you show °F, convert the value first, like you do for the Reading.
+- **TypeScript checks the pairing.** A threshold needs a `unit`; a State rule takes none, and only the Metric's own States (a Power rule can't use `open`).
+
+## Props
+
+| Prop        | Type                                                     | Default | Description                                                                      |
+| ----------- | -------------------------------------------------------- | ------- | -------------------------------------------------------------------------------- |
+| `condition` | `AlertRuleThresholdCondition \| AlertRuleStateCondition` | –       | **Required.** What raises the Alert, usually `rule.condition`.                   |
+| `unit`      | `UnitLabelUnit`                                          | –       | **Required for a threshold**, not allowed for a State. The Unit after the value. |
+| `size`      | `"xs" \| "sm"`                                           | `"xs"`  | How big the label is drawn.                                                      |
+
+The types `AlertRuleLabelProps` and `AlertRuleLabelSize` are exported too.
+
+## Long text
+
+The rule wraps onto a second line instead of being cut off, because "Alert above 1,0…" would say the wrong thing.
+
+```jsx live
+<div style={{ maxWidth: 120 }}>
+  <AlertRuleLabel
+    condition={{ metric: "pm25", comparison: "above", value: 1000 }}
+    unit="ug-m3"
+  />
+</div>
+```
+
+## Accessibility
+
+- The bell icon is hidden from screen readers: the text starts with "Alert".
+- Units are read by their full name: "Alert above 28 degrees Celsius".
+- AlertRuleLabel is a plain `<span>`, read in order after the Reading.
+
+## Related components
+
+- [`SensorReading`](../readings/sensor-reading.mdx) and [`SensorState`](../readings/sensor-state.mdx): the Reading to put it under.
+- [`AlertListItem`](../status/alert-list-item.mdx) and [`AlertBanner`](../feedback/alert-banner.mdx): the Alerts a rule raises.
+- [`UnitLabel`](../readings/unit-label.mdx): the same Unit symbols.

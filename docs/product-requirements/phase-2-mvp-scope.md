@@ -142,7 +142,7 @@ Decided on 2026-11-07. The new terms are in the [Glossary](/kit/apps/docs-site/d
 4. **Every Module sends its current Readings at least once per Expected Interval**, even when nothing has changed. A closed door still reports Closed, and a Smoke Sensor still reports Clear. Silence always means a problem, so Stale keeps its meaning.
 5. **Mapping a Site is display only.** The developer builds Sites, Floors and Spaces in code. No forms and no new commands for creating or editing places in the MVP.
 6. **MVP Metrics:** Power, Contact (door/window), Motion, Smoke and CO, next to the existing six Measured Metrics.
-7. **Power is about an Asset.** A new Asset Type, **Appliance**, so the app shows "Washing machine On" with its own icon. Contact is about a Door or Window Asset; Motion, Smoke and CO are about the Space.
+7. ✅ Figma, Storybook and docs alongside each step; example screens last: **Site overview** and **Space detail** (Kitchen), with the same sample Site ("My flat"), in Storybook (`Examples/Screens`, `kit/packages/ui/src/examples/`) and on the Figma `Example Screens` page. An Alerts screen and an empty Site were left out for now.
 
 ### Still open
 
@@ -152,10 +152,10 @@ Nothing open right now. New questions go here.
 
 1. ✅ Update the Glossary, Data model and Events and commands.
 2. ✅ Add shared types, icons and tokens, in code and Figma (`state` collection, 5 Metric icons, `SensorLabel / Metrics` frame).
-3. Build the small parts: `StateValue`, `DetectionStatus`, `RelativeTime`, `AssetLabel`, `Badge`.
-4. Update `ModuleCard` and `SpaceCard`; build `SensorState`.
-5. Build alerts: `AlertListItem`, `AlertBanner`, and a way to show an Alert Rule next to a Reading.
-6. Build Site display: `SpaceListItem`, `FloorSection`, `EmptyState`.
+3. Build the small parts: ✅ `StateValue`, ✅ `DetectionStatus` (State + since when), ✅ `RelativeTime`, ✅ `AssetLabel`, ✅ `Badge` (all in Figma, code and docs).
+4. ✅ Update `ModuleCard` and `SpaceCard` (State Sensors and rows, in code, Figma examples and docs); build `SensorState`.
+5. ✅ Build alerts: `AlertListItem`, `AlertBanner`, and `AlertRuleLabel` to show an Alert Rule next to a Reading.
+6. ✅ Build Site display: `SpaceListItem`, `FloorSection`, `EmptyState`.
 7. Figma, Storybook and docs alongside each step; example screens last.
 
 ## Left over from Phase 1

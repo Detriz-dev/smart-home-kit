@@ -24,6 +24,11 @@ const SETTINGS: BottomNavItem = {
   icon: "settings",
   href: "#/settings",
 };
+const ALERTS: BottomNavItem = {
+  label: "Alerts",
+  icon: "notifications_active",
+  href: "#/alerts",
+};
 const current = (item: BottomNavItem) => ({ ...item, isCurrent: true });
 
 // Where the component appears in Storybook's sidebar, and the props every story starts with.
@@ -68,6 +73,21 @@ export const ThreeItems: Story = {
 // Five sections, the most a phone has room for. History current.
 export const FiveItems: Story = {
   args: { items: [HOME, SPACES, DEVICES, current(HISTORY), SETTINGS] },
+};
+
+// A Badge on the Alerts tab: 3 Active Alerts, the highest Critical. A count of 0 shows nothing.
+export const WithBadge: Story = {
+  args: {
+    items: [
+      current(HOME),
+      SPACES,
+      {
+        ...ALERTS,
+        badge: { count: 3, label: "3 active Alerts", tone: "critical" },
+      },
+      SETTINGS,
+    ],
+  },
 };
 
 // Stress story: five items with long labels in 320px. Labels end with "…"; icons stay whole.

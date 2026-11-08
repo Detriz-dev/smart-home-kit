@@ -77,7 +77,8 @@ root (nav)                 the bar: background, line above
             ├── bar        current only: on the item's top edge (code: ::before)
             ├── indicator  the icon's area, 56 × 32px
             │   └── icon   24px, decorative
-            └── label      one line, ends with "…"
+            ├── label      one line, ends with "…"
+            └── badge      optional Badge, drawn on the icon's top-right corner
 ```
 
 1. **root**: fills its parent's width, at least 64px tall.
@@ -96,12 +97,13 @@ root (nav)                 the bar: background, line above
 
 `BottomNavItem`:
 
-| Field       | Type       | Required | Description                                                                |
-| ----------- | ---------- | -------- | -------------------------------------------------------------------------- |
-| `label`     | `string`   | yes      | The section's name, e.g. "Devices". Short: one word if you can.            |
-| `icon`      | `IconName` | yes      | The section's icon, e.g. `sensors`.                                        |
-| `href`      | `string`   | yes      | Where the section is, e.g. `/devices`. Uses `LinkProvider`.                |
-| `isCurrent` | `boolean`  | no       | True for the section the person is in. Exactly one item should be current. |
+| Field       | Type         | Required | Description                                                                |
+| ----------- | ------------ | -------- | -------------------------------------------------------------------------- |
+| `label`     | `string`     | yes      | The section's name, e.g. "Devices". Short: one word if you can.            |
+| `icon`      | `IconName`   | yes      | The section's icon, e.g. `sensors`.                                        |
+| `href`      | `string`     | yes      | Where the section is, e.g. `/devices`. Uses `LinkProvider`.                |
+| `isCurrent` | `boolean`    | no       | True for the section the person is in. Exactly one item should be current. |
+| `badge`     | `BadgeProps` | no       | A count on the icon's corner, e.g. Active Alerts on the Alerts tab.        |
 
 Decisions behind them:
 
@@ -153,4 +155,10 @@ Decisions behind them:
 ### Open questions
 
 - **Counts on items** (Faults on Devices) need the planned `FaultCount`.
+
+### Badge (Phase 2, 2026-11-07)
+
+- `badge` on an item takes `BadgeProps` as they are, so the app sets the count, label and tone; a count of 0 shows nothing.
+- In code the Badge comes **after** the label, so screen readers hear "Alerts, 3 active Alerts"; CSS places it on the icon's corner (absolute, 8px from the top, 4px left of the icon's right edge).
+- Figma: `.BottomNavItem` has a boolean `hasBadge` (default off) and an exposed `Badge` instance (absolute, inside `indicator`) to set its tone and count. The `With Badge` example in the `in a bar` frame shows an Alerts tab with 3 Critical.
 - **Hiding labels** on very small screens: not in v1. Labels make the icons clear.

@@ -205,6 +205,23 @@ A Fault isn't a state of its own: a Module can be Connected **and** have Faults.
 
 Faults stay on the card when the Module is Disconnected: a Fault lasts until the Module reports it cleared.
 
+## Sensors with States
+
+A Sensor can also have two States: Power, Contact, Motion, Smoke or CO. Pass `state` instead of `value` and `unit`, and the Sensor shows as a [`SensorState`](./sensor-state.mdx). Pass `alertLevel` when it has an Active Alert, and `asset` to name it after the thing it watches.
+
+```jsx live
+<ModuleCard
+  name="Kitchen safety"
+  connectionStatus="connected"
+  sensors={[
+    { metric: "smoke", state: "clear" },
+    { metric: "co", state: "detected", alertLevel: "critical" },
+  ]}
+/>
+```
+
+The Module's Connection Status still applies: when it's Disconnected, the States are hidden too.
+
 ## Mapping your data
 
 | Prop               | Comes from                                                                      | Example                                            |
@@ -214,7 +231,7 @@ Faults stay on the card when the Module is Disconnected: a Fault lasts until the
 | `faults`           | The Module's current [Faults](/docs/domain-model/glossary#fault)                | `[{ faultCode: "sensor_failure", metric: "co2" }]` |
 | `sensors`          | The Module's Sensors, each with its Metric and its latest Reading               | see below                                          |
 
-Each item in `sensors` has the same fields as [`SensorReading`](./sensor-reading.mdx#mapping-your-data):
+Each item in `sensors` is a number Sensor, with the same fields as [`SensorReading`](./sensor-reading.mdx#mapping-your-data), or a State Sensor, with the same fields as [`SensorState`](./sensor-state.mdx#mapping-your-data) (`metric`, `state`, and optionally `asset` and `alertLevel`). A number Sensor has:
 
 | Field            | Comes from                                                      | Example         |
 | ---------------- | --------------------------------------------------------------- | --------------- |
@@ -243,7 +260,9 @@ A few rules:
 | `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** The Module's current Connection Status.                                                      |
 | `faults`           | `DeviceFaultStatusProps[]`                                 | `[]`    | The Module's current Faults, one per Fault Code. Leave it out, or pass an empty list, when there are none. |
 
-`ModuleCardSensor`:
+`ModuleCardSensor` is a `ModuleCardMeasuredSensor` (below) or a `ModuleCardStateSensor` (`metric` and `state` of a Two-state Metric, optional `asset` and `alertLevel`, as in [`SensorState`](./sensor-state.mdx#props)).
+
+`ModuleCardMeasuredSensor`:
 
 | Field            | Type                                                | Default | Description                                                                                  |
 | ---------------- | --------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
@@ -252,7 +271,7 @@ A few rules:
 | `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)    | –       | **Required.** The Unit to show. You pick it, so you can choose the display Unit (°C or °F).  |
 | `fractionDigits` | `number`                                            | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                   |
 
-The types `ModuleCardProps` and `ModuleCardSensor` are exported too:
+The types `ModuleCardProps`, `ModuleCardSensor`, `ModuleCardMeasuredSensor` and `ModuleCardStateSensor` are exported too:
 
 ```tsx
 import type { ModuleCardProps, ModuleCardSensor } from "@detriz-sh-kit/ui";

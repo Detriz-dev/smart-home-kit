@@ -1,0 +1,30 @@
+@layer detriz {
+  /* The State pill and the time in one row, centred. In a narrow parent the time wraps under
+     the pill instead of being shortened. */
+  .root {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: var(--shk-space-2);
+    row-gap: var(--shk-space-1);
+  }
+
+  /* "since", "Last:" and "None yet", in the same style as RelativeTime: caption (md) or body-sm (lg). */
+  .time {
+    color: var(--shk-color-text-secondary);
+    font-family: var(--shk-typography-caption-font-family);
+    font-size: var(--shk-typography-caption-font-size);
+    font-weight: var(--shk-typography-caption-font-weight);
+    line-height: var(--shk-typography-caption-line-height);
+    letter-spacing: var(--shk-typography-caption-letter-spacing);
+    white-space: nowrap;
+  }
+
+  .time[data-size="lg"] {
+    font-family: var(--shk-typography-body-sm-font-family);
+    font-size: var(--shk-typography-body-sm-font-size);
+    font-weight: var(--shk-typography-body-sm-font-weight);
+    line-height: var(--shk-typography-body-sm-line-height);
+    letter-spacing: var(--shk-typography-body-sm-letter-spacing);
+  }
+}
