@@ -19,23 +19,25 @@
 
 ## Phase 2 — MVP (minimum viable product)
 
-**Goal:** give designers and developers the tools to build the frontend of a smart home app: map a Site, then show Readings, detections and whether things are on or off.
+**Goal:** give designers and developers the tools to build the frontend of a smart home app: map a Site, show Readings, detections and whether things are on or off, and control Devices (turn on or off, open or close, set a value, start or stop a task).
 
-**Scope:** frontend only: UI components in React and Figma, plus the docs and Storybook that explain them. Components take their data as props, so they work with any data source. The components cover three kinds of information:
+**Scope:** frontend only: UI components in React and Figma, plus the docs and Storybook that explain them. Components take their data as props, so they work with any data source. The components cover four kinds of information:
 
 - **Readings** — measured values, such as temperature, humidity and air quality (CO₂, VOC, PM2.5).
 - **On/off states** — whether something is on or off, or open or closed, such as electricity or a window.
 - **Detections** — something was detected, such as motion, smoke or carbon monoxide, which raises an alert.
+- **Controls** — changing a Device: turning a socket on or off, opening blinds, setting the heating to 22 °C, starting or stopping a kettle. Each Device allows only the commands it supports. See [ADR 0002](../adr/0002-devices-and-capabilities.md).
 
 The API, the API Simulator, the client, real hardware, camera video, the MCP server and Generative UI come in later phases.
 
 #### Deliverables
 
-1. **Domain model v2** — adds the new concepts to the Glossary: on/off states, detections and alerts. It is updated first, because components, props and UI copy use its terms.
+1. **Domain model v2** — adds the new concepts to the Glossary: on/off states, detections and alerts, then Devices and Capabilities (Standalone Devices, Sensors and Controls, Operational State). It is updated first, because components, props and UI copy use its terms.
 2. **UI packages v2** — new and improved React components for:
-   - mapping a Site: Floors, Spaces and the Modules in each Space;
+   - mapping a Site: Floors, Spaces and the Devices in each Space;
    - showing Readings, on/off states and detections;
-   - showing alerts when something is detected;
+   - showing alerts when something is detected, and the Alert Rules behind them;
+   - controlling Devices: on/off, open/close, picking a mode, setting a value, and starting, pausing or stopping a task, with a pending and failed state for every command;
    - the Connection Status states (Connected, Stale, Disconnected) and Fault.
 3. **Figma library v2** — the same new and updated components in Figma, kept in sync with the React components.
 4. **Storybook and developer documentation** — the new components in Storybook, and a docs page for each one.
@@ -50,3 +52,4 @@ Not planned yet. Candidates moved here from earlier versions of the roadmap:
 - **Real hardware** — Raspberry Pi Hub software that reads real Sensors and serves the same API as the simulator.
 - **Camera** — a live camera view, next to motion detection.
 - **MCP server and Generative UI** — so AI tools can build UIs with the kit, and apps can build screens from a plain-language request.
+- **More Controls and pairing** — left out of the MVP by ADR 0002: blind Tilt, heating Cool and Auto, pairing screens (Start Search, Device Token), setup codes (QR, Matter) and account linking with manufacturers' clouds.

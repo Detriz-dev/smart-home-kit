@@ -19,4 +19,10 @@ export const METRIC_NAMES: Record<
   motion: { label: "Motion" },
   smoke: { label: "Smoke" },
   co: { label: "CO", spokenName: "carbon monoxide" },
+  battery: { label: "Battery" },
+  setpoint: { label: "Setpoint" },
+  position: { label: "Position" },
+  "open-close": { label: "Open / Close", spokenName: "open or close" },
+  mode: { label: "Mode" },
+  "operational-state": { label: "Operational State" },
 };

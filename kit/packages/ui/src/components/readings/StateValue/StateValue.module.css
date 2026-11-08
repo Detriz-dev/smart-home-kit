@@ -28,7 +28,10 @@
     color: var(--shk-state-active-fg);
   }
 
-  .root[data-state="alert-critical"] {
+  /* Operational State Error uses the same red as a Critical Alert and DeviceFaultStatus: something is wrong.
+     The error icon and the word "Error" tell it apart from an Alert. */
+  .root[data-state="alert-critical"],
+  .root[data-state="error"] {
     background: var(--shk-status-danger-bg);
     color: var(--shk-status-danger-fg);
   }

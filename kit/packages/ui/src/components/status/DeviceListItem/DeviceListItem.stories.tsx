@@ -94,9 +94,14 @@ export const Fault: Story = {
   },
 };
 
-// A Hub: the router icon. A Hub is never Stale.
+// A Hub: the router icon. A Hub without Capabilities is never Stale.
 export const Hub: Story = {
   args: { name: "Kitchen Hub", deviceKind: "hub", spaceName: "Kitchen" },
+};
+
+// A Standalone Device: connects directly, without a Hub. The devices icon.
+export const Standalone: Story = {
+  args: { name: "Kettle", deviceKind: "standalone", spaceName: "Kitchen" },
 };
 
 // Clickable: opens the Device's own screen. "#" keeps Storybook on the same page.

@@ -18,14 +18,22 @@ import type { BottomNavItem } from "../components/navigation/BottomNav";
 import { TopBar } from "../components/navigation/TopBar";
 import { SensorReading } from "../components/readings/SensorReading";
 import { SensorState } from "../components/readings/SensorState";
+import { OpenCloseControl } from "../components/controls/OpenCloseControl";
+import { OperationalStateControl } from "../components/controls/OperationalStateControl";
+import { PowerControl } from "../components/controls/PowerControl";
+import { StateSelectControl } from "../components/controls/StateSelectControl";
+import { ValueControl } from "../components/controls/ValueControl";
+import { DeviceCard } from "../components/readings/DeviceCard";
 import { AlertListItem } from "../components/status/AlertListItem";
 import { DeviceListItem } from "../components/status/DeviceListItem";
 
 /*
  * Example screens: whole phone screens built only from kit components, to show they work together.
- * Not part of the kit's API (not exported). One sample Site, "My flat", shared by both screens, so
+ * Not part of the kit's API (not exported). One sample Site, "My flat", shared by every screen, so
  * the numbers match: 2 Active Alerts in the Site (Smoke in the Kitchen, Critical; too warm in the
- * Living room, Warning). The Figma "Example Screens" page shows the same screens with the same data.
+ * Living room, Warning). Each Space with Sensors has a Raspberry Pi Hub; Device counts include it.
+ * The Kitchen also has a kettle, and the Living room heating, blinds, a power strip and a wireless
+ * Motion Module (ADR 0002). The Figma "Example Screens" page shows the same screens with the same data.
  */
 
 // A fixed "now" (7 Nov 2026, 14:05), so times always read the same.
@@ -120,7 +128,7 @@ export const SiteOverview: Story = {
             <SpaceListItem
               name="Kitchen"
               spaceType="kitchen"
-              moduleCount={4}
+              deviceCount={6}
               activeAlertCount={1}
               highestAlertLevel="critical"
               href="#/spaces/kitchen"
@@ -128,7 +136,7 @@ export const SiteOverview: Story = {
             <SpaceListItem
               name="Living room"
               spaceType="living-room"
-              moduleCount={3}
+              deviceCount={5}
               activeAlertCount={1}
               highestAlertLevel="warning"
               href="#/spaces/living-room"
@@ -136,7 +144,7 @@ export const SiteOverview: Story = {
             <SpaceListItem
               name="Hallway"
               spaceType="hallway"
-              moduleCount={2}
+              deviceCount={3}
               href="#/spaces/hallway"
             />
           </List>
@@ -146,19 +154,19 @@ export const SiteOverview: Story = {
             <SpaceListItem
               name="Bedroom"
               spaceType="bedroom"
-              moduleCount={2}
+              deviceCount={3}
               href="#/spaces/bedroom"
             />
             <SpaceListItem
               name="Bathroom"
               spaceType="bathroom"
-              moduleCount={1}
+              deviceCount={2}
               href="#/spaces/bathroom"
             />
             <SpaceListItem
               name="Office"
               spaceType="office"
-              moduleCount={2}
+              deviceCount={3}
               href="#/spaces/office"
             />
           </List>
@@ -168,7 +176,7 @@ export const SiteOverview: Story = {
   ),
 };
 
-// One Space: its Readings (with the Alert Rules worth showing), its Alerts and its Modules.
+// One Space: its Readings (with the Alert Rules worth showing), its Alerts, the kettle and its Devices.
 export const SpaceDetail: Story = {
   render: () => (
     <PhoneScreen
@@ -254,8 +262,30 @@ export const SpaceDetail: Story = {
             />
           </List>
         </ContentSection>
-        <ContentSection title="Modules" headingLevel={2}>
-          <List label="Modules in the Kitchen">
+        <ContentSection title="Controls" headingLevel={2}>
+          <DeviceCard
+            name="Kitchen kettle"
+            connectionStatus="connected"
+            controls={
+              <OperationalStateControl
+                name="Kettle"
+                state="running"
+                phase="Heating"
+                allowedCommands={["start", "stop"]}
+                onCommand={() => {}}
+              />
+            }
+          />
+        </ContentSection>
+        <ContentSection title="Devices" headingLevel={2}>
+          <List label="Devices in the Kitchen">
+            <DeviceListItem
+              name="Kitchen Hub"
+              deviceKind="hub"
+              pairingStatus="paired"
+              connectionStatus="connected"
+              href="#/devices/kitchen-hub"
+            />
             <DeviceListItem
               name="Smoke Module"
               deviceKind="module"
@@ -283,6 +313,185 @@ export const SpaceDetail: Story = {
               pairingStatus="paired"
               connectionStatus="connected"
               href="#/devices/power"
+            />
+            <DeviceListItem
+              name="Kitchen kettle"
+              deviceKind="standalone"
+              pairingStatus="paired"
+              connectionStatus="connected"
+              href="#/devices/kettle"
+            />
+          </List>
+        </ContentSection>
+      </StackLayout>
+    </PhoneScreen>
+  ),
+};
+
+// The Living room: too warm in the afternoon sun. The heating is Off, the blinds are closing,
+// and the comfort range is two Alert Rules (below 18 °C, above 26 °C). Devices connected directly
+// (heating, blinds, power strip) and a wireless Motion Module through the Living room Hub.
+export const LivingRoomDetail: Story = {
+  render: () => (
+    <PhoneScreen
+      top={
+        <TopBar
+          title="Living room"
+          icon={SPACE_TYPE_ICONS["living-room"]}
+          backHref="#/"
+          backLabel="Back to My flat"
+        />
+      }
+      bottom={<BottomNav items={nav("spaces")} />}
+    >
+      <StackLayout gap="lg">
+        <AlertBanner
+          title="Too warm"
+          alertLevel="warning"
+          raisedAt={minutesAgo(25)}
+          now={NOW}
+          onClose={() => {}}
+        />
+        <ContentSection title="Readings" headingLevel={2}>
+          <StackLayout gap="sm">
+            <SensorReading
+              metric="temperature"
+              value={26.8}
+              unit="celsius"
+              size="md"
+            />
+            <AlertRuleLabel
+              condition={{
+                metric: "temperature",
+                comparison: "below",
+                value: 18,
+              }}
+              unit="celsius"
+            />
+            <AlertRuleLabel
+              condition={{
+                metric: "temperature",
+                comparison: "above",
+                value: 26,
+              }}
+              unit="celsius"
+            />
+          </StackLayout>
+        </ContentSection>
+        <ContentSection title="Controls" headingLevel={2}>
+          <StackLayout gap="md">
+            <DeviceCard
+              name="Living room heating"
+              connectionStatus="connected"
+              controls={
+                <>
+                  <ValueControl
+                    name="Setpoint"
+                    value={21}
+                    unit="celsius"
+                    min={0}
+                    max={30}
+                    step={0.5}
+                    fractionDigits={1}
+                    onCommit={() => {}}
+                  />
+                  <StateSelectControl
+                    name="Mode"
+                    metric="mode"
+                    state="off"
+                    onSelect={() => {}}
+                  />
+                </>
+              }
+            />
+            <DeviceCard
+              name="Living room blinds"
+              connectionStatus="connected"
+              controls={
+                <>
+                  <OpenCloseControl
+                    name="Blinds"
+                    state="closing"
+                    allowedCommands={["open", "stop", "close"]}
+                    onCommand={() => {}}
+                  />
+                  <ValueControl
+                    name="Position"
+                    value={40}
+                    unit="percent"
+                    min={0}
+                    max={100}
+                    step={1}
+                    input="slider"
+                    onCommit={() => {}}
+                  />
+                </>
+              }
+            />
+            <DeviceCard
+              name="Power strip"
+              connectionStatus="connected"
+              controls={
+                <>
+                  <PowerControl
+                    name="TV"
+                    state="on"
+                    allowedCommands={["turn-on", "turn-off"]}
+                    onCommand={() => {}}
+                  />
+                  <PowerControl
+                    name="Floor lamp"
+                    state="off"
+                    allowedCommands={["turn-on", "turn-off"]}
+                    onCommand={() => {}}
+                  />
+                  <PowerControl
+                    name="Router"
+                    state="on"
+                    allowedCommands={["turn-on", "turn-off"]}
+                    onCommand={() => {}}
+                  />
+                </>
+              }
+            />
+          </StackLayout>
+        </ContentSection>
+        <ContentSection title="Devices" headingLevel={2}>
+          <List label="Devices in the Living room">
+            <DeviceListItem
+              name="Living room Hub"
+              deviceKind="hub"
+              pairingStatus="paired"
+              connectionStatus="connected"
+              href="#/devices/living-room-hub"
+            />
+            <DeviceListItem
+              name="Motion Module"
+              deviceKind="module"
+              pairingStatus="paired"
+              connectionStatus="connected"
+              href="#/devices/motion"
+            />
+            <DeviceListItem
+              name="Living room heating"
+              deviceKind="standalone"
+              pairingStatus="paired"
+              connectionStatus="connected"
+              href="#/devices/heating"
+            />
+            <DeviceListItem
+              name="Living room blinds"
+              deviceKind="standalone"
+              pairingStatus="paired"
+              connectionStatus="connected"
+              href="#/devices/blinds"
+            />
+            <DeviceListItem
+              name="Power strip"
+              deviceKind="standalone"
+              pairingStatus="paired"
+              connectionStatus="connected"
+              href="#/devices/power-strip"
             />
           </List>
         </ContentSection>

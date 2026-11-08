@@ -29,7 +29,7 @@ export const CalibrationRequired: Story = {
   args: { faultCode: "calibration_required" },
 };
 
-// Stress story: the longest message in a ModuleCard column.
+// Stress story: the longest message in a DeviceCard column.
 // The dashed box is the container: the message wraps and the icon stays beside the first line.
 export const LongText: Story = {
   args: { faultCode: "calibration_required", metric: "illuminance" },

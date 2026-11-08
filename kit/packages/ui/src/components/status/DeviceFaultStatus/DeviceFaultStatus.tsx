@@ -1,30 +1,16 @@
 import { Icon } from "../../../icons/Icon";
 import { READING_STATUS_ICONS } from "../../../icons/purposeIcons";
+import { FAULT_NAMES } from "../../../utils/faultNames";
 import { METRIC_NAMES } from "../../../utils/metricNames";
 import styles from "./DeviceFaultStatus.module.css";
-import type {
-  DeviceFaultStatusProps,
-  FaultCode,
-} from "./DeviceFaultStatus.types";
-
-/** The message for each Fault Code: on its own, and the part that follows a Metric's name. */
-const MESSAGES: Record<FaultCode, { alone: string; afterMetric: string }> = {
-  sensor_failure: {
-    alone: "Sensor failure",
-    afterMetric: "sensor failure",
-  },
-  calibration_required: {
-    alone: "Calibration required",
-    afterMetric: "sensor calibration required",
-  },
-};
+import type { DeviceFaultStatusProps } from "./DeviceFaultStatus.types";
 
 /** Shows a Device's Fault: a danger icon and a short message. Takes props only, never fetches data. */
 export function DeviceFaultStatus({
   faultCode,
   metric,
 }: DeviceFaultStatusProps) {
-  const { alone, afterMetric } = MESSAGES[faultCode];
+  const { alone, afterMetric } = FAULT_NAMES[faultCode];
   const names = metric ? METRIC_NAMES[metric] : undefined;
   const message = names ? `${names.label} ${afterMetric}` : alone;
 

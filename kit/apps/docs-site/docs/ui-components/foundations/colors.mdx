@@ -36,15 +36,15 @@ So to change what "main text" looks like everywhere, you point one semantic colo
 
 The colors live in six Figma collections. The CSS name is the collection, then the variable's name, with `/` turned into `-` and `--shk-` in front:
 
-| Figma collection | CSS variables          | Colors | What's in it                                                 |
-| ---------------- | ---------------------- | ------ | ------------------------------------------------------------ |
-| `palette`        | `--shk-palette-*`      | 57     | Raw colors: five hues in 11 steps, plus white and black      |
-| `color-text`     | `--shk-color-text-*`   | 4      | Text                                                         |
-| `surface`        | `--shk-surface-*`      | 3      | Backgrounds of pages and cards                               |
-| `color-border`   | `--shk-color-border-*` | 1      | Outlines                                                     |
-| `status`         | `--shk-status-*`       | 25     | Device Status and messages: five roles, five parts each      |
-| `action`         | `--shk-action-*`       | 13     | Buttons and other things you click, with hover and pressed   |
-| `state`          | `--shk-state-*`        | 8      | Two-state Readings: active (On, Open, Detected) and inactive |
+| Figma collection | CSS variables          | Colors | What's in it                                                                              |
+| ---------------- | ---------------------- | ------ | ----------------------------------------------------------------------------------------- |
+| `palette`        | `--shk-palette-*`      | 57     | Raw colors: five hues in 11 steps, plus white and black                                   |
+| `color-text`     | `--shk-color-text-*`   | 4      | Text                                                                                      |
+| `surface`        | `--shk-surface-*`      | 3      | Backgrounds of pages and cards                                                            |
+| `color-border`   | `--shk-color-border-*` | 1      | Outlines                                                                                  |
+| `status`         | `--shk-status-*`       | 25     | Device Status and messages: five roles, five parts each                                   |
+| `action`         | `--shk-action-*`       | 13     | Buttons and other things you click, with hover and pressed                                |
+| `state`          | `--shk-state-*`        | 8      | State Readings: active (On, Open, Opening, Closing, Heat, Running, Detected) and inactive |
 
 ## In Figma
 
@@ -112,7 +112,7 @@ Disconnected uses `neutral`, not `danger`. Red is kept for Faults, so "unplugged
 
 ## State
 
-Colors for the [States](/docs/domain-model/glossary#measurements) of Two-state Metrics. **Active** is On, Open or Detected; **inactive** is Off, Closed or Clear. [`StateValue`](../readings/state-value.mdx) uses them.
+Colors for the [States](/docs/domain-model/glossary#measurements) of State Metrics. **Active** is On, Open, Opening, Closing, Heat, Running or Detected; **inactive** is Off, Closed, Stopped, Paused or Clear. Operational State Error uses the `status/danger` colours instead. [`StateValue`](../readings/state-value.mdx) uses them.
 
 Active is blue, not green: On isn't good or bad, it's just on. A Detected Reading that raises an [Alert](/docs/domain-model/glossary#alerts) uses the Status colors of its Alert Level instead: `danger` for Critical, `warning` for Warning and `progress` for Info.
 

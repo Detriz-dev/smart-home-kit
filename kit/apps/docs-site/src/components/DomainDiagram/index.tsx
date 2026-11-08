@@ -5,7 +5,7 @@ import styles from "./styles.module.css";
 // A small UML-style picture of part of the Data model, for the landing page's "Domain model" card.
 // Design: Figma "SHK – Landing", node 70:501 (components "Domain class" 67:263 and
 // "Domain association" 67:268).
-// It shows the part of the model behind the landing page's ModuleCard example:
+// It shows the part of the model behind the landing page's DeviceCard example:
 // Module → Sensor → Reading, and under each one the list of values its field can take.
 // The values the example uses are highlighted, so the three cards tell the same story.
 

@@ -1,7 +1,7 @@
 ---
 sidebar_position: 4
 sidebar_label: DeviceListItem
-description: One Hub or Module as a list row, with its name, Space, Pairing or Connection Status and any Faults.
+description: One Device (Hub, Module or Standalone Device) as a list row, with its name, Space, Pairing or Connection Status and any Faults.
 ---
 
 # DeviceListItem
@@ -83,7 +83,7 @@ Use DeviceListItem:
 
 Don't use it for:
 
-- **A Module's Readings.** Use [`ModuleCard`](../readings/module-card.mdx).
+- **A Module's Readings.** Use [`DeviceCard`](../readings/device-card.mdx).
 - **A list of rooms.** Use [`ListItem`](../layout/list.mdx) with the room's icon.
 - **One status on its own.** Use [`DeviceConnectionStatus`](./device-connection-status.mdx), [`DevicePairingStatus`](./device-pairing-status.mdx) or [`DeviceFaultStatus`](./device-fault-status.mdx).
 
@@ -217,7 +217,7 @@ Pass `href` or `onClick` to open the Device's own screen, the same as a [clickab
 A few rules from the [Device lifecycle](/docs/domain-model/device-lifecycle), checked by TypeScript:
 
 - **Connection Status and Faults only exist while Paired.** `connectionStatus` is required when `pairingStatus` is `"paired"`, and not allowed otherwise. So is `faults`.
-- **A Hub is never Stale.** Only Modules have Sensors, so only they can miss a Reading. TypeScript doesn't block it, but don't pass `"stale"` for a Hub.
+- **A Hub without Capabilities is never Stale.** Only Devices with Capabilities send Readings, so only they can miss one. TypeScript doesn't block it, but don't pass `"stale"` for a Hub.
 - **Three separate fields.** Don't merge them into one status in your data. If your API does, split it where the data comes in.
 
 ## Props
@@ -225,7 +225,7 @@ A few rules from the [Device lifecycle](/docs/domain-model/device-lifecycle), ch
 | Prop               | Type                                  | Default | Description                                                                                                                        |
 | ------------------ | ------------------------------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------- |
 | `name`             | `string`                              | –       | **Required.** The Device's name, e.g. "Climate Module" or "Kitchen Hub". For a Module, its Module Name.                            |
-| `deviceKind`       | `"hub" \| "module"`                   | –       | **Required.** Whether the Device is a Hub or a Module. Decides the icon.                                                           |
+| `deviceKind`       | `"hub" \| "module" \| "standalone"`   | –       | **Required.** How the Device connects: Hub, Module or Standalone Device. Decides the icon.                                         |
 | `spaceName`        | `string`                              | –       | The name of the Space the Device is in, e.g. "Bedroom". Leave it out when the screen is already about that Space.                  |
 | `pairingStatus`    | `"unpaired" \| "pairing" \| "paired"` | –       | **Required.** The Device's Pairing Status.                                                                                         |
 | `connectionStatus` | `ConnectionStatus`                    | –       | **Required when Paired.** The Device's current Connection Status. Not allowed when not Paired.                                     |
@@ -280,4 +280,4 @@ DeviceListItem has no tokens of its own. It uses [`ListItem`](../layout/list.mdx
 - [`AlertListItem`](./alert-list-item.mdx): the same kind of row for an Alert.
 - [`List`](../layout/list.mdx): holds the rows. `ListItem` is the general row DeviceListItem is built on.
 - [`DeviceConnectionStatus`](./device-connection-status.mdx), [`DevicePairingStatus`](./device-pairing-status.mdx), [`DeviceFaultStatus`](./device-fault-status.mdx): the statuses inside a row.
-- [`ModuleCard`](../readings/module-card.mdx): one Module's Readings, for the Device's own screen.
+- [`DeviceCard`](../readings/device-card.mdx): one Module's Readings, for the Device's own screen.

@@ -4,11 +4,11 @@
 
 ### Purpose
 
-Shows the latest Reading of one Sensor as a small card: what is measured on top ("Temperature"), the value and its Unit below ("22.4 °C"). It is the building block of a Module overview: `ModuleCard` shows one SensorReading per Sensor in the Module. It can also stand on its own, for example in a Space overview.
+Shows the latest Reading of one Sensor as a small card: what is measured on top ("Temperature"), the value and its Unit below ("22.4 °C"). It is the building block of a Module overview: `DeviceCard` shows one SensorReading per Sensor in the Module. It can also stand on its own, for example in a Space overview.
 
 It only puts three existing components together: [`SensorLabel`](../../context/SensorLabel/SensorLabel.md), [`ReadingValue`](../ReadingValue/ReadingValue.md) and [`UnitLabel`](../UnitLabel/UnitLabel.md). It adds the card around them, keeps their sizes in step and gives the group one spoken name.
 
-It is read-only. It has no status label: that belongs to the Module, so `ModuleCard` shows it once for all its Sensors.
+It is read-only. It has no status label: that belongs to the Module, so `DeviceCard` shows it once for all its Sensors.
 
 Figma: `SensorReading` component set in _DeTriz - Smart Home Kit_ (node `310:32`), page `SensorReading`.
 
@@ -18,19 +18,19 @@ Category: **Readings** ("What is it right now?"). A composite keeps the category
 
 It shows these terms from the [Glossary](/kit/apps/docs-site/docs/domain-model/glossary.mdx):
 
-| Part  | Domain term                                                                                        | Example     | Shown by       |
-| ----- | -------------------------------------------------------------------------------------------------- | ----------- | -------------- |
-| label | **Metric** (names the [Sensor](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked)) | Temperature | `SensorLabel`  |
-| value | **Reading** (its value)                                                                            | 22.4        | `ReadingValue` |
-| unit  | **Unit**                                                                                           | °C          | `UnitLabel`    |
+| Part  | Domain term                                                                                      | Example     | Shown by       |
+| ----- | ------------------------------------------------------------------------------------------------ | ----------- | -------------- |
+| label | **Metric** (names the [Sensor](/kit/apps/docs-site/docs/domain-model/glossary.mdx#capabilities)) | Temperature | `SensorLabel`  |
+| value | **Reading** (its value)                                                                          | 22.4        | `ReadingValue` |
+| unit  | **Unit**                                                                                         | °C          | `UnitLabel`    |
 
 A Sensor measures exactly one Metric, so the Metric name is enough to name the Sensor (same reasoning as in `SensorLabel`).
 
 What it does **not** show, and why:
 
-- **Connection Status as a label** ("Connected", "Stale"). A Sensor is not a Device and has no status of its own. The status belongs to the Module, and `ModuleCard` shows it once for all its Sensors. SensorReading only reacts to **Disconnected**, through `ReadingValue` (the value is hidden).
-- **Fault.** Also a Module field. `ModuleCard` shows each Fault once with `DeviceFaultStatus`, and the message names the affected Sensor.
-- **Module, Space, Site.** Where the Sensor sits is `LocationPath` or the `ModuleCard` header.
+- **Connection Status as a label** ("Connected", "Stale"). A Sensor is not a Device and has no status of its own. The status belongs to the Module, and `DeviceCard` shows it once for all its Sensors. SensorReading only reacts to **Disconnected**, through `ReadingValue` (the value is hidden).
+- **Fault.** Also a Module field. `DeviceCard` shows each Fault once with `DeviceFaultStatus`, and the message names the affected Sensor.
+- **Module, Space, Site.** Where the Sensor sits is `LocationPath` or the `DeviceCard` header.
 - **Time of the Reading** ("Updated 5 s ago"). Context, not part of this card yet.
 
 Pairing Status doesn't apply: an Unpaired Module sends no Readings, so there is no SensorReading to show.
@@ -80,9 +80,9 @@ Target states:
 | ------------ | -------- | ----------------------------------------------------------------------------------------------- |
 | loading      | yes      | The `loading` state.                                                                            |
 | Connected    | yes      | The `default` state.                                                                            |
-| Stale        | no       | The value stays as it is. The Module's `DeviceConnectionStatus` (in `ModuleCard`) says "Stale". |
+| Stale        | no       | The value stays as it is. The Module's `DeviceConnectionStatus` (in `DeviceCard`) says "Stale". |
 | Disconnected | yes      | The `disconnected` state. The value is **hidden**, as the glossary says.                        |
-| Fault        | no       | A Module field, shown by `DeviceFaultStatus` in `ModuleCard`.                                   |
+| Fault        | no       | A Module field, shown by `DeviceFaultStatus` in `DeviceCard`.                                   |
 
 **Connecting** has no state of its own. Same rule as `ReadingValue`: the parent passes the last value to keep showing it, or `null` to show `loading`.
 
@@ -93,13 +93,13 @@ Figma variant property `size`, prop `size`. Default `lg`. SensorReading passes `
 | Size | ReadingValue | UnitLabel                 | SensorLabel | Height (all states) | Use it for                                      |
 | ---- | ------------ | ------------------------- | ----------- | ------------------- | ----------------------------------------------- |
 | `lg` | `lg` (48px)  | `lg` (`readout`, 32px)    | `xs`        | 93                  | On its own: Space overview, a single Sensor     |
-| `md` | `md` (32px)  | `md` (`readout-sm`, 20px) | `xs`        | 75                  | Tight spaces, e.g. a column inside `ModuleCard` |
+| `md` | `md` (32px)  | `md` (`readout-sm`, 20px) | `xs`        | 75                  | Tight spaces, e.g. a column inside `DeviceCard` |
 
 All states of one size have the same height, so nothing moves when the state changes.
 
 Checked in Storybook against Figma (160px wide): the browser draws the card **2px shorter** than Figma (`lg` 91, `md` 73). Figma's baseline alignment pushes the Unit 2px lower than the browser does, the same font difference `UnitLabel` describes. Widths, padding, gaps and the outline match. This difference is accepted.
 
-`LongText` (100,000 lx at `md`) fits a 160px column with 1px to spare. At `lg` it would not fit, so `ModuleCard` columns use `md`.
+`LongText` (100,000 lx at `md`) fits a 160px column with 1px to spare. At `lg` it would not fit, so `DeviceCard` columns use `md`.
 
 `sm` and `xs` are left out on purpose: at those sizes the value belongs in a list row or a table, not in a card.
 
@@ -130,7 +130,7 @@ The decisions behind them:
 
 - `metric`, `unit`, `value`, `isDisconnected` and `fractionDigits` are passed on unchanged, with the same names and types as in `SensorLabel`, `UnitLabel` and `ReadingValue`. Someone who knows those components already knows this one.
 - `unit` is separate from `metric` because one Metric can have more than one display Unit (Temperature: °C or °F). The glossary calls the display Unit "a formatting choice", and formatting choices belong to the parent.
-- `isDisconnected` is a yes/no, not a `connectionStatus`, for the same reason as in `ReadingValue`: Stale and Fault don't change this component. `ModuleCard` sets it from the Module's Connection Status.
+- `isDisconnected` is a yes/no, not a `connectionStatus`, for the same reason as in `ReadingValue`: Stale and Fault don't change this component. `DeviceCard` sets it from the Module's Connection Status.
 - `SensorReadingSize` is its own type with two values, not `ReadingValueSize`, so TypeScript stops anyone from passing `sm` or `xs`.
 
 ### Example values
@@ -145,7 +145,7 @@ From the glossary examples. Figma sample text and the stories use these. Stories
 | Air quality      | `co2`         | 1250                   | `ppm`        | 0              | `md` | CO₂ · 1,250 ppm                                                        |
 | Loading          | `temperature` | null                   | `celsius`    | 1              | `lg` | Temperature · ⟳ °C                                                     |
 | Disconnected     | `temperature` | 22.4, `isDisconnected` | `celsius`    | 1              | `lg` | Temperature · link_off °C                                              |
-| `LongText` story | `illuminance` | 100000                 | `lux`        | 0              | `md` | Illuminance · 100,000 lx, in a 160px container (a `ModuleCard` column) |
+| `LongText` story | `illuminance` | 100000                 | `lux`        | 0              | `md` | Illuminance · 100,000 lx, in a 160px container (a `DeviceCard` column) |
 | `Minimal` story  | `illuminance` | 0                      | `lux`        | 0              | `md` | Illuminance · 0 lx                                                     |
 
 Stories: `Default`, `Loading`, `Disconnected`, `SizeMd`, `LongText`, `Minimal`.
@@ -182,5 +182,5 @@ Figma draws the outline **inside** the card (it takes no space). A CSS `border` 
 
 ### Open questions
 
-- **Heading.** Inside `ModuleCard`, should each Metric name be a heading (`<h3>`) for screen-reader navigation? If yes, add an optional `headingLevel` prop then, not now.
-- **`fractionDigits` per Metric.** Every parent passes the same precision per Metric (Temperature 1, CO₂ 0). If this repeats in `ModuleCard` and elsewhere, move it into one shared Metric → precision map in `utils/`.
+- **Heading.** Inside `DeviceCard`, should each Metric name be a heading (`<h3>`) for screen-reader navigation? If yes, add an optional `headingLevel` prop then, not now.
+- **`fractionDigits` per Metric.** Every parent passes the same precision per Metric (Temperature 1, CO₂ 0). If this repeats in `DeviceCard` and elsewhere, move it into one shared Metric → precision map in `utils/`.

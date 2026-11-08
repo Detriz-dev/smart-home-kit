@@ -8,6 +8,7 @@ export const UNIT_NAMES: Record<
   celsius: { symbol: "°C", spokenName: "degrees Celsius" },
   fahrenheit: { symbol: "°F", spokenName: "degrees Fahrenheit" },
   "percent-rh": { symbol: "%RH", spokenName: "percent relative humidity" },
+  percent: { symbol: "%", spokenName: "percent" },
   lux: { symbol: "lx", spokenName: "lux" },
   ppm: { symbol: "ppm", spokenName: "parts per million" },
   ppb: { symbol: "ppb", spokenName: "parts per billion" },

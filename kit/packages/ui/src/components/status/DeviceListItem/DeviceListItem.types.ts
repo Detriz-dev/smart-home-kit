@@ -6,7 +6,7 @@ import type { DeviceFaultStatusProps } from "../DeviceFaultStatus";
 interface DeviceListItemBaseProps {
   /** The Device's name, e.g. "Climate Module" or "Kitchen Hub". For a Module, its Module Name (the user can rename it). */
   name: string;
-  /** Whether the Device is a Hub or a Module. Decides the icon. */
+  /** How the Device connects: Hub, Module or Standalone Device. Decides the icon. */
   deviceKind: DeviceKind;
   /** The name of the Space the Device is in, e.g. "Bedroom". Leave it out when the screen is already about that Space. */
   spaceName?: string;
@@ -26,7 +26,7 @@ interface DeviceListItemNotPairedProps {
 interface DeviceListItemPairedProps {
   /** The Device's Pairing Status. */
   pairingStatus: "paired";
-  /** The Device's current Connection Status. A Hub is never Stale: only Modules have Sensors. */
+  /** The Device's current Connection Status. A Hub without Capabilities is never Stale: only Devices with Capabilities send Readings. */
   connectionStatus: ConnectionStatus;
   /** The Device's current Faults, one per Fault Code. Leave it out, or pass an empty list, when there are none. */
   faults?: DeviceFaultStatusProps[];

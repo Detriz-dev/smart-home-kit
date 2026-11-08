@@ -9,14 +9,14 @@ const groundFloor = (
     <SpaceListItem
       name="Kitchen"
       spaceType="kitchen"
-      moduleCount={3}
+      deviceCount={3}
       activeAlertCount={2}
       href="#/spaces/kitchen"
     />
     <SpaceListItem
       name="Living room"
       spaceType="living-room"
-      moduleCount={2}
+      deviceCount={2}
       href="#/spaces/living-room"
     />
   </List>
@@ -66,7 +66,7 @@ export const SiteOverview: Story = {
           <SpaceListItem
             name="Bedroom"
             spaceType="bedroom"
-            moduleCount={1}
+            deviceCount={1}
             activeAlertCount={1}
             highestAlertLevel="warning"
             href="#/spaces/bedroom"
@@ -74,7 +74,7 @@ export const SiteOverview: Story = {
           <SpaceListItem
             name="Bathroom"
             spaceType="bathroom"
-            moduleCount={1}
+            deviceCount={1}
             href="#/spaces/bathroom"
           />
         </List>

@@ -4,7 +4,7 @@
 
 ### Purpose
 
-One [Space](/kit/apps/docs-site/docs/domain-model/glossary.mdx#places) as a List row: its Space Type icon, its name, where it is and how much is in it, and how many Alerts are Active there: 🍳 **Kitchen** · Ground floor · 3 Modules [2]. It is the row of a Site overview ("all rooms") and a Floor section. Tapping it opens the Space.
+One [Space](/kit/apps/docs-site/docs/domain-model/glossary.mdx#places) as a List row: its Space Type icon, its name, where it is and how much is in it, and how many Alerts are Active there: 🍳 **Kitchen** · Ground floor · 3 Devices [2]. It is the row of a Site overview ("all rooms") and a Floor section. Tapping it opens the Space.
 
 It is built on [`ListItem`](../../layout/ListItem/ListItem.md), like `DeviceListItem` and `AlertListItem`. The icon comes from `SPACE_TYPE_ICONS`, like [`SpaceLabel`](../SpaceLabel/SpaceLabel.md).
 
@@ -18,10 +18,10 @@ Category: **Context** ("What is it?"): it names a place. The Alert count is a su
 | ----------- | ---------------------------------------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
 | icon        | **Space Type**                           | `countertops`            | From `SPACE_TYPE_ICONS`.                                                                          |
 | title       | **Space** (its name)                     | Kitchen                  | The name the user gave it.                                                                        |
-| description | **Floor** and number of **Modules**      | Ground floor · 3 Modules | Both optional. Floors are optional in the Data model; leave the Floor out inside a Floor section. |
+| description | **Floor** and number of **Devices**      | Ground floor · 3 Devices | Both optional. Floors are optional in the Data model; leave the Floor out inside a Floor section. |
 | end         | number of Active **Alerts** in the Space | 2 (Badge)                | `Badge`, tone = highest Alert Level. Nothing when 0.                                              |
 
-A Module's Space is its Hub's Space (Data model rule 2): the parent counts Modules through the Space's Hubs.
+The parent counts every Device in the Space: the Hubs and Standalone Devices placed there, and each Module through its Hub (a Module's Space is its Hub's Space, Data model rule 2). Changed from a Module count on 2026-11-08 (ADR 0002): a Space can hold a kettle or a power strip, which aren't Modules.
 
 ### Variants
 
@@ -32,7 +32,7 @@ Figma variant property `alerts` (none, active). The `ListItem` inside is exposed
 | `none`         | `activeAlertCount` 0 or unset | nothing |
 | `active`       | `activeAlertCount` > 0        | `Badge` |
 
-Module count wording: "No Modules", "1 Module", "3 Modules".
+Device count wording: "No Devices", "1 Device", "3 Devices".
 
 ### Anatomy
 
@@ -41,7 +41,7 @@ SpaceListItem
 └── ListItem
     ├── start        SpaceTypeIcon (md)
     ├── title        "Kitchen"
-    ├── description  "Ground floor · 3 Modules"
+    ├── description  "Ground floor · 3 Devices"
     └── end          Badge (tone = highest Alert Level)
 ```
 

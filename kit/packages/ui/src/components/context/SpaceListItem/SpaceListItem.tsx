@@ -5,28 +5,28 @@ import { activeAlertsLabel } from "../../../utils/alertCountLabel";
 import { ListItem } from "../../layout/ListItem";
 import type { SpaceListItemProps } from "./SpaceListItem.types";
 
-/** "No Modules", "1 Module", "3 Modules". */
-function formatModuleCount(count: number): string {
-  if (count === 0) return "No Modules";
-  return count === 1 ? "1 Module" : `${count} Modules`;
+/** "No Devices", "1 Device", "3 Devices". */
+function formatDeviceCount(count: number): string {
+  if (count === 0) return "No Devices";
+  return count === 1 ? "1 Device" : `${count} Devices`;
 }
 
-/** One Space as a List row: its Space Type icon, name, Floor and Modules, and a Badge of Active Alerts. Takes props only, never fetches data. */
+/** One Space as a List row: its Space Type icon, name, Floor and Devices, and a Badge of Active Alerts. Takes props only, never fetches data. */
 export function SpaceListItem(props: SpaceListItemProps) {
   const {
     name,
     spaceType,
     floorName,
-    moduleCount,
+    deviceCount,
     activeAlertCount = 0,
     highestAlertLevel = "critical",
   } = props;
 
-  // "Ground floor · 3 Modules": only the parts that are given.
+  // "Ground floor · 3 Devices": only the parts that are given.
   const description =
     [
       floorName,
-      moduleCount !== undefined ? formatModuleCount(moduleCount) : undefined,
+      deviceCount !== undefined ? formatDeviceCount(deviceCount) : undefined,
     ]
       .filter(Boolean)
       .join(" · ") || undefined;

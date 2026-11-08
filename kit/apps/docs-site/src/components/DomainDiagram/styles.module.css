@@ -67,7 +67,7 @@
   white-space: nowrap;
 }
 
-/* The values the landing page example uses (ModuleCard and its code). */
+/* The values the landing page example uses (DeviceCard and its code). */
 .highlighted {
   color: var(--diagram-accent);
   font-weight: var(--shk-font-weight-bold);

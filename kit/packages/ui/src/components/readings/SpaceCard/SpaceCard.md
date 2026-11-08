@@ -4,7 +4,7 @@
 
 ### Purpose
 
-Shows one Space at a glance: its name, its Faults and one row per Metric with the latest Reading. It is the building block of whole-home screens: a Site overview shows one SpaceCard per Space instead of a `ModuleCard` for every Module. Passing only some Metrics answers prompts like "temperature in every room".
+Shows one Space at a glance: its name, its Faults and one row per Metric with the latest Reading. It is the building block of whole-home screens: a Site overview shows one SpaceCard per Space instead of a `DeviceCard` for every Module. Passing only some Metrics answers prompts like "temperature in every room".
 
 It only puts existing components together: [`SensorLabel`](../../context/SensorLabel/SensorLabel.md), [`ReadingValue`](../ReadingValue/ReadingValue.md), [`UnitLabel`](../UnitLabel/UnitLabel.md), [`DeviceConnectionStatus`](../../status/DeviceConnectionStatus/DeviceConnectionStatus.md) and [`DeviceFaultStatus`](../../status/DeviceFaultStatus/DeviceFaultStatus.md). It adds the card, the rows and the Space name.
 
@@ -34,7 +34,7 @@ Domain rules behind it:
 
 What it does **not** show, and why:
 
-- **Module names.** The card is about the Space. Which Module a row comes from is `ModuleCard`'s job.
+- **Module names.** The card is about the Space. Which Module a row comes from is `DeviceCard`'s job.
 - **Pairing Status.** Only Paired Modules send Readings.
 - **Site, Floor.** `LocationPath` shows where the Space is.
 - **Time of the Reading.** Not part of this card yet, same as `SensorReading`.
@@ -43,7 +43,7 @@ What it does **not** show, and why:
 
 | Question                        | Answer                                                                                               |
 | ------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | A white card like `ModuleCard`: the Space name on top, Faults below it, then a list of rows.         |
+| What does it roughly look like? | A white card like `DeviceCard`: the Space name on top, Faults below it, then a list of rows.         |
 | Icons?                          | Only those of its parts (Metric icons, `refresh`, `link_off`, `error`, the status dot).              |
 | Separators?                     | No. Each row is a line: label on the left, value on the right.                                       |
 | More than one layout?           | No. One stacked layout. Rows never wrap the value.                                                   |
@@ -60,7 +60,7 @@ What it does **not** show, and why:
 └───────────────────────────────────┘
 ```
 
-The card fills the width its parent gives it. The Space name stays on one line and ends with "…", and the full name shows on hover (same as `ModuleCard`). The value, Unit and status never truncate. When a row has no room for the label and the reading side by side, the reading moves onto a line below the label (the row wraps). The `LongText` example needs this: "Illuminance · Stale · 100,000 lx" doesn't fit on one line in 240px.
+The card fills the width its parent gives it. The Space name stays on one line and ends with "…", and the full name shows on hover (same as `DeviceCard`). The value, Unit and status never truncate. When a row has no room for the label and the reading side by side, the reading moves onto a line below the label (the row wraps). The `LongText` example needs this: "Illuminance · Stale · 100,000 lx" doesn't fit on one line in 240px.
 
 ### States
 
@@ -142,9 +142,9 @@ Stories: `Connected`, `Loading`, `Stale`, `Disconnected`, `Fault`, `OneMetric`, 
 
 ### Tokens
 
-Same card as `ModuleCard`. Confirmed in the step 3 review: every Figma value is bound to one of these variables, and every token exists in `tokens.css`. The parts bring their own tokens.
+Same card as `DeviceCard`. Confirmed in the step 3 review: every Figma value is bound to one of these variables, and every token exists in `tokens.css`. The parts bring their own tokens.
 
-As in `ModuleCard`, Figma draws the outline inside the card, so in CSS the padding is `calc(var(--shk-space-4) - var(--shk-border-width-thin))`.
+As in `DeviceCard`, Figma draws the outline inside the card, so in CSS the padding is `calc(var(--shk-space-4) - var(--shk-border-width-thin))`.
 
 | Part     | Property         | Figma variable        | Code token                  |
 | -------- | ---------------- | --------------------- | --------------------------- |
@@ -164,7 +164,7 @@ As in `ModuleCard`, Figma draws the outline inside the card, so in CSS the paddi
 
 ### Accessibility
 
-- `root` is a `<div role="group">` named by the Space name (`aria-labelledby` → `name`), the same pattern as `ModuleCard`.
+- `root` is a `<div role="group">` named by the Space name (`aria-labelledby` → `name`), the same pattern as `DeviceCard`.
 - `faults` and `readings` are real lists with `role="list"` (Safari drops list semantics once bullets are removed).
 - Each row reads label first, then the status (when Stale), then the value.
 - Not colour alone: Stale has a text label, Disconnected its own icon, a Fault its icon and message.
@@ -175,7 +175,7 @@ As in `ModuleCard`, Figma draws the outline inside the card, so in CSS the paddi
 - **Two Modules, one Metric.** If a Space has two Climate Modules, which Temperature does the parent pass? The card shows whatever it gets, and never averages.
 - **Fault without a Metric.** "Sensor failure" in a Space with several Modules doesn't say which Module. Should `faults` carry the Module Name?
 - **Look of the Stale row** (designer's call): the `DeviceConnectionStatus` beside the value (current draft), or the value in a muted colour plus "Stale".
-- **Heading.** Should the Space name be a heading? Same question as `ModuleCard`.
+- **Heading.** Should the Space name be a heading? Same question as `DeviceCard`.
 - **Row height per state** (designer's call): loading and disconnected rows are 2px taller than connected rows (the `sm` icon is taller than the `sm` text), so the card grows 8px when four rows lose their values. `SensorReading` keeps one height in every state. **Accepted for now:** the code follows Figma. To change it, give `row` a fixed height in Figma and a `min-block-size` in CSS.
 - **Many Stale announcements.** Each Stale row has its own `role="status"`. If this is too noisy on a Site screen, the card could announce one summary instead.
 

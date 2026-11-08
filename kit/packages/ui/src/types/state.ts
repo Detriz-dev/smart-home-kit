@@ -1,16 +1,20 @@
-import type { TwoStateMetric } from "./metric";
+import type { StateMetric } from "./metric";
+import type { OperationalState } from "./operationalState";
 
-/** The two States each Two-state Metric allows. From the Glossary. TypeScript reports an error here if a Two-state Metric is missing. */
+/** The States each State Metric allows: two or more. From the Glossary. TypeScript reports an error here if a State Metric is missing. */
 export interface StatesByMetric {
   power: "on" | "off";
   contact: "open" | "closed";
+  "open-close": "open" | "closed" | "opening" | "closing";
+  mode: "off" | "heat";
+  "operational-state": OperationalState;
   motion: "detected" | "clear";
   smoke: "detected" | "clear";
   co: "detected" | "clear";
 }
 
-/** The two States of one Two-state Metric, e.g. `StateOf<"contact">` is `"open" | "closed"`. */
-export type StateOf<M extends TwoStateMetric> = StatesByMetric[M];
+/** The States of one State Metric, e.g. `StateOf<"contact">` is `"open" | "closed"`. */
+export type StateOf<M extends StateMetric> = StatesByMetric[M];
 
-/** One of the two values a Two-state Metric can have. From the Glossary. */
-export type State = StateOf<TwoStateMetric>;
+/** One of the values a State Metric can have. From the Glossary. */
+export type State = StateOf<StateMetric>;

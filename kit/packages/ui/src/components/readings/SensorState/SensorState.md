@@ -4,7 +4,7 @@
 
 ### Purpose
 
-Shows the latest State of one Two-state Sensor as a small card: what it is about on top ("Power" or "Front door"), the State below (🔌 **On**). It is the twin of [`SensorReading`](../SensorReading/SensorReading.md): same card, same sizes, but a [`StateValue`](../StateValue/StateValue.md) instead of a number and Unit. `ModuleCard` uses one per Two-state Sensor.
+Shows the latest State of one State Sensor as a small card: what it is about on top ("Power" or "Front door"), the State below (🔌 **On**). It is the twin of [`SensorReading`](../SensorReading/SensorReading.md): same card, same sizes, but a [`StateValue`](../StateValue/StateValue.md) instead of a number and Unit. `DeviceCard` uses one per State Sensor.
 
 Figma: `SensorState` component set in _DeTriz - Smart Home Kit_ (node `595:1773`), page `SensorState` (after SensorReading). Built from a copy of SensorReading, so the card is identical. `SensorLabel` and `StateValue` are exposed: pick the Metric on the first, and the State, icon and Alert colours on the second.
 
@@ -29,7 +29,7 @@ Figma variant property `state` × `size`, the same as SensorReading: 3 × 2 = 6 
 | `loading`      | `state={null}`   | StateValue loading icon                             |
 | `disconnected` | `isDisconnected` | StateValue disconnected icon, State hidden          |
 
-Target states: loading, Connected and Disconnected apply (through StateValue). Stale and Fault don't: they belong to the Module and are shown once by `ModuleCard`.
+Target states: loading, Connected and Disconnected apply (through StateValue). Stale and Fault don't: they belong to the Module and are shown once by `DeviceCard`.
 
 ### Sizes and anatomy
 
@@ -41,7 +41,7 @@ SensorState
 └── StateValue                 (lg | md)
 ```
 
-The card is shorter than a SensorReading (72 vs 93px at `lg`), because a pill is lower than a readout number. In `ModuleCard`'s grid, rows line up at the top.
+The card is shorter than a SensorReading (72 vs 93px at `lg`), because a pill is lower than a readout number. In `DeviceCard`'s grid, rows line up at the top.
 
 ### Accessibility
 

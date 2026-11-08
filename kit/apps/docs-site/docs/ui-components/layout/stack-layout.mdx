@@ -11,7 +11,7 @@ Places components in one column, top to bottom, with an even gap between them. U
 ```jsx live
 <StackLayout gap="sm">
   <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
-  <ModuleCard
+  <DeviceCard
     name="Climate Module"
     connectionStatus="connected"
     sensors={[
@@ -65,7 +65,7 @@ The examples below leave out the `import` line. In your app, you need it.
 Use StackLayout:
 
 - **as the root of a screen**, to stack its sections and cards
-- **for a list of cards**, like the ModuleCards of a Space
+- **for a list of cards**, like the DeviceCards of a Space
 - **inside a card or section**, to space out a few smaller components
 
 Don't use it for:
@@ -139,7 +139,7 @@ Put a stack inside a stack to group things. Use a bigger gap outside and a small
 <StackLayout gap="lg">
   <StackLayout gap="sm">
     <LocationPath spaceName="Bedroom" />
-    <ModuleCard
+    <DeviceCard
       name="Climate Module"
       connectionStatus="connected"
       sensors={[{ metric: "temperature", value: 21.5, unit: "celsius" }]}
@@ -147,7 +147,7 @@ Put a stack inside a stack to group things. Use a bigger gap outside and a small
   </StackLayout>
   <StackLayout gap="sm">
     <LocationPath spaceName="Kitchen" />
-    <ModuleCard
+    <DeviceCard
       name="Light Module"
       connectionStatus="stale"
       sensors={[
@@ -201,7 +201,7 @@ StackLayout has no text of its own. Long content in a child stays inside the sta
       siteName="Grandparents' summer house by the lake"
       spaceName="Kitchen and dining area on the ground floor"
     />
-    <ModuleCard
+    <DeviceCard
       name="Climate Module"
       connectionStatus="connected"
       sensors={[{ metric: "temperature", value: 22.4, unit: "celsius" }]}
@@ -234,4 +234,4 @@ StackLayout has nothing else to style. The space tokens are shared by the whole 
 
 - [`ColumnLayout`](./column-layout.mdx): places components side by side.
 - [`ContentSection`](./content-section.mdx): a group of components with a heading.
-- [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that are often stacked.
+- [`DeviceCard`](../readings/device-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that are often stacked.

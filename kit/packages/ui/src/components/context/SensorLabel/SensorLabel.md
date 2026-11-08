@@ -16,7 +16,7 @@ Storybook: `Context/SensorLabel`.
 
 Category: **Context** ("Where is this / what is it?"). Which Metric a Sensor measures is a fixed fact. A `ReadingCard` that uses SensorLabel inside still stays in **Readings** (see [Rules for placing a component](/docs/architecture/design-system/ds-conventions-and-structure.md#rules-for-placing-a-component)).
 
-It shows the Metric of one Sensor, from [How is tracked](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked) and [What is tracked](/kit/apps/docs-site/docs/domain-model/glossary.mdx#what-is-tracked):
+It shows the Metric of one Sensor, from [Capabilities](/kit/apps/docs-site/docs/domain-model/glossary.mdx#capabilities) and [Measurements](/kit/apps/docs-site/docs/domain-model/glossary.mdx#measurements):
 
 | Part  | Domain term                | Example     | Rule                                                                                            |
 | ----- | -------------------------- | ----------- | ----------------------------------------------------------------------------------------------- |
@@ -64,21 +64,27 @@ Pairing Status doesn't apply either: the Metric belongs to the Sensor, not to th
 
 **Metric** (prop `metric`). A fixed list, one value per Metric in the glossary. In Figma this is not a variant property: change the label text and swap the icon on the instance.
 
-| Value         | Label       | Screen reader   | Icon                   | In `icons.config.ts`? |
-| ------------- | ----------- | --------------- | ---------------------- | --------------------- |
-| `temperature` | Temperature | Temperature     | `thermostat`           | yes                   |
-| `humidity`    | Humidity    | Humidity        | `humidity_mid`         | yes                   |
-| `illuminance` | Illuminance | Illuminance     | `light_mode`           | yes                   |
-| `co2`         | CO₂         | carbon dioxide  | `co2`                  | yes                   |
-| `voc`         | VOC         | VOC             | `airwave`              | yes                   |
-| `pm25`        | PM2.5       | PM 2.5          | `grain`                | yes                   |
-| `power`       | Power       | Power           | `power`                | yes                   |
-| `contact`     | Contact     | Contact         | `sensor_door`          | yes                   |
-| `motion`      | Motion      | Motion          | `motion_sensor_active` | yes                   |
-| `smoke`       | Smoke       | Smoke           | `detector_smoke`       | yes                   |
-| `co`          | CO          | carbon monoxide | `detector_co`          | yes                   |
+| Value               | Label             | Screen reader     | Icon                   | In `icons.config.ts`? |
+| ------------------- | ----------------- | ----------------- | ---------------------- | --------------------- |
+| `temperature`       | Temperature       | Temperature       | `thermostat`           | yes                   |
+| `humidity`          | Humidity          | Humidity          | `humidity_mid`         | yes                   |
+| `illuminance`       | Illuminance       | Illuminance       | `light_mode`           | yes                   |
+| `co2`               | CO₂               | carbon dioxide    | `co2`                  | yes                   |
+| `voc`               | VOC               | VOC               | `airwave`              | yes                   |
+| `pm25`              | PM2.5             | PM 2.5            | `grain`                | yes                   |
+| `power`             | Power             | Power             | `power`                | yes                   |
+| `contact`           | Contact           | Contact           | `sensor_door`          | yes                   |
+| `motion`            | Motion            | Motion            | `motion_sensor_active` | yes                   |
+| `smoke`             | Smoke             | Smoke             | `detector_smoke`       | yes                   |
+| `co`                | CO                | carbon monoxide   | `detector_co`          | yes                   |
+| `battery`           | Battery           | Battery           | `battery_full`         | yes                   |
+| `setpoint`          | Setpoint          | Setpoint          | `thermostat_auto`      | yes                   |
+| `position`          | Position          | Position          | `blinds`               | yes                   |
+| `open-close`        | Open / Close      | open or close     | `roller_shades`        | yes                   |
+| `mode`              | Mode              | Mode              | `mode_heat`            | yes                   |
+| `operational-state` | Operational State | Operational State | `play_circle`          | yes                   |
 
-The last five are Two-state Metrics, added for Phase 2. Figma shows all eleven in the frame `SensorLabel / Metrics` (node `574:2388`), below the component set.
+`power` to `co` are State Metrics, added for Phase 2. Figma shows those eleven in the frame `SensorLabel / Metrics` (node `574:2388`), below the component set. The last six (Battery to Operational State) were added on 2026-11-08 (ADR 0002), in code and in Figma (the frame now groups them as Measured Metrics and State Metrics).
 
 The label uses the subscript `₂` (U+2082) in "CO₂", the same character the glossary uses.
 

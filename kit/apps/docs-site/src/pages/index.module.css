@@ -234,7 +234,7 @@ a.option:hover {
 }
 
 /* The outline is drawn inside the card, so the padding is one border width smaller (as in the
-   kit's cards). That leaves exactly 364px inside: the width where ModuleCard puts its two
+   kit's cards). That leaves exactly 364px inside: the width where DeviceCard puts its two
    Sensors side by side. */
 .card {
   box-sizing: border-box;

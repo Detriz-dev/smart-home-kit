@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import type { AlertLevel } from "../../../types/alert";
 import type { MeasuredMetric } from "../../../types/metric";
 import type { SensorStateAsset } from "../SensorState";
@@ -7,7 +8,7 @@ import type { ConnectionStatus } from "../../status/DeviceConnectionStatus";
 import type { UnitLabelUnit } from "../UnitLabel";
 
 /** A Sensor that measures a number. The same fields SensorReading takes. */
-export interface ModuleCardMeasuredSensor {
+export interface DeviceCardMeasuredSensor {
   /** The Metric the Sensor measures. One Sensor per Metric, so it also identifies the Sensor within the Module. */
   metric: MeasuredMetric;
   /** The latest value of the Reading. `null` while the first Reading is on its way. */
@@ -18,24 +19,26 @@ export interface ModuleCardMeasuredSensor {
   fractionDigits?: number;
 }
 
-/** A Sensor with two States (Power, Contact, Motion, Smoke, CO). The same fields SensorState takes. */
-export type ModuleCardStateSensor = StateValueReading & {
+/** A Sensor with a State Metric (Power, Contact, Motion, Smoke, CO…). The same fields SensorState takes. */
+export type DeviceCardStateSensor = StateValueReading & {
   /** The Asset the Sensor watches, e.g. the Front door. Names its card instead of the Metric. */
   asset?: SensorStateAsset;
   /** The Alert Level of an Active Alert about this Reading. Colours the State. */
   alertLevel?: AlertLevel;
 };
 
-/** One Sensor in the Module: a number (`value` + `unit`) or a State (`state`). */
-export type ModuleCardSensor = ModuleCardMeasuredSensor | ModuleCardStateSensor;
+/** One Sensor of the Device: a number (`value` + `unit`) or a State (`state`). */
+export type DeviceCardSensor = DeviceCardMeasuredSensor | DeviceCardStateSensor;
 
-export interface ModuleCardProps {
-  /** The Module Name, e.g. "Climate Module". The user can rename it, so the parent passes it in. */
+export interface DeviceCardProps {
+  /** The Device Name, e.g. "Climate Module" or "Kitchen kettle". The user can rename it, so the parent passes it in. */
   name: string;
-  /** The Module's Sensors, one to three. */
-  sensors: ModuleCardSensor[];
-  /** The Module's current Connection Status. */
+  /** The Device's Sensors (Capabilities that only report), usually one to three. Leave it out for a Device with Controls only, like a power strip. */
+  sensors?: DeviceCardSensor[];
+  /** The Device's Controls and Operational State: the Control components themselves (PowerControl, OpenCloseControl, StateSelectControl, ValueControl, OperationalStateControl or OperationalStateValue), in the order to show them. Pass `isDisconnected` to each one yourself: the card doesn't render them. */
+  controls?: ReactNode;
+  /** The Device's current Connection Status. */
   connectionStatus: ConnectionStatus;
-  /** The Module's current Faults, one per Fault Code. A Module can report several at once. Leave it out, or pass an empty list, when there are none. */
+  /** The Device's current Faults, one per Fault Code. A Device can report several at once. Leave it out, or pass an empty list, when there are none. */
   faults?: DeviceFaultStatusProps[];
 }

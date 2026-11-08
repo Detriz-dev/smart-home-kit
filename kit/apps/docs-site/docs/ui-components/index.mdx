@@ -47,7 +47,7 @@ The groups differ in **where their content comes from** and **how often it chang
 
 **What is it right now?** Current values, from a single number up to a card for a whole Space. They change with every new Reading, often every few seconds.
 
-[`ReadingValue`](./readings/reading-value.mdx) · [`StateValue`](./readings/state-value.mdx) · [`DetectionStatus`](./readings/detection-status.mdx) · [`UnitLabel`](./readings/unit-label.mdx) · [`SensorReading`](./readings/sensor-reading.mdx) · [`SensorState`](./readings/sensor-state.mdx) · [`ModuleCard`](./readings/module-card.mdx) · [`SpaceCard`](./readings/space-card.mdx)
+[`ReadingValue`](./readings/reading-value.mdx) · [`StateValue`](./readings/state-value.mdx) · [`OperationalStateValue`](./readings/operational-state-value.mdx) · [`DetectionStatus`](./readings/detection-status.mdx) · [`UnitLabel`](./readings/unit-label.mdx) · [`SensorReading`](./readings/sensor-reading.mdx) · [`SensorState`](./readings/sensor-state.mdx) · [`DeviceCard`](./readings/device-card.mdx) · [`SpaceCard`](./readings/space-card.mdx)
 
 ### 4. Status
 
@@ -63,9 +63,9 @@ The groups differ in **where their content comes from** and **how often it chang
 
 ### 6. Controls
 
-**How do I change what I see?** Inputs for actions and settings in your app. They change when the person clicks or switches something.
+**How do I change what I see, or a Device?** Inputs for actions and settings in your app, and Device Controls that send commands to a Device. They change when the person clicks or switches something.
 
-[`Button`](./controls/button.mdx) · [`Switch`](./controls/switch.mdx) · [`IconButton`](./controls/icon-button.mdx)
+[`Button`](./controls/button.mdx) · [`Switch`](./controls/switch.mdx) · [`IconButton`](./controls/icon-button.mdx) · [`PowerControl`](./controls/power-control.mdx) · [`OpenCloseControl`](./controls/open-close-control.mdx) · [`StateSelectControl`](./controls/state-select-control.mdx) · [`ValueControl`](./controls/value-control.mdx) · [`OperationalStateControl`](./controls/operational-state-control.mdx)
 
 ### 7. Navigation
 
@@ -75,7 +75,7 @@ The groups differ in **where their content comes from** and **how often it chang
 
 ### Two rules behind the groups
 
-- **A component belongs to its main job.** A component can hold pieces of other groups. `ModuleCard` shows a Connection Status and Faults, but its main job is the current values, so it's in Readings.
+- **A component belongs to its main job.** A component can hold pieces of other groups. `DeviceCard` shows a Connection Status and Faults, but its main job is the current values, so it's in Readings.
 - **Fixed facts and changing values are kept apart.** A Sensor's name (`SensorLabel`, Context) stays on screen while its value (`ReadingValue`, Readings) is loading or hidden, so people always know what was measured.
 
 Status and Feedback can look alike, but they answer different questions: Status is about the hardware ("The Hub is Disconnected"), Feedback is about your app ("Couldn't load Readings").
@@ -98,7 +98,7 @@ The same screen, built with the real components. Change the code and the result 
     Check your connection and try again.
   </InlineMessage>
   <ColumnLayout>
-    <ModuleCard
+    <DeviceCard
       name="Climate Module"
       connectionStatus="connected"
       sensors={[
@@ -111,7 +111,7 @@ The same screen, built with the real components. Change the code and the result 
         },
       ]}
     />
-    <ModuleCard
+    <DeviceCard
       name="Air Quality Module"
       connectionStatus="stale"
       faults={[{ faultCode: "sensor_failure", metric: "co2" }]}
@@ -129,7 +129,7 @@ Import components from `@detriz-sh-kit/ui`, and load the kit's styles once, at t
 import "@detriz-sh-kit/tokens/tokens.css";
 import "@detriz-sh-kit/ui/styles.css";
 
-import { ModuleCard } from "@detriz-sh-kit/ui";
+import { DeviceCard } from "@detriz-sh-kit/ui";
 ```
 
 See [Installation](/docs/get-started/installation) for how to install the packages. The kit's fonts aren't included in its CSS: see [Typography](./foundations/typography.mdx#loading-the-fonts) for how to load them.

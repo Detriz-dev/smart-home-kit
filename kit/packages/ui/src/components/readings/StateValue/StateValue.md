@@ -4,7 +4,7 @@
 
 ### Purpose
 
-Shows the latest **State** of a Two-state Metric as a small pill: an icon and a word, like 🔌 **On**, 🚪 **Open** or 🔥 **Detected**. It is the Two-state twin of [`ReadingValue`](../ReadingValue/ReadingValue.md): ReadingValue shows a number, StateValue shows a State.
+Shows the latest **State** of a State Metric as a small pill: an icon and a word, like 🔌 **On**, 🚪 **Open** or 🔥 **Detected**. It is the Two-state twin of [`ReadingValue`](../ReadingValue/ReadingValue.md): ReadingValue shows a number, StateValue shows a State.
 
 It shows the State only. What is measured ("Power", "Front door") is [`SensorLabel`](../../context/SensorLabel/SensorLabel.md) or a future `AssetLabel`, next to it. The kit is sensor-only, so StateValue is read-only: it never switches anything. (`Switch` is for app settings, never for Devices.)
 
@@ -14,12 +14,12 @@ Figma: `StateValue` component set in _DeTriz - Smart Home Kit_ (node `584:148`, 
 
 Category: **Readings** ("What is it right now?"). The State changes every time a Reading with a different State arrives.
 
-It shows one part of a [Reading](/kit/apps/docs-site/docs/domain-model/glossary.mdx#measurements) of a **Two-state Metric** (Power, Contact, Motion, Smoke, CO):
+It shows one part of a [Reading](/kit/apps/docs-site/docs/domain-model/glossary.mdx#measurements) of a **State Metric** (Power, Contact, Motion, Smoke, CO):
 
-| Part  | Domain term | Example | Rule                                                                                           |
-| ----- | ----------- | ------- | ---------------------------------------------------------------------------------------------- |
-| icon  | **State**   | `power` | One icon per Metric and State, from `STATE_ICONS`. Smoke and CO keep one icon for both States. |
-| label | **State**   | On      | The State's name: On, Off, Open, Closed, Detected, Clear.                                      |
+| Part  | Domain term | Example | Rule                                                                                                               |
+| ----- | ----------- | ------- | ------------------------------------------------------------------------------------------------------------------ |
+| icon  | **State**   | `power` | One icon per Metric and State, from `STATE_ICONS`. Smoke and CO keep one icon for both States.                     |
+| label | **State**   | On      | The State's name: On, Off, Open, Closed, Opening, Closing, Heat, Stopped, Running, Paused, Error, Detected, Clear. |
 
 Whether a State is **active** (On, Open, Detected) or **inactive** (Off, Closed, Clear) decides its colour. If the Reading has an **Active Alert**, the colour comes from the [Alert Level](/kit/apps/docs-site/docs/domain-model/glossary.mdx#alerts) instead (Data model rule 24: a Closed Alert doesn't hide the problem, so the parent keeps passing the level while the condition is true).
 
@@ -43,24 +43,26 @@ What it does **not** show, and why:
 
 ### States
 
-Figma variant property `state` (7 values) × `size` (2) = 14 variants.
+Figma variant property `state` (8 values) × `size` (2) = 16 variants. The `error` variant was added on 2026-11-08 (with the `StateIcon` `operational-state-*` icons).
 
-| Figma `state`    | When                                           | Shows                                             | Colours (bg / fg)                                                            | Screen reader  |
-| ---------------- | ---------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
-| `inactive`       | State is Off, Closed or Clear; no Active Alert | Pill: icon + word ("Off")                         | `state/inactive/bg` / `state/inactive/fg`                                    | "Off"          |
-| `active`         | State is On, Open or Detected; no Active Alert | Pill: icon + word ("On")                          | `state/active/bg` / `state/active/fg`                                        | "On"           |
-| `alert-critical` | The Reading has an Active **Critical** Alert   | Pill: icon + word ("Detected")                    | `status/danger/bg` / `status/danger/fg`                                      | "Detected"     |
-| `alert-warning`  | The Reading has an Active **Warning** Alert    | Pill: icon + word ("Open")                        | `status/warning/bg` / `status/warning/fg`                                    | "Open"         |
-| `alert-info`     | The Reading has an Active **Info** Alert       | Pill: icon + word ("Detected") with a thin border | `status/progress/bg` / `status/progress/fg`, border `status/progress/border` | "Detected"     |
-| `loading`        | No Reading yet                                 | `refresh` icon, spinning, no pill                 | – / `color-text/secondary`                                                   | "Loading"      |
-| `disconnected`   | The Module's Connection Status is Disconnected | `link_off` icon, no pill, State hidden            | – / `color-text/secondary`                                                   | "Disconnected" |
+| Figma `state`    | When                                                                            | Shows                                             | Colours (bg / fg)                                                            | Screen reader  |
+| ---------------- | ------------------------------------------------------------------------------- | ------------------------------------------------- | ---------------------------------------------------------------------------- | -------------- |
+| `inactive`       | State is Off, Closed, Clear, Stopped or Paused; no Active Alert                 | Pill: icon + word ("Off")                         | `state/inactive/bg` / `state/inactive/fg`                                    | "Off"          |
+| `active`         | State is On, Open, Opening, Closing, Heat, Running or Detected; no Active Alert | Pill: icon + word ("On")                          | `state/active/bg` / `state/active/fg`                                        | "On"           |
+| `alert-critical` | The Reading has an Active **Critical** Alert                                    | Pill: icon + word ("Detected")                    | `status/danger/bg` / `status/danger/fg`                                      | "Detected"     |
+| `alert-warning`  | The Reading has an Active **Warning** Alert                                     | Pill: icon + word ("Open")                        | `status/warning/bg` / `status/warning/fg`                                    | "Open"         |
+| `alert-info`     | The Reading has an Active **Info** Alert                                        | Pill: icon + word ("Detected") with a thin border | `status/progress/bg` / `status/progress/fg`, border `status/progress/border` | "Detected"     |
+| `error`          | Operational State is Error; no Active Alert                                     | Pill: `error` icon + word ("Error")               | `status/danger/bg` / `status/danger/fg`                                      | "Error"        |
+| `loading`        | No Reading yet                                                                  | `refresh` icon, spinning, no pill                 | – / `color-text/secondary`                                                   | "Loading"      |
+| `disconnected`   | The Module's Connection Status is Disconnected                                  | `link_off` icon, no pill, State hidden            | – / `color-text/secondary`                                                   | "Disconnected" |
 
 In code there is no `state` prop. It is worked out from the props, first match wins:
 
 1. `isDisconnected` → `disconnected`.
 2. `state` is `null` → `loading`.
 3. `alertLevel` is set → `alert-<level>`.
-4. The State is On, Open or Detected → `active`; otherwise `inactive`.
+4. The State is Error (Operational State) → `error`.
+5. The State is active (`ACTIVE_STATES`: On, Open, Opening, Closing, Heat, Running, Detected) → `active`; otherwise `inactive`.
 
 Target states:
 
@@ -132,5 +134,8 @@ TypeScript checks that the State belongs to the Metric (`{ metric: "power", stat
 - Does an Active Alert on an **inactive** State happen (e.g. "Alert when Off")? The alert colours apply to any State, so yes, it is supported.
 
 ### Decisions
+
+- **Operational State Error is red** (2026-11-08). It uses the `status/danger` colours, like a Critical Alert and `DeviceFaultStatus`, because something is wrong. The `error` icon and the word "Error" tell it apart from an Alert. An Active Alert still wins. The Error Reason isn't shown here: that is for the planned `OperationalStateValue`.
+- **New State Metrics** (2026-11-08, ADR 0002): Open / Close (Opening and Closing are active, with the icon of the State they move to), Mode (Heat active, Off inactive) and Operational State (Running active; Stopped and Paused inactive; Error red).
 
 - **alert-info has a thin border** (2026-11-07). Info and active are both blue, so Info gets an inside 1px `status/progress/border` stroke. It doesn't change the size: Figma excludes it from the layout, CSS uses an inset shadow.

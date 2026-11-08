@@ -16,7 +16,7 @@ const SPACE = [
   },
   {
     step: "3",
-    use: "Between rows inside ModuleCard and SpaceCard; InlineMessage icon and text.",
+    use: "Between rows inside DeviceCard and SpaceCard; InlineMessage icon and text.",
   },
   {
     step: "4",

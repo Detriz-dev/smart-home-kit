@@ -4,7 +4,7 @@
 
 ### Purpose
 
-Places children in one column with an even gap, for example a `LocationPath` above a `ModuleCard`. It is the root of most generated screens, and people building screens by hand can use it too.
+Places children in one column with an even gap, for example a `LocationPath` above a `DeviceCard`. It is the root of most generated screens, and people building screens by hand can use it too.
 
 It adds only spacing. It has no background, border or padding, so it stays invisible and works inside any other component.
 
@@ -54,7 +54,7 @@ Target states:
 | Target state | Applies? | Why                                                               |
 | ------------ | -------- | ----------------------------------------------------------------- |
 | loading      | no       | StackLayout has no data. Each child shows its own loading state.  |
-| Connected    | no       | Connection Status belongs to the children, such as `ModuleCard`.  |
+| Connected    | no       | Connection Status belongs to the children, such as `DeviceCard`.  |
 | Stale        | no       | Same as above.                                                    |
 | Disconnected | no       | Same as above. The stack keeps its layout whatever a child shows. |
 | Fault        | no       | Fault belongs to the children, shown with `DeviceFaultStatus`.    |
@@ -87,9 +87,9 @@ Figma's sample content and the stories use these:
 
 | Case               | Children                                                                                                                    |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| Default            | `LocationPath` (My flat, Level 2, Bedroom) above two `ModuleCard`s (Climate Module, Air Quality Module)                     |
-| `LongText` (240px) | `LocationPath` with Grandparents' summer house by the lake, Kitchen and dining area on the ground floor, above `ModuleCard` |
-| `Minimal`          | One `ModuleCard` (Climate Module)                                                                                           |
+| Default            | `LocationPath` (My flat, Level 2, Bedroom) above two `DeviceCard`s (Climate Module, Air Quality Module)                     |
+| `LongText` (240px) | `LocationPath` with Grandparents' summer house by the lake, Kitchen and dining area on the ground floor, above `DeviceCard` |
+| `Minimal`          | One `DeviceCard` (Climate Module)                                                                                           |
 
 ### Tokens
 

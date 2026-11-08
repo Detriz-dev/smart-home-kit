@@ -7,7 +7,7 @@ keywords:
   - smart home kit tutorial
   - quick start
   - React components
-  - ModuleCard
+  - DeviceCard
 ---
 
 Build a screen for one Space, the Bedroom, from a few of the kit's components. It takes about ten minutes. You need the kit installed first: see [Installation](./installation.mdx). If you want to know why the components work the way they do, read the [Introduction](./introduction.mdx).
@@ -18,7 +18,7 @@ This is what you'll build:
 <ContentSection title="Bedroom">
   <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
   <ColumnLayout>
-    <ModuleCard
+    <DeviceCard
       name="Climate Module"
       connectionStatus="connected"
       sensors={[
@@ -31,7 +31,7 @@ This is what you'll build:
         },
       ]}
     />
-    <ModuleCard
+    <DeviceCard
       name="Air Quality Module"
       connectionStatus="connected"
       faults={[{ faultCode: "calibration_required", metric: "co2" }]}
@@ -43,14 +43,14 @@ This is what you'll build:
 
 ## 1. Show one Module
 
-Render the Bedroom's Climate Module with [`ModuleCard`](/docs/ui-components/readings/module-card). It shows the Module's name, its Connection Status and a Reading for each Sensor:
+Render the Bedroom's Climate Module with [`DeviceCard`](/docs/ui-components/readings/device-card). It shows the Module's name, its Connection Status and a Reading for each Sensor:
 
 ```tsx title="src/App.tsx"
-import { ModuleCard } from "@detriz-sh-kit/ui";
+import { DeviceCard } from "@detriz-sh-kit/ui";
 
 export function App() {
   return (
-    <ModuleCard
+    <DeviceCard
       name="Climate Module"
       connectionStatus="connected"
       sensors={[
@@ -70,7 +70,7 @@ export function App() {
 You should see this:
 
 ```jsx live
-<ModuleCard
+<DeviceCard
   name="Climate Module"
   connectionStatus="connected"
   sensors={[
@@ -85,9 +85,9 @@ You should see this:
 To show more than one Module, keep the data apart from the screen. In a real app it comes from your API. Here it's written out by hand, with a second Module that reports a Fault. The [shared types](/docs/ui-components/foundations/shared-types) let TypeScript check the data against the components:
 
 ```tsx title="src/bedroomData.ts"
-import type { ModuleCardProps } from "@detriz-sh-kit/ui";
+import type { DeviceCardProps } from "@detriz-sh-kit/ui";
 
-export const bedroomModules: ModuleCardProps[] = [
+export const bedroomModules: DeviceCardProps[] = [
   {
     name: "Climate Module",
     connectionStatus: "connected",
@@ -108,27 +108,27 @@ export const bedroomModules: ModuleCardProps[] = [
 Then pass the first Module to the card. The screen looks the same as before:
 
 ```tsx title="src/App.tsx"
-import { ModuleCard } from "@detriz-sh-kit/ui";
+import { DeviceCard } from "@detriz-sh-kit/ui";
 import { bedroomModules } from "./bedroomData";
 
 export function App() {
-  return <ModuleCard {...bedroomModules[0]} />;
+  return <DeviceCard {...bedroomModules[0]} />;
 }
 ```
 
 ## 3. Show every Module side by side
 
-Put one ModuleCard per Module in a [`ColumnLayout`](/docs/ui-components/layout/column-layout). It places them side by side, and stacks them when there isn't room:
+Put one DeviceCard per Module in a [`ColumnLayout`](/docs/ui-components/layout/column-layout). It places them side by side, and stacks them when there isn't room:
 
 ```tsx title="src/App.tsx"
-import { ColumnLayout, ModuleCard } from "@detriz-sh-kit/ui";
+import { ColumnLayout, DeviceCard } from "@detriz-sh-kit/ui";
 import { bedroomModules } from "./bedroomData";
 
 export function App() {
   return (
     <ColumnLayout>
       {bedroomModules.map((module) => (
-        <ModuleCard key={module.name} {...module} />
+        <DeviceCard key={module.name} {...module} />
       ))}
     </ColumnLayout>
   );
@@ -144,7 +144,7 @@ import {
   ColumnLayout,
   ContentSection,
   LocationPath,
-  ModuleCard,
+  DeviceCard,
 } from "@detriz-sh-kit/ui";
 import { bedroomModules } from "./bedroomData";
 
@@ -158,7 +158,7 @@ export function App() {
       />
       <ColumnLayout>
         {bedroomModules.map((module) => (
-          <ModuleCard key={module.name} {...module} />
+          <DeviceCard key={module.name} {...module} />
         ))}
       </ColumnLayout>
     </ContentSection>
@@ -178,7 +178,7 @@ To see it, add a small test component. It keeps the Climate Module's Connection 
 import { useState } from "react";
 import {
   Button,
-  ModuleCard,
+  DeviceCard,
   StackLayout,
   type ConnectionStatus,
 } from "@detriz-sh-kit/ui";
@@ -201,7 +201,7 @@ export function ConnectionTest() {
         <Button onClick={() => setStatus("disconnected")}>Disconnect</Button>
         <Button onClick={() => setStatus("connected")}>Reconnect</Button>
       </div>
-      <ModuleCard
+      <DeviceCard
         name="Climate Module"
         connectionStatus={status}
         sensors={[
@@ -240,7 +240,7 @@ function ConnectionTest() {
         <Button onClick={() => setStatus("disconnected")}>Disconnect</Button>
         <Button onClick={() => setStatus("connected")}>Reconnect</Button>
       </div>
-      <ModuleCard
+      <DeviceCard
         name="Climate Module"
         connectionStatus={status}
         sensors={[

@@ -14,7 +14,7 @@ Figma: `LocationPath` component set in _DeTriz - Smart Home Kit_ (node `171:38`)
 
 Category: **Context** ("Where is this / what is it?"). The path is a fixed fact and never changes on its own.
 
-It shows the location hierarchy from [Where things are](/kit/apps/docs-site/docs/domain-model/glossary.mdx#where-things-are) and the Device it ends at from [How is tracked](/kit/apps/docs-site/docs/domain-model/glossary.mdx#how-is-tracked):
+It shows the location hierarchy from [Places](/kit/apps/docs-site/docs/domain-model/glossary.mdx#places) and the Device it ends at from [Capabilities](/kit/apps/docs-site/docs/domain-model/glossary.mdx#capabilities):
 
 | Part      | Domain term           | Icon                                                     | Example        | Rule                                                                                                          |
 | --------- | --------------------- | -------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------- |

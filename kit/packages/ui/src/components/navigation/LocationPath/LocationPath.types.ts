@@ -17,9 +17,9 @@ interface LocationPathBaseProps {
 
 /** A path that ends at a Device: its name and its Device Kind. */
 interface LocationPathWithDevice {
-  /** Name of the Device (Hub or Module) the path points to. */
+  /** Name of the Device (Hub, Module or Standalone Device) the path points to. */
   deviceName: string;
-  /** Whether the Device is a Hub or a Module. Decides its icon and what screen readers hear ("Hub:", "Module:"). */
+  /** How the Device connects: Hub, Module or Standalone Device. Decides its icon and what screen readers hear ("Hub:", "Module:", "Device:"). */
   deviceKind: DeviceKind;
 }
 

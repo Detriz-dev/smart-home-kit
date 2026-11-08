@@ -1,6 +1,6 @@
 @layer detriz {
   /* The card fills its parent and stacks the name, the Faults and the rows.
-     Figma draws the outline inside the card, so the padding is one border width smaller (same as ModuleCard). */
+     Figma draws the outline inside the card, so the padding is one border width smaller (same as DeviceCard). */
   .root {
     box-sizing: border-box;
     display: flex;

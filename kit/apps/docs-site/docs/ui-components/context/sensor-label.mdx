@@ -69,19 +69,25 @@ SensorLabel changes in two ways: the **Metric** it names and its **size**.
 
 Each Metric has a fixed label and icon. You can't change them, so a Metric looks the same everywhere in your app.
 
-| `metric`      | Label       | Screen readers say |
-| ------------- | ----------- | ------------------ |
-| `temperature` | Temperature | Temperature        |
-| `humidity`    | Humidity    | Humidity           |
-| `illuminance` | Illuminance | Illuminance        |
-| `co2`         | CO₂         | carbon dioxide     |
-| `voc`         | VOC         | VOC                |
-| `pm25`        | PM2.5       | PM 2.5             |
-| `power`       | Power       | Power              |
-| `contact`     | Contact     | Contact            |
-| `motion`      | Motion      | Motion             |
-| `smoke`       | Smoke       | Smoke              |
-| `co`          | CO          | carbon monoxide    |
+| `metric`            | Label             | Screen readers say |
+| ------------------- | ----------------- | ------------------ |
+| `temperature`       | Temperature       | Temperature        |
+| `humidity`          | Humidity          | Humidity           |
+| `illuminance`       | Illuminance       | Illuminance        |
+| `co2`               | CO₂               | carbon dioxide     |
+| `voc`               | VOC               | VOC                |
+| `pm25`              | PM2.5             | PM 2.5             |
+| `power`             | Power             | Power              |
+| `contact`           | Contact           | Contact            |
+| `motion`            | Motion            | Motion             |
+| `smoke`             | Smoke             | Smoke              |
+| `co`                | CO                | carbon monoxide    |
+| `battery`           | Battery           | Battery            |
+| `setpoint`          | Setpoint          | Setpoint           |
+| `position`          | Position          | Position           |
+| `open-close`        | Open / Close      | open or close      |
+| `mode`              | Mode              | Mode               |
+| `operational-state` | Operational State | Operational State  |
 
 ```jsx live
 <StackLayout>
@@ -130,7 +136,7 @@ Pass the [Metric](/docs/domain-model/glossary#measurements) of the Sensor as `me
 A few rules from the domain model:
 
 - **One Sensor, one Metric.** A Sensor produces Readings for exactly one Metric, so naming the Metric names the Sensor. There is no separate Sensor name.
-- **A fixed list.** `metric` only accepts the eleven Metrics above: the six Measured Metrics and the five Two-state Metrics. Put a Measured Metric's label above a [`ReadingValue`](../readings/reading-value.mdx), and a Two-state Metric's above a [`StateValue`](../readings/state-value.mdx). TypeScript tells you if you pass anything else. The list is exported as the [`Metric` type](../foundations/shared-types.mdx#metric), so you can use it in your own data:
+- **A fixed list.** `metric` only accepts the seventeen Metrics above: nine Measured Metrics and eight State Metrics. Put a Measured Metric's label above a [`ReadingValue`](../readings/reading-value.mdx), and a State Metric's above a [`StateValue`](../readings/state-value.mdx). TypeScript tells you if you pass anything else. The list is exported as the [`Metric` type](../foundations/shared-types.mdx#metric), so you can use it in your own data:
 
   ```tsx
   import type { Metric } from "@detriz-sh-kit/ui";
@@ -140,10 +146,10 @@ A few rules from the domain model:
 
 ## Props
 
-| Prop     | Type                                                         | Default | Description                                                                               |
-| -------- | ------------------------------------------------------------ | ------- | ----------------------------------------------------------------------------------------- |
-| `metric` | `Metric` (`"temperature"`, `"co2"`, `"power"`, `"smoke"`, …) | –       | **Required.** The Metric the Sensor measures. The label text and the icon follow from it. |
-| `size`   | `"xs" \| "sm" \| "md" \| "lg"`                               | `"xs"`  | How big the label is drawn.                                                               |
+| Prop     | Type                                                         | Default | Description                                                                                  |
+| -------- | ------------------------------------------------------------ | ------- | -------------------------------------------------------------------------------------------- |
+| `metric` | `Metric` (`"temperature"`, `"co2"`, `"power"`, `"smoke"`, …) | –       | **Required.** The Metric the Capability reports. The label text and the icon follow from it. |
+| `size`   | `"xs" \| "sm" \| "md" \| "lg"`                               | `"xs"`  | How big the label is drawn.                                                                  |
 
 The types `SensorLabelProps`, `SensorLabelMetric` and `SensorLabelSize` are exported too:
 

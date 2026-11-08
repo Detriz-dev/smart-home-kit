@@ -12,7 +12,7 @@ const RADIUS = [
   { name: "4", use: "Small things: InlineMessage and its dismiss button." },
   { name: "8", use: "Controls: Button." },
   { name: "12", use: "Small cards: SensorReading." },
-  { name: "16", use: "Large cards: ModuleCard, SpaceCard." },
+  { name: "16", use: "Large cards: DeviceCard, SpaceCard." },
   {
     name: "24",
     use: "Not used by the components yet. Very large panels in your own screens.",

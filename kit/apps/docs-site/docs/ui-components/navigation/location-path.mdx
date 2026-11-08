@@ -149,13 +149,13 @@ If you pass no names at all, LocationPath renders nothing.
 
 Each prop matches a term from the [Glossary](/docs/domain-model/glossary). Pass the **name** of each one.
 
-| Prop         | Domain term                                                     | Example        |
-| ------------ | --------------------------------------------------------------- | -------------- |
-| `siteName`   | [Site](/docs/domain-model/glossary#places)                      | My flat        |
-| `floorName`  | [Floor](/docs/domain-model/glossary#places)                     | Level 2        |
-| `spaceName`  | [Space](/docs/domain-model/glossary#places)                     | Bedroom        |
-| `deviceName` | [Hub or Module](/docs/domain-model/glossary#devices-and-assets) | Climate Module |
-| `deviceKind` | [Device Kind](/docs/domain-model/glossary#devices-and-assets)   | `module`       |
+| Prop         | Domain term                                                                        | Example        |
+| ------------ | ---------------------------------------------------------------------------------- | -------------- |
+| `siteName`   | [Site](/docs/domain-model/glossary#places)                                         | My flat        |
+| `floorName`  | [Floor](/docs/domain-model/glossary#places)                                        | Level 2        |
+| `spaceName`  | [Space](/docs/domain-model/glossary#places)                                        | Bedroom        |
+| `deviceName` | [Hub, Module or Standalone Device](/docs/domain-model/glossary#devices-and-assets) | Climate Module |
+| `deviceKind` | [Device Kind](/docs/domain-model/glossary#devices-and-assets)                      | `module`       |
 
 A few rules from the domain model:
 
@@ -166,14 +166,14 @@ A few rules from the domain model:
 
 ## Props
 
-| Prop         | Type                            | Default    | Description                                                                            |
-| ------------ | ------------------------------- | ---------- | -------------------------------------------------------------------------------------- |
-| `siteName`   | `string`                        | none       | Name of the Site, the top of the path. Leave out if the screen already shows it.       |
-| `floorName`  | `string`                        | none       | Name of the Floor, for example "Level 2". Leave out if the Site doesn't use Floors.    |
-| `spaceName`  | `string`                        | none       | Name of the Space. Leave out if the Device has no Space yet.                           |
-| `deviceName` | `string`                        | none       | Name of the Device (Hub or Module) the path points to. Pass it with `deviceKind`.      |
-| `deviceKind` | `"hub" \| "module"`             | none       | Whether the Device is a Hub or a Module. Decides its icon. Required with `deviceName`. |
-| `layout`     | `"inline" \| "grid" \| "stack"` | `"inline"` | How the parts are arranged.                                                            |
+| Prop         | Type                                | Default    | Description                                                                                                                                        |
+| ------------ | ----------------------------------- | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `siteName`   | `string`                            | none       | Name of the Site, the top of the path. Leave out if the screen already shows it.                                                                   |
+| `floorName`  | `string`                            | none       | Name of the Floor, for example "Level 2". Leave out if the Site doesn't use Floors.                                                                |
+| `spaceName`  | `string`                            | none       | Name of the Space. Leave out if the Device has no Space yet.                                                                                       |
+| `deviceName` | `string`                            | none       | Name of the Device (Hub, Module or Standalone Device) the path points to. Pass it with `deviceKind`.                                               |
+| `deviceKind` | `"hub" \| "module" \| "standalone"` | none       | How the Device connects. Decides its icon and what screen readers hear before its name ("Hub:", "Module:", "Device:"). Required with `deviceName`. |
+| `layout`     | `"inline" \| "grid" \| "stack"`     | `"inline"` | How the parts are arranged.                                                                                                                        |
 
 The types `LocationPathProps` and `LocationPathLayout` are exported too:
 

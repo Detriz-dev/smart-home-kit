@@ -4,7 +4,7 @@
 
 ### Purpose
 
-One Device (a Hub or a Module) as a row in a [`List`](../../layout/List/List.md): its Device Kind icon, its name, its Space, its status on the right and any Faults under the name. It answers "is everything OK?" for a list of Devices, like a Devices screen or the Modules of one Hub.
+One Device (a Hub, a Module or a Standalone Device) as a row in a [`List`](../../layout/List/List.md): its Device Kind icon, its name, its Space, its status on the right and any Faults under the name. It answers "is everything OK?" for a list of Devices, like a Devices screen or the Modules of one Hub.
 
 It is [`ListItem`](../../layout/ListItem/ListItem.md) with typed props: the parent passes domain values (`pairingStatus`, `connectionStatus`, `faults`) instead of components, so every Device row in every app shows its status the same way.
 
@@ -32,11 +32,11 @@ Domain rules behind it:
 - **Connection Status and Fault only exist while Paired.** The types enforce it: `connectionStatus` is required when `pairingStatus` is `paired`, and not allowed otherwise. `faults` is only allowed when Paired.
 - **The right side shows one status.** Unpaired or Pairing: `DevicePairingStatus`. Paired: `DeviceConnectionStatus` (a Paired Device always has a Connection Status, so "Paired" itself isn't shown).
 - **Faults are independent of Connection Status**, so a row can be Connected and have a Fault. Each Fault gets its own line under the Space.
-- **A Hub is never Stale** (only Modules have Sensors). The types don't block it; the docs say so.
+- **A Hub without Capabilities is never Stale** (only Devices with Capabilities send Readings). The types don't block it; the docs say so.
 
 What it does **not** show, and why:
 
-- **Readings.** That's `ModuleCard` or `SpaceCard`.
+- **Readings.** That's `DeviceCard` or `SpaceCard`.
 - **Site, Floor.** `LocationPath` shows where a Device is in full. The row shows only its Space.
 - **Actions** (pair, remove, rename). Those are Controls, on the Device's own screen. A row can be clickable to open that screen.
 
@@ -63,14 +63,14 @@ A `ListItem` row:
 
 Figma variant property `state` (and `hasFault`). In code there is no `state` prop: it follows from `pairingStatus` and `connectionStatus`.
 
-| `state`        | Props                                                     | Right side                          |
-| -------------- | --------------------------------------------------------- | ----------------------------------- |
-| `unpaired`     | `pairingStatus="unpaired"`                                | `DevicePairingStatus` Unpaired      |
-| `pairing`      | `pairingStatus="pairing"`                                 | `DevicePairingStatus` Pairing       |
-| `connecting`   | `pairingStatus="paired"`, `connectionStatus="connecting"` | `DeviceConnectionStatus` Connecting |
-| `connected`    | `… connectionStatus="connected"`                          | Connected                           |
-| `stale`        | `… connectionStatus="stale"` (Modules only)               | Stale                               |
-| `disconnected` | `… connectionStatus="disconnected"`                       | Disconnected                        |
+| `state`        | Props                                                         | Right side                          |
+| -------------- | ------------------------------------------------------------- | ----------------------------------- |
+| `unpaired`     | `pairingStatus="unpaired"`                                    | `DevicePairingStatus` Unpaired      |
+| `pairing`      | `pairingStatus="pairing"`                                     | `DevicePairingStatus` Pairing       |
+| `connecting`   | `pairingStatus="paired"`, `connectionStatus="connecting"`     | `DeviceConnectionStatus` Connecting |
+| `connected`    | `… connectionStatus="connected"`                              | Connected                           |
+| `stale`        | `… connectionStatus="stale"` (Devices with Capabilities only) | Stale                               |
+| `disconnected` | `… connectionStatus="disconnected"`                           | Disconnected                        |
 
 `hasFault=true` exists for the four Paired states: one `DeviceFaultStatus` per Fault under the Space.
 

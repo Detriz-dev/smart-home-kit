@@ -3,7 +3,7 @@ import Link from "@docusaurus/Link";
 import CodeBlock from "@theme/CodeBlock";
 import Heading from "@theme/Heading";
 import Layout from "@theme/Layout";
-import { ModuleCard, type ModuleCardProps } from "@detriz-sh-kit/ui";
+import { DeviceCard, type DeviceCardProps } from "@detriz-sh-kit/ui";
 
 import DomainDiagram from "@site/src/components/DomainDiagram";
 // Imported (not linked as "/img/…") so the paths still work when the site moves under a baseUrl,
@@ -19,8 +19,8 @@ const FIGMA_URL =
 const INSTALL_COMMAND = "npm install @detriz-sh-kit/ui @detriz-sh-kit/tokens";
 
 // One example on all three cards: the diagram highlights these values, the Figma card renders
-// them with the real ModuleCard, and the code card shows the same props.
-const climateModule: ModuleCardProps = {
+// them with the real DeviceCard, and the code card shows the same props.
+const climateModule: DeviceCardProps = {
   name: "Climate Module",
   connectionStatus: "connected",
   sensors: [
@@ -30,7 +30,7 @@ const climateModule: ModuleCardProps = {
 };
 
 // Written by hand (not generated from climateModule) so the line breaks fit the card.
-const climateModuleCode = `<ModuleCard
+const climateModuleCode = `<DeviceCard
   name="Climate Module"
   connectionStatus="connected"
   sensors={[
@@ -148,7 +148,7 @@ export default function Home(): ReactNode {
               <img src={figmaLogo} alt="" width={20} height={20} />
               Figma kit
             </Heading>
-            <ModuleCard {...climateModule} />
+            <DeviceCard {...climateModule} />
           </article>
 
           <article className={`${styles.card} ${styles.cardCode}`}>

@@ -1,0 +1,270 @@
+---
+sidebar_position: 1.8
+sidebar_label: ValueControl
+description: Sets a number in a range, like the heating Setpoint or the blinds Position, and sends it once when the user is done.
+---
+
+# ValueControl
+
+Sets a number in a range: the heating **Setpoint** (0–30 °C) or the blinds **Position** (0–100 %). It shows the value the Device reports, lets the user pick a new one, and sends it **once**, when they're done.
+
+```jsx live
+function Setpoint() {
+  const [value, setValue] = useState(22);
+  return (
+    <ValueControl
+      name="Setpoint"
+      value={value}
+      unit="celsius"
+      min={0}
+      max={30}
+      step={0.5}
+      fractionDigits={1}
+      onCommit={setValue}
+    />
+  );
+}
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+## Import
+
+```tsx
+import { ValueControl } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+```tsx
+import { ValueControl } from "@detriz-sh-kit/ui";
+
+function HeatingSetpoint({ heating, sendCommand }) {
+  return (
+    <ValueControl
+      name="Setpoint"
+      value={heating.setpoint} // what the Device reports, in °C
+      unit="celsius"
+      min={heating.setpointMin}
+      max={heating.setpointMax}
+      step={heating.setpointStep}
+      fractionDigits={1}
+      onCommit={(value) => sendCommand(heating.id, "set-setpoint", value)}
+      command={heating.lastSetpointCommand} // { value, status }
+    />
+  );
+}
+```
+
+The examples below leave out the `import` lines. In your app, you need them.
+
+Commands work like every Control: see [How commands work](./power-control.mdx#how-commands-work). Here `command` holds the value asked for: `{ value: 23, status: "pending" }`.
+
+## When to use it
+
+Use ValueControl for **a number the user sets**: a Setpoint, a Position, later a brightness.
+
+Don't use it for:
+
+- **A number that can only be read,** like the measured temperature. Use [`SensorReading`](../readings/sensor-reading.mdx).
+- **A choice between a few named options.** Use [`StateSelectControl`](./state-select-control.mdx).
+
+## Stepper or slider
+
+| `input`   | Looks like               | Use it for                             |
+| --------- | ------------------------ | -------------------------------------- |
+| `stepper` | − 22.0 °C +              | Small ranges with fine steps: Setpoint |
+| `slider`  | A slider under the value | 0–100 ranges: Position                 |
+
+```jsx live
+<StackLayout gap="md">
+  {/* Stepper */}
+  <ValueControl
+    name="Setpoint"
+    value={22}
+    unit="celsius"
+    min={0}
+    max={30}
+    step={0.5}
+    fractionDigits={1}
+    onCommit={() => {}}
+  />
+  {/* Slider */}
+  <ValueControl
+    name="Position"
+    value={40}
+    unit="percent"
+    min={0}
+    max={100}
+    step={1}
+    input="slider"
+    onCommit={() => {}}
+  />
+</StackLayout>
+```
+
+## A draft, then one command
+
+While the user is choosing, the new value is a **draft**: it shows in blue with a dotted underline, and nothing is sent yet. ValueControl calls `onCommit` **once**, when the user is done:
+
+- on releasing the slider, or pressing Enter on it
+- 1 second after the last − / + press (or arrow key)
+
+So going from 20 to 23 °C sends one command, not six. After that, the reported value shows again with "Setting to 23.0 °C…" until the Device confirms it. If the user comes back to the reported value, nothing is sent.
+
+## States
+
+| What you pass              | Shows                                                            |
+| -------------------------- | ---------------------------------------------------------------- |
+| `value={22}`               | The value; − off at `min`, + off at `max`                        |
+| `command.status="pending"` | Input disabled; "Setting to 23.0 °C…"                            |
+| `command.status="failed"`  | Input usable; "Couldn't set 23.0 °C. The device didn't respond." |
+| `isViewOnly`               | Input disabled; "View only"                                      |
+| `value={null}`             | Loading icon instead of the input                                |
+| `isDisconnected`           | Disconnected icon instead of the input                           |
+
+```jsx live
+<StackLayout gap="md">
+  {/* At the top of the range: + is off */}
+  <ValueControl
+    name="Setpoint"
+    value={30}
+    unit="celsius"
+    min={0}
+    max={30}
+    step={0.5}
+    fractionDigits={1}
+    onCommit={() => {}}
+  />
+  {/* Pending */}
+  <ValueControl
+    name="Setpoint"
+    value={22}
+    unit="celsius"
+    min={0}
+    max={30}
+    step={0.5}
+    fractionDigits={1}
+    onCommit={() => {}}
+    command={{ value: 23, status: "pending" }}
+  />
+  {/* Failed */}
+  <ValueControl
+    name="Setpoint"
+    value={22}
+    unit="celsius"
+    min={0}
+    max={30}
+    step={0.5}
+    fractionDigits={1}
+    onCommit={() => {}}
+    command={{ value: 23, status: "failed" }}
+  />
+  {/* Disconnected */}
+  <ValueControl
+    name="Setpoint"
+    value={22}
+    unit="celsius"
+    min={0}
+    max={30}
+    step={0.5}
+    fractionDigits={1}
+    onCommit={() => {}}
+    isDisconnected
+  />
+</StackLayout>
+```
+
+## Mapping your data
+
+| Prop                 | Domain term                                                                  | Example          |
+| -------------------- | ---------------------------------------------------------------------------- | ---------------- |
+| `value`              | The [Setpoint](/docs/domain-model/glossary#capabilities) or Position Reading | `22`             |
+| `unit`               | The Metric's [Unit](/docs/domain-model/glossary#measurements)                | `"celsius"`      |
+| `min`, `max`, `step` | The Value Control's range                                                    | `0`, `30`, `0.5` |
+| `command.status`     | [Command Status](/docs/domain-model/glossary#command-status)                 | `"pending"`      |
+
+- **A Setpoint is not a measurement.** Show the measured temperature next to it with [`SensorReading`](../readings/sensor-reading.mdx), never in this component.
+- **Take the range from the Device.** The Device refuses values outside it or off the step.
+
+## Props
+
+| Prop             | Type                      | Default     | Description                                                                               |
+| ---------------- | ------------------------- | ----------- | ----------------------------------------------------------------------------------------- |
+| `name`           | `string`                  | –           | **Required.** What it sets, e.g. "Setpoint". Names the input for screen readers.          |
+| `value`          | `number \| null`          | –           | **Required.** The value the Device reports. `null` while the first Reading is on its way. |
+| `unit`           | `UnitLabelUnit`           | –           | **Required.** The Unit to show, e.g. `"celsius"` or `"percent"`.                          |
+| `min`            | `number`                  | –           | **Required.** The lowest value the Device accepts.                                        |
+| `max`            | `number`                  | –           | **Required.** The highest value the Device accepts.                                       |
+| `step`           | `number`                  | –           | **Required.** The step between values, e.g. 0.5.                                          |
+| `onCommit`       | `(value: number) => void` | –           | **Required.** Called once with the value the user chose. Your app sends the command.      |
+| `input`          | `"stepper" \| "slider"`   | `"stepper"` | − / + buttons or a slider.                                                                |
+| `fractionDigits` | `number`                  | `0`         | How many decimals to show, e.g. 1 for a Setpoint.                                         |
+| `command`        | `ValueControlCommand`     | none        | The value asked for and its Command Status: `{ value, status, failureMessage? }`.         |
+| `isDisconnected` | `boolean`                 | `false`     | The Device's Connection Status is Disconnected.                                           |
+| `isViewOnly`     | `boolean`                 | `false`     | The Account can only view this Site. Disables the input.                                  |
+
+The types `ValueControlProps`, `ValueControlCommand` and `ValueControlInput` are exported too.
+
+## Long text
+
+The name is shortened with "…". The value and its Unit never are.
+
+```jsx live
+<div style={{ maxWidth: 240 }}>
+  <ValueControl
+    name="Bedroom heating setpoint for the night"
+    value={22}
+    unit="celsius"
+    min={0}
+    max={30}
+    step={0.5}
+    fractionDigits={1}
+    onCommit={() => {}}
+    command={{ value: 23, status: "failed" }}
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- **Stepper:** − and + are named "Decrease Setpoint" and "Increase Setpoint", and screen readers hear the new value after each press.
+- **Slider:** a native slider named by `name`, with the Unit in what screen readers say ("22.5 degrees Celsius"). Arrow keys work.
+- Enter on the slider sends at once, so keyboard users don't have to wait.
+- Pending and Failed messages are announced.
+
+What's up to you:
+
+- **A clear `name`.** It names the input and the − / + buttons.
+
+## Styling
+
+| What          | Token                                                                        |
+| ------------- | ---------------------------------------------------------------------------- |
+| Value         | `--shk-typography-readout-sm-*`, `--shk-color-text-primary`                  |
+| Draft value   | `--shk-state-active-fg`, dotted underline                                    |
+| Slider        | `--shk-status-progress-border` (`--shk-status-neutral-border` when disabled) |
+| − / +         | from [`IconButton`](./icon-button.mdx) (`secondary`)                         |
+| Name, message | as in [`PowerControl`](./power-control.mdx#styling)                          |
+
+## Related components
+
+- [`SensorReading`](../readings/sensor-reading.mdx): the measured value next to a Setpoint.
+- [`StateSelectControl`](./state-select-control.mdx): the heating's Mode.
+- [`OpenCloseControl`](./open-close-control.mdx): opens and closes the blinds whose Position this sets.
+- [`DeviceCard`](../readings/device-card.mdx): a Device as a card, with its Controls.

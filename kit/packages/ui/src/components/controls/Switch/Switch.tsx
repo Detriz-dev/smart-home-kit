@@ -6,6 +6,7 @@ export function Switch({
   isOn,
   onChange,
   ariaLabel,
+  ariaDescribedBy,
   isDisabled = false,
 }: SwitchProps) {
   return (
@@ -17,6 +18,7 @@ export function Switch({
         role="switch"
         aria-checked={isOn}
         aria-label={ariaLabel}
+        aria-describedby={ariaDescribedBy}
         disabled={isDisabled}
         className={styles.track}
         onClick={() => onChange(!isOn)}

@@ -20,7 +20,7 @@ interface AlertRuleLabelThresholdProps extends AlertRuleLabelBaseProps {
   unit: UnitLabelUnit;
 }
 
-/** A rule on a Two-state Metric: "Alert when Open". */
+/** A rule on a State Metric: "Alert when Open". */
 interface AlertRuleLabelStateProps extends AlertRuleLabelBaseProps {
   /** The Alert Rule's condition, usually `rule.condition`. Shown as "Alert when {State}". */
   condition: AlertRuleStateCondition;

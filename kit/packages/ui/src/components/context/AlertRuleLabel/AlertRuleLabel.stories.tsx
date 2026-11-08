@@ -32,7 +32,7 @@ export const Below: Story = {
   },
 };
 
-// A rule on a Two-state Metric: no Unit.
+// A rule on a State Metric: no Unit.
 export const WhenState: Story = {
   args: {
     condition: { metric: "contact", state: "open" },
@@ -60,6 +60,28 @@ export const UnderAReading: Story = {
         size="md"
       />
       <AlertRuleLabel {...args} />
+    </div>
+  ),
+};
+
+// A comfort range is two Alert Rules on the same Capability: one "below", one "above".
+export const TwoRulesForARange: Story = {
+  render: () => (
+    <div style={{ display: "grid", gap: "var(--shk-space-2)", width: 200 }}>
+      <SensorReading
+        metric="temperature"
+        value={22.4}
+        unit="celsius"
+        size="md"
+      />
+      <AlertRuleLabel
+        condition={{ metric: "temperature", comparison: "below", value: 20 }}
+        unit="celsius"
+      />
+      <AlertRuleLabel
+        condition={{ metric: "temperature", comparison: "above", value: 30 }}
+        unit="celsius"
+      />
     </div>
   ),
 };

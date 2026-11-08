@@ -1,0 +1,48 @@
+@layer detriz {
+  /* − value + in one row. */
+  .stepper {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: var(--shk-space-2);
+  }
+
+  /* The number and its Unit, on one baseline. Never truncated. */
+  .value {
+    display: inline-flex;
+    align-items: baseline;
+    gap: var(--shk-space-1);
+    white-space: nowrap;
+  }
+
+  /* The number: readout-sm text style, so it reads like a Reading. */
+  .number {
+    color: var(--shk-color-text-primary);
+    font-family: var(--shk-typography-readout-sm-font-family);
+    font-size: var(--shk-typography-readout-sm-font-size);
+    font-weight: var(--shk-typography-readout-sm-font-weight);
+    line-height: var(--shk-typography-readout-sm-line-height);
+    letter-spacing: var(--shk-typography-readout-sm-letter-spacing);
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* A draft (not sent yet): active colour with a dotted underline. */
+  .value[data-draft="true"] .number {
+    color: var(--shk-state-active-fg);
+    text-decoration: underline dotted;
+    text-underline-offset: var(--shk-space-1);
+  }
+
+  /* The slider: full width, in the Switch's colours. */
+  .slider {
+    inline-size: 100%;
+    margin: var(--shk-space-0);
+    accent-color: var(--shk-status-progress-border);
+    cursor: pointer;
+  }
+
+  .slider:disabled {
+    accent-color: var(--shk-status-neutral-border);
+    cursor: not-allowed;
+  }
+}

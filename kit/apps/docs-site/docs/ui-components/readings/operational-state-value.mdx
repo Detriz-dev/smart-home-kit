@@ -1,0 +1,187 @@
+---
+sidebar_position: 1.55
+sidebar_label: OperationalStateValue
+description: Shows what a Device that runs a task is doing, like Running · Heating or Error · No water.
+---
+
+# OperationalStateValue
+
+Shows what a Device that runs a task is doing: its [Operational State](/docs/domain-model/glossary#operational-state) (Stopped, Running, Paused or Error), plus the **Phase** while it's Running or the **Error Reason** while it's in Error. For example a kettle that is **Running · Heating**.
+
+```jsx live
+<OperationalStateValue state="running" phase="Heating" />
+```
+
+:::tip[Try it]
+
+The examples on this page are live. Change the code and the result updates as you type.
+
+:::
+
+It's read-only. To let people start or stop the task, use [`OperationalStateControl`](../controls/operational-state-control.mdx), which shows this component inside it.
+
+## Import
+
+```tsx
+import { OperationalStateValue } from "@detriz-sh-kit/ui";
+```
+
+The component needs the kit's styles. Load them once, at the root of your app:
+
+```tsx
+import "@detriz-sh-kit/tokens/tokens.css";
+import "@detriz-sh-kit/ui/styles.css";
+```
+
+See [Installation](/docs/get-started/installation) for how to install the packages.
+
+## Basic usage
+
+```tsx
+import { OperationalStateValue } from "@detriz-sh-kit/ui";
+
+function KettleStatus() {
+  return <OperationalStateValue state="running" phase="Heating" />;
+}
+```
+
+The examples below leave out the `import` lines. In your app, you need them.
+
+## When to use it
+
+Use OperationalStateValue for **a Device that runs a task**, like a kettle, a washing machine or a thermostat, when people only need to see what it's doing.
+
+Don't use it for:
+
+- **Starting, pausing or stopping the task.** Use [`OperationalStateControl`](../controls/operational-state-control.mdx).
+- **On / Off, Open / Closed and other States.** Use [`StateValue`](./state-value.mdx).
+- **A hardware problem that doesn't stop the task**, like a calibration warning. Use [`DeviceFaultStatus`](../status/device-fault-status.mdx).
+
+## States
+
+| What you pass                   | Shows                                           |
+| ------------------------------- | ----------------------------------------------- |
+| `state="stopped"` or `"paused"` | Grey pill                                       |
+| `state="running"`               | Blue pill, then the `phase` if you pass one     |
+| `state="error"`                 | Red pill, then the Error Reason if you pass one |
+| `state={null}`                  | Spinning loading icon                           |
+| `isDisconnected`                | Disconnected icon; everything else is hidden    |
+
+```jsx live
+<StackLayout gap="sm">
+  {/* Stopped */}
+  <OperationalStateValue state="stopped" />
+  {/* Running, with its Phase */}
+  <OperationalStateValue state="running" phase="Keeping warm" />
+  {/* Paused */}
+  <OperationalStateValue state="paused" />
+  {/* Error, with the Device's own reason */}
+  <OperationalStateValue
+    state="error"
+    errorReason={{ code: "no-water", label: "No water" }}
+  />
+  {/* Loading */}
+  <OperationalStateValue state={null} />
+  {/* Disconnected */}
+  <OperationalStateValue state="running" isDisconnected />
+</StackLayout>
+```
+
+A `phase` is shown only while Running, and an `errorReason` only while in Error. Pass them anyway when you have them: the component shows them at the right time.
+
+## Error Reasons
+
+An Error Reason is either one of the kit's general reasons, or a reason the Device defines with its own label:
+
+| `errorReason`                             | Shows             |
+| ----------------------------------------- | ----------------- |
+| `{ code: "unable-to-start-or-resume" }`   | Can't start       |
+| `{ code: "unable-to-complete" }`          | Couldn't finish   |
+| `{ code: "command-invalid-in-state" }`    | Can't do that now |
+| `{ code: "no-water", label: "No water" }` | No water          |
+
+When a [Fault](/docs/domain-model/glossary#fault) caused the Error, add its `faultCode`. The component then shows **one** message that names both, instead of the same problem twice:
+
+```jsx live
+<OperationalStateValue
+  state="error"
+  errorReason={{
+    code: "unable-to-start-or-resume",
+    faultCode: "sensor_failure",
+  }}
+/>
+```
+
+## Mapping your data
+
+| Prop             | Domain term                                                                        | Example                                   |
+| ---------------- | ---------------------------------------------------------------------------------- | ----------------------------------------- |
+| `state`          | [Operational State](/docs/domain-model/glossary#operational-state)                 | `"running"`                               |
+| `phase`          | [Phase](/docs/domain-model/glossary#operational-state)                             | `"Heating"`                               |
+| `errorReason`    | [Error Reason](/docs/domain-model/glossary#operational-state)                      | `{ code: "no-water", label: "No water" }` |
+| `isDisconnected` | [Connection Status](/docs/domain-model/glossary#connection-status) is Disconnected | `false`                                   |
+| `alertLevel`     | [Alert Level](/docs/domain-model/glossary#alerts) of an Active Alert               | `"warning"`                               |
+
+- **The Device reports Error and the Phase.** Don't work them out in your app.
+- **A Fault doesn't always mean Error.** A thermostat that needs calibration can keep Running. Show its Fault with `DeviceFaultStatus` and pass `state="running"`.
+
+## Props
+
+| Prop             | Type                                                    | Default | Description                                                                                  |
+| ---------------- | ------------------------------------------------------- | ------- | -------------------------------------------------------------------------------------------- |
+| `state`          | `"stopped" \| "running" \| "paused" \| "error" \| null` | –       | **Required.** The latest Operational State. `null` while the first Reading is on its way.    |
+| `phase`          | `string`                                                | none    | What kind of Running, as the Device reports it, e.g. "Heating". Shown only while `running`.  |
+| `errorReason`    | `ErrorReason`                                           | none    | Why it is Error. Shown only while `error`.                                                   |
+| `isDisconnected` | `boolean`                                               | `false` | The Device's Connection Status is Disconnected. Hides the State, Phase and Error Reason.     |
+| `alertLevel`     | `"critical" \| "warning" \| "info"`                     | none    | The Alert Level of an Active Alert about this Reading. Colours the pill, as in `StateValue`. |
+| `size`           | `"md" \| "lg"`                                          | `"md"`  | How big it is drawn.                                                                         |
+
+The types `OperationalStateValueProps`, `OperationalState` and `ErrorReason` are exported too. See [Shared types](../foundations/shared-types.mdx#operationalstate).
+
+## Long text
+
+The pill never wraps or shrinks. When there isn't room, the Phase or Error Reason moves under the pill and wraps. It's never shortened, because it's the only place that says why.
+
+```jsx live
+<div style={{ maxWidth: 200 }}>
+  <OperationalStateValue
+    state="error"
+    errorReason={{
+      code: "water-low",
+      label: "Water level too low to start heating",
+    }}
+    size="lg"
+  />
+</div>
+```
+
+## Accessibility
+
+What you get without doing anything:
+
+- All text is real text: screen readers read "Running, Heating" or "Error, No water".
+- Error is never shown by colour alone: the word "Error", the error icon and the reason all say it.
+- The loading icon stops spinning when the user prefers reduced motion.
+
+What's up to you:
+
+- **Name the Device nearby,** for example in a [`DeviceCard`](./device-card.mdx), so people know what is Running.
+
+## Styling
+
+| What              | Token                                                  |
+| ----------------- | ------------------------------------------------------ |
+| Pill              | from [`StateValue`](./state-value.mdx)                 |
+| Phase             | `--shk-color-text-secondary`                           |
+| Error Reason      | `--shk-status-danger-fg`                               |
+| Text, `md` / `lg` | `--shk-typography-label-*` / `--shk-typography-body-*` |
+| Gap               | `--shk-space-2`                                        |
+
+See [Design tokens](../foundations/design-tokens.mdx) for how to override a token.
+
+## Related components
+
+- [`OperationalStateControl`](../controls/operational-state-control.mdx): the same, with Start, Pause, Resume and Stop.
+- [`StateValue`](./state-value.mdx): the pill it uses, for any State.
+- [`DeviceFaultStatus`](../status/device-fault-status.mdx): a hardware problem the Device reports.
+- [`DeviceCard`](./device-card.mdx): one Device as a card.

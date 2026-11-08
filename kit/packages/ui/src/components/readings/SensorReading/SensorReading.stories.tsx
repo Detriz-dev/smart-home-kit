@@ -28,7 +28,7 @@ const meta = {
     value: { control: "number" },
     fractionDigits: { control: { type: "number", min: 0, max: 3 } },
   },
-  // The card fills its parent, so every story sits in a box as wide as a ModuleCard column
+  // The card fills its parent, so every story sits in a box as wide as a DeviceCard column
   // (160px, the Figma width). Drag the corner to try other widths.
   decorators: [
     (Story) => (
@@ -88,7 +88,7 @@ export const AirQuality: Story = {
   },
 };
 
-// Stress story: the longest realistic value (bright daylight in lux) in a ModuleCard column.
+// Stress story: the longest realistic value (bright daylight in lux) in a DeviceCard column.
 export const LongText: Story = {
   args: {
     metric: "illuminance",

@@ -112,19 +112,24 @@ export type {
   SensorStateSize,
 } from "./components/readings/SensorState";
 export { StateValue } from "./components/readings/StateValue";
+export { OperationalStateValue } from "./components/readings/OperationalStateValue";
+export type {
+  OperationalStateValueProps,
+  OperationalStateValueSize,
+} from "./components/readings/OperationalStateValue";
 export type {
   StateValueProps,
   StateValueReading,
   StateValueSize,
 } from "./components/readings/StateValue";
 export { STATE_NAMES } from "./utils/stateNames";
-export { ModuleCard } from "./components/readings/ModuleCard";
+export { DeviceCard } from "./components/readings/DeviceCard";
 export type {
-  ModuleCardProps,
-  ModuleCardMeasuredSensor,
-  ModuleCardSensor,
-  ModuleCardStateSensor,
-} from "./components/readings/ModuleCard";
+  DeviceCardProps,
+  DeviceCardMeasuredSensor,
+  DeviceCardSensor,
+  DeviceCardStateSensor,
+} from "./components/readings/DeviceCard";
 export { SpaceCard } from "./components/readings/SpaceCard";
 export type {
   SpaceCardProps,
@@ -136,7 +141,7 @@ export type {
   DetectionMetric,
   MeasuredMetric,
   Metric,
-  TwoStateMetric,
+  StateMetric,
 } from "./types/metric";
 export type { State, StateOf, StatesByMetric } from "./types/state";
 export type {
@@ -147,12 +152,54 @@ export type {
   AlertRuleThresholdCondition,
   AlertStatus,
 } from "./types/alert";
-export type { ModuleType } from "./types/moduleType";
+export type { DeviceType } from "./types/deviceType";
+export type { ConnectionType } from "./types/connectionType";
+export type { CapabilityKind } from "./types/capability";
+export type {
+  CommandOf,
+  CommandStatus,
+  CommandsByMetric,
+  ControlCommand,
+  ControlMetric,
+} from "./types/command";
+export type {
+  ErrorReason,
+  GeneralErrorReason,
+  OperationalCommand,
+  OperationalState,
+} from "./types/operationalState";
 export type { AssetType } from "./types/assetType";
 export { Icon } from "./icons/Icon";
 export type { IconName, IconProps, IconSize } from "./icons/Icon";
 export { Switch } from "./components/controls/Switch";
 export type { SwitchProps } from "./components/controls/Switch";
+export { PowerControl } from "./components/controls/PowerControl";
+export { OpenCloseControl } from "./components/controls/OpenCloseControl";
+export type {
+  OpenCloseControlCommand,
+  OpenCloseControlProps,
+} from "./components/controls/OpenCloseControl";
+export { StateSelectControl } from "./components/controls/StateSelectControl";
+export type {
+  StateSelectControlCommand,
+  StateSelectControlProps,
+  StateSelectMetric,
+} from "./components/controls/StateSelectControl";
+export { ValueControl } from "./components/controls/ValueControl";
+export type {
+  ValueControlCommand,
+  ValueControlInput,
+  ValueControlProps,
+} from "./components/controls/ValueControl";
+export { OperationalStateControl } from "./components/controls/OperationalStateControl";
+export type {
+  OperationalStateControlCommand,
+  OperationalStateControlProps,
+} from "./components/controls/OperationalStateControl";
+export type {
+  PowerControlCommand,
+  PowerControlProps,
+} from "./components/controls/PowerControl";
 export { IconButton } from "./components/controls/IconButton";
 export type {
   IconButtonProps,

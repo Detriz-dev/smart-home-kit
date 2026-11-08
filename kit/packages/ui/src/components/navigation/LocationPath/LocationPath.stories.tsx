@@ -34,6 +34,15 @@ export const HubDevice: Story = {
   args: { deviceName: "Kitchen Hub", deviceKind: "hub" },
 };
 
+// A Standalone Device (connected directly) shows the devices icon. Screen readers hear "Device:".
+export const StandaloneDevice: Story = {
+  args: {
+    spaceName: "Kitchen",
+    deviceName: "Kettle",
+    deviceKind: "standalone",
+  },
+};
+
 export const Stack: Story = {
   args: { layout: "stack" },
 };

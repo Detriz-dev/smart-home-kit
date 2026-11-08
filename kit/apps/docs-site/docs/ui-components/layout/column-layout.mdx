@@ -110,7 +110,7 @@ There are only three ratios and no gap prop, so every screen uses layouts that h
 
 ```jsx live
 <ColumnLayout ratio="2:1">
-  <ModuleCard
+  <DeviceCard
     name="Air Quality Module"
     connectionStatus="connected"
     sensors={[
@@ -118,7 +118,7 @@ There are only three ratios and no gap prop, so every screen uses layouts that h
       { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
     ]}
   />
-  <ModuleCard
+  <DeviceCard
     name="Climate Module"
     connectionStatus="connected"
     sensors={[{ metric: "temperature", value: 22.4, unit: "celsius" }]}
@@ -132,12 +132,12 @@ The narrow child still comes first, so it is also read first.
 
 ```jsx live
 <ColumnLayout ratio="1:2">
-  <ModuleCard
+  <DeviceCard
     name="Climate Module"
     connectionStatus="connected"
     sensors={[{ metric: "temperature", value: 22.4, unit: "celsius" }]}
   />
-  <ModuleCard
+  <DeviceCard
     name="Air Quality Module"
     connectionStatus="connected"
     sensors={[
@@ -150,7 +150,7 @@ The narrow child still comes first, so it is also read first.
 
 ## Responding to width
 
-ColumnLayout looks at **its own width, not the screen's**, so it works the same on a full page and inside another column. A column is never narrower than 192px, the narrowest width a [`ModuleCard`](../readings/module-card.mdx) is designed for.
+ColumnLayout looks at **its own width, not the screen's**, so it works the same on a full page and inside another column. A column is never narrower than 192px, the narrowest width a [`DeviceCard`](../readings/device-card.mdx) is designed for.
 
 | `ratio`         | Narrow                  | Wide                                     |
 | --------------- | ----------------------- | ---------------------------------------- |
@@ -272,7 +272,7 @@ ColumnLayout has no text of its own. A child with long content can't push the co
   style={{ maxWidth: 240, outline: "1px dashed var(--shk-palette-gray-300)" }}
 >
   <ColumnLayout>
-    <ModuleCard
+    <DeviceCard
       name="Bedroom ceiling Air Quality Module near the window"
       connectionStatus="connected"
       sensors={[{ metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 }]}
@@ -305,4 +305,4 @@ The 592px width where `2:1` and `1:2` switch to two columns is fixed: CSS doesn'
 
 - [`StackLayout`](./stack-layout.mdx): places components one under the other.
 - [`ContentSection`](./content-section.mdx): a group of components with a heading.
-- [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx), [`SensorReading`](../readings/sensor-reading.mdx): cards that are often placed side by side.
+- [`DeviceCard`](../readings/device-card.mdx), [`SpaceCard`](../readings/space-card.mdx), [`SensorReading`](../readings/sensor-reading.mdx): cards that are often placed side by side.

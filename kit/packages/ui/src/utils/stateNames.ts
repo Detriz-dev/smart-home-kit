@@ -8,11 +8,22 @@ export const STATE_NAMES: Record<State, string> = {
   closed: "Closed",
   detected: "Detected",
   clear: "Clear",
+  opening: "Opening",
+  closing: "Closing",
+  heat: "Heat",
+  stopped: "Stopped",
+  running: "Running",
+  paused: "Paused",
+  error: "Error",
 };
 
-/** The active States: On, Open and Detected. They use the `state-active` colours; the others use `state-inactive`. */
+/** The active States: something is on, open, moving, heating or running. They use the `state-active` colours; the others use `state-inactive`. Error gets its own treatment in the components that show Operational State. */
 export const ACTIVE_STATES: ReadonlySet<State> = new Set<State>([
   "on",
   "open",
   "detected",
+  "opening",
+  "closing",
+  "heat",
+  "running",
 ]);

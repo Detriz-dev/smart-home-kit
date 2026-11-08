@@ -6,7 +6,7 @@ import type { InlineMessageTone } from "../components/feedback/InlineMessage/Inl
 import type { AlertLevel } from "../types/alert";
 import type { AssetType } from "../types/assetType";
 import type { DeviceKind } from "../types/deviceKind";
-import type { Metric, TwoStateMetric } from "../types/metric";
+import type { Metric, StateMetric } from "../types/metric";
 import type { SpaceType } from "../types/spaceType";
 import type { StateOf } from "../types/state";
 import type { IconName } from "./generated/paths";
@@ -24,6 +24,12 @@ export const METRIC_ICONS: Record<Metric, IconName> = {
   motion: "motion_sensor_active",
   smoke: "detector_smoke",
   co: "detector_co",
+  battery: "battery_full",
+  setpoint: "thermostat_auto",
+  position: "blinds",
+  "open-close": "roller_shades",
+  mode: "mode_heat",
+  "operational-state": "play_circle",
 };
 
 /** The icon for each Space Type, e.g. `<Card icon={SPACE_TYPE_ICONS.kitchen} …>`. Used by SpaceLabel. */
@@ -49,12 +55,25 @@ export const ASSET_TYPE_ICONS: Record<AssetType, IconName> = {
   appliance: "local_laundry_service",
 };
 
-/** The icon for each State of each Two-state Metric. Smoke and CO keep the same icon in both States: the State colour tells them apart. */
+/** The icon for each State of each State Metric. Smoke and CO keep the same icon in both States: the State colour tells them apart. Opening and Closing use the icon of the State they move to. */
 export const STATE_ICONS: {
-  [M in TwoStateMetric]: Record<StateOf<M>, IconName>;
+  [M in StateMetric]: Record<StateOf<M>, IconName>;
 } = {
   power: { on: "power", off: "power_off" },
   contact: { open: "door_open", closed: "sensor_door" },
+  "open-close": {
+    open: "roller_shades",
+    closed: "roller_shades_closed",
+    opening: "roller_shades",
+    closing: "roller_shades_closed",
+  },
+  mode: { off: "mode_off_on", heat: "mode_heat" },
+  "operational-state": {
+    stopped: "stop_circle",
+    running: "play_circle",
+    paused: "pause_circle",
+    error: "error",
+  },
   motion: { detected: "motion_sensor_active", clear: "motion_sensor_idle" },
   smoke: { detected: "detector_smoke", clear: "detector_smoke" },
   co: { detected: "detector_co", clear: "detector_co" },
@@ -64,6 +83,7 @@ export const STATE_ICONS: {
 export const DEVICE_KIND_ICONS: Record<DeviceKind, IconName> = {
   hub: "router",
   module: "developer_board",
+  standalone: "devices",
 };
 
 /** The icon for each level of a place above a Device. Used by LocationPath. */

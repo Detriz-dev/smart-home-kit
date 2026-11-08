@@ -136,7 +136,7 @@ The label only says the status ("Stale"). Which Device it belongs to comes from 
 </span>
 ```
 
-[`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) already place it for you.
+[`DeviceCard`](../readings/device-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) already place it for you.
 
 ## Mapping your data
 
@@ -148,7 +148,7 @@ A few rules from the domain model:
 
 - **Paired Devices only.** Only a Paired Device has a Connection Status. For a Device that isn't Paired, don't render this component: show [`DevicePairingStatus`](./device-pairing-status.mdx) instead.
 - **Before the first status arrives,** pass `connecting`. A Device is always Connecting after it powers up, so this is true, and there is no separate "unknown" or loading state.
-- **Stale depends on the Expected Interval.** A Module is Stale when no Reading arrived within the interval the user set for it. Only Modules can be Stale: never pass `stale` for a Hub. Work this out in your app (or let the API do it) and pass `stale`.
+- **Stale depends on the Expected Interval.** A Device is Stale when no Reading arrived within the interval the user set for it. Only Devices with Capabilities can be Stale: never pass `stale` for a Hub without Capabilities. Work this out in your app (or let the API do it) and pass `stale`.
 - **It's one of three fields.** Pairing Status, Connection Status and Fault are independent. See [Device lifecycle](/docs/domain-model/device-lifecycle#connection-status) for how a Device moves between Connection Statuses.
 
 ## Props
@@ -219,4 +219,4 @@ To change how it looks, set a token on a parent element. The change applies to e
 - [`DeviceFaultStatus`](./device-fault-status.mdx): the Device's Fault, if it has one.
 - [`ReadingValue`](../readings/reading-value.mdx) and [`SensorReading`](../readings/sensor-reading.mdx): hide the value when the Device is Disconnected, with `isDisconnected`.
 - [`LocationPath`](../navigation/location-path.mdx): the Device's name and where it is. Sits well next to the status.
-- [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that already include the status.
+- [`DeviceCard`](../readings/device-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that already include the status.

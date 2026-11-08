@@ -12,7 +12,7 @@ import type {
 /** Which Icon size each size uses. */
 const ICON_SIZES: Record<StateValueSize, IconSize> = { md: "sm", lg: "md" };
 
-/** Shows the latest State of a Two-state Metric as a pill: an icon and the State's name, like "On". Read-only. Takes props only, never fetches data. */
+/** Shows the latest State of a State Metric as a pill: an icon and the State's name, like "On". Read-only. Takes props only, never fetches data. */
 export function StateValue({
   metric,
   state,
@@ -40,11 +40,14 @@ export function StateValue({
 
   // `metric` and `state` always match (the props type checks it), so this lookup is safe.
   const icons: Partial<Record<State, IconName>> = STATE_ICONS[metric];
+  // An Active Alert wins; then Operational State Error (red, like a Fault); then active or inactive.
   const visual: StateValueVisualState = alertLevel
     ? `alert-${alertLevel}`
-    : ACTIVE_STATES.has(state)
-      ? "active"
-      : "inactive";
+    : state === "error"
+      ? "error"
+      : ACTIVE_STATES.has(state)
+        ? "active"
+        : "inactive";
 
   return (
     <span data-state={visual} data-size={size} className={styles.root}>

@@ -73,6 +73,7 @@ The Units come from a fixed list, so every screen writes them the same way. Each
 | `celsius`    | °C    | degrees Celsius            | Temperature                |
 | `fahrenheit` | °F    | degrees Fahrenheit         | Temperature (display Unit) |
 | `percent-rh` | %RH   | percent relative humidity  | Humidity                   |
+| `percent`    | %     | percent                    | Battery, Position          |
 | `lux`        | lx    | lux                        | Illuminance                |
 | `ppm`        | ppm   | parts per million          | CO₂                        |
 | `ppb`        | ppb   | parts per billion          | VOC                        |
@@ -185,10 +186,10 @@ A few rules from the domain model:
 
 ## Props
 
-| Prop   | Type                                                                              | Default | Description                                                                    |
-| ------ | --------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------ |
-| `unit` | `"celsius" \| "fahrenheit" \| "percent-rh" \| "lux" \| "ppm" \| "ppb" \| "ug-m3"` | –       | **Required.** Which Unit to show, for example `celsius` for °C.                |
-| `size` | `"xs" \| "sm" \| "md" \| "lg"`                                                    | `"lg"`  | How big the Unit is drawn. Use the same size as the `ReadingValue` next to it. |
+| Prop   | Type                                                                                           | Default | Description                                                                    |
+| ------ | ---------------------------------------------------------------------------------------------- | ------- | ------------------------------------------------------------------------------ |
+| `unit` | `"celsius" \| "fahrenheit" \| "percent-rh" \| "percent" \| "lux" \| "ppm" \| "ppb" \| "ug-m3"` | –       | **Required.** Which Unit to show, for example `celsius` for °C.                |
+| `size` | `"xs" \| "sm" \| "md" \| "lg"`                                                                 | `"lg"`  | How big the Unit is drawn. Use the same size as the `ReadingValue` next to it. |
 
 The types `UnitLabelProps`, `UnitLabelUnit` and `UnitLabelSize` are exported too:
 
