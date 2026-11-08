@@ -123,13 +123,13 @@ export type {
   StateValueSize,
 } from "./components/readings/StateValue";
 export { STATE_NAMES } from "./utils/stateNames";
-export { ModuleCard } from "./components/readings/ModuleCard";
+export { DeviceCard } from "./components/readings/DeviceCard";
 export type {
-  ModuleCardProps,
-  ModuleCardMeasuredSensor,
-  ModuleCardSensor,
-  ModuleCardStateSensor,
-} from "./components/readings/ModuleCard";
+  DeviceCardProps,
+  DeviceCardMeasuredSensor,
+  DeviceCardSensor,
+  DeviceCardStateSensor,
+} from "./components/readings/DeviceCard";
 export { SpaceCard } from "./components/readings/SpaceCard";
 export type {
   SpaceCardProps,

@@ -209,7 +209,10 @@ Each change follows the [component workflow](../architecture/design-system/workf
 - [ ] All six new components: browser check and user docs pages (Step 7).
 - [x] `OpenCloseControl`, `StateSelectControl`, `ValueControl`, `OperationalStateControl`: specs reviewed and in Figma (2026-11-08, nodes `657:154`, `658:97`, `659:177`, `659:342`). Built in code (2026-11-08): stories incl. `Interactive`, exports, shared internal `ControlParts` (also used by `PowerControl`), new code icons `add` and `remove`. `StateSelectControl` uses toggle buttons, not a radio group (see its spec).
 - [x] Figma building blocks added for them: `Icon` `add`, `remove`, `roller_shades`, `roller_shades_closed`, `mode_off_on`, `mode_heat`; `StateIcon` `open-close-*` and `mode-*`; `UnitLabel` `percent`.
-- [ ] `DeviceCard` (rename of `ModuleCard`): spec after the Controls.
+- [x] `DeviceCard` (rename of `ModuleCard`): spec reviewed (2026-11-08): `controls` slot (ReactNode), optional `sensors`, no Device Type icon yet, stays in `readings/`.
+- [x] `DeviceCard` (2026-11-08): Figma renamed (`349:591`, page `DeviceCard`) with `hasSensors`, `hasControls`, `control1`–`3` slots and a `DeviceCard / devices` examples frame; code renamed with `git mv`, `sensors` optional, `controls` slot, device stories (power strip, kettle, heating, blinds, disconnected, fault); docs page renamed to `readings/device-card.mdx` with a Controls section; ModuleCard mentions updated in code, docs site and architecture docs (historical docs left as they were).
+
+**Step 5 is done** except the browser check and the user docs pages for the six new components (Step 7).
 
 New components follow the component conventions in `AGENTS.md`: one folder, `<Name>.md` spec, typed props with comments, CSS Modules with `--shk-` tokens only, export from `src/index.ts`, one story per state, plus `LongText` and `Minimal` stories.
 

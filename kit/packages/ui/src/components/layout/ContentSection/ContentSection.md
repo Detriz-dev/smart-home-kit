@@ -57,7 +57,7 @@ Target states:
 | Target state | Applies? | Why                                                                      |
 | ------------ | -------- | ------------------------------------------------------------------------ |
 | loading      | no       | The title is known before any Reading arrives. Each child shows its own. |
-| Connected    | no       | Connection Status belongs to the children, such as `ModuleCard`.         |
+| Connected    | no       | Connection Status belongs to the children, such as `DeviceCard`.         |
 | Stale        | no       | Same as above.                                                           |
 | Disconnected | no       | Same as above. The section keeps its heading whatever a child shows.     |
 | Fault        | no       | Fault belongs to the children, shown with `DeviceFaultStatus`.           |
@@ -95,11 +95,11 @@ Figma's sample content and the stories use these:
 
 | Case               | Title                                                  | Children                                                                       |
 | ------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------ |
-| `headingLevel=2`   | Bedroom                                                | `LocationPath` (My flat, Level 2, Bedroom) above `ModuleCard` (Climate Module) |
-| `headingLevel=3`   | Air quality                                            | `ModuleCard` (Air Quality Module)                                              |
-| `headingLevel=4`   | Comfort                                                | `ModuleCard` (Climate Module)                                                  |
-| `LongText` (240px) | Air quality and comfort in the kitchen and dining area | `ModuleCard` (Air Quality Module)                                              |
-| `Minimal`          | Bedroom                                                | One `ModuleCard` (Climate Module)                                              |
+| `headingLevel=2`   | Bedroom                                                | `LocationPath` (My flat, Level 2, Bedroom) above `DeviceCard` (Climate Module) |
+| `headingLevel=3`   | Air quality                                            | `DeviceCard` (Air Quality Module)                                              |
+| `headingLevel=4`   | Comfort                                                | `DeviceCard` (Climate Module)                                                  |
+| `LongText` (240px) | Air quality and comfort in the kitchen and dining area | `DeviceCard` (Air Quality Module)                                              |
+| `Minimal`          | Bedroom                                                | One `DeviceCard` (Climate Module)                                              |
 
 ### Tokens
 

@@ -89,7 +89,7 @@ The props are defined in [`DeviceConnectionStatus.types.ts`](./DeviceConnectionS
 The decisions behind them:
 
 - One required prop, `status`, with the Glossary's four values in lowercase. They match the Figma variant values.
-- The type is called `ConnectionStatus`, not `DeviceConnectionStatusStatus`, because other components use it too (`ModuleCard`, `SpaceCard`) and it is the domain term.
+- The type is called `ConnectionStatus`, not `DeviceConnectionStatusStatus`, because other components use it too (`DeviceCard`, `SpaceCard`) and it is the domain term.
 - There is no `label` prop. The labels are fixed, so every screen says the same word for the same status.
 - There is no "unknown" or `null` status. See the `loading` row in Target states.
 
@@ -128,7 +128,7 @@ All tokens exist in `tokens.css`. The Figma variable names still need to be chec
 
 - The status is told by the **label**, not by colour alone. The dot only repeats it.
 - The dot has no text and no role, so screen readers skip it.
-- `role="status"` makes the component a polite live region: when the status changes (Connected → Stale), screen readers announce the new label without moving focus. This is on purpose: a change in Connection Status matters to the user, and it happens far less often than new Readings. `ModuleCard` and `SpaceCard` rely on it and add no live region of their own.
+- `role="status"` makes the component a polite live region: when the status changes (Connected → Stale), screen readers announce the new label without moving focus. This is on purpose: a change in Connection Status matters to the user, and it happens far less often than new Readings. `DeviceCard` and `SpaceCard` rely on it and add no live region of their own.
 - The label is just the word ("Stale"). Which Device it belongs to comes from the parent: put it next to the Device's name, inside the same card or row.
 - Contrast: the label is gray 900 on white, well above 4.5:1. The dot is decoration next to a text label, so it doesn't need 3:1.
 - No motion.

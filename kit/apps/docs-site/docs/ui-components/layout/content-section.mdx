@@ -11,7 +11,7 @@ A group of components with a heading, like "Air quality" or "Comfort". Use it to
 ```jsx live
 <ContentSection title="Bedroom">
   <LocationPath siteName="My flat" floorName="Level 2" spaceName="Bedroom" />
-  <ModuleCard
+  <DeviceCard
     name="Climate Module"
     connectionStatus="connected"
     sensors={[
@@ -50,10 +50,10 @@ See [Installation](/docs/get-started/installation) for how to install the packag
 Pass a title and put the section's components inside it:
 
 ```tsx
-import { ContentSection, ModuleCard } from "@detriz-sh-kit/ui";
+import { ContentSection, DeviceCard } from "@detriz-sh-kit/ui";
 
 <ContentSection title="Air quality" headingLevel={3}>
-  <ModuleCard
+  <DeviceCard
     name="Air Quality Module"
     connectionStatus="connected"
     sensors={sensors}
@@ -74,7 +74,7 @@ Don't use it for:
 
 - **Spacing without a heading.** Use [`StackLayout`](./stack-layout.mdx).
 - **Components side by side.** Put a [`ColumnLayout`](./column-layout.mdx) inside the section.
-- **A card's own name.** `ModuleCard` and `SpaceCard` show their names themselves.
+- **A card's own name.** `DeviceCard` and `SpaceCard` show their names themselves.
 
 ## Heading levels
 
@@ -132,7 +132,7 @@ Set the level from how deep the section is: `2` for the screen, `3` for its grou
 <ContentSection title="Bedroom" headingLevel={2}>
   <StackLayout gap="lg">
     <ContentSection title="Air quality" headingLevel={3}>
-      <ModuleCard
+      <DeviceCard
         name="Air Quality Module"
         connectionStatus="connected"
         sensors={[
@@ -141,7 +141,7 @@ Set the level from how deep the section is: `2` for the screen, `3` for its grou
       />
     </ContentSection>
     <ContentSection title="Comfort" headingLevel={3}>
-      <ModuleCard
+      <DeviceCard
         name="Climate Module"
         connectionStatus="connected"
         sensors={[
@@ -239,4 +239,4 @@ To change how it looks, set a token on a parent element. The change applies to e
 - [`FloorSection`](./floor-section.mdx): a section for one Floor, with its icon and a Space count.
 - [`StackLayout`](./stack-layout.mdx): spacing without a heading. Also separates sibling sections.
 - [`ColumnLayout`](./column-layout.mdx): places components side by side inside a section.
-- [`ModuleCard`](../readings/module-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that often sit in a section.
+- [`DeviceCard`](../readings/device-card.mdx), [`SpaceCard`](../readings/space-card.mdx): cards that often sit in a section.

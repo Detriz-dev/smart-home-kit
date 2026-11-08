@@ -6,7 +6,7 @@
 
 A small indicator that shows a Device has a Fault: a danger icon and a short message, for example "CO₂ sensor failure". It tells the user the hardware has a problem, so they don't mistake a broken Sensor for a normal value.
 
-It is used inside `ModuleCard`, and can sit anywhere a Device is shown.
+It is used inside `DeviceCard`, and can sit anywhere a Device is shown.
 
 It is read-only and takes props only. It shows the Fault, it doesn't fix it.
 
@@ -32,7 +32,7 @@ What it does **not** show, and why:
 - **No Fault.** The glossary says Fault is "None, or a specific Fault". When there is none, the parent doesn't render this component, so there is no "None" state.
 - **Connection Status.** A Device can be Connected and have a Fault, so the two are shown side by side, never mixed.
 - **Help or a fix.** The [device lifecycle](/kit/apps/docs-site/docs/domain-model/device-lifecycle.mdx) asks for a message and help per Fault Code. A clickable help link would belong in Controls, so this component starts with the message only. See Open questions.
-- **Which Device it is.** The parent shows that, for example the `ModuleCard` name.
+- **Which Device it is.** The parent shows that, for example the `DeviceCard` name.
 
 ### Visual idea
 

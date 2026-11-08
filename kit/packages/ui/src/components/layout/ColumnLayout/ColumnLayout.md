@@ -56,7 +56,7 @@ Children in the same row get the same height, so the tops and bottoms of a row o
 | `equal`         | Below 400px: one column                                                | One more column for every 208px of width |
 | `2:1` and `1:2` | Below 592px: one column, because the small column would be below 192px | From 592px: two columns                  |
 
-192px is the narrowest column, and the narrowest width `ModuleCard` is designed for (one 160px Sensor plus padding). The switching widths come from it: 400px = two 192px columns + a 16px gap, and 592px = three 192px shares + a 16px gap.
+192px is the narrowest column, and the narrowest width `DeviceCard` is designed for (one 160px Sensor plus padding). The switching widths come from it: 400px = two 192px columns + a 16px gap, and 592px = three 192px shares + a 16px gap.
 
 ColumnLayout measures its own width, not the screen's, so it works the same in a full page and inside another column.
 
@@ -75,7 +75,7 @@ Target states:
 | Target state | Applies? | Why                                                                  |
 | ------------ | -------- | -------------------------------------------------------------------- |
 | loading      | no       | ColumnLayout has no data. Each child shows its own loading state.    |
-| Connected    | no       | Connection Status belongs to the children, such as `ModuleCard`.     |
+| Connected    | no       | Connection Status belongs to the children, such as `DeviceCard`.     |
 | Stale        | no       | Same as above.                                                       |
 | Disconnected | no       | Same as above. The columns keep their layout whatever a child shows. |
 | Fault        | no       | Fault belongs to the children, shown with `DeviceFaultStatus`.       |
@@ -118,13 +118,13 @@ Figma's sample content and the stories use these:
 
 | Case                     | Children                                                                            |
 | ------------------------ | ----------------------------------------------------------------------------------- |
-| `equal`                  | Three `ModuleCard`s: Climate Module, Light Module, Air Quality Module               |
+| `equal`                  | Three `DeviceCard`s: Climate Module, Light Module, Air Quality Module               |
 | `2:1`                    | Air Quality Module, then Climate Module                                             |
 | `1:2`                    | Climate Module, then Air Quality Module                                             |
 | Narrow container (360px) | `2:1` with the same two cards, now in one column                                    |
-| `EqualWraps` (760px)     | Five `ModuleCard`s, which wrap onto a second row                                    |
-| `LongText` (240px)       | `ModuleCard`s with the long name Bedroom ceiling Air Quality Module near the window |
-| `Minimal`                | One `ModuleCard` (Climate Module)                                                   |
+| `EqualWraps` (760px)     | Five `DeviceCard`s, which wrap onto a second row                                    |
+| `LongText` (240px)       | `DeviceCard`s with the long name Bedroom ceiling Air Quality Module near the window |
+| `Minimal`                | One `DeviceCard` (Climate Module)                                                   |
 
 ### Tokens
 
@@ -133,7 +133,7 @@ Figma's sample content and the stories use these:
 | columns           | gap              | `--shk-space-4` (16px)                 |
 | columns (`equal`) | narrowest column | `calc(var(--shk-size-24) * 2)` (192px) |
 
-The 592px switching width is a raw value because CSS doesn't allow variables in a container query, the same as in `ModuleCard`.
+The 592px switching width is a raw value because CSS doesn't allow variables in a container query, the same as in `DeviceCard`.
 
 ### Accessibility
 

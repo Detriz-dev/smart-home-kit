@@ -85,7 +85,7 @@ type Metric = MeasuredMetric | StateMetric;
 
 `co` is carbon monoxide, not CO₂. `DetectionMetric` is the three Metrics that start a Detection: `motion`, `smoke` and `co`. [`DetectionStatus`](../readings/detection-status.mdx) takes a `DetectionMetric`.
 
-**Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`, any Metric) and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). [`SensorReading`](../readings/sensor-reading.mdx), [`ModuleCard`](../readings/module-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) show numbers, so they take a `MeasuredMetric` only. `SensorLabelMetric` is the same type as `Metric` under another name.
+**Used by:** [`SensorLabel`](../context/sensor-label.mdx) (`metric`, any Metric) and [`DeviceFaultStatus`](../status/device-fault-status.mdx) (the affected Sensor). [`SensorReading`](../readings/sensor-reading.mdx), [`DeviceCard`](../readings/device-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) show numbers, so they take a `MeasuredMetric` only. `SensorLabelMetric` is the same type as `Metric` under another name.
 
 ## State
 
@@ -243,7 +243,7 @@ Can a Paired Device be reached right now? See [`DeviceConnectionStatus`](../stat
 type ConnectionStatus = "connecting" | "connected" | "stale" | "disconnected";
 ```
 
-**Used by:** `DeviceConnectionStatus` (`status`), `ModuleCard` (`connectionStatus`) and `SpaceCard` (each row's `connectionStatus`).
+**Used by:** `DeviceConnectionStatus` (`status`), `DeviceCard` (`connectionStatus`) and `SpaceCard` (each row's `connectionStatus`).
 
 ## PairingStatus
 
@@ -265,7 +265,7 @@ type FaultCode = "sensor_failure" | "calibration_required";
 
 Fault Codes are written in `snake_case`, the way the Glossary and the API write them.
 
-**Used by:** `DeviceFaultStatus` (`faultCode`), and the `faults` lists of `ModuleCard` and `SpaceCard`.
+**Used by:** `DeviceFaultStatus` (`faultCode`), and the `faults` lists of `DeviceCard` and `SpaceCard`.
 
 ## Controls and commands
 
@@ -332,7 +332,7 @@ import type {
   Metric,
   UnitLabelUnit,
 } from "@detriz-sh-kit/ui";
-import { ModuleCard } from "@detriz-sh-kit/ui";
+import { DeviceCard } from "@detriz-sh-kit/ui";
 
 interface MyModule {
   name: string;
@@ -345,9 +345,9 @@ interface MyModule {
   }[];
 }
 
-function MyModuleCard({ module }: { module: MyModule }) {
+function MyDeviceCard({ module }: { module: MyModule }) {
   return (
-    <ModuleCard
+    <DeviceCard
       name={module.name}
       connectionStatus={module.connectionStatus}
       faults={module.faults}
@@ -361,7 +361,7 @@ If your data uses other words, for example an API that says `"online"` instead o
 
 ## Component types
 
-Every component also exports its own props type, named `<Component>Props`, like `ModuleCardProps`. Some export types for their parts too, like `ModuleCardSensor` and `SpaceCardReading`. Each component page lists them under **Props**.
+Every component also exports its own props type, named `<Component>Props`, like `DeviceCardProps`. Some export types for their parts too, like `DeviceCardSensor` and `SpaceCardReading`. Each component page lists them under **Props**.
 
 ## Related
 

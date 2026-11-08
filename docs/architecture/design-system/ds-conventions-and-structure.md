@@ -10,14 +10,14 @@
 
 | Thing                | Pattern                                     | Example                                                         |
 | -------------------- | ------------------------------------------- | --------------------------------------------------------------- |
-| Component            | PascalCase noun, file name = component name | `ModuleCard.tsx`                                                |
+| Component            | PascalCase noun, file name = component name | `DeviceCard.tsx`                                                |
 | Page                 | `<Name>Page.tsx`                            | `DashboardPage.tsx`                                             |
 | Hook                 | `use<Thing>.ts`                             | `useTelemetry.ts`, `useModules.ts`                              |
 | Helper function      | camelCase verb                              | `formatUnit.ts`                                                 |
-| Test                 | next to the file, same name                 | `ModuleCard.test.tsx`, `useTelemetry.test.ts`                   |
+| Test                 | next to the file, same name                 | `DeviceCard.test.tsx`, `useTelemetry.test.ts`                   |
 | Folder               | kebab-case                                  | `design-system/`, `features/live-studio/`                       |
 | Type / interface     | PascalCase noun, no `I` prefix              | `SensorReading`, `ModuleStatus`                                 |
-| Props type           | `<Component>Props`                          | `ModuleCardProps`                                               |
+| Props type           | `<Component>Props`                          | `DeviceCardProps`                                               |
 | Union / enum values  | lowercase string literals                   | `'temperature' \| 'light' \| 'air-quality'`                     |
 | Constant             | SCREAMING_SNAKE_CASE                        | `MAX_RECONNECT_ATTEMPTS`                                        |
 | Boolean              | `is/has/can/should` prefix                  | `isOnline`, `hasAlert`                                          |
@@ -26,7 +26,7 @@
 | API function         | verb + resource                             | `getModules`, `subscribeToReadings`                             |
 | Context / provider   | `<Thing>Context`, `<Thing>Provider`         | `TelemetryProvider`                                             |
 | CSS token            | `--<prefix>-<category>-<role>-<variant>`    | `--shk-color-status-warning`, `--space-4`                       |
-| CSS module           | same name as component                      | `ModuleCard.module.css`                                         |
+| CSS module           | same name as component                      | `DeviceCard.module.css`                                         |
 | Component states     | fixed vocabulary                            | `default`, `loading`, `empty`, `error`, `disconnected`, `stale` |
 | Mock / fixture data  | `<name>.mock.ts`                            | `readings.mock.ts`                                              |
 | Asset                | kebab-case, type prefix                     | `icon-air-quality.svg`                                          |
@@ -42,7 +42,7 @@ Holds every UI component the package offers: cards, gauges, charts, status indic
 One folder per component, named after the component in PascalCase. All of its files live inside:
 
 ```
-packages/ui/src/components/ModuleCard
+packages/ui/src/components/DeviceCard
 ```
 
 ### UI Source directory structure

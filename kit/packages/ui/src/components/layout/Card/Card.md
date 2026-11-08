@@ -4,7 +4,7 @@
 
 ### Purpose
 
-The plain card surface (background, border, rounded corners, padding) with an optional header and footer. Anything can go inside it. Apps use it to make their own cards that match the kit, for example one card per room in a flat, and the kit's own cards (`SpaceCard`, `ModuleCard`) will be rebuilt on it so they all share one look.
+The plain card surface (background, border, rounded corners, padding) with an optional header and footer. Anything can go inside it. Apps use it to make their own cards that match the kit, for example one card per room in a flat, and the kit's own cards (`SpaceCard`, `DeviceCard`) will be rebuilt on it so they all share one look.
 
 It adds no data of its own. It takes props only and never fetches anything.
 
@@ -30,12 +30,12 @@ What it does **not** do, and why:
 
 | Question                        | Answer                                                                                                   |
 | ------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | The white card that `SpaceCard` and `ModuleCard` already use: subtle border, 16px corners, 16px padding. |
+| What does it roughly look like? | The white card that `SpaceCard` and `DeviceCard` already use: subtle border, 16px corners, 16px padding. |
 | Icons?                          | Optional, 24px (`md`), before the title, e.g. the Space Type icon on a room card.                        |
 | Separators?                     | No. The gap separates header, content and footer.                                                        |
 | More than one layout?           | One layout. Header, content and footer are each optional parts. A clickable card adds interaction looks. |
 | Clickable look                  | Same as static at rest. Grey fill on hover and press, blue focus ring from the keyboard, like `Button`.  |
-| Text size                       | Title `h4`, same as `SpaceCard` and `ModuleCard`. Everything else belongs to the content.                |
+| Text size                       | Title `h4`, same as `SpaceCard` and `DeviceCard`. Everything else belongs to the content.                |
 
 ```
 ┌───────────────────────────────────┐
@@ -154,7 +154,7 @@ All of these exist in `tokens.css`; nothing new is needed. In Figma, padding bin
 
 ### Accessibility
 
-- Static card with a `title`: `root` is `role="group"` labelled by the title (`aria-labelledby`), the same as `SpaceCard` and `ModuleCard`, so screen readers announce "Climate Module, group" when entering it.
+- Static card with a `title`: `root` is `role="group"` labelled by the title (`aria-labelledby`), the same as `SpaceCard` and `DeviceCard`, so screen readers announce "Climate Module, group" when entering it.
 - Without a `title`: `root` is a plain `<div>` with no role. A group with no name only adds noise.
 - Clickable card: `root` is a plain `<div>` too. The link or button already carries the name, and a group with the same name would make screen readers say "Kitchen" twice.
 - The title isn't a heading, so it doesn't break the heading order of the page. Put cards inside a `ContentSection` for headings.
@@ -168,6 +168,6 @@ All of these exist in `tokens.css`; nothing new is needed. In Figma, padding bin
 ### Decisions
 
 - **Icon:** `icon` takes an `IconName`, so `Card` stays generic: it doesn't know Space Types. Which icon goes with which Space Type is decided once, in `SPACE_TYPE_ICONS` in [`SpaceLabel`](../../context/SpaceLabel/SpaceLabel.md); apps pass `icon={SPACE_TYPE_ICONS[spaceType]}`. `title` stays plain text, because on a clickable card it is the link's text. Size 24px (`md`), chosen by the designer over 20px. In Figma the `icon` layer is an exposed `Icon` instance, so designers pick the icon on each card instance.
-- **Narrow header:** `Card` keeps the header in one row at every width and truncates the title. `ModuleCard` stacks its status under the name below 332px; that stays `ModuleCard`'s own behaviour for now.
+- **Narrow header:** `Card` keeps the header in one row at every width and truncates the title. `DeviceCard` stacks its status under the name below 332px; that stays `DeviceCard`'s own behaviour for now.
 
 ### Open questions

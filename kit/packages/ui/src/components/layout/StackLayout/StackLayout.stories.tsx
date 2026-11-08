@@ -1,21 +1,21 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
 import { LocationPath } from "../../navigation/LocationPath";
-import { ModuleCard, type ModuleCardSensor } from "../../readings/ModuleCard";
+import { DeviceCard, type DeviceCardSensor } from "../../readings/DeviceCard";
 import { StackLayout } from "./StackLayout";
 
-const CLIMATE_SENSORS: ModuleCardSensor[] = [
+const CLIMATE_SENSORS: DeviceCardSensor[] = [
   { metric: "temperature", value: 22.4, unit: "celsius", fractionDigits: 1 },
   { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
 ];
 
-const AIR_QUALITY_SENSORS: ModuleCardSensor[] = [
+const AIR_QUALITY_SENSORS: DeviceCardSensor[] = [
   { metric: "co2", value: 1250, unit: "ppm", fractionDigits: 0 },
   { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
   { metric: "pm25", value: 12, unit: "ug-m3", fractionDigits: 0 },
 ];
 
 const climateCard = (
-  <ModuleCard
+  <DeviceCard
     name="Climate Module"
     sensors={CLIMATE_SENSORS}
     connectionStatus="connected"
@@ -23,7 +23,7 @@ const climateCard = (
 );
 
 const airQualityCard = (
-  <ModuleCard
+  <DeviceCard
     name="Air Quality Module"
     sensors={AIR_QUALITY_SENSORS}
     connectionStatus="connected"

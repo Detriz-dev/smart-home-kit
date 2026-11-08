@@ -268,7 +268,7 @@ The design system goes from Figma to the screen in four steps. Each step is a se
 | feedback   | InlineMessage                                                  |
 | layout     | ColumnLayout, ContentSection, StackLayout                      |
 | navigation | LocationPath                                                   |
-| readings   | ModuleCard, ReadingValue, SensorReading, SpaceCard, UnitLabel  |
+| readings   | DeviceCard, ReadingValue, SensorReading, SpaceCard, UnitLabel  |
 | status     | DeviceConnectionStatus, DeviceFaultStatus, DevicePairingStatus |
 
 The full workflow is in [component building](design-system/workflows/component-building.md), and naming rules are in [conventions and structure](design-system/ds-conventions-and-structure.md).

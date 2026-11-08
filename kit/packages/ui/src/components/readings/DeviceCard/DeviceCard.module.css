@@ -25,7 +25,7 @@
     min-inline-size: 0;
   }
 
-  /* The user can rename a Module, so the name can be long. It stays on one line and ends with "…". */
+  /* The user can rename a Device, so the name can be long. It stays on one line and ends with "…". */
   .name {
     overflow: hidden;
     min-inline-size: 0;
@@ -48,6 +48,15 @@
     margin: var(--shk-space-0);
     padding: var(--shk-space-0);
     list-style: none;
+  }
+
+  /* The Controls area: one Control per row, full width. A little more space above it than between Sensors. */
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-3);
+    align-self: stretch;
+    margin-block-start: calc(var(--shk-space-4) - var(--shk-space-3));
   }
 
   /* All Sensors in a row get the same width, and they can shrink to the width of the column. */

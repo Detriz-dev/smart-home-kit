@@ -36,7 +36,7 @@ Domain rules behind it:
 
 What it does **not** show, and why:
 
-- **Readings.** That's `ModuleCard` or `SpaceCard`.
+- **Readings.** That's `DeviceCard` or `SpaceCard`.
 - **Site, Floor.** `LocationPath` shows where a Device is in full. The row shows only its Space.
 - **Actions** (pair, remove, rename). Those are Controls, on the Device's own screen. A row can be clickable to open that screen.
 

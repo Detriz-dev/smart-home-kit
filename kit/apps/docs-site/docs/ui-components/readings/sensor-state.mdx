@@ -42,7 +42,7 @@ Pass the Metric and its latest State. For Contact and Power, pass the `asset` th
 
 ## When to use it
 
-Use SensorState for one State Sensor on its own or in a grid of Sensors. [`ModuleCard`](./module-card.mdx) uses it for its State Sensors. For numbers, use [`SensorReading`](./sensor-reading.mdx). To show since when something is detected, use [`DetectionStatus`](./detection-status.mdx).
+Use SensorState for one State Sensor on its own or in a grid of Sensors. [`DeviceCard`](./device-card.mdx) uses it for its State Sensors. For numbers, use [`SensorReading`](./sensor-reading.mdx). To show since when something is detected, use [`DetectionStatus`](./detection-status.mdx).
 
 ## States
 
@@ -60,7 +60,7 @@ Use SensorState for one State Sensor on its own or in a grid of Sensors. [`Modul
 | `state={null}`   | Loading icon                                         |
 | `isDisconnected` | Disconnected icon. The State is hidden               |
 
-Stale and Fault belong to the Module: [`ModuleCard`](./module-card.mdx) shows them once for all its Sensors.
+Stale and Fault belong to the Module: [`DeviceCard`](./device-card.mdx) shows them once for all its Sensors.
 
 ## Sizes
 
@@ -122,4 +122,4 @@ A long name ends with `…`. The State keeps its size.
 
 - [`SensorReading`](./sensor-reading.mdx): the same card for numbers.
 - [`StateValue`](./state-value.mdx): the State on its own.
-- [`ModuleCard`](./module-card.mdx): all Sensors of a Module, numbers and States.
+- [`DeviceCard`](./device-card.mdx): all Sensors of a Module, numbers and States.

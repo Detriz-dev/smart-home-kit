@@ -6,7 +6,7 @@
 
 Shows what a Device that runs a task is doing right now: its **Operational State**, and next to it the **Phase** while it is Running ("Running · Heating") or the **Error Reason** when it is Error ("Error · No water"). Read-only: starting or stopping the task is `OperationalStateControl`.
 
-Used in `DeviceCard` (the renamed `ModuleCard`), `SpaceCard` rows and Device lists, for a kettle, a washing machine or a thermostat.
+Used in `DeviceCard` (the renamed `DeviceCard`), `SpaceCard` rows and Device lists, for a kettle, a washing machine or a thermostat.
 
 Figma: `OperationalStateValue` component set in _DeTriz - Smart Home Kit_ (node `652:3315`, page `OperationalStateValue`), property `state` (8) × `size` (2) = 16 variants. The value is a nested `StateValue` instance; the Operational State icons are new `StateIcon` variants (`operational-state-*`). Usage: frame `OperationalStateValue / usage` (node `652:3316`). Figma can't show the detail text moving under the pill when space is tight (a fixed width can't be set on text inside an instance there); that is code behaviour (`flex-wrap`).
 

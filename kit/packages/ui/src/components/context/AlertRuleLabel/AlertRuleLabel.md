@@ -50,4 +50,4 @@ Gap `space/1`. No padding or background.
 ### Open questions
 
 - Mark Built-in Alert Rules ("Built-in")? Not in the MVP: they're Smoke and CO, where the rule is usually not shown.
-- An `alertRule` prop on `SensorReading`, `SensorState`, `ModuleCard` and `SpaceCard`? For now the parent places the label under the Reading.
+- An `alertRule` prop on `SensorReading`, `SensorState`, `DeviceCard` and `SpaceCard`? For now the parent places the label under the Reading.

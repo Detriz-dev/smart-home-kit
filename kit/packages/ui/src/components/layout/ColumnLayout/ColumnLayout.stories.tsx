@@ -1,24 +1,24 @@
 import type { Meta, StoryObj } from "@storybook/react-vite";
-import { ModuleCard, type ModuleCardSensor } from "../../readings/ModuleCard";
+import { DeviceCard, type DeviceCardSensor } from "../../readings/DeviceCard";
 import { ColumnLayout } from "./ColumnLayout";
 
-const CLIMATE_SENSORS: ModuleCardSensor[] = [
+const CLIMATE_SENSORS: DeviceCardSensor[] = [
   { metric: "temperature", value: 22.4, unit: "celsius", fractionDigits: 1 },
   { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
 ];
 
-const LIGHT_SENSORS: ModuleCardSensor[] = [
+const LIGHT_SENSORS: DeviceCardSensor[] = [
   { metric: "illuminance", value: 320, unit: "lux", fractionDigits: 0 },
 ];
 
-const AIR_QUALITY_SENSORS: ModuleCardSensor[] = [
+const AIR_QUALITY_SENSORS: DeviceCardSensor[] = [
   { metric: "co2", value: 1250, unit: "ppm", fractionDigits: 0 },
   { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
   { metric: "pm25", value: 12, unit: "ug-m3", fractionDigits: 0 },
 ];
 
 const climateCard = (
-  <ModuleCard
+  <DeviceCard
     name="Climate Module"
     sensors={CLIMATE_SENSORS}
     connectionStatus="connected"
@@ -26,7 +26,7 @@ const climateCard = (
 );
 
 const lightCard = (
-  <ModuleCard
+  <DeviceCard
     name="Light Module"
     sensors={LIGHT_SENSORS}
     connectionStatus="connected"
@@ -34,7 +34,7 @@ const lightCard = (
 );
 
 const airQualityCard = (
-  <ModuleCard
+  <DeviceCard
     name="Air Quality Module"
     sensors={AIR_QUALITY_SENSORS}
     connectionStatus="connected"
@@ -42,7 +42,7 @@ const airQualityCard = (
 );
 
 const longNameCard = (
-  <ModuleCard
+  <DeviceCard
     name="Bedroom ceiling Air Quality Module near the window"
     sensors={AIR_QUALITY_SENSORS}
     connectionStatus="connected"

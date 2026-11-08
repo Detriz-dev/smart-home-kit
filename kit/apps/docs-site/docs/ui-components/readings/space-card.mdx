@@ -101,7 +101,7 @@ Use SpaceCard:
 
 Don't use it for:
 
-- **One Module and its Sensors.** Use [`ModuleCard`](./module-card.mdx). SpaceCard is about the Space and doesn't name its Modules.
+- **One Module and its Sensors.** Use [`DeviceCard`](./device-card.mdx). SpaceCard is about the Space and doesn't name its Modules.
 - **One Reading on its own.** Use [`SensorReading`](./sensor-reading.mdx).
 - **A Space with no Readings.** The card needs at least one row. For a Space with no Paired Modules, show a message instead.
 
@@ -512,7 +512,7 @@ What's up to you:
 
 ## Styling
 
-The parts bring their own tokens (see their pages). SpaceCard adds the same card as [`ModuleCard`](./module-card.mdx#styling):
+The parts bring their own tokens (see their pages). SpaceCard adds the same card as [`DeviceCard`](./device-card.mdx#styling):
 
 | What                              | Token                                                        |
 | --------------------------------- | ------------------------------------------------------------ |
@@ -534,7 +534,7 @@ To change how it looks, set a token on a parent element. The change applies to e
 
 ## Related components
 
-- [`ModuleCard`](./module-card.mdx): one Module and its Sensors, with the Module's status.
+- [`DeviceCard`](./device-card.mdx): one Module and its Sensors, with the Module's status.
 - [`SensorReading`](./sensor-reading.mdx): one Sensor's Reading as a card.
 - [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx): the statuses the rows and Faults use.
 - [`LocationPath`](../navigation/location-path.mdx): where the Space is (its Site and Floor).
