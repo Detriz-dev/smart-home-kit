@@ -1,6 +1,6 @@
 # Domain model review: beyond the Raspberry Pi
 
-Status: decisions made (1–23), waiting for the owner's review. Recorded in [ADR 0002](adr/0002-devices-and-capabilities.md) (proposed). The Domain Model pages on the docs site haven't changed yet.
+Status: done. Decisions 1–25 are recorded in [ADR 0002](adr/0002-devices-and-capabilities.md) (accepted 2026-11-08) and implemented: see the [implementation plan](product-requirements/domain-model-change-implementation.md).
 
 You're right: the current model only fits the Raspberry Pi setup. Most of what's needed is a gap, not a small tweak. One change to the original proposal: splitting devices into "hub" and "solo" isn't quite the right line (see [Your examples against the model](#your-examples-against-the-model)).
 
