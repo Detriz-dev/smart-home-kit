@@ -1,0 +1,106 @@
+# OperationalStateControl
+
+> Spec for the team. Status: **reviewed** (2026-11-08). In Figma, not built in code yet. Part of [ADR 0002](/docs/adr/0002-devices-and-capabilities.md) (decisions 11 and 14), Step 5 of the [implementation plan](/docs/product-requirements/domain-model-change-implementation.md). Follows the Control pattern set by [`PowerControl`](../PowerControl/PowerControl.md).
+
+Figma: `OperationalStateControl` component set (node `659:342`, page `OperationalStateControl`), property `state` with 10 values: `stopped`, `running`, `paused`, `error`, `pending`, `view-only`, `powered-off`, `failed`, `loading`, `disconnected` (washing machine, all four commands). The value is an `OperationalStateValue` instance; buttons are `Button` `secondary`. Usage: `OperationalStateControl / usage` (node `659:572`): kettle Running [Stop], Stop-only kettle while Stopped (no buttons), long name.
+
+### Purpose
+
+Starts, pauses, resumes and stops the task of a Device that runs one: a kettle (Start, Stop) or a washing machine (Start, Pause, Resume, Stop). It shows what the Device is doing with [`OperationalStateValue`](../../readings/OperationalStateValue/OperationalStateValue.md) and offers the commands the Device allows.
+
+### Component in domain model context
+
+Category: **Controls**.
+
+| Part    | Domain term                                              | Example           | Rule                                                                             |
+| ------- | -------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------- |
+| name    | The Device or task                                       | Kettle            | Passed by the parent.                                                            |
+| value   | **Operational State**, **Phase**, **Error Reason**       | Running · Heating | `OperationalStateValue`, reported.                                               |
+| actions | **Allowed Commands**: `start`, `pause`, `resume`, `stop` | [Stop]            | Only allowed commands are shown, and only those that fit the State (see States). |
+| message | **Command Status**, view-only                            | Stopping…         | As in PowerControl.                                                              |
+
+**Which buttons show.** Like `OpenCloseControl`, a command the Device never allows is not shown. Of the allowed ones, only those that make sense in the current State are shown, because Start/Pause/Resume swap places as the task runs (unlike Open/Close, which always point the same way):
+
+| Operational State | Buttons (if allowed) |
+| ----------------- | -------------------- |
+| Stopped           | Start                |
+| Running           | Pause, Stop          |
+| Paused            | Resume, Stop         |
+| Error             | Stop                 |
+
+A kettle that only allows Stop shows nothing while Stopped, and [Stop] while Running. A read-only kettle (no Allowed Commands) is just `OperationalStateValue`.
+
+**Power Off.** If the Device also has a Power Control and Power is Off, Start isn't allowed (Data model rule 32). The parent passes `isPoweredOff`, and the component shows "Turn the power on to start" instead of [Start].
+
+When is a command **Confirmed**? `start` and `resume` when the Device reports Running; `pause` when it reports Paused; `stop` when it reports Stopped.
+
+### Visual idea
+
+| Question                        | Answer                                                                                      |
+| ------------------------------- | ------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | Row 1: name, then the `OperationalStateValue` under it. Row 2: the buttons. Row 3: message. |
+| Buttons                         | `Button` `secondary`, text only (decided 2026-11-08).                                       |
+| More than one size?             | One size.                                                                                   |
+| When space is tight             | Name `…`; the value's detail wraps (as in OperationalStateValue); the buttons wrap.         |
+
+### States
+
+| #   | State          | When                       | Value             | Buttons             | Message                                                |
+| --- | -------------- | -------------------------- | ----------------- | ------------------- | ------------------------------------------------------ |
+| 1   | `disconnected` | `isDisconnected`           | disconnected icon | hidden              | none                                                   |
+| 2   | `loading`      | `state={null}`             | loading icon      | hidden              | none                                                   |
+| 3   | `pending`      | `command.status="pending"` | reported          | all disabled        | ⟳ "Starting…" / "Pausing…" / "Resuming…" / "Stopping…" |
+| 4   | `view-only`    | `isViewOnly`               | reported          | all disabled        | "View only"                                            |
+| 5   | `powered-off`  | `isPoweredOff`, Stopped    | Stopped           | Start hidden        | "Turn the power on to start"                           |
+| 6   | `failed`       | `command.status="failed"`  | reported          | as in 7             | ⚠ "Couldn't start. The device didn't respond."         |
+| 7   | default        | otherwise                  | reported          | per the table above | none                                                   |
+
+Target states: loading yes; Connected yes; Stale no; Disconnected yes; Fault partly (through the Error Reason, as in OperationalStateValue).
+
+### Anatomy
+
+```
+OperationalStateControl    <div>
+├── name                   "Kettle"
+├── value                  OperationalStateValue
+├── actions                <div role="group" aria-label={name}>  Buttons
+└── message                role="status"
+```
+
+### API
+
+| Prop              | Type                                                                              | Required | Description                                           |
+| ----------------- | --------------------------------------------------------------------------------- | -------- | ----------------------------------------------------- |
+| `name`            | `string`                                                                          | yes      |                                                       |
+| `state`           | `OperationalState \| null`                                                        | yes      | Reported.                                             |
+| `phase`           | `string`                                                                          | no       | Passed to `OperationalStateValue`.                    |
+| `errorReason`     | `ErrorReason`                                                                     | no       | Passed to `OperationalStateValue`.                    |
+| `allowedCommands` | `OperationalCommand[]`                                                            | yes      | At least one; with none, use `OperationalStateValue`. |
+| `onCommand`       | `(command: OperationalCommand) => void`                                           | yes      |                                                       |
+| `command`         | `{ command: OperationalCommand; status: CommandStatus; failureMessage?: string }` | no       |                                                       |
+| `isPoweredOff`    | `boolean`                                                                         | no       | The Device's Power Control is Off (rule 32).          |
+| `isDisconnected`  | `boolean`                                                                         | no       |                                                       |
+| `isViewOnly`      | `boolean`                                                                         | no       |                                                       |
+
+### Example values
+
+`KettleRunning` (Running · Heating, `["start", "stop"]`: [Stop]), `KettleStopped` ([Start]), `KettleStopOnly` (Stopped, `["stop"]`: no buttons), `WashingRunning` (Running · Rinsing, all four: [Pause] [Stop]), `WashingPaused` ([Resume] [Stop]), `Error` (No water: [Stop]), `PoweredOff`, `Pending` (Stopping…), `Failed`, `ViewOnly`, `Loading`, `Disconnected`, `LongText`, `Minimal` (name "Kettle", Stopped, [Start]).
+
+### Tokens
+
+As `PowerControl` and `OperationalStateValue`; `space/2` between buttons.
+
+### Accessibility
+
+- Buttons are a `role="group"` named by `name`.
+- When buttons swap (Start → Pause, Stop), focus could be lost. After a command is confirmed, focus moves to the first button of the new set, so keyboard users don't land on `<body>`.
+- Message line: `role="status"`.
+
+### Open questions
+
+- **Stopped, Stop-only kettle:** no buttons at all, only the value. Show a hint ("Start it on the kettle")? This draft shows nothing extra.
+
+### Decisions (2026-11-08, owner)
+
+- **All buttons `secondary`.** Several Controls can share a card; filled buttons would compete. (Replaces "first one is `primary`" in Visual idea.)
+- **Copy approved.**

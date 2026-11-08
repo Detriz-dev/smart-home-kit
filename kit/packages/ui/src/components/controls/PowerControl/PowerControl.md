@@ -145,5 +145,8 @@ From the power strip and washing machine examples in the [domain model review](/
 ### Open questions
 
 - **Controls category wording.** Widen the conventions' Controls definition to "Inputs that change the view, settings or a Device"? (Doc change only.)
-- **Copy.** "Turning on…", "Couldn't turn on. The device didn't respond.", "Can't be turned on from the app", "View only": OK?
-- **Not allowed: disable or hide?** This draft disables the switch and explains why. The Glossary says a command that isn't allowed "isn't offered". Disabling with a reason is clearer than a switch that disappears when the state changes. OK?
+
+### Decisions (2026-11-08, owner)
+
+- **Copy approved.**
+- **Not allowed: disabled with a reason.** One switch can't hide one direction. Controls with several buttons hide commands the Device never allows instead (see `OpenCloseControl`).

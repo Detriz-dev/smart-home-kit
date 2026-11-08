@@ -179,7 +179,7 @@ Places that import the renamed types today (found with a search; recheck when yo
 - [x] `AlertRuleLabel`: `TwoRulesForARange` story and a docs section "A range is two rules".
 - [x] Broken Glossary anchors fixed in 5 specs (`SensorLabel`, `LocationPath`, `UnitLabel`, `ReadingValue`, `SensorReading`).
 - [x] Figma (2026-11-08): `StateValue` `error` variant; `Icon` `play_circle`, `pause_circle`, `stop_circle`; `StateIcon` `operational-state-stopped/running/paused/error`.
-- [ ] Figma, still to do (Step 6): `UnitLabel` `percent`, `SensorLabel / Metrics` (6 new Metrics), the other 8 new icons (battery_full, blinds, devices, mode_heat, mode_off_on, roller_shades, roller_shades_closed, thermostat_auto) and their `MetricIcon` / `StateIcon` / `DeviceKindIcon` variants.
+- [ ] Figma, still to do (Step 6): `SensorLabel / Metrics` (6 new Metrics), icons `battery_full`, `blinds`, `devices`, `thermostat_auto`, and the new `MetricIcon` / `DeviceKindIcon` variants.
 - [x] Decided (2026-11-08): **rename `ModuleCard` to `DeviceCard`** and extend it to show Sensors, Controls and Operational State for any Device (one card, not two). **`PowerControl` wraps the existing `Switch`**; `Switch`'s spec drops the "app settings only" rule.
 - [ ] `SpaceCard`: rows for Controls and Operational State. Waits for the new components (Step 5).
 
@@ -207,7 +207,9 @@ Each change follows the [component workflow](../architecture/design-system/workf
 - [x] `OperationalStateValue`: spec, Figma (node `652:3315`), code, stories, export. Fault wording moved to `utils/faultNames.ts` (shared with `DeviceFaultStatus`).
 - [x] `PowerControl`: spec, Figma (node `653:73`), code, stories (incl. `Interactive`), export. `Switch` got an optional `ariaDescribedBy` prop; its spec no longer says "settings only".
 - [ ] Both: open questions in the specs (copy, disable vs. hide, Phase while Paused), browser check, user docs pages.
-- [ ] `OpenCloseControl`, `StateSelectControl`, `ValueControl`, `OperationalStateControl`, `DeviceCard`.
+- [x] `OpenCloseControl`, `StateSelectControl`, `ValueControl`, `OperationalStateControl`: specs reviewed and in Figma (2026-11-08, nodes `657:154`, `658:97`, `659:177`, `659:342`). Code next.
+- [x] Figma building blocks added for them: `Icon` `add`, `remove`, `roller_shades`, `roller_shades_closed`, `mode_off_on`, `mode_heat`; `StateIcon` `open-close-*` and `mode-*`; `UnitLabel` `percent`.
+- [ ] `DeviceCard` (rename of `ModuleCard`): spec after the Controls.
 
 New components follow the component conventions in `AGENTS.md`: one folder, `<Name>.md` spec, typed props with comments, CSS Modules with `--shk-` tokens only, export from `src/index.ts`, one story per state, plus `LongText` and `Minimal` stories.
 

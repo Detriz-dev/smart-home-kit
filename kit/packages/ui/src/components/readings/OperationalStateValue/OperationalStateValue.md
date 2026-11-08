@@ -139,5 +139,8 @@ The props are defined in [`OperationalStateValue.types.ts`](./OperationalStateVa
 
 ### Open questions
 
-- **Error Reason wording.** "Can't start", "Couldn't finish", "Can't do that now": OK for UI copy?
 - **Phase while Paused.** Matter keeps the Phase while Paused ("Paused · Rinsing"). The Data model says Phase only while Running. Keep it simple (Running only), or show it while Paused too?
+
+### Decisions (2026-11-08, owner)
+
+- **Error Reason copy approved:** "Can't start", "Couldn't finish", "Can't do that now".
