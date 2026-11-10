@@ -45,12 +45,12 @@ Heating (thermostat)                    Power strip (no Sensors)
 └─────────────────────────────────┘
 ```
 
-| Question              | Answer                                                                                                         |
-| --------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Order inside the card | Header, Faults, Sensors, Controls. The parent orders the Controls (Operational State first is the convention). |
-| Separators?           | No. Gap `space/4` between Sensors and Controls, `space/3` between Controls.                                    |
-| Layouts               | Sensors: ModuleCard's `row` / `stacked` rules, unchanged. Controls: always one per row, full width.            |
-| Name                  | `Card` title: `body`, one line, `…` when long. Built on `Card` (ADR 0003): header strip, white body, shadow.   |
+| Question              | Answer                                                                                                                      |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Order inside the card | Header, Faults, Sensors, Controls. The parent orders the Controls (Operational State first is the convention).              |
+| Separators?           | No. Gap `space/4` between Sensors and Controls, `space/3` between Controls.                                                 |
+| Layouts               | Sensors: ModuleCard's `row` / `stacked` rules, unchanged. Controls: always one per row, full width.                         |
+| Name                  | `Card` title: `body` size, semibold, one line, `…` when long. Built on `Card` (ADR 0003): header strip, white body, shadow. |
 
 ### States
 

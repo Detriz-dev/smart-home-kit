@@ -28,14 +28,14 @@ What it does **not** do, and why:
 
 ### Visual idea
 
-| Question                        | Answer                                                                                                             |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| What does it roughly look like? | The white card that `SpaceCard` and `DeviceCard` already use: subtle border, 16px corners, 16px padding.           |
-| Icons?                          | Optional, 24px (`md`), before the title, e.g. the Space Type icon on a room card.                                  |
-| Separators?                     | No. The gap separates header, content and footer.                                                                  |
-| More than one layout?           | One layout. Header, content and footer are each optional parts. A clickable card adds interaction looks.           |
-| Clickable look                  | Same as static at rest. Light blue fill on hover, blue on press, blue focus ring from the keyboard, like `Button`. |
-| Text size                       | Title `body` (16px regular), so the Readings stand out more than the name. Everything else belongs to the content. |
+| Question                        | Answer                                                                                                                                                                  |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | The white card that `SpaceCard` and `DeviceCard` already use: subtle border, 16px corners, 16px padding.                                                                |
+| Icons?                          | Optional, 24px (`md`), before the title, e.g. the Space Type icon on a room card.                                                                                       |
+| Separators?                     | No. The gap separates header, content and footer.                                                                                                                       |
+| More than one layout?           | One layout. Header, content and footer are each optional parts. A clickable card adds interaction looks.                                                                |
+| Clickable look                  | Same as static at rest. Light blue fill on hover, blue on press, blue focus ring from the keyboard, like `Button`.                                                      |
+| Text size                       | Title `body` size (16px), semibold (`--shk-card-title-font-weight`), so it reads as a header while the Readings stand out more. Everything else belongs to the content. |
 
 ```
 ┌───────────────────────────────────┐
@@ -144,7 +144,7 @@ Figma's sample content and the stories use these:
 | header         | gap               | `--shk-space-2`                                                                |
 | title, icon    | color             | `--shk-color-text-primary`                                                     |
 | icon           | size              | `--shk-size-6` (24px, `Icon` size `md`)                                        |
-| title          | text style        | `--shk-typography-body-*`                                                      |
+| title          | text style        | `--shk-typography-body-*`, weight `--shk-card-title-font-weight` (semibold)    |
 | footer         | color, text style | `--shk-color-text-secondary`, `--shk-typography-caption-*`                     |
 | root (hover)   | background        | `--shk-action-secondary-bg-hover`                                              |
 | root (pressed) | background        | `--shk-action-secondary-bg-pressed`                                            |

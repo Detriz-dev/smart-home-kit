@@ -1,0 +1,11 @@
+{
+  "card": {
+    "title": {
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font-weight.semibold}",
+        "$description": "Weight of the Card title (body size), used by Card, DeviceCard and SpaceCard. Semibold, so the name reads as a header without outshining the Readings."
+      }
+    }
+  }
+}

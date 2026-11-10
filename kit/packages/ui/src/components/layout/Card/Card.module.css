@@ -65,7 +65,8 @@
     padding: var(--shk-space-2);
   }
 
-  /* The card name: body text (16px regular), so the Readings stand out more than the name.
+  /* The card name: body size (16px), semibold (Card's own weight token), so it reads as a header
+     while the Readings still stand out more.
      It stays on one line and ends with "…". The full name is in the title attribute (shown on hover).
      The same look whether it is a <span>, an <a> or a <button>, so the resets for links and buttons live here too. */
   .title {
@@ -79,7 +80,7 @@
     color: var(--shk-color-text-primary);
     font-family: var(--shk-typography-body-font-family);
     font-size: var(--shk-typography-body-font-size);
-    font-weight: var(--shk-typography-body-font-weight);
+    font-weight: var(--shk-card-title-font-weight);
     line-height: var(--shk-typography-body-line-height);
     letter-spacing: var(--shk-typography-body-letter-spacing);
     text-align: start;

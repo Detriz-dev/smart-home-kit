@@ -45,7 +45,7 @@ Like InlineMessage: one row that wraps; the action moves under the text when the
 ```
 AlertBanner
 ├── content
-│   ├── icon     40px tile (size/10, radius/8) with an outline icon (md, 24px)
+│   ├── icon     40px tile (size/10, radius/8) with an outline icon (md, 24px). Figma: `Icon` name=error / warning / info, not `AlertLevelIcon` (that one is filled)
 │   ├── text
 │   │   ├── title  "Smoke detected"          (body size, bold: alert-banner/title/font-weight)
 │   │   └── meta   "Kitchen · " + RelativeTime(sm)  (body-sm)

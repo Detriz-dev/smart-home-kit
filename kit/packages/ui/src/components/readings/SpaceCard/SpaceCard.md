@@ -41,13 +41,13 @@ What it does **not** show, and why:
 
 ### Visual idea
 
-| Question                        | Answer                                                                                                                                                        |
-| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | A white card like `DeviceCard`: the Space name on top, Faults below it, then a list of rows.                                                                  |
-| Icons?                          | Only those of its parts (Metric icons, `refresh`, `link_off`, `error`, the status dot).                                                                       |
-| Separators?                     | No. Each row is a line: label on the left, value on the right.                                                                                                |
-| More than one layout?           | No. One stacked layout. Rows never wrap the value.                                                                                                            |
-| Text size                       | Name `body` (`Card` title; SpaceCard is built on `Card`, ADR 0003). Label `SensorLabel xs`. Value and Unit `sm`. Status: `DeviceConnectionStatus`'s own size. |
+| Question                        | Answer                                                                                                                                                                       |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | A white card like `DeviceCard`: the Space name on top, Faults below it, then a list of rows.                                                                                 |
+| Icons?                          | Only those of its parts (Metric icons, `refresh`, `link_off`, `error`, the status dot).                                                                                      |
+| Separators?                     | No. Each row is a line: label on the left, value on the right.                                                                                                               |
+| More than one layout?           | No. One stacked layout. Rows never wrap the value.                                                                                                                           |
+| Text size                       | Name `body` size, semibold (`Card` title; SpaceCard is built on `Card`, ADR 0003). Label `SensorLabel xs`. Value and Unit `sm`. Status: `DeviceConnectionStatus`'s own size. |
 
 ```
 ┌───────────────────────────────────┐
