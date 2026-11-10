@@ -14,18 +14,20 @@ This file defines user needs using the Jobs to Be Done (JTBD) framework, which d
 [Emotional jobs](#emotional-and-social-jobs)
 
 ---
-### Customer profile 
+
+### Customer profile
+
 Product designers, creative technologists, and frontend developers who need to test IoT ideas with real sensor data but don't have the electronics or embedded programming skills to build hardware prototypes themselves. They typically work in product teams or agencies that need to judge an idea's feasibility quickly before committing engineering resources.
 
 ### Main job
 
-*The main job is the core goal the user is trying to achieve. It is written as a verb plus an object and doesn't mention any product or solution, so it stays true even as technology changes.*
+_The main job is the core goal the user is trying to achieve. It is written as a verb plus an object and doesn't mention any product or solution, so it stays true even as technology changes._
 
 Validate IoT product ideas using real sensor data.
 
 ### Job story
 
-*A job story describes the context behind the job. It explains when the need appears (situation), what the user wants to do (motivation), and why it matters to them (outcome). It focuses on the circumstances that trigger the need, not on who the user is.*
+_A job story describes the context behind the job. It explains when the need appears (situation), what the user wants to do (motivation), and why it matters to them (outcome). It focuses on the circumstances that trigger the need, not on who the user is._
 
 - **Situation:** When my team needs to check whether an IoT product idea is feasible and worth investing in,
 - **Motivation:** I want to quickly build a working prototype with live sensor data, without dealing with electronics (circuits, wiring, soldering) or low-level integration code (drivers, protocols, data pipelines),
@@ -33,7 +35,7 @@ Validate IoT product ideas using real sensor data.
 
 ### Job map
 
-*A job map breaks the main job into the stages the user goes through from start to finish. It describes what the user is trying to accomplish at each stage, not how a particular tool does it. This helps reveal where users struggle and where a product can help.*
+_A job map breaks the main job into the stages the user goes through from start to finish. It describes what the user is trying to accomplish at each stage, not how a particular tool does it. This helps reveal where users struggle and where a product can help._
 
 1. **Define:** Decide which idea to test and what data it needs (e.g. temperature, light, air quality).
 2. **Locate:** Find the sensors and tools that can provide that data.
@@ -46,7 +48,7 @@ Validate IoT product ideas using real sensor data.
 
 ### Customer needs (desired outcomes)
 
-*Desired outcomes are the measurable criteria users apply to judge how well a job is getting done. Each one states a direction (minimize or maximize), a metric (time, likelihood, effort), and what it applies to. Together, they define what "better" means from the user's point of view and can be used to prioritize features.*
+_Desired outcomes are the measurable criteria users apply to judge how well a job is getting done. Each one states a direction (minimize or maximize), a metric (time, likelihood, effort), and what it applies to. Together, they define what "better" means from the user's point of view and can be used to prioritize features._
 
 - Minimize the time it takes to set up and configure sensor hardware.
 - Minimize the time it takes to get live sensor data into my prototype or system.
@@ -61,7 +63,7 @@ Validate IoT product ideas using real sensor data.
 
 ### Emotional and social jobs
 
-*Beyond the practical task, users also want to feel a certain way (emotional jobs) and be seen a certain way by others (social jobs). These often influence which solution people choose as much as the functional job does.*
+_Beyond the practical task, users also want to feel a certain way (emotional jobs) and be seen a certain way by others (social jobs). These often influence which solution people choose as much as the functional job does._
 
 - **Emotional:** Feel confident presenting a working demo instead of a static mockup.
 - **Social:** Be seen as someone who can validate ideas independently, without waiting for engineering support.

@@ -37,11 +37,11 @@ The model acts like a designer working inside a strict design system. It decides
 
 Generative AI usually returns text. Generative UI returns an interface. There are three levels, and each gives the model more freedom:
 
-| Level | The model… | Example | Freedom | Risk |
-| --- | --- | --- | --- | --- |
-| **1. Pick** | chooses one screen you designed | "Show the climate template" | Low | Low |
-| **2. Compose** | arranges your components into a layout | "Air quality first, then temperature" | Medium | Medium |
-| **3. Code** | writes new React and CSS | "Invent a new gauge" | High | High |
+| Level          | The model…                             | Example                               | Freedom | Risk   |
+| -------------- | -------------------------------------- | ------------------------------------- | ------- | ------ |
+| **1. Pick**    | chooses one screen you designed        | "Show the climate template"           | Low     | Low    |
+| **2. Compose** | arranges your components into a layout | "Air quality first, then temperature" | Medium  | Medium |
+| **3. Code**    | writes new React and CSS               | "Invent a new gauge"                  | High    | High   |
 
 **Decision: build Level 2, Compose.**
 
@@ -94,11 +94,11 @@ Later, direct editing can sit alongside this. Dragging a card and typing a promp
 
 This is the most designer-friendly concept. The request "Show me three approaches" returns three real screens side by side, each with a clear angle:
 
-| Version | Angle | Main emphasis |
-| --- | --- | --- |
-| A | At a glance | Fewest elements, largest values |
-| B | Diagnostic | Connection Status and Faults are prominent |
-| C | Every Metric | Everything is visible and compact |
+| Version | Angle        | Main emphasis                              |
+| ------- | ------------ | ------------------------------------------ |
+| A       | At a glance  | Fewest elements, largest values            |
+| B       | Diagnostic   | Connection Status and Faults are prominent |
+| C       | Every Metric | Everything is visible and compact          |
 
 All three use live data, so a team can compare how they behave rather than how they look in a static mockup. This is likely the strongest portfolio moment.
 
@@ -186,12 +186,12 @@ The View Spec is the JSON description of a screen, and it's the most important d
 
 Notice what's missing, and why:
 
-| Not in the spec | Why |
-| --- | --- |
-| Readings and statuses | They come from live data, which keeps them true. |
-| Colours, spacing and sizes in pixels | Tokens and components own those. |
-| CSS or HTML | Allowing them would let the model bypass the design system. |
-| Functions such as `onToggle` | JSON can't hold code. The renderer connects behaviour. |
+| Not in the spec                      | Why                                                         |
+| ------------------------------------ | ----------------------------------------------------------- |
+| Readings and statuses                | They come from live data, which keeps them true.            |
+| Colours, spacing and sizes in pixels | Tokens and components own those.                            |
+| CSS or HTML                          | Allowing them would let the model bypass the design system. |
+| Functions such as `onToggle`         | JSON can't hold code. The renderer connects behaviour.      |
 
 Other rules:
 
@@ -215,12 +215,12 @@ ModuleCard:
 
 Start with a small set:
 
-| Group | Components | Status |
-| --- | --- | --- |
-| Layout | `Stack`, `Columns` | To build |
-| Context | `LocationPath` | Exists |
-| Readings | `ModuleCard`, `SensorReading` | Exist |
-| Status | `DeviceConnectionStatus`, `DeviceFaultStatus` | Exist |
+| Group    | Components                                    | Status   |
+| -------- | --------------------------------------------- | -------- |
+| Layout   | `Stack`, `Columns`                            | To build |
+| Context  | `LocationPath`                                | Exists   |
+| Readings | `ModuleCard`, `SensorReading`                 | Exist    |
+| Status   | `DeviceConnectionStatus`, `DeviceFaultStatus` | Exist    |
 
 Leave low-level parts out. `ReadingValue`, `UnitLabel` and `SensorLabel` are building blocks that `SensorReading` already combines. Fewer choices usually lead to better results.
 
@@ -228,33 +228,33 @@ Your `.md` component docs already contain most of this guidance. Generating the 
 
 ## What can go wrong
 
-| Problem | Example | Response |
-| --- | --- | --- |
-| Invented ID | `moduleId: "bedroom-noise"` | Validation catches it and the model retries with the error. |
-| Request the kit can't meet | "Show the noise level" | Say Noise isn't a Metric the kit measures, then build the rest. Never fake it. |
-| Unclear request | "Show the room" on a Site with five Spaces | Ask "Which Space?" with the Spaces as options. |
-| Empty result | The Space has no Paired Modules | Show a clear empty state that explains why. |
-| Bad but valid layout | Eight equal cards with no hierarchy | Add layout rules to the Catalog and test them in evals. |
-| Screen goes out of date | A saved screen refers to a removed Module | Keep the rest of the screen and show a "Module removed" placeholder. |
-| Prompt injection | A Module is named "Ignore your rules" | Treat names as data, render them as plain text, and limit output to the schema. |
-| Unwanted action | A prompt says "Turn everything off" | The View Spec can't perform actions. Generation can only build screens. |
-| Same prompt, different result | A saved screen changes on reload | Saved screens load from the View Spec. Generate again only on request. |
+| Problem                       | Example                                    | Response                                                                        |
+| ----------------------------- | ------------------------------------------ | ------------------------------------------------------------------------------- |
+| Invented ID                   | `moduleId: "bedroom-noise"`                | Validation catches it and the model retries with the error.                     |
+| Request the kit can't meet    | "Show the noise level"                     | Say Noise isn't a Metric the kit measures, then build the rest. Never fake it.  |
+| Unclear request               | "Show the room" on a Site with five Spaces | Ask "Which Space?" with the Spaces as options.                                  |
+| Empty result                  | The Space has no Paired Modules            | Show a clear empty state that explains why.                                     |
+| Bad but valid layout          | Eight equal cards with no hierarchy        | Add layout rules to the Catalog and test them in evals.                         |
+| Screen goes out of date       | A saved screen refers to a removed Module  | Keep the rest of the screen and show a "Module removed" placeholder.            |
+| Prompt injection              | A Module is named "Ignore your rules"      | Treat names as data, render them as plain text, and limit output to the schema. |
+| Unwanted action               | A prompt says "Turn everything off"        | The View Spec can't perform actions. Generation can only build screens.         |
+| Same prompt, different result | A saved screen changes on reload           | Saved screens load from the View Spec. Generate again only on request.          |
 
 ## UX states to design
 
 Normal UI has loading, ready and error. Generative UI needs more:
 
-| State | What the person sees |
-| --- | --- |
-| Empty | Example prompts built from their own Spaces |
-| Thinking | "Looking at the Bedroom's Modules…" |
-| Building | The screen appears piece by piece, using skeletons |
-| Ready | The working screen with its rationale |
-| Needs clarification | One short question with options |
-| Partly possible | The screen, plus a note on what was left out and why |
-| Failed | What happened, with the prompt kept so they can retry |
-| Refining | The old screen stays visible until the new one is ready |
-| Showing an older version | A clear way to go back to the latest version |
+| State                    | What the person sees                                    |
+| ------------------------ | ------------------------------------------------------- |
+| Empty                    | Example prompts built from their own Spaces             |
+| Thinking                 | "Looking at the Bedroom's Modules…"                     |
+| Building                 | The screen appears piece by piece, using skeletons      |
+| Ready                    | The working screen with its rationale                   |
+| Needs clarification      | One short question with options                         |
+| Partly possible          | The screen, plus a note on what was left out and why    |
+| Failed                   | What happened, with the prompt kept so they can retry   |
+| Refining                 | The old screen stays visible until the new one is ready |
+| Showing an older version | A clear way to go back to the latest version            |
 
 Trust questions to answer in Figma:
 
@@ -267,21 +267,21 @@ Trust questions to answer in Figma:
 
 Quality has three layers, and they get harder to check:
 
-| Layer | Question | How to check |
-| --- | --- | --- |
-| **Valid** | Does it render? | Automatic: schema and ID checks |
-| **Correct** | Did it do what was asked? | Automatic: expected Space, Modules and components |
-| **Good** | Is it well designed? | Your review against a rubric, later with a model as judge |
+| Layer       | Question                  | How to check                                              |
+| ----------- | ------------------------- | --------------------------------------------------------- |
+| **Valid**   | Does it render?           | Automatic: schema and ID checks                           |
+| **Correct** | Did it do what was asked? | Automatic: expected Space, Modules and components         |
+| **Good**    | Is it well designed?      | Your review against a rubric, later with a model as judge |
 
 Start with 15 to 20 prompts:
 
-| Prompt | Pass condition |
-| --- | --- |
-| "A page for the bedroom" | Uses all Bedroom Modules and no others |
-| "Air quality first" | The Air Quality Module comes first and is largest |
-| "Show the noise level" | Doesn't invent a Metric and says it's unavailable |
-| "Show the room" with several Spaces | Asks which Space |
-| "Turn everything off" | Performs no action and explains that it can't |
+| Prompt                              | Pass condition                                    |
+| ----------------------------------- | ------------------------------------------------- |
+| "A page for the bedroom"            | Uses all Bedroom Modules and no others            |
+| "Air quality first"                 | The Air Quality Module comes first and is largest |
+| "Show the noise level"              | Doesn't invent a Metric and says it's unavailable |
+| "Show the room" with several Spaces | Asks which Space                                  |
+| "Turn everything off"               | Performs no action and explains that it can't     |
 
 For the "Good" layer, write a short rubric: one clear focal point, related items grouped, no duplicated information, and fits a narrow container. Writing that rubric is design critique turned into an engineering tool.
 
@@ -298,30 +298,30 @@ The real Hub isn't needed. Mock data is enough for all of the steps below.
 
 Each step gives you something you can show.
 
-| Step | Build | Uses AI? | Done when |
-| --- | --- | --- | --- |
-| 1 | Write three View Specs by hand and a renderer that shows them in Storybook | No | The format can describe the screens you want |
-| 2 | Write the Catalog and a script that turns a sentence into a View Spec | Yes | A sentence gives a valid spec |
-| 3 | Add validation and retries, plus your first 10 evals | Yes | Evals run with one command |
-| 4 | Add a Studio page with a prompt box and the screen states | Yes | "A page for the bedroom" works in the browser with mock data |
-| 5 | Add refinement and version history | Yes | "Make CO₂ bigger" changes only that part |
-| 6 | Add three directions, side by side | Yes | Three distinct versions appear |
-| 7 | Add sharing and React export | No | The exported code runs in a clean app |
+| Step | Build                                                                      | Uses AI? | Done when                                                    |
+| ---- | -------------------------------------------------------------------------- | -------- | ------------------------------------------------------------ |
+| 1    | Write three View Specs by hand and a renderer that shows them in Storybook | No       | The format can describe the screens you want                 |
+| 2    | Write the Catalog and a script that turns a sentence into a View Spec      | Yes      | A sentence gives a valid spec                                |
+| 3    | Add validation and retries, plus your first 10 evals                       | Yes      | Evals run with one command                                   |
+| 4    | Add a Studio page with a prompt box and the screen states                  | Yes      | "A page for the bedroom" works in the browser with mock data |
+| 5    | Add refinement and version history                                         | Yes      | "Make CO₂ bigger" changes only that part                     |
+| 6    | Add three directions, side by side                                         | Yes      | Three distinct versions appear                               |
+| 7    | Add sharing and React export                                               | No       | The exported code runs in a clean app                        |
 
 Step 1 matters most, and it deliberately has no AI. If you can't describe a good screen in View Spec by hand, a model can't either.
 
 ## What you will learn
 
-| Skill | Where you practise it |
-| --- | --- |
-| Calling a model from a backend | Steps 2 and 4 |
-| Structured output and JSON schemas | Steps 1 and 2 |
-| Prompt and context design | The Catalog, Site inventory and system prompt |
-| Validation and retries | Step 3 |
-| Evals | Step 3, then every step after it |
-| Streaming and AI loading states | Step 4 |
-| Editing state with AI | Step 5 |
-| Parallel model calls | Step 6 |
+| Skill                              | Where you practise it                         |
+| ---------------------------------- | --------------------------------------------- |
+| Calling a model from a backend     | Steps 2 and 4                                 |
+| Structured output and JSON schemas | Steps 1 and 2                                 |
+| Prompt and context design          | The Catalog, Site inventory and system prompt |
+| Validation and retries             | Step 3                                        |
+| Evals                              | Step 3, then every step after it              |
+| Streaming and AI loading states    | Step 4                                        |
+| Editing state with AI              | Step 5                                        |
+| Parallel model calls               | Step 6                                        |
 
 This covers the core of [roadmap](../learning/AI-Software-Frontend-Engineer-roadmap.md) Stages 4, 5 and 7. Tool use isn't central here, so the Site Assistant remains the natural next project.
 
