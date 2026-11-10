@@ -77,7 +77,7 @@ root            <span role="status">     (data-status = unpaired | pairing | pai
 └── indicator   ●                         filled circle, colour from the status
 ```
 
-1. **root**: the label and the dot in one row, centred vertically. Small horizontal padding and the default surface as background, as in Figma.
+1. **root**: the label and the dot in one row, centred vertically. Small horizontal padding and no background, so it sits on any surface (a card header, a list row).
 2. **label**: the status as a word. Never wraps or truncates: the labels are short and fixed.
 3. **indicator**: a 12px filled circle. Never shrinks. Decorative: it has no text of its own.
 
@@ -109,7 +109,6 @@ All tokens exist in `tokens.css`, and they are the same as `DeviceConnectionStat
 
 | Part      | State      | Property   | Code token                                             |
 | --------- | ---------- | ---------- | ------------------------------------------------------ |
-| root      | all        | background | `--shk-surface-default`                                |
 | root      | all        | padding    | `--shk-space-0` (block), `--shk-space-1` (inline, 4px) |
 | root      | all        | gap        | `--shk-space-1` (4px)                                  |
 | label     | all        | colour     | `--shk-color-text-primary`                             |

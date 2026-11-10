@@ -70,6 +70,7 @@ Use the `variant` prop. The default is `secondary`.
 | ----------- | ----------------------------------------- | ------------------------------------------------------------------- |
 | `primary`   | Blue fill, white text                     | **The one main action** in a place, like "Send prompt".             |
 | `secondary` | White fill, light gray outline, dark text | Every other action, like "Retry", "Undo" and answers to a question. |
+| `danger`    | White fill, red outline, red text         | An action that removes or breaks something, like "Unpair Module".   |
 
 Use only one primary Button in a place, so the main action is easy to find.
 
@@ -89,14 +90,41 @@ Use only one primary Button in a place, so the main action is easy to find.
 </Button>
 ```
 
+### danger
+
+For actions that remove or break something. Say what happens next to it, for example "Readings from this Module stop until you pair it again."
+
+```jsx live
+<Button variant="danger" icon="link_off" onClick={() => {}}>
+  Unpair Module
+</Button>
+```
+
+## With an icon
+
+Give `icon` an icon name to show it on the left of the text. It is 20px on a normal button and 16px with `size="sm"`, and it takes the text's colour.
+
+```jsx live
+<StackLayout gap="sm">
+  <Button variant="primary" icon="add" onClick={() => {}}>
+    Add Alert Rule
+  </Button>
+  <Button icon="add" size="sm" onClick={() => {}}>
+    Add
+  </Button>
+</StackLayout>
+```
+
+The icon is decorative: screen readers only hear the text, so the text must say what the button does.
+
 ## States
 
 Hover, pressed and focus come from the browser: you don't set them. Only disabled has a prop.
 
 | State    | How it happens                 | primary                    | secondary                                 |
 | -------- | ------------------------------ | -------------------------- | ----------------------------------------- |
-| Hover    | The pointer is over it         | Darker blue                | Light blue fill                           |
-| Pressed  | It's being clicked             | Darkest blue               | Blue fill                                 |
+| Hover    | The pointer is over it         | Darker blue                | Light blue fill (danger: light red)       |
+| Pressed  | It's being clicked             | Darkest blue               | Blue fill (danger: red)                   |
 | Focus    | It's reached with the keyboard | + a blue ring around it    | + a blue ring around it                   |
 | Disabled | `isDisabled`                   | Light gray fill, gray text | Light gray fill, faint outline, gray text |
 
@@ -168,13 +196,14 @@ A Button is as wide as its text, at least 44px tall. Inside a [`StackLayout`](..
 
 ## Props
 
-| Prop         | Type                       | Default       | Description                                                                                                   |
-| ------------ | -------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------- |
-| `children`   | `ReactNode`                | –             | **Required.** The text on the button, like "Send prompt" or a Space name.                                     |
-| `onClick`    | `() => void`               | –             | **Required.** Called when the button is clicked, or activated with Enter or Space. Not called while disabled. |
-| `variant`    | `"primary" \| "secondary"` | `"secondary"` | How much weight the action has.                                                                               |
-| `size`       | `"md" \| "sm"`             | `"md"`        | How big it is: `md` is 44px, `sm` is 32px for compact places such as AlertBanner.                             |
-| `isDisabled` | `boolean`                  | `false`       | Grays the button out and ignores clicks.                                                                      |
+| Prop         | Type                                   | Default       | Description                                                                                                   |
+| ------------ | -------------------------------------- | ------------- | ------------------------------------------------------------------------------------------------------------- |
+| `children`   | `ReactNode`                            | –             | **Required.** The text on the button, like "Send prompt" or a Space name.                                     |
+| `onClick`    | `() => void`                           | –             | **Required.** Called when the button is clicked, or activated with Enter or Space. Not called while disabled. |
+| `variant`    | `"primary" \| "secondary" \| "danger"` | `"secondary"` | How much weight the action has. `danger` for destructive actions.                                             |
+| `icon`       | `IconName`                             | –             | An icon on the left of the text, e.g. `"add"`. 20px, or 16px with `size="sm"`. Decorative.                    |
+| `size`       | `"md" \| "sm"`                         | `"md"`        | How big it is: `md` is 44px, `sm` is 32px for compact places such as AlertBanner.                             |
+| `isDisabled` | `boolean`                              | `false`       | Grays the button out and ignores clicks.                                                                      |
 
 The types `ButtonProps`, `ButtonSize` and `ButtonVariant` are exported too:
 
@@ -226,6 +255,7 @@ Button uses the kit's `action` tokens:
 | Secondary outline, text | `--shk-action-secondary-border`, `--shk-action-secondary-fg`                           |
 | Disabled                | `--shk-action-disabled-bg`, `--shk-action-disabled-border`, `--shk-action-disabled-fg` |
 | Focus ring              | `--shk-action-focus`                                                                   |
+| Danger                  | `--shk-action-danger-bg`, `-bg-hover`, `-bg-pressed`, `-border`, `-fg`                 |
 | Text style              | `--shk-typography-label-*` (14px), weight `--shk-button-label-font-weight` (bold)      |
 | Height, padding, radius | `--shk-size-11` (44px), `--shk-space-4` (16px), `--shk-radius-8` (8px)                 |
 | Small size (`sm`)       | `--shk-size-8` (32px), `--shk-space-1` (4px), `--shk-space-3` (12px)                   |

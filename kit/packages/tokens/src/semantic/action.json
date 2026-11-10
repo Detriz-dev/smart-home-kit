@@ -49,6 +49,33 @@
         "$description": "Text of a secondary action."
       }
     },
+    "danger": {
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.white}",
+        "$description": "Fill of a destructive action, e.g. Button danger (\"Unpair Module\")."
+      },
+      "bg-hover": {
+        "$type": "color",
+        "$value": "{palette.red.50}",
+        "$description": "Fill of a destructive action under the pointer."
+      },
+      "bg-pressed": {
+        "$type": "color",
+        "$value": "{palette.red.100}",
+        "$description": "Fill of a destructive action while pressed."
+      },
+      "border": {
+        "$type": "color",
+        "$value": "{palette.red.600}",
+        "$description": "Outline of a destructive action."
+      },
+      "fg": {
+        "$type": "color",
+        "$value": "{palette.red.800}",
+        "$description": "Text and icon of a destructive action."
+      }
+    },
     "disabled": {
       "bg": {
         "$type": "color",

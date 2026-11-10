@@ -101,61 +101,77 @@ export function SpaceCard({
           ))}
         </ul>
       )}
-      <ul role="list" className={styles.readings}>
-        {readings.map((reading) => {
-          const state = getRowState(reading);
-          const hasValue = state === "connected" || state === "stale";
-          if ("state" in reading) {
+      {/* A container, so the rows can line up in a grid when the card is wide enough (see the CSS). */}
+      <div className={styles.readingsBox}>
+        <ul role="list" className={styles.readings}>
+          {readings.map((reading) => {
+            const state = getRowState(reading);
+            const hasValue = state === "connected" || state === "stale";
+            if ("state" in reading) {
+              return (
+                <li
+                  key={rowKey(reading)}
+                  data-state={state}
+                  data-kind="state"
+                  className={styles.row}
+                >
+                  {reading.asset ? (
+                    <AssetLabel
+                      name={reading.asset.name}
+                      assetType={reading.asset.assetType}
+                      size="xs"
+                    />
+                  ) : (
+                    <SensorLabel metric={reading.metric} size="xs" />
+                  )}
+                  {/* Own cell, so a Stale status never pushes the value out of its column. */}
+                  {state === "stale" && (
+                    <span className={styles.status}>
+                      <DeviceConnectionStatus status="stale" />
+                    </span>
+                  )}
+                  <span className={styles.reading}>
+                    <StateRowValue
+                      reading={reading}
+                      isDisconnected={state === "disconnected"}
+                    />
+                  </span>
+                </li>
+              );
+            }
             return (
               <li
                 key={rowKey(reading)}
                 data-state={state}
+                data-kind="measured"
                 className={styles.row}
               >
-                {reading.asset ? (
-                  <AssetLabel
-                    name={reading.asset.name}
-                    assetType={reading.asset.assetType}
-                    size="xs"
-                  />
-                ) : (
-                  <SensorLabel metric={reading.metric} size="xs" />
+                <SensorLabel metric={reading.metric} size="xs" />
+                {state === "stale" && (
+                  <span className={styles.status}>
+                    <DeviceConnectionStatus status="stale" />
+                  </span>
                 )}
                 <span className={styles.reading}>
-                  {state === "stale" && (
-                    <DeviceConnectionStatus status="stale" />
-                  )}
-                  <StateRowValue
-                    reading={reading}
+                  <ReadingValue
+                    value={reading.value}
                     isDisconnected={state === "disconnected"}
+                    fractionDigits={reading.fractionDigits ?? 1}
+                    size="sm"
                   />
+                  {/* Without a value, screen readers skip the Unit: "Disconnected degrees Celsius" would sound like a value. */}
+                  <span
+                    aria-hidden={hasValue ? undefined : "true"}
+                    className={styles.unit}
+                  >
+                    <UnitLabel unit={reading.unit} size="sm" />
+                  </span>
                 </span>
               </li>
             );
-          }
-          return (
-            <li key={rowKey(reading)} data-state={state} className={styles.row}>
-              <SensorLabel metric={reading.metric} size="xs" />
-              <span className={styles.reading}>
-                {state === "stale" && <DeviceConnectionStatus status="stale" />}
-                <ReadingValue
-                  value={reading.value}
-                  isDisconnected={state === "disconnected"}
-                  fractionDigits={reading.fractionDigits ?? 1}
-                  size="sm"
-                />
-                {/* Without a value, screen readers skip the Unit: "Disconnected degrees Celsius" would sound like a value. */}
-                <span
-                  aria-hidden={hasValue ? undefined : "true"}
-                  className={styles.unit}
-                >
-                  <UnitLabel unit={reading.unit} size="sm" />
-                </span>
-              </span>
-            </li>
-          );
-        })}
-      </ul>
+          })}
+        </ul>
+      </div>
     </Card>
   );
 }

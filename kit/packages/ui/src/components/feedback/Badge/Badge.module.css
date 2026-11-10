@@ -1,19 +1,27 @@
 @layer detriz {
-  /* A pill at least as wide as it is tall, so one digit makes a circle. Caption text with tabular
-     figures, so "11" and "18" are the same width. Fill and text colour come from the tone. */
+  /* A pill at least as wide as it is tall, so one digit makes a circle: a light fill, a 1px border in
+     the tone's colour and a bold number. 20px tall: the caption line (18px) plus the border above and below.
+     Tabular figures, so "11" and "18" are the same width. The colours come from the tone. */
   .root {
     display: inline-flex;
     flex-shrink: 0;
     align-items: center;
     justify-content: center;
     box-sizing: border-box;
-    min-inline-size: var(--shk-typography-caption-line-height);
-    block-size: var(--shk-typography-caption-line-height);
-    padding-inline: var(--shk-space-1);
+    min-inline-size: calc(
+      var(--shk-typography-caption-line-height) + 2 *
+        var(--shk-border-width-thin)
+    );
+    block-size: calc(
+      var(--shk-typography-caption-line-height) + 2 *
+        var(--shk-border-width-thin)
+    );
+    padding-inline: calc(var(--shk-space-1) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid var(--badge-border);
     border-radius: var(--shk-radius-full);
     font-family: var(--shk-typography-caption-font-family);
     font-size: var(--shk-typography-caption-font-size);
-    font-weight: var(--shk-typography-caption-font-weight);
+    font-weight: var(--shk-badge-count-font-weight);
     line-height: var(--shk-typography-caption-line-height);
     letter-spacing: var(--shk-typography-caption-letter-spacing);
     font-variant-numeric: tabular-nums;
@@ -21,23 +29,27 @@
   }
 
   .root[data-tone="critical"] {
-    background: var(--shk-status-danger-solid);
+    background: var(--shk-status-danger-bg);
     color: var(--shk-status-danger-on-solid);
+    --badge-border: var(--shk-status-danger-border);
   }
 
   .root[data-tone="warning"] {
-    background: var(--shk-status-warning-solid);
+    background: var(--shk-status-warning-bg);
     color: var(--shk-status-warning-on-solid);
+    --badge-border: var(--shk-status-warning-border);
   }
 
   .root[data-tone="info"] {
-    background: var(--shk-status-progress-solid);
+    background: var(--shk-status-progress-bg);
     color: var(--shk-status-progress-on-solid);
+    --badge-border: var(--shk-status-progress-border);
   }
 
   .root[data-tone="neutral"] {
-    background: var(--shk-status-neutral-solid);
+    background: var(--shk-status-neutral-bg);
     color: var(--shk-status-neutral-on-solid);
+    --badge-border: var(--shk-status-neutral-border);
   }
 
   /* Read by screen readers, not shown. */

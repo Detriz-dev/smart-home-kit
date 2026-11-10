@@ -5,6 +5,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: var(--shk-space-2);
     box-sizing: border-box;
     min-block-size: var(--shk-size-11);
     max-inline-size: 100%;
@@ -20,8 +21,9 @@
     cursor: pointer;
   }
 
-  /* Small: 32px tall with tighter padding, for compact places such as AlertBanner. */
+  /* Small: 32px tall with tighter padding and a 4px gap to the icon, for compact places such as AlertBanner. */
   .root[data-size="sm"] {
+    gap: var(--shk-space-1);
     min-block-size: var(--shk-size-8);
     padding-block: calc(var(--shk-space-1) - var(--shk-border-width-thin));
     padding-inline: calc(var(--shk-space-3) - var(--shk-border-width-thin));
@@ -53,6 +55,22 @@
     background: var(--shk-action-primary-bg-pressed);
   }
 
+  /* Danger: a destructive action, e.g. "Unpair Module". White with a red outline and red text and icon;
+     red 50 under the pointer, red 100 while pressed. Declared before :disabled, so disabled still wins. */
+  .root[data-variant="danger"] {
+    border-color: var(--shk-action-danger-border);
+    background: var(--shk-action-danger-bg);
+    color: var(--shk-action-danger-fg);
+  }
+
+  .root[data-variant="danger"]:hover:not(:disabled) {
+    background: var(--shk-action-danger-bg-hover);
+  }
+
+  .root[data-variant="danger"]:active:not(:disabled) {
+    background: var(--shk-action-danger-bg-pressed);
+  }
+
   /* A visible ring when the button is reached with the keyboard. */
   .root:focus-visible {
     outline: var(--shk-border-width-medium) solid var(--shk-action-focus);
@@ -70,6 +88,12 @@
 
   .root[data-variant="primary"]:disabled {
     border-color: var(--shk-action-disabled-bg);
+  }
+
+  /* The icon on the left: the text's colour (Icon draws in currentColor), and it never shrinks. */
+  .icon {
+    display: inline-flex;
+    flex-shrink: 0;
   }
 
   /* The text in the label style, but bolder (the Button's own weight token).

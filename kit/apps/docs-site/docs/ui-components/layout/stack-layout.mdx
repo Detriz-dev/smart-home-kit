@@ -14,13 +14,17 @@ Places components in one column, top to bottom, with an even gap between them. U
   <DeviceCard
     name="Climate Module"
     connectionStatus="connected"
-    sensors={[
-      { metric: "temperature", value: 22.4, unit: "celsius" },
-      { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
-    ]}
+    sensors={[{ metric: "temperature", value: 22.4, unit: "celsius" }]}
+  />
+  <DeviceCard
+    name="Air Quality Module"
+    connectionStatus="connected"
+    sensors={[{ metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 }]}
   />
 </StackLayout>
 ```
+
+The three children sit one under the other, 8px apart. What happens inside each card (for example, Sensors side by side in a wide `DeviceCard`) is up to that component, not StackLayout.
 
 :::tip[Try it]
 

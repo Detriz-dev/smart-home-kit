@@ -37,10 +37,11 @@ It is not a Device command.
 
 **Variants** (prop `variant`):
 
-| `variant`   | Use for                                                  |
-| ----------- | -------------------------------------------------------- |
-| `primary`   | The single main action in a place: "Send prompt".        |
-| `secondary` | Every other action: "Retry", "Undo", clarifying answers. |
+| `variant`   | Use for                                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------------------- |
+| `primary`   | The single main action in a place: "Send prompt".                                                       |
+| `secondary` | Every other action: "Retry", "Undo", clarifying answers.                                                |
+| `danger`    | An action that removes or breaks something: "Unpair Module". Outline only (white, red border and text). |
 
 **Sizes** (Figma property `size`, code prop `size`):
 
@@ -48,6 +49,8 @@ It is not a Device command.
 | ------ | --------------------- | --------------------------- | ----------------------------------------------------------------- |
 | `md`   | 44px, `size/11` (min) | `space/2`, `space/4`        | Default. Every button on its own.                                 |
 | `sm`   | 32px, `size/8` (min)  | `space/1`, `space/3`        | Inside compact components, e.g. the "View" action in AlertBanner. |
+
+**Icon** (code prop `icon`, Figma boolean `hasIcon` + instance swap `icon`): an optional icon on the left of the text, from the kit's icon set. 20px (`sm`) on a `md` button with an 8px gap (`space/2`), 16px (`xs`) on a `sm` button with a 4px gap (`space/1`). It takes the text's colour. Decorative.
 
 **Interaction states** (Figma property `state`):
 
@@ -85,6 +88,8 @@ The decisions behind them:
 
 - `children` is the text, not a `label` prop, so it reads like HTML. Figma calls it `label`, because designers read that more easily.
 - `variant` defaults to `secondary`: most buttons in a place are not the main action.
+- `icon` takes an `IconName`, like Card's `icon`, so sizes and colours stay consistent. No `iconPosition`: the icon always sits on the left.
+- `danger` is outline only. A solid red button is kept for a later "Are you sure?" step, if one is needed.
 - `size` defaults to `md` (44px, easy to tap). `sm` (32px) is for compact components only, where the row around it is already a large target.
 - Only `disabled` has a prop. Hover, pressed and focus come from the browser.
 - No `type` prop: always `type="button"` (see Open questions).
@@ -104,21 +109,23 @@ The decisions behind them:
 
 New semantic tokens (collection `action`, file `kit/packages/tokens/src/semantic/action.json`):
 
-| Part                    | Token                                                                                    | Points to          |
-| ----------------------- | ---------------------------------------------------------------------------------------- | ------------------ |
-| Primary fill            | `--shk-action-primary-bg`                                                                | `palette.blue.600` |
-| Primary fill, hover     | `--shk-action-primary-bg-hover`                                                          | `palette.blue.700` |
-| Primary fill, pressed   | `--shk-action-primary-bg-pressed`                                                        | `palette.blue.800` |
-| Primary text            | `--shk-action-primary-fg`                                                                | `palette.white`    |
-| Secondary fill          | `--shk-action-secondary-bg`                                                              | `palette.white`    |
-| Secondary fill, hover   | `--shk-action-secondary-bg-hover`                                                        | `palette.blue.100` |
-| Secondary fill, pressed | `--shk-action-secondary-bg-pressed`                                                      | `palette.blue.200` |
-| Secondary outline       | `--shk-action-secondary-border`                                                          | `palette.gray.200` |
-| Secondary text          | `--shk-action-secondary-fg`                                                              | `palette.gray.900` |
-| Disabled fill           | `--shk-action-disabled-bg`                                                               | `palette.gray.100` |
-| Disabled outline        | `--shk-action-disabled-border` (secondary only; primary uses `--shk-action-disabled-bg`) | `palette.gray.200` |
-| Disabled text           | `--shk-action-disabled-fg`                                                               | `palette.gray.400` |
-| Focus ring              | `--shk-action-focus`                                                                     | `palette.blue.600` |
+| Part                    | Token                                                                                    | Points to                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Primary fill            | `--shk-action-primary-bg`                                                                | `palette.blue.600`                                   |
+| Primary fill, hover     | `--shk-action-primary-bg-hover`                                                          | `palette.blue.700`                                   |
+| Primary fill, pressed   | `--shk-action-primary-bg-pressed`                                                        | `palette.blue.800`                                   |
+| Primary text            | `--shk-action-primary-fg`                                                                | `palette.white`                                      |
+| Secondary fill          | `--shk-action-secondary-bg`                                                              | `palette.white`                                      |
+| Secondary fill, hover   | `--shk-action-secondary-bg-hover`                                                        | `palette.blue.100`                                   |
+| Secondary fill, pressed | `--shk-action-secondary-bg-pressed`                                                      | `palette.blue.200`                                   |
+| Secondary outline       | `--shk-action-secondary-border`                                                          | `palette.gray.200`                                   |
+| Secondary text          | `--shk-action-secondary-fg`                                                              | `palette.gray.900`                                   |
+| Disabled fill           | `--shk-action-disabled-bg`                                                               | `palette.gray.100`                                   |
+| Disabled outline        | `--shk-action-disabled-border` (secondary only; primary uses `--shk-action-disabled-bg`) | `palette.gray.200`                                   |
+| Disabled text           | `--shk-action-disabled-fg`                                                               | `palette.gray.400`                                   |
+| Focus ring              | `--shk-action-focus`                                                                     | `palette.blue.600`                                   |
+| Danger fill             | `--shk-action-danger-bg`, `-bg-hover`, `-bg-pressed`                                     | `palette.white`, `palette.red.50`, `palette.red.100` |
+| Danger outline, text    | `--shk-action-danger-border`, `--shk-action-danger-fg`                                   | `palette.red.600`, `palette.red.800`                 |
 
 Existing tokens: `--shk-size-11` (height), `--shk-space-4` (side padding), `--shk-space-2` (top and bottom padding when the text wraps), `--shk-radius-8`, `--shk-border-width-thin` (outline), `--shk-border-width-medium` (focus ring width), `--shk-space-1` (focus ring offset), `--shk-typography-label-*` (except the weight).
 

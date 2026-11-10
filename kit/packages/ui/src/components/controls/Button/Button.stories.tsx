@@ -13,7 +13,7 @@ const meta = {
     onClick: () => {},
   },
   argTypes: {
-    variant: { control: "select", options: ["primary", "secondary"] },
+    variant: { control: "select", options: ["primary", "secondary", "danger"] },
     size: { control: "select", options: ["md", "sm"] },
   },
 } satisfies Meta<typeof Button>;
@@ -37,6 +37,41 @@ export const Small: Story = {
 
 export const SmallPrimary: Story = {
   args: { children: "View", size: "sm", variant: "primary" },
+};
+
+// Danger: a destructive action, e.g. unpairing a Module.
+export const Danger: Story = {
+  args: { children: "Unpair Module", variant: "danger" },
+};
+
+export const DangerSmall: Story = {
+  args: { children: "Unpair", variant: "danger", size: "sm" },
+};
+
+// An icon on the left of the text: 20px on md, 16px on sm, in the text's colour.
+export const WithIcon: Story = {
+  args: { children: "Add Alert Rule", icon: "add" },
+};
+
+export const PrimaryWithIcon: Story = {
+  args: { children: "Add Alert Rule", icon: "add", variant: "primary" },
+};
+
+export const DangerWithIcon: Story = {
+  args: { children: "Unpair Module", icon: "link_off", variant: "danger" },
+};
+
+export const SmallWithIcon: Story = {
+  args: { children: "Add", icon: "add", size: "sm" },
+};
+
+export const DangerDisabled: Story = {
+  args: {
+    children: "Unpair Module",
+    icon: "link_off",
+    variant: "danger",
+    isDisabled: true,
+  },
 };
 
 // Disabled, e.g. "Send prompt" while a screen builds.
