@@ -10,6 +10,7 @@ import {
   failedText,
 } from "../ControlParts";
 import type { OpenCloseControlProps } from "./OpenCloseControl.types";
+import barStyles from "./OpenCloseControl.module.css";
 
 type OpenCloseCommand = CommandOf<"open-close">;
 
@@ -79,12 +80,12 @@ export function OpenCloseControl({
         />
       </div>
       {showsButtons && (
-        // A command the Device never allows isn't offered; one that doesn't fit the State is disabled.
+        // One joined bar of buttons. A command the Device never allows isn't offered; one that doesn't fit the State is disabled.
         <div
           role="group"
           aria-label={name}
           aria-describedby={message ? messageId : undefined}
-          className={`${styles.actions} ${styles.actionsFill}`}
+          className={barStyles.bar}
         >
           {COMMANDS.filter((c) => allowedCommands.includes(c.command)).map(
             (c) => (

@@ -160,7 +160,7 @@ The types `OpenCloseControlProps` and `OpenCloseControlCommand` are exported too
 
 ## Long text
 
-The name is shortened with "…". The buttons and the message wrap.
+The name is shortened with "…". The buttons stay in one bar and long labels wrap inside it. The message wraps.
 
 ```jsx live
 <div style={{ maxWidth: 200 }}>
@@ -188,12 +188,12 @@ What's up to you:
 
 ## Styling
 
-| What          | Token                                               |
-| ------------- | --------------------------------------------------- |
-| State         | from [`StateValue`](../readings/state-value.mdx)    |
-| Buttons       | from [`Button`](./button.mdx) (`secondary`)         |
-| Name, message | as in [`PowerControl`](./power-control.mdx#styling) |
-| Gaps          | `--shk-space-2`, `--shk-space-3`                    |
+| What          | Token                                                                                                                             |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| State         | from [`StateValue`](../readings/state-value.mdx)                                                                                  |
+| Buttons       | from [`Button`](./button.mdx) (`secondary`), joined into one bar: no gaps, outer corners `--shk-radius-8`, inner `--shk-radius-0` |
+| Name, message | as in [`PowerControl`](./power-control.mdx#styling)                                                                               |
+| Gaps          | `--shk-space-2`, `--shk-space-3`                                                                                                  |
 
 ## Related components
 
