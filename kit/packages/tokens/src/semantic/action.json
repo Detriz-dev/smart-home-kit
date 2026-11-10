@@ -97,7 +97,12 @@
       "fg": {
         "$type": "color",
         "$value": "{palette.blue.600}",
-        "$description": "Icon and label of the item people are on, and of navigation items under the pointer, e.g. BottomNav."
+        "$description": "Icon and label of the item people are on, e.g. the current BottomNav section."
+      },
+      "bg": {
+        "$type": "color",
+        "$value": "{palette.blue.100}",
+        "$description": "Light-blue pill behind the icon of the item people are on, e.g. the current BottomNav section."
       },
       "indicator": {
         "$type": "color",

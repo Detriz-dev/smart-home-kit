@@ -63,8 +63,9 @@ const nav = (current: "home" | "spaces"): BottomNavItem[] => [
   { label: "Settings", icon: NAV_ICONS.settings, href: "#/settings" },
 ];
 
-// A phone screen: top bar, scrolling content, bottom bar. Layout only, no kit component does this.
+// A phone screen: top bar, scrolling content, a bottom bar floating over it. Layout only, no kit component does this.
 const screen: CSSProperties = {
+  position: "relative",
   display: "flex",
   flexDirection: "column",
   inlineSize: 390,
@@ -73,10 +74,18 @@ const screen: CSSProperties = {
   border: "var(--shk-border-width-thin) solid var(--shk-color-border-subtle)",
   background: "var(--shk-surface-page)",
 };
+// The content scrolls behind the bar, with room at the end so its last item can scroll above it.
 const content: CSSProperties = {
   flex: "1 1 auto",
   overflowY: "auto",
   padding: "var(--shk-space-4)",
+  paddingBlockEnd: "calc(var(--shk-size-16) + 3 * var(--shk-space-4))",
+};
+// The bar floats 16px from the screen's sides and bottom.
+const bottomBar: CSSProperties = {
+  position: "absolute",
+  insetInline: "var(--shk-space-4)",
+  insetBlockEnd: "var(--shk-space-4)",
 };
 
 function PhoneScreen({
@@ -92,7 +101,7 @@ function PhoneScreen({
     <div style={screen}>
       {top}
       <main style={content}>{children}</main>
-      {bottom}
+      <div style={bottomBar}>{bottom}</div>
     </div>
   );
 }

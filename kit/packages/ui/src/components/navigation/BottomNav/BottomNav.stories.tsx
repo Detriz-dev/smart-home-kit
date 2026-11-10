@@ -42,14 +42,17 @@ const meta = {
   argTypes: {
     items: { control: "object" },
   },
-  // The bar fills its parent. Stories show it at a phone width; a story can change it with `parameters`.
+  // The bar fills its parent. Stories show it at a phone's width (390px; the app floats it 16px from the
+  // edges, so 358px wide); a story can change it with `parameters`.
   decorators: [
     (Story, { parameters }) => (
       <div
         style={{
-          inlineSize: parameters.width ?? "390px",
+          inlineSize: parameters.width ?? "358px",
           resize: "horizontal",
           overflow: "auto",
+          // Room for the bar's shadow, which overflow would otherwise cut off.
+          padding: "var(--shk-space-2)",
         }}
       >
         <Story />
@@ -90,7 +93,7 @@ export const WithBadge: Story = {
   },
 };
 
-// Stress story: five items with long labels in 320px. Labels end with "…"; icons stay whole.
+// Stress story: five items with long labels in 288px (a 320px phone minus 16px each side). Labels end with "…"; icons stay whole.
 export const LongText: Story = {
   args: {
     items: [
@@ -105,11 +108,11 @@ export const LongText: Story = {
       SETTINGS,
     ],
   },
-  parameters: { width: "320px" },
+  parameters: { width: "288px" },
 };
 
-// Stress story: the smallest case, three items in 320px.
+// Stress story: the smallest case, three items in 288px.
 export const Minimal: Story = {
   args: { items: [current(HOME), DEVICES, SETTINGS] },
-  parameters: { width: "320px" },
+  parameters: { width: "288px" },
 };
