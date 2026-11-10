@@ -1,0 +1,11 @@
+{
+  "button": {
+    "label": {
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font-weight.bold}",
+        "$description": "Weight of the Button label. Bolder than the shared label style (medium), so the action stands out."
+      }
+    }
+  }
+}

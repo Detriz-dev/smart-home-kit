@@ -20,7 +20,7 @@
     cursor: pointer;
   }
 
-  /* Secondary under the pointer and while pressed. */
+  /* Secondary under the pointer and while pressed: light blue, then blue. */
   .root:hover:not(:disabled) {
     background: var(--shk-action-secondary-bg-hover);
   }
@@ -65,12 +65,13 @@
     border-color: var(--shk-action-disabled-bg);
   }
 
-  /* The text in the label style. Long text wraps instead of being cut off. */
+  /* The text in the label style, but bolder (the Button's own weight token).
+     Long text wraps instead of being cut off. */
   .label {
     min-inline-size: var(--shk-space-0);
     font-family: var(--shk-typography-label-font-family);
     font-size: var(--shk-typography-label-font-size);
-    font-weight: var(--shk-typography-label-font-weight);
+    font-weight: var(--shk-button-label-font-weight);
     line-height: var(--shk-typography-label-line-height);
     letter-spacing: var(--shk-typography-label-letter-spacing);
     overflow-wrap: break-word;

@@ -66,10 +66,10 @@ A Button never talks to a Device by itself. If a click should send a command, li
 
 Use the `variant` prop. The default is `secondary`.
 
-| `variant`   | Looks like                          | Use it for                                                          |
-| ----------- | ----------------------------------- | ------------------------------------------------------------------- |
-| `primary`   | Blue fill, white text               | **The one main action** in a place, like "Send prompt".             |
-| `secondary` | White fill, gray outline, dark text | Every other action, like "Retry", "Undo" and answers to a question. |
+| `variant`   | Looks like                                | Use it for                                                          |
+| ----------- | ----------------------------------------- | ------------------------------------------------------------------- |
+| `primary`   | Blue fill, white text                     | **The one main action** in a place, like "Send prompt".             |
+| `secondary` | White fill, light gray outline, dark text | Every other action, like "Retry", "Undo" and answers to a question. |
 
 Use only one primary Button in a place, so the main action is easy to find.
 
@@ -95,8 +95,8 @@ Hover, pressed and focus come from the browser: you don't set them. Only disable
 
 | State    | How it happens                 | primary                    | secondary                                 |
 | -------- | ------------------------------ | -------------------------- | ----------------------------------------- |
-| Hover    | The pointer is over it         | Darker blue                | Light gray fill                           |
-| Pressed  | It's being clicked             | Darkest blue               | Gray fill                                 |
+| Hover    | The pointer is over it         | Darker blue                | Light blue fill                           |
+| Pressed  | It's being clicked             | Darkest blue               | Blue fill                                 |
 | Focus    | It's reached with the keyboard | + a blue ring around it    | + a blue ring around it                   |
 | Disabled | `isDisabled`                   | Light gray fill, gray text | Light gray fill, faint outline, gray text |
 
@@ -225,7 +225,7 @@ Button uses the kit's `action` tokens:
 | Secondary outline, text | `--shk-action-secondary-border`, `--shk-action-secondary-fg`                           |
 | Disabled                | `--shk-action-disabled-bg`, `--shk-action-disabled-border`, `--shk-action-disabled-fg` |
 | Focus ring              | `--shk-action-focus`                                                                   |
-| Text style              | `--shk-typography-label-*` (14px, medium)                                              |
+| Text style              | `--shk-typography-label-*` (14px), weight `--shk-button-label-font-weight` (bold)      |
 | Height, padding, radius | `--shk-size-11` (44px), `--shk-space-4` (16px), `--shk-radius-8` (8px)                 |
 
 The `action` tokens are shared by every Button, so change them for the whole app:

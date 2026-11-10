@@ -30,18 +30,18 @@
       },
       "bg-hover": {
         "$type": "color",
-        "$value": "{palette.gray.100}",
-        "$description": "Fill of a secondary action under the pointer."
+        "$value": "{palette.blue.100}",
+        "$description": "Light blue fill of a secondary action under the pointer. Also the hover fill of clickable surfaces, e.g. Card, ListItem."
       },
       "bg-pressed": {
         "$type": "color",
-        "$value": "{palette.gray.200}",
-        "$description": "Fill of a secondary action while pressed."
+        "$value": "{palette.blue.200}",
+        "$description": "Blue fill of a secondary action while pressed. Also the pressed fill of clickable surfaces."
       },
       "border": {
         "$type": "color",
-        "$value": "{palette.gray.600}",
-        "$description": "Outline of a secondary action."
+        "$value": "{palette.gray.200}",
+        "$description": "Light grey outline of a secondary action, e.g. Button and IconButton secondary."
       },
       "fg": {
         "$type": "color",
