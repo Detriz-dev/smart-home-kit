@@ -173,12 +173,13 @@ A Button is as wide as its text, at least 44px tall. Inside a [`StackLayout`](..
 | `children`   | `ReactNode`                | –             | **Required.** The text on the button, like "Send prompt" or a Space name.                                     |
 | `onClick`    | `() => void`               | –             | **Required.** Called when the button is clicked, or activated with Enter or Space. Not called while disabled. |
 | `variant`    | `"primary" \| "secondary"` | `"secondary"` | How much weight the action has.                                                                               |
+| `size`       | `"md" \| "sm"`             | `"md"`        | How big it is: `md` is 44px, `sm` is 32px for compact places such as AlertBanner.                             |
 | `isDisabled` | `boolean`                  | `false`       | Grays the button out and ignores clicks.                                                                      |
 
-The types `ButtonProps` and `ButtonVariant` are exported too:
+The types `ButtonProps`, `ButtonSize` and `ButtonVariant` are exported too:
 
 ```tsx
-import type { ButtonProps, ButtonVariant } from "@detriz-sh-kit/ui";
+import type { ButtonProps, ButtonSize, ButtonVariant } from "@detriz-sh-kit/ui";
 ```
 
 The button always has `type="button"`, so it never submits a form by accident. To submit a form, call it from `onClick`.
@@ -227,6 +228,7 @@ Button uses the kit's `action` tokens:
 | Focus ring              | `--shk-action-focus`                                                                   |
 | Text style              | `--shk-typography-label-*` (14px), weight `--shk-button-label-font-weight` (bold)      |
 | Height, padding, radius | `--shk-size-11` (44px), `--shk-space-4` (16px), `--shk-radius-8` (8px)                 |
+| Small size (`sm`)       | `--shk-size-8` (32px), `--shk-space-1` (4px), `--shk-space-3` (12px)                   |
 
 The `action` tokens are shared by every Button, so change them for the whole app:
 

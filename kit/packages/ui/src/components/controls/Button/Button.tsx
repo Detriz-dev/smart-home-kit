@@ -6,6 +6,7 @@ export function Button({
   children,
   onClick,
   variant = "secondary",
+  size = "md",
   isDisabled = false,
 }: ButtonProps) {
   return (
@@ -14,6 +15,7 @@ export function Button({
     <button
       type="button"
       data-variant={variant}
+      data-size={size}
       disabled={isDisabled}
       className={styles.root}
       onClick={onClick}

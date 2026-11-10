@@ -8,11 +8,13 @@ const meta = {
   args: {
     children: "Send prompt",
     variant: "secondary",
+    size: "md",
     isDisabled: false,
     onClick: () => {},
   },
   argTypes: {
     variant: { control: "select", options: ["primary", "secondary"] },
+    size: { control: "select", options: ["md", "sm"] },
   },
 } satisfies Meta<typeof Button>;
 
@@ -26,6 +28,15 @@ export const Primary: Story = {
 
 export const Secondary: Story = {
   args: { children: "Retry" },
+};
+
+// Small (32px), for compact places such as the "View" action in AlertBanner.
+export const Small: Story = {
+  args: { children: "View", size: "sm" },
+};
+
+export const SmallPrimary: Story = {
+  args: { children: "View", size: "sm", variant: "primary" },
 };
 
 // Disabled, e.g. "Send prompt" while a screen builds.

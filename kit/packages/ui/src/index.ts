@@ -206,7 +206,11 @@ export type {
   IconButtonVariant,
 } from "./components/controls/IconButton";
 export { Button } from "./components/controls/Button";
-export type { ButtonProps, ButtonVariant } from "./components/controls/Button";
+export type {
+  ButtonProps,
+  ButtonSize,
+  ButtonVariant,
+} from "./components/controls/Button";
 export { ColumnLayout } from "./components/layout/ColumnLayout";
 export type {
   ColumnLayoutProps,

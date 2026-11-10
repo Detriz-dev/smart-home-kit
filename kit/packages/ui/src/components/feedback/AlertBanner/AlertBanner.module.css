@@ -1,42 +1,43 @@
 @layer detriz {
-  /* The banner: the content row, then × on the right. Every level has a light fill and a thin
-     border in the level colour; the padding subtracts the border, so the banner keeps its size
-     (Figma: inside stroke, not in layout). */
+  /* The banner: the content row, then × on the right. Every level has a very light fill and a light
+     border in the level colour. 12px top and bottom, 16px at the sides; the padding subtracts the
+     border, so the banner keeps its size (Figma: inside stroke, not in layout). */
   .root {
     display: flex;
     align-items: center;
     gap: var(--shk-space-2);
     box-sizing: border-box;
     inline-size: 100%;
-    padding: var(--shk-space-4);
+    padding: var(--shk-space-3) var(--shk-space-4);
     border-radius: var(--shk-radius-8);
   }
 
   .root[data-level="critical"],
   .root[data-level="warning"],
   .root[data-level="info"] {
-    padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
+    padding: calc(var(--shk-space-3) - var(--shk-border-width-thin))
+      calc(var(--shk-space-4) - var(--shk-border-width-thin));
     border: var(--shk-border-width-thin) solid var(--alert-banner-border);
     --alert-banner-title: var(--shk-color-text-primary);
     --alert-banner-meta: var(--shk-color-text-secondary);
   }
 
   .root[data-level="critical"] {
-    background: var(--shk-status-danger-bg);
-    --alert-banner-border: var(--shk-status-danger-border);
-    --alert-banner-icon: var(--shk-status-danger-fg);
+    background: var(--shk-status-danger-bg-subtle);
+    --alert-banner-border: var(--shk-status-danger-border-subtle);
+    --alert-banner-tile: var(--shk-status-danger-solid);
   }
 
   .root[data-level="warning"] {
-    background: var(--shk-status-warning-bg);
-    --alert-banner-border: var(--shk-status-warning-border);
-    --alert-banner-icon: var(--shk-status-warning-fg);
+    background: var(--shk-status-warning-bg-subtle);
+    --alert-banner-border: var(--shk-status-warning-border-subtle);
+    --alert-banner-tile: var(--shk-status-warning-solid);
   }
 
   .root[data-level="info"] {
-    background: var(--shk-status-progress-bg);
-    --alert-banner-border: var(--shk-status-progress-border);
-    --alert-banner-icon: var(--shk-status-progress-fg);
+    background: var(--shk-status-progress-bg-subtle);
+    --alert-banner-border: var(--shk-status-progress-border-subtle);
+    --alert-banner-tile: var(--shk-status-progress-solid);
   }
 
   /* Icon, text and action in a row that wraps: when the text would get narrower than 96px, the
@@ -51,28 +52,36 @@
     min-inline-size: var(--shk-space-0);
   }
 
+  /* The Alert Level icon: an outline icon in white on a 40px tile in the level colour. */
   .icon {
     display: inline-flex;
     flex-shrink: 0;
-    color: var(--alert-banner-icon);
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--shk-size-10);
+    block-size: var(--shk-size-10);
+    border-radius: var(--shk-radius-8);
+    background: var(--alert-banner-tile);
+    color: var(--shk-color-text-inverse);
   }
 
   .text {
     display: flex;
     flex: 1 1 var(--shk-size-24);
     flex-direction: column;
-    gap: var(--shk-space-1);
+    gap: var(--shk-space-0);
     min-inline-size: var(--shk-size-24);
   }
 
+  /* The title: body size (16px), bold (AlertBanner's own weight token). */
   .title {
     margin: var(--shk-space-0);
     color: var(--alert-banner-title);
-    font-family: var(--shk-typography-label-font-family);
-    font-size: var(--shk-typography-label-font-size);
-    font-weight: var(--shk-typography-label-font-weight);
-    line-height: var(--shk-typography-label-line-height);
-    letter-spacing: var(--shk-typography-label-letter-spacing);
+    font-family: var(--shk-typography-body-font-family);
+    font-size: var(--shk-typography-body-font-size);
+    font-weight: var(--shk-alert-banner-title-font-weight);
+    line-height: var(--shk-typography-body-line-height);
+    letter-spacing: var(--shk-typography-body-letter-spacing);
     overflow-wrap: break-word;
   }
 

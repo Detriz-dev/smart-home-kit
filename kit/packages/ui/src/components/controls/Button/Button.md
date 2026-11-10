@@ -42,6 +42,13 @@ It is not a Device command.
 | `primary`   | The single main action in a place: "Send prompt".        |
 | `secondary` | Every other action: "Retry", "Undo", clarifying answers. |
 
+**Sizes** (Figma property `size`, code prop `size`):
+
+| `size` | Height                | Padding (top/bottom, sides) | Use for                                                           |
+| ------ | --------------------- | --------------------------- | ----------------------------------------------------------------- |
+| `md`   | 44px, `size/11` (min) | `space/2`, `space/4`        | Default. Every button on its own.                                 |
+| `sm`   | 32px, `size/8` (min)  | `space/1`, `space/3`        | Inside compact components, e.g. the "View" action in AlertBanner. |
+
 **Interaction states** (Figma property `state`):
 
 | `state`    | How it's set in code | Primary                    | Secondary                                      |
@@ -78,6 +85,7 @@ The decisions behind them:
 
 - `children` is the text, not a `label` prop, so it reads like HTML. Figma calls it `label`, because designers read that more easily.
 - `variant` defaults to `secondary`: most buttons in a place are not the main action.
+- `size` defaults to `md` (44px, easy to tap). `sm` (32px) is for compact components only, where the row around it is already a large target.
 - Only `disabled` has a prop. Hover, pressed and focus come from the browser.
 - No `type` prop: always `type="button"` (see Open questions).
 

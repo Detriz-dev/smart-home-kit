@@ -20,6 +20,13 @@
     cursor: pointer;
   }
 
+  /* Small: 32px tall with tighter padding, for compact places such as AlertBanner. */
+  .root[data-size="sm"] {
+    min-block-size: var(--shk-size-8);
+    padding-block: calc(var(--shk-space-1) - var(--shk-border-width-thin));
+    padding-inline: calc(var(--shk-space-3) - var(--shk-border-width-thin));
+  }
+
   /* Secondary under the pointer and while pressed: light blue, then blue. */
   .root:hover:not(:disabled) {
     background: var(--shk-action-secondary-bg-hover);

@@ -1,10 +1,18 @@
 import { Icon } from "../../../icons/Icon";
-import { ACTION_ICONS, ALERT_LEVEL_ICONS } from "../../../icons/purposeIcons";
+import { ACTION_ICONS } from "../../../icons/purposeIcons";
+import type { IconName } from "../../../icons/Icon";
 import type { AlertLevel } from "../../../types/alert";
 import { RelativeTime } from "../../context/RelativeTime";
 import { Button } from "../../controls/Button";
 import styles from "./AlertBanner.module.css";
 import type { AlertBannerProps } from "./AlertBanner.types";
+
+/** The outline Alert Level icons, shown in white on the coloured tile. Other Alert components use the filled ones (`ALERT_LEVEL_ICONS`). */
+const TILE_ICONS: Record<AlertLevel, IconName> = {
+  critical: "error",
+  warning: "warning",
+  info: "info",
+};
 
 /** How screen readers announce each level: `alert` speaks straight away, `status` waits politely. */
 const ROLES: Record<AlertLevel, "alert" | "status"> = {
@@ -32,9 +40,9 @@ export function AlertBanner({
       className={styles.root}
     >
       <div className={styles.content}>
-        {/* Decorative: the title says what happened; the colour adds urgency. */}
+        {/* Decorative: the title says what happened; the coloured tile adds urgency. */}
         <span className={styles.icon}>
-          <Icon name={ALERT_LEVEL_ICONS[alertLevel]} size="md" />
+          <Icon name={TILE_ICONS[alertLevel]} size="md" />
         </span>
         <div className={styles.text}>
           <p className={styles.title}>{title}</p>
@@ -50,7 +58,9 @@ export function AlertBanner({
         </div>
         {/* Only shown when both the text and the handler are given. */}
         {actionLabel && onAction && (
-          <Button onClick={onAction}>{actionLabel}</Button>
+          <Button size="sm" onClick={onAction}>
+            {actionLabel}
+          </Button>
         )}
       </div>
       {onClose && (
