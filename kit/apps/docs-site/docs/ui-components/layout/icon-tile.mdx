@@ -1,0 +1,53 @@
+---
+sidebar_position: 6
+sidebar_label: IconTile
+description: A small 32px box around an icon at the start of a list row, in the page colour with a light outline.
+---
+
+# IconTile
+
+A small box around an icon: 32px, the page colour and a light outline. The kit's list rows ([`DeviceListItem`](../status/device-list-item.mdx), [`SpaceListItem`](../context/space-list-item.mdx), [`AlertListItem`](../status/alert-list-item.mdx)) use it for their icon. Use it in your own [`ListItem`](./list.mdx) rows so they match.
+
+```jsx live
+<List hasDividers>
+  <ListItem
+    start={
+      <IconTile>
+        <Icon name="countertops" />
+      </IconTile>
+    }
+    title="Kitchen"
+    description="Ground floor"
+  />
+</List>
+```
+
+## Import
+
+```tsx
+import { IconTile } from "@detriz-sh-kit/ui";
+```
+
+## When to use it
+
+- **At the start of a list row**, around a 24px icon.
+- **Not for big icons** or icons on their own: it is sized for a 24px icon in a row.
+
+## Props
+
+| Prop       | Type        | Default | Description                                                                                        |
+| ---------- | ----------- | ------- | -------------------------------------------------------------------------------------------------- |
+| `children` | `ReactNode` | –       | **Required.** The icon to frame, usually an `<Icon />` at 24px. It keeps its own colour and label. |
+
+## Accessibility
+
+The tile is a plain `<span>`: screen readers hear the icon inside it, or nothing when the icon is decorative. Give the icon a `label` when nothing else in the row says what it means.
+
+## Styling
+
+| What    | Token                                                  |
+| ------- | ------------------------------------------------------ |
+| Size    | `--shk-size-8` (32px)                                  |
+| Fill    | `--shk-surface-page`                                   |
+| Outline | `--shk-border-width-thin`, `--shk-color-border-subtle` |
+| Corners | `--shk-radius-8`                                       |

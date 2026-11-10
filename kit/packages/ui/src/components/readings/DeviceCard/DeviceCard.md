@@ -50,7 +50,7 @@ Heating (thermostat)                    Power strip (no Sensors)
 | Order inside the card | Header, Faults, Sensors, Controls. The parent orders the Controls (Operational State first is the convention). |
 | Separators?           | No. Gap `space/4` between Sensors and Controls, `space/3` between Controls.                                    |
 | Layouts               | Sensors: ModuleCard's `row` / `stacked` rules, unchanged. Controls: always one per row, full width.            |
-| Name                  | `h4`, one line, `…` when long (as in ModuleCard).                                                              |
+| Name                  | `Card` title: `body`, one line, `…` when long. Built on `Card` (ADR 0003): header strip, white body, shadow.   |
 
 ### States
 
@@ -196,7 +196,7 @@ The parts bring their own tokens. ModuleCard only adds the card and the spacing 
 | root    | padding       | `space/4`             | `--shk-space-4` (16px)          |
 | root    | gap           | `space/3`             | `--shk-space-3` (12px)          |
 | sensors | gap           | `space/3`             | `--shk-space-3` (12px)          |
-| name    | text          | `typography/h4/*`     | `--shk-typography-h4-*`         |
+| name    | text          | `typography/body/*`   | `--shk-typography-body-*`       |
 | name    | colour        | `color-text/primary`  | `--shk-color-text-primary`      |
 
 The Figma `row` variants are 364px wide (two 160px Sensors) and `stacked` 192px (one 160px Sensor). The card fills its parent, so these are the smallest widths.

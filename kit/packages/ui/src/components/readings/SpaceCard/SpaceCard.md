@@ -41,13 +41,13 @@ What it does **not** show, and why:
 
 ### Visual idea
 
-| Question                        | Answer                                                                                               |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | A white card like `DeviceCard`: the Space name on top, Faults below it, then a list of rows.         |
-| Icons?                          | Only those of its parts (Metric icons, `refresh`, `link_off`, `error`, the status dot).              |
-| Separators?                     | No. Each row is a line: label on the left, value on the right.                                       |
-| More than one layout?           | No. One stacked layout. Rows never wrap the value.                                                   |
-| Text size                       | Name `h4`. Label `SensorLabel xs`. Value and Unit `sm`. Status: `DeviceConnectionStatus`'s own size. |
+| Question                        | Answer                                                                                                                                                        |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | A white card like `DeviceCard`: the Space name on top, Faults below it, then a list of rows.                                                                  |
+| Icons?                          | Only those of its parts (Metric icons, `refresh`, `link_off`, `error`, the status dot).                                                                       |
+| Separators?                     | No. Each row is a line: label on the left, value on the right.                                                                                                |
+| More than one layout?           | No. One stacked layout. Rows never wrap the value.                                                                                                            |
+| Text size                       | Name `body` (`Card` title; SpaceCard is built on `Card`, ADR 0003). Label `SensorLabel xs`. Value and Unit `sm`. Status: `DeviceConnectionStatus`'s own size. |
 
 ```
 ┌───────────────────────────────────┐
@@ -154,7 +154,7 @@ As in `DeviceCard`, Figma draws the outline inside the card, so in CSS the paddi
 | root     | corner radius    | `radius/16`           | `--shk-radius-16`           |
 | root     | padding          | `space/4`             | `--shk-space-4`             |
 | root     | gap              | `space/3`             | `--shk-space-3`             |
-| name     | text             | `typography/h4/*`     | `--shk-typography-h4-*`     |
+| name     | text             | `typography/body/*`   | `--shk-typography-body-*`   |
 | name     | colour           | `color-text/primary`  | `--shk-color-text-primary`  |
 | faults   | gap              | `space/1`             | `--shk-space-1`             |
 | readings | gap              | `space/2`             | `--shk-space-2`             |

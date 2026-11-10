@@ -1,5 +1,6 @@
 import { Icon } from "../../../icons/Icon";
 import { DEVICE_KIND_ICONS } from "../../../icons/purposeIcons";
+import { IconTile } from "../../layout/IconTile";
 import { ListItem } from "../../layout/ListItem";
 import { DeviceConnectionStatus } from "../DeviceConnectionStatus";
 import { DeviceFaultStatus } from "../DeviceFaultStatus";
@@ -37,7 +38,11 @@ export function DeviceListItem(props: DeviceListItemProps) {
 
   const parts = {
     // Decorative: the name says what the Device is.
-    start: <Icon name={DEVICE_KIND_ICONS[deviceKind]} />,
+    start: (
+      <IconTile>
+        <Icon name={DEVICE_KIND_ICONS[deviceKind]} />
+      </IconTile>
+    ),
     title: name,
     description: spaceName,
     details,

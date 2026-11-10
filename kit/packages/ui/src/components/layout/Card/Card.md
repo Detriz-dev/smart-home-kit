@@ -4,7 +4,7 @@
 
 ### Purpose
 
-The plain card surface (background, border, rounded corners, padding) with an optional header and footer. Anything can go inside it. Apps use it to make their own cards that match the kit, for example one card per room in a flat, and the kit's own cards (`SpaceCard`, `DeviceCard`) will be rebuilt on it so they all share one look.
+The raised card surface (header strip in `surface/page`, white body, border, rounded corners, soft shadow `elevation/raised`) with an optional header and footer (see [ADR 0003](/docs/adr/0003-raised-cards.md)). Anything can go inside it. Apps use it to make their own cards that match the kit, for example one card per room in a flat, and the kit's own cards (`SpaceCard`, `DeviceCard`) are built on it, so they all share one look.
 
 It adds no data of its own. It takes props only and never fetches anything.
 
@@ -35,7 +35,7 @@ What it does **not** do, and why:
 | Separators?                     | No. The gap separates header, content and footer.                                                                  |
 | More than one layout?           | One layout. Header, content and footer are each optional parts. A clickable card adds interaction looks.           |
 | Clickable look                  | Same as static at rest. Light blue fill on hover, blue on press, blue focus ring from the keyboard, like `Button`. |
-| Text size                       | Title `h4`, same as `SpaceCard` and `DeviceCard`. Everything else belongs to the content.                          |
+| Text size                       | Title `body` (16px regular), so the Readings stand out more than the name. Everything else belongs to the content. |
 
 ```
 ┌───────────────────────────────────┐
@@ -144,7 +144,7 @@ Figma's sample content and the stories use these:
 | header         | gap               | `--shk-space-2`                                                                |
 | title, icon    | color             | `--shk-color-text-primary`                                                     |
 | icon           | size              | `--shk-size-6` (24px, `Icon` size `md`)                                        |
-| title          | text style        | `--shk-typography-h4-*`                                                        |
+| title          | text style        | `--shk-typography-body-*`                                                      |
 | footer         | color, text style | `--shk-color-text-secondary`, `--shk-typography-caption-*`                     |
 | root (hover)   | background        | `--shk-action-secondary-bg-hover`                                              |
 | root (pressed) | background        | `--shk-action-secondary-bg-pressed`                                            |

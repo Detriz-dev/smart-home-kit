@@ -2,6 +2,7 @@ import { Icon } from "../../../icons/Icon";
 import { ALERT_LEVEL_ICONS } from "../../../icons/purposeIcons";
 import type { AlertLevel, AlertStatus } from "../../../types/alert";
 import { RelativeTime } from "../../context/RelativeTime";
+import { IconTile } from "../../layout/IconTile";
 import { ListItem } from "../../layout/ListItem";
 import styles from "./AlertListItem.module.css";
 import type { AlertListItemProps } from "./AlertListItem.types";
@@ -31,13 +32,15 @@ export function AlertListItem(props: AlertListItemProps) {
 
   const parts = {
     start: (
-      <span data-tone={tone} className={styles.level}>
-        {/* Labelled: nothing else on the row says the level. */}
-        <Icon
-          name={ALERT_LEVEL_ICONS[alertLevel]}
-          label={LEVEL_NAMES[alertLevel]}
-        />
-      </span>
+      <IconTile>
+        <span data-tone={tone} className={styles.level}>
+          {/* Labelled: nothing else on the row says the level. */}
+          <Icon
+            name={ALERT_LEVEL_ICONS[alertLevel]}
+            label={LEVEL_NAMES[alertLevel]}
+          />
+        </span>
+      </IconTile>
     ),
     title,
     description: spaceName,

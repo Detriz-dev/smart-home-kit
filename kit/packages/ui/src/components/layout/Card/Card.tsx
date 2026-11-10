@@ -4,13 +4,14 @@ import { KitLink } from "../../../link";
 import styles from "./Card.module.css";
 import type { CardProps } from "./Card.types";
 
-/** The plain card surface with an optional header and footer. Clickable when given `href` or `onClick`. Takes props only, never fetches data. */
+/** A raised card: an optional header strip in the app background colour, then a white body with the content and an optional footer. Clickable when given `href` or `onClick`. Takes props only, never fetches data. */
 export function Card({
   icon,
   title,
   headerEnd,
   children,
   footer,
+  padding = "md",
   href,
   onClick,
 }: CardProps) {
@@ -72,9 +73,11 @@ export function Card({
           )}
         </div>
       )}
-      {/* No wrapper: the children sit straight in root, which sets the gap. */}
-      {children}
-      {footer !== undefined && <div className={styles.footer}>{footer}</div>}
+      {/* The white body: the content, then the footer. It sets the 12px gap between them. */}
+      <div data-padding={padding} className={styles.body}>
+        {children}
+        {footer !== undefined && <div className={styles.footer}>{footer}</div>}
+      </div>
     </div>
   );
 }

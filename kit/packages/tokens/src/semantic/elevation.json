@@ -1,0 +1,15 @@
+{
+  "elevation": {
+    "raised": {
+      "$type": "shadow",
+      "$value": {
+        "color": "rgba(21, 28, 32, 0.12)",
+        "offsetX": "0px",
+        "offsetY": "1px",
+        "blur": "4px",
+        "spread": "0px"
+      },
+      "$description": "Soft shadow under a raised surface, e.g. Card. Gray 950 at 12%. Banners and messages stay flat."
+    }
+  }
+}

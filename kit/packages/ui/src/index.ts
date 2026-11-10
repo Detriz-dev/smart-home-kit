@@ -230,9 +230,12 @@ export { Card } from "./components/layout/Card";
 export type {
   CardButtonProps,
   CardLinkProps,
+  CardPadding,
   CardProps,
   CardStaticProps,
 } from "./components/layout/Card";
+export { IconTile } from "./components/layout/IconTile";
+export type { IconTileProps } from "./components/layout/IconTile";
 export { List } from "./components/layout/List";
 export type { ListProps } from "./components/layout/List";
 export { ListItem } from "./components/layout/ListItem";

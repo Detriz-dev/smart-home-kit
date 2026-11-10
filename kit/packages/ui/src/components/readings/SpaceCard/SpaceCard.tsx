@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { Card } from "../../layout/Card";
 import { AssetLabel } from "../../context/AssetLabel";
 import { Badge } from "../../feedback/Badge";
 import { activeAlertsLabel } from "../../../utils/alertCountLabel";
@@ -71,7 +71,7 @@ function StateRowValue({
   return <StateValue {...value} isDisconnected={isDisconnected} />;
 }
 
-/** One Space at a glance: its name, its Faults and one row per Metric. Takes props only, never fetches data. */
+/** One Space at a glance, as a raised Card: its name, its Faults and one row per Metric. Takes props only, never fetches data. */
 export function SpaceCard({
   name,
   readings,
@@ -79,20 +79,18 @@ export function SpaceCard({
   activeAlertCount = 0,
   highestAlertLevel = "critical",
 }: SpaceCardProps) {
-  const nameId = useId();
-
   return (
-    <div role="group" aria-labelledby={nameId} className={styles.root}>
-      <div className={styles.header}>
-        <span id={nameId} className={styles.name} title={name}>
-          {name}
-        </span>
+    // Card draws the surface and the header strip (name + Badge of Active Alerts) and names the group.
+    <Card
+      title={name}
+      headerEnd={
         <Badge
           count={activeAlertCount}
           tone={highestAlertLevel}
           label={activeAlertsLabel(activeAlertCount)}
         />
-      </div>
+      }
+    >
       {faults && faults.length > 0 && (
         // role="list": Safari stops treating a list as a list once its bullets are removed.
         <ul role="list" className={styles.faults}>
@@ -158,6 +156,6 @@ export function SpaceCard({
           );
         })}
       </ul>
-    </div>
+    </Card>
   );
 }
