@@ -99,22 +99,25 @@ export function OperationalStateControl({
 
   return (
     <div className={styles.root}>
-      <span className={styles.name} title={name}>
-        {name}
-      </span>
-      <OperationalStateValue
-        state={state}
-        phase={phase}
-        errorReason={errorReason}
-        isDisconnected={isDisconnected}
-      />
+      <div className={styles.row}>
+        <span className={styles.name} title={name}>
+          {name}
+        </span>
+        <OperationalStateValue
+          state={state}
+          phase={phase}
+          errorReason={errorReason}
+          isDisconnected={isDisconnected}
+        />
+      </div>
       {commands.length > 0 && (
+        // One joined bar of buttons, like OpenCloseControl.
         <div
           ref={actionsRef}
           role="group"
           aria-label={name}
           aria-describedby={message ? messageId : undefined}
-          className={`${styles.actions} ${styles.actionsFill}`}
+          className={styles.actionsBar}
           onFocus={() => {
             hadFocus.current = true;
           }}

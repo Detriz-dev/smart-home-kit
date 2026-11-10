@@ -208,7 +208,7 @@ The types `OperationalStateControlProps` and `OperationalStateControlCommand` ar
 
 ## Long text
 
-The name is shortened with "…". The Error Reason wraps under the pill. The buttons share the width and wrap to a second line when they don't fit.
+The name is shortened with "…". When the row is too narrow, the State moves under the name, and the Error Reason wraps under the pill. The buttons stay in one bar and long labels wrap inside it.
 
 ```jsx live
 <div style={{ maxWidth: 200 }}>
@@ -240,11 +240,11 @@ What's up to you:
 
 ## Styling
 
-| What          | Token                                                                           |
-| ------------- | ------------------------------------------------------------------------------- |
-| State         | from [`OperationalStateValue`](../readings/operational-state-value.mdx#styling) |
-| Buttons       | from [`Button`](./button.mdx) (`secondary`)                                     |
-| Name, message | as in [`PowerControl`](./power-control.mdx#styling)                             |
+| What          | Token                                                                                                                             |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| State         | from [`OperationalStateValue`](../readings/operational-state-value.mdx#styling)                                                   |
+| Buttons       | from [`Button`](./button.mdx) (`secondary`), joined into one bar: no gaps, outer corners `--shk-radius-8`, inner `--shk-radius-0` |
+| Name, message | as in [`PowerControl`](./power-control.mdx#styling)                                                                               |
 
 ## Related components
 

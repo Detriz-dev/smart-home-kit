@@ -91,7 +91,7 @@ OpenCloseControl          <div>
 
 ### Tokens
 
-As `PowerControl` (name, message, gaps); buttons and pill from `Button` and `StateValue`. The buttons are joined into one bar (Figma: `actions` spacing −1): no gap, the outlines overlap by `border-width/thin` so the shared line is 1px, inner corners `radius/0`, outer corners `radius/8`. Styles in `OpenCloseControl.module.css`. Only this Control uses the joined bar; `OperationalStateControl` keeps separate buttons.
+As `PowerControl` (name, message, gaps); buttons and pill from `Button` and `StateValue`. The buttons are joined into one bar (Figma: `actions` spacing −1): no gap, the outlines overlap by `border-width/thin` so the shared line is 1px, inner corners `radius/0`, outer corners `radius/8`. Styles: `.actionsBar` in `ControlParts.module.css`, shared with `OperationalStateControl`, which looks the same.
 
 ### Accessibility
 

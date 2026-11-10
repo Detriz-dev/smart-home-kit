@@ -36,12 +36,12 @@ When is a command **Confirmed**? `start` and `resume` when the Device reports Ru
 
 ### Visual idea
 
-| Question                        | Answer                                                                                                                      |
-| ------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | Row 1: name, then the `OperationalStateValue` under it. Row 2: the buttons, sharing the full width equally. Row 3: message. |
-| Buttons                         | `Button` `secondary`, text only (decided 2026-11-08).                                                                       |
-| More than one size?             | One size.                                                                                                                   |
-| When space is tight             | Name `…`; the value's detail wraps (as in OperationalStateValue); the buttons wrap.                                         |
+| Question                        | Answer                                                                                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What does it roughly look like? | Like OpenCloseControl. Row 1: name on the left, the `OperationalStateValue` on the right. Row 2: the buttons joined into one bar, sharing the full width equally: [Start | Pause | Stop]. Row 3: message. |
+| Buttons                         | `Button` `secondary`, text only (decided 2026-11-08).                                                                                                                    |
+| More than one size?             | One size.                                                                                                                                                                |
+| When space is tight             | Name `…`; the value moves under the name when the row is too narrow; the bar stays on one line and long labels wrap inside their button.                                 |
 
 ### States
 
@@ -88,7 +88,7 @@ OperationalStateControl    <div>
 
 ### Tokens
 
-As `PowerControl` and `OperationalStateValue`; `space/2` between buttons.
+As `PowerControl` and `OperationalStateValue`. Name and value share a row (`space/3` gap, at least `size/6` tall), as in OpenCloseControl. The buttons are joined into one bar, the same as OpenCloseControl (Figma: `actions` spacing −1): no gap, the outlines overlap by `border-width/thin` so the shared line is 1px, inner corners `radius/0`, outer corners `radius/8`. Styles: `.row` and `.actionsBar` in `ControlParts.module.css`.
 
 ### Accessibility
 

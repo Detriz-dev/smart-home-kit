@@ -10,7 +10,6 @@ import {
   failedText,
 } from "../ControlParts";
 import type { OpenCloseControlProps } from "./OpenCloseControl.types";
-import barStyles from "./OpenCloseControl.module.css";
 
 type OpenCloseCommand = CommandOf<"open-close">;
 
@@ -85,7 +84,7 @@ export function OpenCloseControl({
           role="group"
           aria-label={name}
           aria-describedby={message ? messageId : undefined}
-          className={barStyles.bar}
+          className={styles.actionsBar}
         >
           {COMMANDS.filter((c) => allowedCommands.includes(c.command)).map(
             (c) => (

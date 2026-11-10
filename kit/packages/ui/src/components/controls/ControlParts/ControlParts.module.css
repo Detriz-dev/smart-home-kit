@@ -38,16 +38,41 @@
     white-space: nowrap;
   }
 
-  /* A row of Buttons; wraps when narrow. */
-  .actions {
+  /* A row of Buttons joined into one bar, as in Figma: no gaps, one shared 1px outline,
+     only the outer corners rounded. The bar never wraps; long labels wrap inside their button.
+     Used by OpenCloseControl and OperationalStateControl. */
+  .actionsBar {
     display: flex;
-    flex-wrap: wrap;
-    gap: var(--shk-space-2);
+    flex-wrap: nowrap;
+    gap: var(--shk-space-0);
   }
 
-  /* Add to .actions to share the full width equally between the Buttons (Figma: each Button set to Fill). */
-  .actionsFill > * {
+  /* Each button takes an equal share of the width. `.actionsBar > button` is more specific than Button's own class, so it wins. */
+  .actionsBar > button {
     flex: 1 1 0;
+    min-inline-size: 0;
+    border-radius: var(--shk-radius-0);
+  }
+
+  /* Neighbouring buttons overlap by the outline width, so the line between them is 1px, not 2px. */
+  .actionsBar > button + button {
+    margin-inline-start: calc(-1 * var(--shk-border-width-thin));
+  }
+
+  .actionsBar > button:first-child {
+    border-start-start-radius: var(--shk-radius-8);
+    border-end-start-radius: var(--shk-radius-8);
+  }
+
+  .actionsBar > button:last-child {
+    border-start-end-radius: var(--shk-radius-8);
+    border-end-end-radius: var(--shk-radius-8);
+  }
+
+  /* The keyboard focus ring sits on top of the neighbouring buttons, so it is never cut off. */
+  .actionsBar > button:focus-visible {
+    position: relative;
+    z-index: 1;
   }
 
   /* The message line: caption text style. Empty most of the time; it takes no space then. */
