@@ -1,0 +1,338 @@
+---
+title: What you can build
+sidebar_position: 2
+sidebar_label: What you can build
+description: "The smart home screens you can build with the kit today: map a Site, show Readings and Device health, raise Alerts and control Devices."
+keywords:
+  - smart home app examples
+  - smart home dashboard
+  - React components
+  - Figma library
+  - use cases
+---
+
+With the kit you can build the screens of a smart home app: where everything is, what the Sensors read, which Devices need attention, and the controls that change them. This page shows one example for each job, built from the real components. Every example is live, so you can edit the code and see the result.
+
+The same components are in the [Figma library](https://www.figma.com/community/file/1700179982740576850/detriz-smart-home-kit) with the same names, so designers can build these screens there too.
+
+## Map a Site
+
+Show how a home is laid out: its Floors, the Spaces on each Floor, and how many Devices and active Alerts each Space has. This is usually an app's home screen, with the most urgent Alert on top.
+
+```jsx live
+function SiteOverview() {
+  // A phone screen: top bar, scrolling content, and a bottom bar floating over it.
+  // This frame is your app's layout. The kit's components go inside it.
+  const screen = {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    maxInlineSize: 390,
+    blockSize: 720,
+    marginInline: "auto",
+    overflow: "hidden",
+    border: "var(--shk-border-width-thin) solid var(--shk-color-border-subtle)",
+    borderRadius: "var(--shk-radius-24)",
+    background: "var(--shk-surface-page)",
+  };
+  const content = {
+    flex: "1 1 auto",
+    overflowY: "auto",
+    padding: "var(--shk-space-4)",
+    paddingBlockEnd: "calc(var(--shk-size-16) + 3 * var(--shk-space-4))",
+  };
+  const bottomBar = {
+    position: "absolute",
+    insetInline: "var(--shk-space-4)",
+    insetBlockEnd: "var(--shk-space-4)",
+  };
+
+  return (
+    <div style={screen}>
+      <TopBar title="My flat" icon={PLACE_ICONS.site} />
+      <div style={content}>
+        <StackLayout gap="lg">
+          <AlertBanner
+            title="Smoke detected"
+            alertLevel="critical"
+            spaceName="Kitchen"
+            raisedAt={new Date(Date.now() - 2 * 60_000)}
+            actionLabel="View"
+            onAction={() => {}}
+            onClose={() => {}}
+          />
+          <FloorSection name="Ground floor" spaceCount={3}>
+            <List label="Spaces on the Ground floor">
+              <SpaceListItem
+                name="Kitchen"
+                spaceType="kitchen"
+                deviceCount={6}
+                activeAlertCount={1}
+                highestAlertLevel="critical"
+                href="#kitchen"
+              />
+              <SpaceListItem
+                name="Living room"
+                spaceType="living-room"
+                deviceCount={5}
+                activeAlertCount={1}
+                highestAlertLevel="warning"
+                href="#living-room"
+              />
+              <SpaceListItem
+                name="Hallway"
+                spaceType="hallway"
+                deviceCount={3}
+                href="#hallway"
+              />
+            </List>
+          </FloorSection>
+          <FloorSection name="First floor" spaceCount={3}>
+            <List label="Spaces on the First floor">
+              <SpaceListItem
+                name="Bedroom"
+                spaceType="bedroom"
+                deviceCount={3}
+                href="#bedroom"
+              />
+              <SpaceListItem
+                name="Bathroom"
+                spaceType="bathroom"
+                deviceCount={2}
+                href="#bathroom"
+              />
+              <SpaceListItem
+                name="Office"
+                spaceType="office"
+                deviceCount={3}
+                href="#office"
+              />
+            </List>
+          </FloorSection>
+        </StackLayout>
+      </div>
+      <div style={bottomBar}>
+        <BottomNav
+          items={[
+            {
+              label: "Home",
+              icon: NAV_ICONS.home,
+              href: "#home",
+              isCurrent: true,
+            },
+            { label: "Spaces", icon: NAV_ICONS.spaces, href: "#spaces" },
+            {
+              label: "Alerts",
+              icon: ALERT_ICONS.active,
+              href: "#alerts",
+              badge: { count: 2, label: "2 active Alerts", tone: "critical" },
+            },
+            { label: "Settings", icon: NAV_ICONS.settings, href: "#settings" },
+          ]}
+        />
+      </div>
+    </div>
+  );
+}
+```
+
+Built with [`TopBar`](/docs/ui-components/navigation/top-bar), [`AlertBanner`](/docs/ui-components/feedback/alert-banner), [`FloorSection`](/docs/ui-components/layout/floor-section), [`List`](/docs/ui-components/layout/list), [`SpaceListItem`](/docs/ui-components/context/space-list-item), [`StackLayout`](/docs/ui-components/layout/stack-layout) and [`BottomNav`](/docs/ui-components/navigation/bottom-nav). The phone frame around them is plain CSS: the kit leaves your app's page layout to you. Add [`LocationPath`](/docs/ui-components/navigation/location-path) to show where a Space is.
+
+## Show Readings
+
+Show what the Sensors measure, for a whole Space or for one Module. Numbers come with their Unit, and a Stale Reading looks different from a fresh one.
+
+```jsx live
+<ColumnLayout>
+  <SpaceCard
+    name="Bedroom"
+    readings={[
+      {
+        metric: "temperature",
+        value: 21.5,
+        unit: "celsius",
+        connectionStatus: "connected",
+      },
+      {
+        metric: "humidity",
+        value: 48,
+        unit: "percent-rh",
+        fractionDigits: 0,
+        connectionStatus: "connected",
+      },
+      {
+        metric: "illuminance",
+        value: 120,
+        unit: "lux",
+        fractionDigits: 0,
+        connectionStatus: "stale",
+      },
+    ]}
+  />
+  <DeviceCard
+    name="Climate Module"
+    connectionStatus="connected"
+    sensors={[
+      { metric: "temperature", value: 21.5, unit: "celsius" },
+      { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+    ]}
+  />
+</ColumnLayout>
+```
+
+Built with [`SpaceCard`](/docs/ui-components/readings/space-card), [`DeviceCard`](/docs/ui-components/readings/device-card) and [`ColumnLayout`](/docs/ui-components/layout/column-layout). For a single value, use [`SensorReading`](/docs/ui-components/readings/sensor-reading). For on/off and open/closed values, use [`SensorState`](/docs/ui-components/readings/sensor-state).
+
+## Show Device health
+
+Show which Devices work and which need attention. Each card follows the [Device lifecycle](/docs/domain-model/device-lifecycle): a Stale Device is marked, a Disconnected Device hides its last values, and a Fault says what's wrong.
+
+```jsx live
+<ColumnLayout>
+  <DeviceCard
+    name="Climate Module"
+    connectionStatus="stale"
+    sensors={[
+      { metric: "temperature", value: 21.5, unit: "celsius" },
+      { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
+    ]}
+  />
+  <DeviceCard
+    name="Hallway Module"
+    connectionStatus="disconnected"
+    sensors={[{ metric: "temperature", value: 19.8, unit: "celsius" }]}
+  />
+  <DeviceCard
+    name="Air Quality Module"
+    connectionStatus="connected"
+    faults={[{ faultCode: "sensor_failure", metric: "co2" }]}
+    sensors={[{ metric: "co2", value: 840, unit: "ppm", fractionDigits: 0 }]}
+  />
+</ColumnLayout>
+```
+
+Built with [`DeviceCard`](/docs/ui-components/readings/device-card). For a list of all Devices, use [`DeviceListItem`](/docs/ui-components/status/device-list-item). To show a status on its own, use [`DeviceConnectionStatus`](/docs/ui-components/status/device-connection-status), [`DevicePairingStatus`](/docs/ui-components/status/device-pairing-status) or [`DeviceFaultStatus`](/docs/ui-components/status/device-fault-status).
+
+## Show detections and Alerts
+
+Tell people when something happens: motion in a room, smoke in the kitchen. A banner interrupts for urgent Alerts, and a list keeps the history.
+
+```jsx live
+<StackLayout>
+  <AlertBanner
+    title="Smoke detected"
+    alertLevel="critical"
+    raisedAt={new Date(Date.now() - 2 * 60_000)}
+    spaceName="Kitchen"
+    actionLabel="View"
+    onAction={() => {}}
+    onClose={() => {}}
+  />
+  <DetectionStatus
+    metric="motion"
+    state="detected"
+    detectedSince={new Date(Date.now() - 3 * 60_000)}
+  />
+  <List>
+    <AlertListItem
+      title="Smoke detected"
+      alertLevel="critical"
+      alertStatus="active"
+      raisedAt={new Date(Date.now() - 2 * 60_000)}
+      spaceName="Kitchen"
+    />
+  </List>
+</StackLayout>
+```
+
+Built with [`AlertBanner`](/docs/ui-components/feedback/alert-banner), [`DetectionStatus`](/docs/ui-components/readings/detection-status), [`List`](/docs/ui-components/layout/list) and [`AlertListItem`](/docs/ui-components/status/alert-list-item).
+
+## Control Devices
+
+Let people change things: turn a lamp on, set the heating, move the blinds. Controls show that a command is on its way until the Device confirms it. Click **Turn on** below to see it.
+
+```jsx live
+function Controls() {
+  const [state, setState] = useState("off");
+  const [command, setCommand] = useState();
+  const [setpoint, setSetpoint] = useState(22);
+
+  const send = (next) => {
+    setCommand({ command: next, status: "pending" });
+    // Pretend the Device answers after a second.
+    setTimeout(() => {
+      setState(next === "turn-on" ? "on" : "off");
+      setCommand({ command: next, status: "confirmed" });
+    }, 1000);
+  };
+
+  return (
+    <StackLayout>
+      <PowerControl
+        name="Desk lamp"
+        state={state}
+        allowedCommands={["turn-on", "turn-off"]}
+        onCommand={send}
+        command={command}
+      />
+      <ValueControl
+        name="Setpoint"
+        value={setpoint}
+        unit="celsius"
+        min={0}
+        max={30}
+        step={0.5}
+        fractionDigits={1}
+        onCommit={setSetpoint}
+      />
+      <OpenCloseControl
+        name="Living room blinds"
+        state="opening"
+        allowedCommands={["open", "stop", "close"]}
+        onCommand={() => {}}
+      />
+    </StackLayout>
+  );
+}
+```
+
+Built with [`PowerControl`](/docs/ui-components/controls/power-control), [`ValueControl`](/docs/ui-components/controls/value-control) and [`OpenCloseControl`](/docs/ui-components/controls/open-close-control). For appliances with a running cycle, such as a washing machine, use [`OperationalStateControl`](/docs/ui-components/controls/operational-state-control). To choose a mode, use [`StateSelectControl`](/docs/ui-components/controls/state-select-control).
+
+## Handle empty and error states
+
+Real apps start empty and sometimes fail to load. The kit covers these screens too, so they don't stay blank.
+
+```jsx live
+<StackLayout>
+  <EmptyState
+    icon={NAV_ICONS.spaces}
+    title="No Spaces yet"
+    message="Spaces you add to the Site in your app show up here."
+    actionLabel="View setup guide"
+    onAction={() => {}}
+  />
+  <InlineMessage
+    tone="error"
+    title="Couldn't load Readings"
+    actionLabel="Retry"
+    onAction={() => {}}
+  >
+    Check that the Hub is on the same network.
+  </InlineMessage>
+</StackLayout>
+```
+
+Built with [`EmptyState`](/docs/ui-components/feedback/empty-state) and [`InlineMessage`](/docs/ui-components/feedback/inline-message).
+
+## What the kit doesn't do yet
+
+:::info[Coming later]
+
+The components show the data you pass them. They don't fetch it. Your app gets Readings and statuses from its own backend and passes them in as props. The kit's API, the API Simulator (simulated Readings for building without hardware) and the Raspberry Pi Hub software are planned, but not available yet.
+
+:::
+
+## Next steps
+
+- [Installation](./installation.mdx): add the kit to a React app.
+- [Quick start](./quick-start.mdx): build your first screen step by step.
+- [UI Components](/docs/ui-components): every component, grouped by the question it answers.
