@@ -21,6 +21,8 @@ Run everything from the repo root. It uses pnpm 11 workspaces, Turborepo and Nod
 | Build one package                                      | `pnpm --filter @detriz-sh-kit/tokens build` / `pnpm --filter @detriz-sh-kit/ui build` |
 | Typecheck components / docs site                       | `pnpm --filter @detriz-sh-kit/ui typecheck` / `pnpm --filter docs-site typecheck`     |
 | Format / check formatting                              | `pnpm format` / `pnpm format:check`                                                   |
+| Add a change note for the next release                 | `pnpm changeset`                                                                      |
+| Check that `tokens` and `ui` are ready to publish      | `pnpm -r check:package` (after `pnpm build`)                                          |
 
 `pnpm lint` and `pnpm test` exist at the root, but no workspace package defines `lint` or `test` scripts yet, so there are no tests to run.
 
@@ -53,7 +55,7 @@ The project stays **one repo for good**. Users choose what they use by installin
 
 - `kit/`: everything a developer installs, learns and builds with. All six parts of the kit belong here, following the project architecture's rule: "if a user needs it to install, learn or build with the kit, it goes in `kit/`". It exists today.
 - `platform/`: was meant for what we run ourselves (Live Studio, landing page, backend, Hub). With Live Studio dropped, nothing is planned for it now. It doesn't exist.
-- Packages that exist: `kit/packages/tokens`, `kit/packages/ui`, `kit/apps/storybook`, `kit/apps/docs-site`. Planned but not created yet: `api-spec`, `client`, `react`, the API Simulator (earlier called `mock`), the MCP server and Generative UI, and the Raspberry Pi Hub software.
+- Packages that exist: `kit/packages/tokens`, `kit/packages/ui` (both published on npm), `kit/apps/storybook` (package name `storybook-app`), `kit/apps/docs-site`. Planned but not created yet: `api-spec`, `client`, `react`, the API Simulator (earlier called `mock`), the MCP server and Generative UI, and the Raspberry Pi Hub software.
 
 Dependency rules (see "Dependency rules" in `project-architecture.md`):
 
@@ -64,7 +66,7 @@ Dependency rules (see "Dependency rules" in `project-architecture.md`):
 
 ### Design system pipeline
 
-1. **Tokens** (`kit/packages/tokens`): DTCG JSON in `src/primitive/` (raw values), `src/semantic/` (purpose, refers to primitives with `{palette.gray.900}`) and `src/component/`. Style Dictionary (`build/config.json`) builds them into `dist/tokens.css` as CSS variables with the **`--shk-` prefix**, for example `--shk-color-text-muted`. Some docs and comments still say `--dtz-`; that is out of date.
+1. **Tokens** (`kit/packages/tokens`): DTCG JSON in `src/primitive/` (raw values), `src/semantic/` (purpose, refers to primitives with `{palette.gray.900}`) and `src/component/`. Style Dictionary (`build/config.json`) builds them into `dist/tokens.css` as CSS variables with the **`--shk-` prefix**, for example `--shk-color-text-secondary`. Some docs and comments still say `--dtz-`; that is out of date.
 2. **UI** (`kit/packages/ui`): Vite library mode builds `src/index.ts` into `dist/index.js` + `dist/styles.css`, and `tsc -p tsconfig.build.json` emits the `.d.ts` files (stories and tests are excluded). Only what `src/index.ts` exports is public.
 3. **Storybook** (`kit/apps/storybook`): loads stories from `../../packages/ui/src/**/*.stories.tsx` and imports `@detriz-sh-kit/tokens/tokens.css` once in `preview.ts`. It is the workbench: every state and stress story.
 
@@ -74,7 +76,7 @@ Dependency rules (see "Dependency rules" in `project-architecture.md`):
 
 - It documents `kit/` only, for people using the kit. Internal specs stay in `<Name>.md` next to each component; site pages are written for users (no Figma node IDs or open questions).
 - `src/pages/index.tsx` is the landing page at `/`. Clicking the site title opens it.
-- Docs live under `/docs`, in three top-bar sections with their own sidebars (`sidebars.ts`, generated from the folders): **Get Started** in `docs/get-started/` (Installation and Quick start, written as if the packages were already on npm; they aren't published yet), **Domain Model** in `docs/domain-model/` (the smart home model: Glossary, Data model, Device lifecycle and Events and commands; open questions about them stay in `docs/architecture/domain-model/open-questions.md`) and **UI Components** in `docs/ui-components/` (one page per component, grouped by category).
+- Docs live under `/docs`, in three top-bar sections with their own sidebars (`sidebars.ts`, generated from the folders): **Get Started** in `docs/get-started/` (Installation and Quick start; the packages are on npm), **Domain Model** in `docs/domain-model/` (the smart home model: Glossary, Data model, Device lifecycle and Events and commands; open questions about them stay in `docs/architecture/domain-model/open-questions.md`) and **UI Components** in `docs/ui-components/` (one page per component, grouped by category).
 - It builds into `dist/` (`docusaurus build --out-dir dist`), not Docusaurus's default `build/`, so the existing ignore and Turbo rules cover it. Don't add `build/` to `.gitignore`: it would also hide `kit/packages/tokens/build/config.json`. `.docusaurus/` is its cache.
 - `docusaurus.config.ts` and `sidebars.ts` run in Node, not in the browser: no JSX or browser APIs there.
 - **Deployment: Vercel**, on a custom domain (the domain's DNS points to Vercel). Pushing to `main` deploys the live site, and every other branch or PR gets a preview URL. The settings live in the Vercel dashboard, not in the repo (there is no `vercel.json`):
@@ -120,6 +122,16 @@ General naming rules (PascalCase components, `use<Thing>` hooks, unit suffixes l
 ## Domain language
 
 The Glossary (`kit/apps/docs-site/docs/domain-model/glossary.mdx`) is the project's Ubiquitous Language. It lives in the docs site so there is one copy, published for users; internal docs link to it. Use its terms exactly, in code, types, UI copy and docs: Site, Space, Hub, Module, Sensor, Asset, Metric, Unit, Reading, and so on. A Metric is a Measured Metric (number + Unit) or a Two-state Metric (a State such as On/Off, Open/Closed, Detected/Clear); both produce Readings. Alert Rules (defined in code) raise Alerts with an Alert Level (Critical, Warning, Info). Device Status is three separate fields: Pairing Status, Connection Status (Connecting / Connected / Stale / Disconnected, for paired Devices only) and Fault. A Sensor is not a Device.
+
+## Releasing to npm
+
+`@detriz-sh-kit/tokens` and `@detriz-sh-kit/ui` are published on npm. The full guide is `docs/architecture/npm-publishing.md`.
+
+- **Versions come from Changesets.** Every PR that changes what users of `tokens` or `ui` get (components, props, tokens, CSS, types, README) adds a changeset: `pnpm changeset`, pick the bump, write one line for the changelog. The two packages are a fixed group, so they always share one version. In `0.x`, a breaking change is a `minor` bump, a fix is a `patch`.
+- **Never bump versions, edit `CHANGELOG.md` or publish by hand.** After a merge to `main`, the Release workflow (`.github/workflows/release.yml`) opens a "Version Packages" PR. Merging it makes the workflow **stage** the new versions (`scripts/stage-release.mjs`, `npm stage publish`). A maintainer then approves them on npmjs.com → Staged Packages with 2FA, `tokens` first.
+- **No npm tokens anywhere.** npm trusts `release.yml` through trusted publishing (OIDC), so don't rename that file. The trusted publisher may only stage, not publish directly.
+- **CI** (`.github/workflows/ci.yml`) runs on every PR: formatting, build, typecheck and `check:package` (publint, plus attw for `ui`).
+- Only what `src/index.ts` (and the CSS files in `exports`) exposes is public API. Renaming or removing it is a breaking change.
 
 ## Repo conventions
 

@@ -2,11 +2,13 @@
 
 How to publish `@detriz-sh-kit/tokens` and `@detriz-sh-kit/ui` on npm so other people can install them, and how to keep releasing new versions afterwards.
 
+**Status: done.** Both packages are on npm (first `0.1.0` on 2026-11-11, then `0.1.1` through the Release workflow). Part 1 below is the record of how it was set up; Part 2 is the everyday guide.
+
 This is a Phase 1 deliverable on the roadmap ("UI packages … published on npm"). It also answers the "Publishing" and "Licence" open questions in [project-architecture.md](project-architecture.md).
 
 ---
 
-## Where we are today (checked 2026-11-11)
+## Where we started (checked 2026-11-11, before publishing)
 
 | Check                                         | Status | Notes                                                                                                                                      |
 | --------------------------------------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -329,8 +331,8 @@ Done one by one, in this order. Tasks 2 to 8 happen on branch `104-publish-libra
 | 9   | Review, commit, open the PR, merge it into `main`                                                                   | You    | n/a       | [x]  |
 | 10  | First publish by hand from `main` (`pnpm changeset publish`, you type the 2FA code), push the tags, check npmjs.com | Both   | 8         | [x]  |
 | 11  | Set the trusted publisher and "disallow tokens" on both packages on npmjs.com                                       | You    | 9         | [x]  |
-| 12  | Add `.github/workflows/release.yml`, then test it with a small patch release                                        | Claude | 9         | [ ]  |
-| 13  | Update the docs: AGENTS.md, project-architecture, tech-stack, docs site, roadmap                                    | Claude | 11        | [ ]  |
+| 12  | Add `.github/workflows/release.yml`, then test it with a small patch release                                        | Claude | 9         | [x]  |
+| 13  | Update the docs: AGENTS.md, project-architecture, tech-stack, docs site, roadmap                                    | Claude | 11        | [x]  |
 
 **Every release**
 

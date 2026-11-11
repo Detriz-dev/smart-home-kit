@@ -149,7 +149,7 @@ All in `kit/apps/docs-site/docs/domain-model/`. These pages are for kit users: n
 - Docs site: `foundations/shared-types.mdx` and `foundations/icons.mdx` updated.
 - Not done here (Step 4): a `%` Unit in `UnitLabel` for Battery and Position; how `StateValue` shows `error`.
 
-All in `kit/packages/ui/src/types/`. The packages aren't published yet, so renames don't need deprecated aliases.
+All in `kit/packages/ui/src/types/`. When this was planned the packages weren't published yet, so renames didn't need deprecated aliases. They are on npm now (`0.x`): a rename is a breaking change, so add a `minor` changeset that names the old and new names.
 
 | File                              | Change                                                                                                                                                                                                                                                                                                       |
 | --------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
