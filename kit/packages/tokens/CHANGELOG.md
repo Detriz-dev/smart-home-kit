@@ -1,5 +1,11 @@
 # @detriz-sh-kit/tokens
 
+## 0.1.1
+
+### Patch Changes
+
+- cd309fa: The READMEs now show the install command for pnpm and Yarn too, not only npm.
+
 ## 0.1.0
 
 ### Minor Changes
