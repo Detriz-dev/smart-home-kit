@@ -10,16 +10,22 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "storybook": "turbo run dev --filter=storybook",
+    "storybook": "turbo run dev --filter=storybook-app",
     "docs-site": "turbo run dev --filter=docs-site",
     "lint": "turbo run lint",
     "test": "turbo run test",
     "typecheck": "turbo run typecheck",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "changeset": "changeset",
+    "version-packages": "changeset version && pnpm install --lockfile-only",
+    "release": "turbo run build --filter=./kit/packages/* && changeset publish"
   },
   "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@changesets/cli": "^3.0.3",
     "prettier": "^3.9.10",
+    "publint": "^0.3.25",
     "turbo": "~2.11.7",
     "typescript": "~6.0.3"
   }

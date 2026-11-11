@@ -1,7 +1,24 @@
 {
   "name": "@detriz-sh-kit/ui",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "React components for DeTriz Smart Home Kit",
+  "keywords": [
+    "react",
+    "components",
+    "design system",
+    "smart home",
+    "iot",
+    "detriz"
+  ],
+  "homepage": "https://smart-home-kit.detriz.com",
+  "bugs": "https://github.com/Detriz-dev/smart-home-kit/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Detriz-dev/smart-home-kit.git",
+    "directory": "kit/packages/ui"
+  },
+  "license": "MIT",
+  "author": "Dawid Kowalczyk",
   "type": "module",
   "files": [
     "dist"
@@ -20,7 +37,8 @@
   "scripts": {
     "build": "vite build && cp src/fonts.css dist/fonts.css && tsc -p tsconfig.build.json",
     "typecheck": "tsc --noEmit",
-    "icons": "node --experimental-strip-types --no-warnings=ExperimentalWarning scripts/generate-icons.mjs"
+    "icons": "node --experimental-strip-types --no-warnings=ExperimentalWarning scripts/generate-icons.mjs",
+    "check:package": "publint && attw --pack . --profile esm-only --entrypoints . --ignore-rules internal-resolution-error"
   },
   "devDependencies": {
     "@material-symbols/svg-400": "^0.48.0",
@@ -42,5 +60,8 @@
     "@detriz-sh-kit/tokens": "workspace:*",
     "@fontsource/space-grotesk": "^5.3.0",
     "@fontsource/space-mono": "^5.3.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
