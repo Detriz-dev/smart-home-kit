@@ -3,7 +3,9 @@
 # - If there are changesets in `.changeset/`, it opens (or updates) a
 #   "Version Packages" PR that raises the versions and writes the changelogs.
 # - When you merge that PR, there are no changesets left, so it builds the
-#   packages and publishes the new versions to npm.
+#   packages and *stages* the new versions on npm (scripts/stage-release.mjs).
+#   They go live only when a maintainer approves them on npmjs.com →
+#   Staged Packages, with 2FA (approve tokens first, then ui).
 #
 # npm trusts this exact file (trusted publishing, set up on npmjs.com for each
 # package), so there is no npm token anywhere. Don't rename this file: npm
@@ -39,6 +41,10 @@ jobs:
           node-version: 22
           cache: pnpm
 
+      # `npm stage publish` needs npm 11.15 or later; Node 22 comes with npm 10.
+      - name: Update npm
+        run: npm install -g npm@11
+
       - name: Install
         run: pnpm install --frozen-lockfile
 
@@ -49,5 +55,8 @@ jobs:
           publish: pnpm release
           title: "chore(release): version packages"
           commit: "chore(release): version packages"
+          # A staged version isn't public until you approve it, so no GitHub
+          # release here. The git tags still mark what was staged.
+          createGithubReleases: false
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

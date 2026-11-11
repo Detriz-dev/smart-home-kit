@@ -19,7 +19,7 @@
     "format:check": "prettier --check .",
     "changeset": "changeset",
     "version-packages": "changeset version && pnpm install --lockfile-only",
-    "release": "turbo run build --filter=./kit/packages/* && changeset publish"
+    "release": "turbo run build --filter=./kit/packages/* && node scripts/stage-release.mjs"
   },
   "devDependencies": {
     "@arethetypeswrong/cli": "^0.18.5",
