@@ -14,9 +14,7 @@ The kit's React components show Sites, Devices and Readings in the [Domain Model
 
 ## How the components are grouped
 
-Every screen is built from the same pieces. Here is one screen, with each piece marked by its number: 0 for the Foundations everything is made of, and 1 to 6 for the groups.
-
-![A Bedroom screen. The heading's text style, an icon and the space between the cards are Foundations (0). Its heading and the row of cards are Layout (1). A Sensor's name is Context (2). Two Module cards with their values are Readings (3). "Connected", "Stale" and "CO₂ sensor failure" are Status (4). A "Couldn't load the last 24 hours" message is Feedback (5), and its Retry button is a Control (6). The location path is Navigation (7).](./img/component-anatomy.png)
+Every screen is built from the same pieces. Take a Bedroom screen: the heading's text style, an icon and the space between the cards are Foundations (0). Its heading and the row of cards are Layout (1). A Sensor's name is Context (2). Two Module cards with their values are Readings (3). "Connected", "Stale" and "CO₂ sensor failure" are Status (4). A "Couldn't load the last 24 hours" message is Feedback (5), and its Retry button is a Control (6). The location path is Navigation (7).
 
 The groups differ in **where their content comes from** and **how often it changes**. That's why they're kept apart: each kind of content needs its own behavior.
 
@@ -82,7 +80,7 @@ Status and Feedback can look alike, but they answer different questions: Status 
 
 More groups are planned: History ("How has it changed?") and Comparison ("How do Sensors relate to each other?").
 
-## Try it: the screen from the illustration
+## Try it: the Bedroom screen
 
 The same screen, built with the real components. Change the code and the result updates as you type.
 
