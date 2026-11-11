@@ -171,7 +171,7 @@ Root scripts in `package.json`:
 ```json
 "changeset": "changeset",
 "version-packages": "changeset version && pnpm install --lockfile-only",
-"release": "turbo run build --filter=./kit/packages/* && changeset publish"
+"release": "turbo run build --filter=./kit/packages/* && node scripts/stage-release.mjs"
 ```
 
 > **Package names must be unique.** The Storybook app used to be called `storybook`, the same name as the real `storybook` npm package that `ui` depends on. Changesets mixed them up and crashed, so the app is now `storybook-app` (`pnpm storybook` still works). Don't give an app in `kit/apps/` the name of an npm package.
@@ -217,21 +217,26 @@ In zsh (the macOS terminal), quote filters with a `*` in them: `--filter="./kit/
 ### Step 9. Turn on trusted publishing (CI releases from now on)
 
 1. On npmjs.com, open each package's settings page: https://www.npmjs.com/package/@detriz-sh-kit/tokens/access and https://www.npmjs.com/package/@detriz-sh-kit/ui/access (the **Settings** tab on the package page). Your account's **Packages** page doesn't list them, because they belong to the org.
-2. **Trusted Publisher** → GitHub Actions → organization `Detriz-dev`, repository `smart-home-kit`, workflow file `release.yml`, environment empty.
+2. **Trusted Publisher** → GitHub Actions → organization `Detriz-dev`, repository `smart-home-kit`, workflow file `release.yml`, environment empty. Leave **"npm publish"** under Allowed actions **unticked** (npm's default since 2026-09-03): the workflow may only _stage_ a release, and a person approves it. With it unticked, a direct publish from CI fails with `E403 … OIDC permission denied for this action`.
 3. **Publishing access** → "Require two-factor authentication and disallow tokens". From now on only that workflow (or you, with 2FA) can publish.
 4. On GitHub: **Settings → Actions → General → Workflow permissions** → tick **"Allow GitHub Actions to create and approve pull requests"** and save. Without it, the workflow can't open the "Version Packages" PR.
 5. The workflow is `.github/workflows/release.yml`. It runs on every push to `main`:
    - Changesets waiting in `.changeset/` → it opens or updates the **"Version Packages"** PR (versions raised, changelogs written).
-   - No changesets left (you just merged that PR) → it builds the packages and runs `changeset publish`, which publishes only versions that aren't on npm yet, then pushes the git tags.
+   - No changesets left (you just merged that PR) → it builds the packages and runs `scripts/stage-release.mjs`, which **stages** each version that has no git tag yet (`npm stage publish`), then pushes the git tags.
+6. **Approve** on npmjs.com → your account → **Staged Packages**, with 2FA: `tokens` first, then `ui` (it depends on `tokens`). Only then can people install the new version. From the terminal: `npm stage list` and `npm stage approve <id>` (needs npm 11.15 or later).
 
-There are **no npm secrets** anywhere: `id-token: write` lets GitHub prove to npm which workflow is publishing, and npm adds provenance (the "Built and signed on GitHub Actions" badge) by itself. pnpm 11 does this exchange itself, so the runner doesn't need a newer npm. Two things in the file are on purpose:
+**Why our own script instead of `changeset publish`?** Changesets can only publish directly, and npm doesn't let our workflow do that. The script does the same job but stages: it packs each package with `pnpm pack` (so `workspace:*` becomes a real version), runs `npm stage publish` on the tarball and creates the git tag. The tag also marks the version as done: npm refuses to stage the same version twice, so the next run skips it. Try it safely with `node scripts/stage-release.mjs --dry-run` (needs npm 11.15 or later on your laptop). It doesn't handle pre-release tags (`next`) yet.
+
+There are **no npm secrets** anywhere: `id-token: write` lets GitHub prove to npm which workflow is publishing, and npm adds provenance (the "Built and signed on GitHub Actions" badge) by itself. Three things in the file are on purpose:
+
+- It installs **npm 11** first: Node 22 comes with npm 10, which has no `npm stage`.
 
 - `actions/setup-node` has **no `registry-url`**: that option writes an `.npmrc` that expects an npm token.
 - **Don't rename `release.yml`**: npm trusts that exact file name.
 
-Pull requests opened by the workflow itself don't start other workflows (a GitHub rule against loops), so the "Version Packages" PR shows **no CI check**. That's expected: the same code already passed CI in the PR that added the changeset. If you later make the `check` required for `main`, you'll need to merge that PR as an admin (or close and reopen it to start CI).
+On the "Version Packages" PR, the CI check waits with **"action required"**, because a bot opened the PR. Click **"Approve and run workflows"** to run it, or merge without it: the same code already passed CI in the PR that added the changeset.
 
-New versions may also wait in **Staged Packages** for your 2FA approval, like the first publish did. If a release looks stuck, look there first.
+GitHub releases are turned off (`createGithubReleases: false`), because a staged version isn't public until you approve it. The CHANGELOGs and git tags cover the same ground.
 
 ### Step 10. A CI check on every pull request
 
@@ -295,7 +300,7 @@ Users get them only if they ask: `npm install @detriz-sh-kit/ui@next`. A normal 
 | Published a broken version                   | Fix it and publish a patch right away. Then `npm deprecate @detriz-sh-kit/ui@0.2.1 "Broken CSS, use 0.2.2"`.                              |
 | Published something secret or very broken    | `npm unpublish` works only within 72 hours and only if nothing depends on it. The version number can never be reused. Prefer deprecating. |
 | The `latest` tag points to the wrong version | `npm dist-tag add @detriz-sh-kit/ui@0.2.0 latest`                                                                                         |
-| CI publish failed halfway                    | Re-run the workflow. `changeset publish` skips versions that are already on npm.                                                          |
+| CI publish failed halfway                    | Re-run the workflow. The stage script skips versions that already have a git tag or are on npm.                                           |
 
 ### Regular upkeep
 
@@ -330,5 +335,7 @@ Done one by one, in this order. Tasks 2 to 8 happen on branch `104-publish-libra
 **Every release**
 
 - [ ] Each user-facing PR has a changeset with the right bump
-- [ ] Read the "Version Packages" PR: the versions and changelog entries are right (it has no CI check, see step 9)
-- [ ] Merge it, wait for the Release workflow, approve under Staged Packages on npmjs.com if npm asks, then check the new version on npmjs.com
+- [ ] Read the "Version Packages" PR: the versions and changelog entries are right
+- [ ] Merge it and wait for the Release workflow to go green
+- [ ] Approve on npmjs.com → Staged Packages with 2FA, `tokens` first, then `ui`
+- [ ] Check the new version on npmjs.com
