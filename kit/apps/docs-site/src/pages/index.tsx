@@ -5,6 +5,7 @@ import Heading from "@theme/Heading";
 import Layout from "@theme/Layout";
 import { DeviceCard, type DeviceCardProps } from "@detriz-sh-kit/ui";
 
+import ComponentShowcase from "@site/src/components/ComponentShowcase";
 import DomainDiagram from "@site/src/components/DomainDiagram";
 // Imported (not linked as "/img/…") so the paths still work when the site moves under a baseUrl,
 // and the build fails if a file goes missing.
@@ -160,6 +161,39 @@ export default function Home(): ReactNode {
               {climateModuleCode}
             </CodeBlock>
           </article>
+        </section>
+
+        {/* Every kind of component, in a mix of states, so visitors can look before they read. */}
+        <section
+          className={styles.showcase}
+          aria-labelledby="components-overview"
+        >
+          <Heading
+            as="h2"
+            id="components-overview"
+            className={styles.showcaseTitle}
+          >
+            Components overview
+          </Heading>
+          <p className={styles.showcaseIntro}>
+            Check what you can build with the current version in{" "}
+            <Link to="/docs/get-started/what-you-can-build">
+              What you can build
+            </Link>
+            .
+          </p>
+          <ComponentShowcase className={styles.showcaseGrid} />
+          {/* The page's last call to action: one grid column wide, under the middle column. */}
+          <Link
+            className={`${styles.introLink} ${styles.getStarted}`}
+            to="/docs/get-started/introduction"
+          >
+            Get started
+            <span
+              className={`${styles.icon} ${styles.iconArrow}`}
+              aria-hidden="true"
+            />
+          </Link>
         </section>
       </main>
     </Layout>
