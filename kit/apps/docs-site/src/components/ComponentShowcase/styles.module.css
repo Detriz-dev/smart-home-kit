@@ -1,0 +1,32 @@
+/* The landing page's component grid: a masonry layout made with CSS columns.
+   Each column fills top to bottom, so cards of different heights fit together without gaps.
+   Up to three columns: two on a tablet, one on a phone. The page sets the grid's width. */
+
+.grid {
+  columns: 3 300px;
+  column-gap: var(--shk-space-4);
+  text-align: start;
+}
+
+/* One component per item. break-inside keeps a card from being split across two columns.
+   The kit's components have no dark theme yet, so the page's text colour is reset to the kit's. */
+.item {
+  break-inside: avoid;
+  margin-block-end: var(--shk-space-4);
+  color: var(--shk-color-text-primary);
+}
+
+/* Small parts (Buttons, Badges) in a row that wraps. */
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--shk-space-2);
+}
+
+/* Top and bottom navigation get a card-like frame, as they would sit in an app. */
+.bar {
+  overflow: hidden;
+  border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+  border-radius: var(--shk-radius-8);
+}

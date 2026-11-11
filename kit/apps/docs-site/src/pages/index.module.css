@@ -13,7 +13,11 @@
   --landing-title-letter-spacing: -0.015em;
   --landing-intro-line-height: 30px;
   --landing-intro-max-width: 680px;
-  --landing-card-width: 396px;
+  --landing-card-width: 380px;
+  /* The three cards side by side. The component grid below uses the same width, so both line up. */
+  --landing-content-width: calc(
+    3 * var(--landing-card-width) + 2 * var(--landing-card-gap)
+  );
   --landing-card-height: 248px;
   --landing-card-gap: var(--shk-space-4);
   --landing-domain-background: #eaf4fc; /* Light blue, between blue-50 and blue-100. */
@@ -234,8 +238,8 @@ a.option:hover {
 }
 
 /* The outline is drawn inside the card, so the padding is one border width smaller (as in the
-   kit's cards). That leaves exactly 364px inside: the width where DeviceCard puts its two
-   Sensors side by side. */
+   kit's cards). That leaves 348px inside, so DeviceCard shows its two Sensors one under the
+   other (side by side needs 364px). */
 .card {
   box-sizing: border-box;
   display: flex;
@@ -283,6 +287,12 @@ a.option:hover {
   overflow-x: auto;
 }
 
+/* The diagram is 362px wide and the narrower card leaves 348px, so it is drawn a little smaller
+   here (348 / 362). Phones still scroll it sideways when even that doesn't fit. */
+.cardBody > * {
+  zoom: 0.96;
+}
+
 .cardCode {
   border-color: rgb(255 255 255 / 0.08);
   background: var(--site-code-background);
@@ -301,6 +311,60 @@ a.option:hover {
   line-height: 16px;
 }
 
+/* ---------- Components overview ---------- */
+
+.showcase {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--shk-space-8);
+  padding-block: var(--shk-space-24) var(--shk-space-16);
+}
+
+.showcaseTitle {
+  margin: 0;
+  color: inherit;
+  font-size: var(--shk-font-size-40);
+  font-weight: var(--shk-font-weight-bold);
+  line-height: var(--shk-line-height-snug);
+  letter-spacing: var(--landing-title-letter-spacing);
+  text-align: center;
+}
+
+.showcaseIntro {
+  max-inline-size: var(--landing-intro-max-width);
+  margin: 0;
+  color: var(--landing-text-muted);
+  font-size: var(--shk-font-size-18);
+  text-align: center;
+}
+
+/* The grid is as wide as the three cards above it. */
+.showcaseGrid {
+  inline-size: 100%;
+  max-inline-size: var(--landing-content-width);
+}
+
+/* Get started: the biggest button on the page. It is one grid column wide (the grid's columns
+   are as wide as the cards above), so it lines up with the middle column. */
+.getStarted {
+  inline-size: 100%;
+  max-inline-size: var(--landing-card-width);
+  justify-content: center;
+  gap: var(--shk-space-2);
+  block-size: var(--shk-size-16);
+  padding-inline: var(--shk-space-6);
+  border-radius: var(--shk-radius-12);
+  font-size: var(--shk-font-size-24);
+  font-weight: var(--shk-font-weight-bold);
+  line-height: var(--shk-line-height-snug);
+}
+
+.getStarted .iconArrow {
+  inline-size: var(--shk-size-8);
+  block-size: var(--shk-size-8);
+}
+
 /* ---------- Narrow screens ---------- */
 
 @media (max-width: 996px) {
@@ -315,5 +379,23 @@ a.option:hover {
 
   .intro {
     font-size: var(--shk-font-size-18);
+  }
+
+  .showcase {
+    padding-block-start: var(--shk-space-16);
+  }
+
+  .showcaseTitle {
+    font-size: var(--shk-font-size-32);
+  }
+
+  .getStarted {
+    block-size: var(--shk-size-12);
+    font-size: var(--shk-font-size-20);
+  }
+
+  .getStarted .iconArrow {
+    inline-size: var(--shk-size-6);
+    block-size: var(--shk-size-6);
   }
 }
