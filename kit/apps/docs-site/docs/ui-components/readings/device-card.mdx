@@ -191,7 +191,10 @@ You can keep passing the last values: the card hides them while the Module is Di
 
 ## Faults
 
-A Fault isn't a state of its own: a Module can be Connected **and** have Faults. Pass them in `faults`, and the card shows one message per Fault under the header. The values stay visible.
+A Fault isn't a state of its own: a Module can be Connected **and** have Faults. Pass them in `faults`, and the card shows one message per Fault, inside what is faulty. The values stay visible.
+
+- **A Fault with the `metric` of a Sensor on the card** shows inside that Sensor's card, under its value, with the short message ("Sensor failure").
+- **A Fault with no `metric`** (or one for a Sensor the card doesn't show) is about the whole Device. It shows above the Sensors, full width, with the full message.
 
 ```jsx live
 <DeviceCard
@@ -205,6 +208,20 @@ A Fault isn't a state of its own: a Module can be Connected **and** have Faults.
     { metric: "co2", value: 1250, unit: "ppm", fractionDigits: 0 },
     { metric: "voc", value: 120, unit: "ppb", fractionDigits: 0 },
     { metric: "pm25", value: 12, unit: "ug-m3", fractionDigits: 0 },
+  ]}
+/>
+```
+
+A Fault about the whole Device:
+
+```jsx live
+<DeviceCard
+  name="Climate Module"
+  connectionStatus="connected"
+  faults={[{ faultCode: "calibration_required" }]}
+  sensors={[
+    { metric: "temperature", value: 22.4, unit: "celsius" },
+    { metric: "humidity", value: 48, unit: "percent-rh", fractionDigits: 0 },
   ]}
 />
 ```
@@ -324,13 +341,13 @@ A few rules:
 
 ## Props
 
-| Prop               | Type                                                       | Default | Description                                                                                                                 |
-| ------------------ | ---------------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `name`             | `string`                                                   | –       | **Required.** The Device Name, for example "Climate Module" or "Kitchen kettle". The user can rename it, so you pass it in. |
-| `sensors`          | `DeviceCardSensor[]`                                       | `[]`    | The Device's Sensors, usually one to three. Leave it out for a Device with Controls only.                                   |
-| `controls`         | `ReactNode`                                                | none    | The Device's Control components, in the order to show them. Pass `isDisconnected` to each one yourself.                     |
-| `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** The Device's current Connection Status.                                                                       |
-| `faults`           | `DeviceFaultStatusProps[]`                                 | `[]`    | The Device's current Faults, one per Fault Code. Leave it out, or pass an empty list, when there are none.                  |
+| Prop               | Type                                                       | Default | Description                                                                                                                                                                    |
+| ------------------ | ---------------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `name`             | `string`                                                   | –       | **Required.** The Device Name, for example "Climate Module" or "Kitchen kettle". The user can rename it, so you pass it in.                                                    |
+| `sensors`          | `DeviceCardSensor[]`                                       | `[]`    | The Device's Sensors, usually one to three. Leave it out for a Device with Controls only.                                                                                      |
+| `controls`         | `ReactNode`                                                | none    | The Device's Control components, in the order to show them. Pass `isDisconnected` to each one yourself.                                                                        |
+| `connectionStatus` | `"connecting" \| "connected" \| "stale" \| "disconnected"` | –       | **Required.** The Device's current Connection Status.                                                                                                                          |
+| `faults`           | `DeviceFaultStatusProps[]`                                 | `[]`    | The Device's current Faults, one per Fault Code. A Fault about a Sensor on the card shows inside that Sensor's card. Leave it out, or pass an empty list, when there are none. |
 
 `DeviceCardSensor` is a `DeviceCardMeasuredSensor` (below) or a `DeviceCardStateSensor` (`metric` and `state` of a State Metric, optional `asset` and `alertLevel`, as in [`SensorState`](./sensor-state.mdx#props)).
 

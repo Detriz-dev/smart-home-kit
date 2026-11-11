@@ -14,6 +14,17 @@ export function DeviceCard({
   connectionStatus,
   faults = [],
 }: DeviceCardProps) {
+  // A Fault about a Sensor on this card goes inside that Sensor's card. The rest (no Metric,
+  // or a Metric the card doesn't show) are about the whole Device and go above the Sensors.
+  const shownMetrics = new Set(sensors.map((sensor) => sensor.metric));
+  const deviceFaults = faults.filter(
+    (fault) => !fault.metric || !shownMetrics.has(fault.metric),
+  );
+  const faultCodesFor = (metric: string) =>
+    faults
+      .filter((fault) => fault.metric === metric)
+      .map((fault) => fault.faultCode);
+
   return (
     // Card draws the surface and the header strip (name + Connection Status) and names the group.
     <Card
@@ -22,8 +33,8 @@ export function DeviceCard({
     >
       {/* A container, so the Sensors can switch to a row when the body is wide enough. */}
       <div className={styles.content}>
-        {/* One DeviceFaultStatus per Fault. Each Fault Code appears once, so it works as the key. */}
-        {faults.map((fault) => (
+        {/* One DeviceFaultStatus per Device-wide Fault. Each Fault Code appears once, so it works as the key. */}
+        {deviceFaults.map((fault) => (
           <DeviceFaultStatus key={fault.faultCode} {...fault} />
         ))}
         {/* role="list": Safari stops treating a list as a list once its bullets are removed. */}
@@ -41,6 +52,7 @@ export function DeviceCard({
                     {...sensor}
                     isDisconnected={connectionStatus === "disconnected"}
                     size="md"
+                    faults={faultCodesFor(sensor.metric)}
                   />
                 ) : (
                   <SensorReading
@@ -50,6 +62,7 @@ export function DeviceCard({
                     fractionDigits={sensor.fractionDigits}
                     isDisconnected={connectionStatus === "disconnected"}
                     size="md"
+                    faults={faultCodesFor(sensor.metric)}
                   />
                 )}
               </li>

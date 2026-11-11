@@ -1,6 +1,7 @@
 import { useId } from "react";
 import { AssetLabel } from "../../context/AssetLabel";
 import { SensorLabel } from "../../context/SensorLabel";
+import { DeviceFaultStatus } from "../../status/DeviceFaultStatus";
 import { StateValue } from "../StateValue";
 import styles from "./SensorState.module.css";
 import type { SensorStateProps } from "./SensorState.types";
@@ -11,6 +12,7 @@ export function SensorState({
   isDisconnected = false,
   alertLevel,
   size = "lg",
+  faults = [],
   ...reading
 }: SensorStateProps) {
   const labelId = useId();
@@ -38,6 +40,14 @@ export function SensorState({
           size={size}
         />
       </span>
+      {/* The Faults about this Sensor, under its State. No Metric: the label above already names it. */}
+      {faults.length > 0 && (
+        <span className={styles.faults}>
+          {faults.map((faultCode) => (
+            <DeviceFaultStatus key={faultCode} faultCode={faultCode} />
+          ))}
+        </span>
+      )}
     </div>
   );
 }

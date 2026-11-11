@@ -22,4 +22,12 @@
   .state {
     display: flex;
   }
+
+  /* The Faults about this Sensor: the same as in SensorReading, 8px below the State. */
+  .faults {
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-1);
+    margin-block-start: calc(var(--shk-space-2) - var(--shk-space-1));
+  }
 }

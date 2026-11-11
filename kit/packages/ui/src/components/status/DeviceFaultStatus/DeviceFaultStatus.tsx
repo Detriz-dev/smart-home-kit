@@ -5,7 +5,7 @@ import { METRIC_NAMES } from "../../../utils/metricNames";
 import styles from "./DeviceFaultStatus.module.css";
 import type { DeviceFaultStatusProps } from "./DeviceFaultStatus.types";
 
-/** Shows a Device's Fault: a danger icon and a short message. Takes props only, never fetches data. */
+/** Shows a Device's Fault: a danger icon tile and a short message, full width. Takes props only, never fetches data. */
 export function DeviceFaultStatus({
   faultCode,
   metric,
@@ -17,7 +17,9 @@ export function DeviceFaultStatus({
   return (
     <span role="status" data-fault-code={faultCode} className={styles.root}>
       {/* The icon is decorative: the message next to it says the same thing. */}
-      <Icon name={READING_STATUS_ICONS.fault} size="xs" />
+      <span className={styles.icon}>
+        <Icon name={READING_STATUS_ICONS.fault} size="xs" />
+      </span>
       {/* When there is a spoken name, screen readers skip the message and read that instead ("carbon dioxide sensor failure"). */}
       <span
         aria-hidden={names?.spokenName ? "true" : undefined}

@@ -1,4 +1,5 @@
 import type { MeasuredMetric } from "../../../types/metric";
+import type { FaultCode } from "../../status/DeviceFaultStatus";
 import type { UnitLabelUnit } from "../UnitLabel";
 
 /** How big the value and the Unit are drawn. Passed to ReadingValue and UnitLabel. Only the two card sizes. */
@@ -17,4 +18,6 @@ export interface SensorReadingProps {
   fractionDigits?: number;
   /** How big the value and the Unit are drawn. Defaults to `lg`. */
   size?: SensorReadingSize;
+  /** The Fault Codes of the Device's Faults about this Sensor. Each shows under the value, with the short message ("Sensor failure"), because the card already names the Sensor. Leave it out when there are none. */
+  faults?: FaultCode[];
 }

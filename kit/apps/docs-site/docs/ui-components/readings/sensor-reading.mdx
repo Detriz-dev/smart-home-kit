@@ -67,7 +67,22 @@ Don't use it for:
 
 - **A whole Module.** Use [`DeviceCard`](./device-card.mdx). It shows one SensorReading per Sensor, plus the Module's name and status.
 - **A list row or a table cell.** The card only comes in two large sizes. Put [`ReadingValue`](./reading-value.mdx) and [`UnitLabel`](./unit-label.mdx) in your row instead, at `sm` or `xs`.
-- **Connection Status or Fault.** These belong to the Device, not the Sensor. Show them once for the Module, with [`DeviceConnectionStatus`](../status/device-connection-status.mdx) and [`DeviceFaultStatus`](../status/device-fault-status.mdx). [`DeviceCard`](./device-card.mdx) does this for you.
+- **Connection Status.** It belongs to the Device, not the Sensor. Show it once for the Module, with [`DeviceConnectionStatus`](../status/device-connection-status.mdx). [`DeviceCard`](./device-card.mdx) does this for you.
+
+## Faults
+
+A Fault about this Sensor shows inside the card, under the value: pass its Fault Codes in `faults`. The message is short ("Sensor failure"), because the card already names the Sensor. The value stays visible. A Fault about the whole Device belongs in the Device's card instead, which [`DeviceCard`](./device-card.mdx) does for you.
+
+```jsx live
+<SensorReading
+  metric="humidity"
+  value={48}
+  unit="percent-rh"
+  fractionDigits={0}
+  size="md"
+  faults={["sensor_failure"]}
+/>
+```
 
 ## States
 
@@ -175,14 +190,15 @@ The props have the same names and types as in [`SensorLabel`](../context/sensor-
 
 ## Props
 
-| Prop             | Type                                                | Default | Description                                                                                                                                                                             |
-| ---------------- | --------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `metric`         | `MeasuredMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Measured Metric the Sensor measures, for example `temperature`. Decides the label and its icon. State Metrics (Power, Contact…) aren't accepted: they have no number. |
-| `value`          | `number \| null`                                    | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way.                                                                                            |
-| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)    | –       | **Required.** The Unit to show, for example `celsius`. You pick it, so you can choose the display Unit (°C or °F).                                                                      |
-| `isDisconnected` | `boolean`                                           | `false` | True when the Module's Connection Status is Disconnected. Hides the value and shows the disconnected icon.                                                                              |
-| `fractionDigits` | `number`                                            | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                                                                                                              |
-| `size`           | `"lg" \| "md"`                                      | `"lg"`  | How big the value and the Unit are drawn.                                                                                                                                               |
+| Prop             | Type                                                | Default | Description                                                                                                                                                                                   |
+| ---------------- | --------------------------------------------------- | ------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `metric`         | `MeasuredMetric` (`"temperature"`, `"humidity"`, …) | –       | **Required.** The Measured Metric the Sensor measures, for example `temperature`. Decides the label and its icon. State Metrics (Power, Contact…) aren't accepted: they have no number.       |
+| `value`          | `number \| null`                                    | –       | **Required.** The latest value of the Reading. `null` while the first Reading is on its way.                                                                                                  |
+| `unit`           | `UnitLabelUnit` (`"celsius"`, `"percent-rh"`, …)    | –       | **Required.** The Unit to show, for example `celsius`. You pick it, so you can choose the display Unit (°C or °F).                                                                            |
+| `isDisconnected` | `boolean`                                           | `false` | True when the Module's Connection Status is Disconnected. Hides the value and shows the disconnected icon.                                                                                    |
+| `fractionDigits` | `number`                                            | `1`     | How many decimal places to show. Set it per Metric (Temperature 1, CO₂ 0).                                                                                                                    |
+| `size`           | `"lg" \| "md"`                                      | `"lg"`  | How big the value and the Unit are drawn.                                                                                                                                                     |
+| `faults`         | `FaultCode[]`                                       | `[]`    | The Fault Codes of the Device's Faults about this Sensor. Each shows under the value as a [`DeviceFaultStatus`](../status/device-fault-status.mdx) with the short message ("Sensor failure"). |
 
 The types `SensorReadingProps` and `SensorReadingSize` are exported too:
 
@@ -252,4 +268,5 @@ To change how it looks, set a token on a parent element. The change applies to e
 - [`DeviceCard`](./device-card.mdx): one SensorReading per Sensor of a Module, with the Module's status.
 - [`SensorLabel`](../context/sensor-label.mdx), [`ReadingValue`](./reading-value.mdx), [`UnitLabel`](./unit-label.mdx): the parts SensorReading is built from. Use them on their own for list rows and tables.
 - [`ColumnLayout`](../layout/column-layout.mdx), [`StackLayout`](../layout/stack-layout.mdx): place several SensorReadings side by side or in a column.
-- [`DeviceConnectionStatus`](../status/device-connection-status.mdx), [`DeviceFaultStatus`](../status/device-fault-status.mdx): the Module's status, shown once next to its Readings.
+- [`DeviceConnectionStatus`](../status/device-connection-status.mdx): the Module's Connection Status, shown once next to its Readings.
+- [`DeviceFaultStatus`](../status/device-fault-status.mdx): a Fault. SensorReading shows it inside the card when you pass `faults`.

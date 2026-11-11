@@ -30,8 +30,11 @@
     margin-block-start: calc(var(--shk-space-4) - var(--shk-space-3));
   }
 
-  /* All Sensors in a row get the same width, and they can shrink to the width of the column. */
+  /* All Sensors in a row get the same width, and they can shrink to the width of the column.
+     grid makes the Sensor's card fill the item, so cards in a row stay the same height when
+     one of them shows a Fault. */
   .sensor {
+    display: grid;
     flex: 1 1 0;
     min-inline-size: 0;
   }

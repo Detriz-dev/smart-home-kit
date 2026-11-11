@@ -6,7 +6,7 @@ description: Shows that a Device reports a hardware problem, with a danger icon 
 
 # DeviceFaultStatus
 
-Shows that a Device has a Fault: a danger icon and a short message, like "CO₂ sensor failure". Use it wherever a Device is shown, so people don't mistake a broken Sensor for a normal value.
+Shows that a Device has a Fault: a red icon tile and a short message on a light red strip, like "CO₂ sensor failure". It looks like a small [`AlertBanner`](../feedback/alert-banner.mdx) at the Critical level. Use it wherever a Device is shown, so people don't mistake a broken Sensor for a normal value.
 
 ```jsx live
 <DeviceFaultStatus faultCode="sensor_failure" metric="co2" />
@@ -49,9 +49,11 @@ The examples below leave out the `import` line. In your app, you need it.
 
 Use DeviceFaultStatus:
 
-- **in a Device's card**, under its name or Readings
+- **inside what is faulty.** A Fault about one Sensor goes inside that Sensor's card, under its value. A Fault about the whole Device goes in the Device's card, above its Readings.
 - **in list rows**, so people can spot Devices that need attention
 - **in a detail view**, next to the affected Sensor
+
+It fills the width of its parent, so it lines up with the card around it.
 
 Don't use it for:
 
@@ -131,7 +133,7 @@ Fault and Connection Status are separate. A Device can be Connected **and** have
 </StackLayout>
 ```
 
-[`DeviceCard`](../readings/device-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) already place the Fault for you.
+[`DeviceCard`](../readings/device-card.mdx) and [`SpaceCard`](../readings/space-card.mdx) already place the Fault for you. DeviceCard puts a Fault about one Sensor inside that Sensor's card, through the `faults` prop of [`SensorReading`](../readings/sensor-reading.mdx) and [`SensorState`](../readings/sensor-state.mdx). There it shows the short message ("Sensor failure"), because the card already names the Sensor.
 
 ## Mapping your data
 
@@ -186,7 +188,7 @@ What you get without doing anything:
 - **Not color alone.** The message says what's wrong in words, and the icon has its own shape. The icon is hidden from screen readers, because the message says the same thing.
 - **New Faults are announced.** The component is a polite live region (`role="status"`), so when a Fault appears, screen readers read it without moving focus.
 - **Metric names are spoken in full:** "CO₂ sensor failure" is read as "carbon dioxide sensor failure".
-- The message meets the WCAG AA contrast ratio (4.5:1) on light backgrounds.
+- The message is in the main text color on a very light red fill, which meets the WCAG AA contrast ratio (4.5:1).
 
 What's up to you:
 
@@ -198,19 +200,23 @@ What's up to you:
 
 DeviceFaultStatus uses the kit's [design tokens](../foundations/design-tokens.mdx) (CSS variables starting with `--shk-`):
 
-| What                         | Token                               |
-| ---------------------------- | ----------------------------------- |
-| Icon and message color       | `--shk-status-danger-fg`            |
-| Message text style           | `--shk-typography-caption-*` (12px) |
-| Gap between icon and message | `--shk-space-1` (4px)               |
+| What                         | Token                                                                |
+| ---------------------------- | -------------------------------------------------------------------- |
+| Background                   | `--shk-status-danger-bg-subtle`                                      |
+| Border                       | `--shk-status-danger-border-subtle`, `--shk-border-width-thin`       |
+| Corner radius                | `--shk-radius-8`                                                     |
+| Padding                      | `--shk-space-1` (4px), `--shk-space-2` (8px) on the right            |
+| Icon tile                    | `--shk-status-danger-solid`, `--shk-size-5` (20px), `--shk-radius-4` |
+| Icon color                   | `--shk-color-text-inverse`                                           |
+| Message color                | `--shk-color-text-primary`                                           |
+| Message text style           | `--shk-typography-caption-*` (12px)                                  |
+| Gap between icon and message | `--shk-space-2` (8px)                                                |
 
-It has no padding or background: the space around it belongs to the parent.
-
-The status colors are shared by every Status component, so change them for the whole app, not one screen:
+These are the same colors as AlertBanner's Critical level. The status colors are shared by every Status component, so change them for the whole app, not one screen:
 
 ```css
 :root {
-  --shk-status-danger-fg: var(--shk-palette-red-900);
+  --shk-status-danger-solid: var(--shk-palette-red-700);
 }
 ```
 

@@ -80,7 +80,8 @@ export const Disconnected: Story = {
   args: { connectionStatus: "disconnected" },
 };
 
-// A Fault sits on top of any state: the value still shows.
+// A Fault sits on top of any state: the value still shows. A Fault about a Sensor on the card
+// shows inside that Sensor's card, with the short message.
 export const Fault: Story = {
   args: {
     name: "Air Quality Module",
@@ -89,7 +90,21 @@ export const Fault: Story = {
   },
 };
 
-// A Module can report several Faults at once: one DeviceFaultStatus per Fault.
+// A Fault about one of two Sensors: only that Sensor's card shows it. Both cards keep the same height.
+export const FaultOnOneSensor: Story = {
+  args: {
+    faults: [{ faultCode: "sensor_failure", metric: "humidity" }],
+  },
+};
+
+// A Fault with no Metric is about the whole Device: it shows above the Sensors, full width.
+export const DeviceFault: Story = {
+  args: {
+    faults: [{ faultCode: "calibration_required" }],
+  },
+};
+
+// A Module can report several Faults at once: one DeviceFaultStatus per Fault, each in its Sensor's card.
 export const SeveralFaults: Story = {
   args: {
     name: "Air Quality Module",

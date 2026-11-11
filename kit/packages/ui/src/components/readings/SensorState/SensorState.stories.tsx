@@ -36,6 +36,16 @@ export const Disconnected: Story = { args: { isDisconnected: true } };
 
 export const SizeMd: Story = { args: { size: "md" } };
 
+// A Fault about this Sensor: the short message under the State. The State still shows.
+export const Fault: Story = {
+  args: {
+    size: "md",
+    metric: "smoke",
+    state: "clear",
+    faults: ["sensor_failure"],
+  },
+};
+
 // Named after the Asset it watches, instead of the Metric.
 export const WithAsset: Story = {
   args: {

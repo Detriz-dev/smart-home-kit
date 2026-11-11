@@ -29,7 +29,7 @@ Figma variant property `state` × `size`, the same as SensorReading: 3 × 2 = 6 
 | `loading`      | `state={null}`   | StateValue loading icon                             |
 | `disconnected` | `isDisconnected` | StateValue disconnected icon, State hidden          |
 
-Target states: loading, Connected and Disconnected apply (through StateValue). Stale and Fault don't: they belong to the Module and are shown once by `DeviceCard`.
+Target states: loading, Connected and Disconnected apply (through StateValue). Stale doesn't: it belongs to the Module and is shown once by `DeviceCard`. Fault applies through `faults`: one `DeviceFaultStatus` per Fault about this Sensor, under the State, with the short message (same as `SensorReading`).
 
 ### Sizes and anatomy
 

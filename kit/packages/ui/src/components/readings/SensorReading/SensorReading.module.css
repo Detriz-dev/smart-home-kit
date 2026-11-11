@@ -36,4 +36,13 @@
   .unit {
     display: flex;
   }
+
+  /* The Faults about this Sensor, one under the other, full width. 8px below the value
+     (the card's 4px gap plus 4px here). */
+  .faults {
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-1);
+    margin-block-start: calc(var(--shk-space-2) - var(--shk-space-1));
+  }
 }

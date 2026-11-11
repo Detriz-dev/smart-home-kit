@@ -1,22 +1,49 @@
 @layer detriz {
-  /* Icon then message in one row. The icon stays beside the first line when the message wraps. */
+  /* A compact version of AlertBanner's critical level: a very light danger fill, a light danger
+     border, an icon tile and the message. It fills the width its parent gives it.
+     4px top, bottom and left, 8px right; the padding subtracts the border, so the size matches
+     Figma (inside stroke). The icon stays beside the first line when the message wraps. */
   .root {
-    display: inline-flex;
+    display: flex;
     align-items: flex-start;
-    gap: var(--shk-space-1);
-    padding: var(--shk-space-0);
-    color: var(--shk-status-danger-fg);
+    gap: var(--shk-space-2);
+    box-sizing: border-box;
+    inline-size: 100%;
+    padding: calc(var(--shk-space-1) - var(--shk-border-width-thin))
+      calc(var(--shk-space-2) - var(--shk-border-width-thin))
+      calc(var(--shk-space-1) - var(--shk-border-width-thin))
+      calc(var(--shk-space-1) - var(--shk-border-width-thin));
+    border: var(--shk-border-width-thin) solid
+      var(--shk-status-danger-border-subtle);
+    border-radius: var(--shk-radius-8);
+    background: var(--shk-status-danger-bg-subtle);
+    color: var(--shk-color-text-primary);
+  }
+
+  /* The icon tile: like AlertBanner's, but 20px with a 16px icon. White icon on the solid danger colour. */
+  .icon {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    inline-size: var(--shk-size-5);
+    block-size: var(--shk-size-5);
+    border-radius: var(--shk-radius-4);
+    background: var(--shk-status-danger-solid);
+    color: var(--shk-color-text-inverse);
   }
 
   /* Figma's 12px / regular / 18px text is the caption text style.
      The message wraps instead of truncating: a cut-off Fault message could hide what is wrong. */
   .label {
+    flex: 1;
     min-inline-size: 0;
     font-family: var(--shk-typography-caption-font-family);
     font-size: var(--shk-typography-caption-font-size);
     font-weight: var(--shk-typography-caption-font-weight);
     line-height: var(--shk-typography-caption-line-height);
     letter-spacing: var(--shk-typography-caption-letter-spacing);
+    overflow-wrap: break-word;
   }
 
   /* On the page for screen readers only, never seen. */
