@@ -150,6 +150,8 @@ From the glossary examples. Figma sample text and the stories use these. Stories
 
 Stories: `Default`, `Loading`, `Disconnected`, `SizeMd`, `Fault`, `SeveralFaults`, `LongText`, `Minimal`.
 
+Figma: boolean property `hasFault` (off by default) shows an exposed `DeviceFaultStatus` (`message=short`) under the value; change its `faultCode` there.
+
 `faults` (2026-11-11): a Fault is shown inside what is faulty. The parent (`DeviceCard`) passes the Fault Codes of the Faults whose Metric is this Sensor's. `DeviceFaultStatus` gets no `metric` here, so the message is short ("Sensor failure"): the label above already names the Sensor. The value stays visible.
 
 ### Tokens

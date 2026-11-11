@@ -10,7 +10,9 @@ It sits inside what is faulty: inside `SensorReading` or `SensorState` when the 
 
 It is read-only and takes props only. It shows the Fault, it doesn't fix it.
 
-Figma: `DeviceFaultStatus` component set in _DeTriz - Smart Home Kit_ (node `344:25`), page `DeviceFaultStatus`. The new design is the `DeviceFaultStatus (proposal)` set (node `797:28`) with in-context examples (node `797:29`) on the same page; it replaces `344:25` once reviewed.
+Figma: `DeviceFaultStatus` component set in _DeTriz - Smart Home Kit_ (node `344:25`), page `DeviceFaultStatus`. In-context examples (DeviceCard with a Sensor Fault, a single-Sensor Device and a Device-wide Fault) are in the `DeviceFaultStatus – in context` frame (node `798:7006`) on the same page.
+
+Figma variant properties: `faultCode` (`sensor_failure`, `calibration_required`) and `message` (`full` = with a Metric, "CO₂ sensor failure"; `short` = no Metric, "Sensor failure"). `message` mirrors the `metric` prop: `SensorReading` and `SensorState` use `short` (their `hasFault` property), and so does a Device-wide Fault without a Metric. Set the instance to **Fill** width.
 
 ### Component in domain model context
 
