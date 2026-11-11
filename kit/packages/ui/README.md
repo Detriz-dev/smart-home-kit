@@ -8,6 +8,10 @@ The components are presentational: you pass the data in as props, and they never
 
 ```sh
 npm install @detriz-sh-kit/ui @detriz-sh-kit/tokens
+# or
+pnpm add @detriz-sh-kit/ui @detriz-sh-kit/tokens
+# or
+yarn add @detriz-sh-kit/ui @detriz-sh-kit/tokens
 ```
 
 You need **React 19** and a bundler that handles ES modules and CSS imports, like Vite or Next.js. The types are included.

@@ -8,6 +8,10 @@ The kit's React components ([`@detriz-sh-kit/ui`](https://www.npmjs.com/package/
 
 ```sh
 npm install @detriz-sh-kit/tokens
+# or
+pnpm add @detriz-sh-kit/tokens
+# or
+yarn add @detriz-sh-kit/tokens
 ```
 
 ## Use

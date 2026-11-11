@@ -1,0 +1,53 @@
+# Runs on every push to `main` (so, after every merged PR).
+#
+# - If there are changesets in `.changeset/`, it opens (or updates) a
+#   "Version Packages" PR that raises the versions and writes the changelogs.
+# - When you merge that PR, there are no changesets left, so it builds the
+#   packages and publishes the new versions to npm.
+#
+# npm trusts this exact file (trusted publishing, set up on npmjs.com for each
+# package), so there is no npm token anywhere. Don't rename this file: npm
+# would stop trusting it.
+name: Release
+
+on:
+  push:
+    branches: [main]
+
+# Never run two releases at the same time.
+concurrency: ${{ github.workflow }}-${{ github.ref }}
+
+permissions:
+  contents: write # push the "Version Packages" branch and the git tags
+  pull-requests: write # open the "Version Packages" PR
+  id-token: write # prove to npm that this workflow is publishing (trusted publishing)
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+
+      # Installs the pnpm version pinned in "packageManager" in the root package.json.
+      - uses: pnpm/action-setup@v4
+
+      # No `registry-url` here on purpose: it writes an `.npmrc` that expects an
+      # npm token, and we publish without one.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Version PR or publish
+        uses: changesets/action@v1
+        with:
+          version: pnpm version-packages
+          publish: pnpm release
+          title: "chore(release): version packages"
+          commit: "chore(release): version packages"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

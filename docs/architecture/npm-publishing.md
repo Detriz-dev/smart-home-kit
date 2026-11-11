@@ -210,53 +210,28 @@ git push --follow-tags                      # changeset publish created the git 
 
 Check it on https://www.npmjs.com/package/@detriz-sh-kit/ui, and run `npm view @detriz-sh-kit/ui`.
 
+**What happened on 2026-11-11 (staged publishing).** The first time a package name is published, npm puts it through **staged publishing**: it shows a `0.0.0-stage` placeholder, and the real version stays hidden until a maintainer approves it with 2FA under **Staged Packages** on npmjs.com (in the menu on the left of your account page). `tokens@0.1.0` went live by itself after about a minute; `ui@0.1.0` waited for approval. Leave the `0.0.0-stage` versions alone: they are npm's record of the name. `npm install` picks the real version (`latest`) once it's approved.
+
+In zsh (the macOS terminal), quote filters with a `*` in them: `--filter="./kit/packages/*"`. Without quotes, zsh tries to expand the `*` itself and stops with "no matches found". Inside `package.json` scripts it works without quotes.
+
 ### Step 9. Turn on trusted publishing (CI releases from now on)
 
-1. On npmjs.com, for **each** package: Settings → **Trusted Publisher** → GitHub Actions → organization `Detriz-dev`, repository `smart-home-kit`, workflow file `release.yml`.
-2. Then, on the same page, set **Publishing access** to "Require two-factor authentication and disallow tokens". From now on only that workflow (or you, with 2FA) can publish.
-3. Add `.github/workflows/release.yml`:
+1. On npmjs.com, open each package's settings page: https://www.npmjs.com/package/@detriz-sh-kit/tokens/access and https://www.npmjs.com/package/@detriz-sh-kit/ui/access (the **Settings** tab on the package page). Your account's **Packages** page doesn't list them, because they belong to the org.
+2. **Trusted Publisher** → GitHub Actions → organization `Detriz-dev`, repository `smart-home-kit`, workflow file `release.yml`, environment empty.
+3. **Publishing access** → "Require two-factor authentication and disallow tokens". From now on only that workflow (or you, with 2FA) can publish.
+4. On GitHub: **Settings → Actions → General → Workflow permissions** → tick **"Allow GitHub Actions to create and approve pull requests"** and save. Without it, the workflow can't open the "Version Packages" PR.
+5. The workflow is `.github/workflows/release.yml`. It runs on every push to `main`:
+   - Changesets waiting in `.changeset/` → it opens or updates the **"Version Packages"** PR (versions raised, changelogs written).
+   - No changesets left (you just merged that PR) → it builds the packages and runs `changeset publish`, which publishes only versions that aren't on npm yet, then pushes the git tags.
 
-```yaml
-name: Release
+There are **no npm secrets** anywhere: `id-token: write` lets GitHub prove to npm which workflow is publishing, and npm adds provenance (the "Built and signed on GitHub Actions" badge) by itself. pnpm 11 does this exchange itself, so the runner doesn't need a newer npm. Two things in the file are on purpose:
 
-on:
-  push:
-    branches: [main]
+- `actions/setup-node` has **no `registry-url`**: that option writes an `.npmrc` that expects an npm token.
+- **Don't rename `release.yml`**: npm trusts that exact file name.
 
-concurrency: ${{ github.workflow }}-${{ github.ref }}
+Pull requests opened by the workflow itself don't start other workflows (a GitHub rule against loops), so the "Version Packages" PR shows **no CI check**. That's expected: the same code already passed CI in the PR that added the changeset. If you later make the `check` required for `main`, you'll need to merge that PR as an admin (or close and reopen it to start CI).
 
-permissions:
-  contents: write # push the "Version Packages" branch and tags
-  pull-requests: write # open the "Version Packages" PR
-  id-token: write # trusted publishing to npm
-
-jobs:
-  release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v4 # reads the pnpm version from package.json
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-          registry-url: https://registry.npmjs.org
-      - run: pnpm install --frozen-lockfile
-      - uses: changesets/action@v1
-        with:
-          version: pnpm version-packages
-          publish: pnpm release
-          title: "chore(release): version packages"
-          commit: "chore(release): version packages"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-```
-
-There are **no npm secrets** in this file: `id-token: write` is what lets npm trust the workflow.
-
-> **Check when you set this up:** trusted publishing needs npm CLI 11.5.1 or later and Node 22.14 or later on the runner, and it has to work through `pnpm publish`. Look at the current npm "Trusted publishing" docs and the pnpm release notes. If the first CI release fails with an authentication error, that's where to look first.
-
-Also update the GitHub action versions in the file to the newest ones when you add it.
+New versions may also wait in **Staged Packages** for your 2FA approval, like the first publish did. If a release looks stuck, look there first.
 
 ### Step 10. A CI check on every pull request
 
@@ -346,14 +321,14 @@ Done one by one, in this order. Tasks 2 to 8 happen on branch `104-publish-libra
 | 6   | Set up Changesets, add the "First public release" changeset, raise versions to `0.1.0` (`pnpm version-packages`)    | Claude | 6, 8      | [x]  |
 | 7   | Test the `0.1.0` tarballs in a fresh Vite app by following the Installation page                                    | Both   | 7         | [x]  |
 | 8   | Add `.github/workflows/ci.yml` (checks on every PR)                                                                 | Claude | 10        | [x]  |
-| 9   | Review, commit, open the PR, merge it into `main`                                                                   | You    | n/a       | [ ]  |
-| 10  | First publish by hand from `main` (`pnpm changeset publish`, you type the 2FA code), push the tags, check npmjs.com | Both   | 8         | [ ]  |
-| 11  | Set the trusted publisher and "disallow tokens" on both packages on npmjs.com                                       | You    | 9         | [ ]  |
+| 9   | Review, commit, open the PR, merge it into `main`                                                                   | You    | n/a       | [x]  |
+| 10  | First publish by hand from `main` (`pnpm changeset publish`, you type the 2FA code), push the tags, check npmjs.com | Both   | 8         | [x]  |
+| 11  | Set the trusted publisher and "disallow tokens" on both packages on npmjs.com                                       | You    | 9         | [x]  |
 | 12  | Add `.github/workflows/release.yml`, then test it with a small patch release                                        | Claude | 9         | [ ]  |
 | 13  | Update the docs: AGENTS.md, project-architecture, tech-stack, docs site, roadmap                                    | Claude | 11        | [ ]  |
 
 **Every release**
 
 - [ ] Each user-facing PR has a changeset with the right bump
-- [ ] CI is green on the "Version packages" PR
-- [ ] Merge it, then check the new version on npmjs.com
+- [ ] Read the "Version Packages" PR: the versions and changelog entries are right (it has no CI check, see step 9)
+- [ ] Merge it, wait for the Release workflow, approve under Staged Packages on npmjs.com if npm asks, then check the new version on npmjs.com
