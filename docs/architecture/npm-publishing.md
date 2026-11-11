@@ -258,13 +258,27 @@ To make the check **required** (the merge button stays grey until it passes): on
 
 ## Part 2: Everyday release workflow (maintenance)
 
-### For every PR that changes `tokens` or `ui`
+### Publish a new version, step by step
 
-1. Make the change on your branch as usual.
-2. Run `pnpm changeset`, choose the bump type and write one sentence **for users** ("Adds the `size` prop to `DeviceCard`."). This creates a small file in `.changeset/`.
-3. Commit it with the PR.
+Releasing never means typing a version number or running `npm publish`. You describe each change in a small note (a **changeset**), the Release workflow turns the notes into a new version, and you approve it on npmjs.com.
 
-PRs that only touch docs, Storybook or internal files don't need a changeset.
+**1. On your branch: make the change and describe it**
+
+1. Make the change in `kit/packages/tokens` or `kit/packages/ui` as usual.
+2. From the repo root, run:
+
+   ```sh
+   pnpm changeset
+   ```
+
+3. Answer the questions:
+   - **Which packages?** Pick the ones you changed (space to select, enter to confirm). `tokens` and `ui` always get the same version anyway.
+   - **Which bump?** See the table below. Changesets asks about `major` first, then `minor`; press enter to skip a level. Whatever isn't major or minor is a patch.
+   - **Summary:** one sentence **for the people who use the kit**, not for us. Good: "Adds the `size` prop to `DeviceCard`." Not good: "Refactor DeviceCard styles." For a breaking change, also say how to update: "Renames `status` to `connectionStatus`."
+
+4. This creates a small file in `.changeset/` (for example `.changeset/brave-lions-sing.md`). Commit it together with your change.
+
+PRs that only touch the docs site, Storybook, `docs/` or other internal files don't need a changeset. If you forget one, add it in a later PR before releasing.
 
 Which bump?
 
@@ -277,13 +291,44 @@ Which bump?
 
 Removing or renaming a `--shk-` token is a breaking change too: users may use tokens in their own CSS.
 
-### Releasing
+**2. On GitHub: merge your PR**
 
-1. PRs with changesets get merged into `main`.
-2. The Release workflow opens (and keeps updating) a PR called **"chore(release): version packages"**. It raises versions and updates `CHANGELOG.md`.
-3. When you want to release, **merge that PR**. The workflow builds and publishes to npm and creates git tags.
+5. Push the branch and open a PR. Wait for the green **CI / check**, then merge.
+6. You can merge several PRs with changesets before releasing. They all go into the same next version.
 
-So releasing is "merge one PR". You decide when, and you can bundle several changes into one release.
+**3. On GitHub: merge the "Version Packages" PR (this is "release now")**
+
+7. After each merge, the **Release** workflow (Actions tab) opens or updates a PR called **"chore(release): version packages"**. It:
+   - raises the version in both `package.json` files (for example `0.1.1` → `0.1.2`),
+   - adds your summaries to both `CHANGELOG.md` files,
+   - deletes the used changeset files.
+8. Open that PR and check the **Files changed** tab: is the new version right (patch, minor)? Do the changelog lines read well? To fix a line, edit the changeset file on `main` in a new PR; the bot updates its PR.
+9. Its CI check shows **"action required"**, because a bot opened the PR. Click **"Approve and run workflows"** if you want it to run (optional: the same code already passed CI).
+10. **Merge it** when you want to release.
+
+**4. On GitHub: wait for the Release workflow**
+
+11. Merging starts the **Release** workflow again (Actions tab, about 1 minute). It builds both packages, **stages** the new versions on npm and pushes the git tags (`@detriz-sh-kit/tokens@0.1.2`, `@detriz-sh-kit/ui@0.1.2`).
+12. Wait for the green ✅. Nobody can install the new version yet.
+
+**5. On npmjs.com: approve the release**
+
+13. Sign in as `detriz` → avatar → your account page → **Staged Packages** in the menu on the left.
+14. Both new versions are listed. If the status says **validating**, wait a minute or two.
+15. Approve **`@detriz-sh-kit/tokens` first**, then **`@detriz-sh-kit/ui`** (it depends on `tokens`). Each approval asks for your 2FA code.
+
+**6. Check it**
+
+16. Open https://www.npmjs.com/package/@detriz-sh-kit/ui: the new version is shown, with the provenance badge ("Built and signed on GitHub Actions"). Or in the terminal:
+
+    ```sh
+    npm view @detriz-sh-kit/ui version
+    npm view @detriz-sh-kit/tokens version
+    ```
+
+17. Optional: in a test app, `npm install @detriz-sh-kit/ui@latest @detriz-sh-kit/tokens@latest` and check that it builds.
+
+Done. You decide when to release (step 10), and you approve every version yourself (step 15).
 
 ### Pre-releases (to try big changes safely)
 
@@ -295,14 +340,19 @@ pnpm changeset pre exit         # back to normal releases
 
 Users get them only if they ask: `npm install @detriz-sh-kit/ui@next`. A normal `npm install` keeps the stable version (`latest` tag).
 
+> **Not ready yet:** `scripts/stage-release.mjs` always stages with the `latest` tag, and npm refuses a pre-release version without an explicit tag. Before the first pre-release, make the script pass `--tag next` for versions with a `-` in them.
+
 ### When something goes wrong
 
-| Problem                                      | What to do                                                                                                                                |
-| -------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
-| Published a broken version                   | Fix it and publish a patch right away. Then `npm deprecate @detriz-sh-kit/ui@0.2.1 "Broken CSS, use 0.2.2"`.                              |
-| Published something secret or very broken    | `npm unpublish` works only within 72 hours and only if nothing depends on it. The version number can never be reused. Prefer deprecating. |
-| The `latest` tag points to the wrong version | `npm dist-tag add @detriz-sh-kit/ui@0.2.0 latest`                                                                                         |
-| CI publish failed halfway                    | Re-run the workflow. The stage script skips versions that already have a git tag or are on npm.                                           |
+| Problem                                      | What to do                                                                                                                                             |
+| -------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Published a broken version                   | Fix it and publish a patch right away. Then `npm deprecate @detriz-sh-kit/ui@0.2.1 "Broken CSS, use 0.2.2"`.                                           |
+| Published something secret or very broken    | `npm unpublish` works only within 72 hours and only if nothing depends on it. The version number can never be reused. Prefer deprecating.              |
+| The `latest` tag points to the wrong version | `npm dist-tag add @detriz-sh-kit/ui@0.2.0 latest`                                                                                                      |
+| CI publish failed halfway                    | Re-run the workflow. The stage script skips versions that already have a git tag or are on npm.                                                        |
+| No "Version Packages" PR appears             | Check that the merged PR had a file in `.changeset/`, and that GitHub → Settings → Actions → General still allows Actions to create PRs.               |
+| A staged version is wrong                    | Don't approve it. On npmjs.com → Staged Packages, **Reject** it, fix the problem and release a new patch. The rejected version number can't be reused. |
+| The Release workflow fails with `E403`       | The trusted publisher on npmjs.com must allow staging (`release.yml`, org `Detriz-dev`, repo `smart-home-kit`). See step 9 in Part 1.                  |
 
 ### Regular upkeep
 
