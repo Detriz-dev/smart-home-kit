@@ -329,7 +329,7 @@ Figma needs wrapper frames to lay things out. HTML often doesn't.
 - Use the **Controls** panel to try odd values (very long text, negative or huge numbers). It's the quickest way to find cases that look wrong.
 - When the AI checks the stories, it takes **screenshots** with the Chrome tools rather than reading the page with scripts.
 
-`pnpm storybook` runs through Turbo, which doesn't pass extra flags on. To add a flag like `--no-open`, run Storybook directly: `pnpm --filter storybook dev --no-open`.
+`pnpm storybook` runs through Turbo, which doesn't pass extra flags on. To add a flag like `--no-open`, run Storybook directly: `pnpm --filter storybook-app dev --no-open`.
 
 What to do when you change something while Storybook runs:
 
@@ -424,7 +424,7 @@ Read the **first** error in the terminal, not the last: later errors are often c
 | Component has no styles at all, but tokens work                        | The class in the CSS doesn't match `styles.…` in the component                      | Make them identical (`.root` ↔ `styles.root`).                                                                                                   |
 | Text collapses to one letter when space is tight                       | Flex items shrink below their content                                               | Use CSS grid, or `min-width` / `flex-shrink: 0` on the part that must stay readable. The `LongText` story shows it.                              |
 | New component isn't in the Storybook sidebar                           | The file isn't named `*.stories.tsx`, it has an error, or Storybook needs a restart | Check the name and the terminal, then restart `pnpm storybook`.                                                                                  |
-| `pnpm storybook --no-open` (or another flag) fails                     | Turbo doesn't pass extra flags on                                                   | `pnpm --filter storybook dev --no-open`                                                                                                          |
+| `pnpm storybook --no-open` (or another flag) fails                     | Turbo doesn't pass extra flags on                                                   | `pnpm --filter storybook-app dev --no-open`                                                                                                      |
 | `pnpm format:check` fails on files you didn't touch                    | Formatting problems elsewhere in the repo                                           | Check only your folder: `pnpm prettier --check <your folder>`.                                                                                   |
 | `Module '"@detriz-sh-kit/ui"' has no exported member '<Name>'`         | Not exported from `src/index.ts`, or `ui` not rebuilt                               | Add the export, then `pnpm --filter @detriz-sh-kit/ui build`.                                                                                    |
 | `Port 6007 is already in use`                                          | Storybook is already running in another terminal                                    | Use that one, or stop it with `Ctrl + C`.                                                                                                        |
