@@ -180,7 +180,7 @@ From the Figma draft. To confirm in the review (step 3).
 - **Text is 14px:** `label` for the title and `body-sm` for the message, the same size as the `Button` label.
 
 - **Row is centred, not top-aligned.** Most messages are one or two lines, and centred lines up with Retry. With a long message the icon sits beside the middle line, which is acceptable.
-- **No shadow, a subtle outline instead.** It is a message inside the page, not a toast floating above it, and there is no shadow token. If a floating toast is needed later, it's a separate component with its own elevation token.
+- **No shadow, a subtle outline instead.** It is a message inside the page, not a toast floating above it,. Shadows are only for raised cards (`--shk-elevation-raised`). If a floating toast is needed later, it's a separate component with its own elevation token.
 - **Bright icon colours stay** (`status/*/solid`), although blue, green and amber are below 3:1 on white. The title and message carry the meaning, so the icon and bar are decorative. Revisit if darker `status` tokens are added.
 - **One gap for the content row** (`space/3`): between icon and text, and between text and action. Simpler, and it looks right.
 - **Text keeps at least 96px** (`size/24`) before the action wraps. An existing token, so nothing new is needed. Without a minimum, Figma squeezes the text to a few letters.

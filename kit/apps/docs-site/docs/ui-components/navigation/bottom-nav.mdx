@@ -6,10 +6,10 @@ description: The app's main sections as a bar at the bottom of the screen on pho
 
 # BottomNav
 
-The main sections of your app as a bar at the bottom of the screen, like Home, Devices, History and Settings. Each section has an icon and a label, and the current one is marked, so people always know where they are. Made for phones and wall tablets.
+The main sections of your app as a floating bar at the bottom of the screen, like Home, Devices, History and Settings. Each section has an icon and a label, and the current one is marked with a light-blue pill, so people always know where they are. Made for phones and wall tablets.
 
 ```jsx live
-<div style={{ maxWidth: 390 }}>
+<div style={{ maxWidth: 358 }}>
   <BottomNav
     items={[
       { label: "Home", icon: "home", href: "#home", isCurrent: true },
@@ -27,7 +27,7 @@ The examples on this page are live. Change the code and the result updates as yo
 
 :::
 
-BottomNav fills the width of its parent, so the examples sit in a `div` with a phone's width.
+BottomNav fills the width of its parent, so the examples sit in a `div` with a phone's width, minus 16px on each side.
 
 ## Import
 
@@ -90,7 +90,7 @@ Use 3, 4 or 5 items. They share the width equally.
 With fewer than 3 sections, you don't need a bar. With more than 5, the labels get too narrow: group some sections, or move them into Settings.
 
 ```jsx live
-<div style={{ maxWidth: 390 }}>
+<div style={{ maxWidth: 358 }}>
   <StackLayout gap="lg">
     {/* 3 items */}
     <BottomNav
@@ -126,7 +126,7 @@ With fewer than 3 sections, you don't need a bar. With more than 5, the labels g
 
 ## The current section
 
-Set `isCurrent` on exactly one item: the section the person is in. It gets a blue bar on its top edge, a blue icon and a blue, slightly heavier label, and screen readers hear "current page".
+Set `isCurrent` on exactly one item: the section the person is in. It gets a light-blue pill behind its icon, a blue icon and a blue, slightly heavier label, and screen readers hear "current page".
 
 A section stays current on its own sub-screens. On a Module's screen (`/devices/climate-module`), Devices is still current. Work this out from your router's current path, for example:
 
@@ -164,7 +164,7 @@ A long label stays on one line and ends with "…". The icons stay whole. Keep l
 
 ```jsx live
 <div
-  style={{ maxWidth: 320, outline: "1px dashed var(--shk-palette-gray-300)" }}
+  style={{ maxWidth: 288, outline: "1px dashed var(--shk-palette-gray-300)" }}
 >
   <BottomNav
     items={[
@@ -208,27 +208,27 @@ What you get without doing anything:
 - The items are a list, and each is a link named by its label. The icons are hidden from screen readers.
 - The current item has `aria-current="page"`, so screen readers say "current page".
 - A Badge is read after the label, in words: "Alerts, 3 active Alerts".
-- The current item is marked by the bar, the heavier label and the colour, not by colour alone. Hover and focus turn items blue too, but never add the bar, so they can't be mistaken for current.
-- Each item is 70px tall and an equal share of the width: a comfortable touch target.
-- Keyboard focus shows a 2px dark-blue ring around the whole item, drawn inside it so the screen's edge doesn't cut it off. It's the same ring as every other component in the kit.
+- The current item is marked by the pill, the heavier label and the colour, not by colour alone. Hover shows a grey pill and focus darkens the icon and label, but neither turns blue, so they can't be mistaken for current.
+- Each item is 62px tall and an equal share of the width: a comfortable touch target.
+- Keyboard focus shows a 2px dark-blue ring around the whole item, drawn inside it so the bar's edge doesn't cut it off. It's the same ring as every other component in the kit.
 
 What's up to you:
 
 - **Exactly one current item.**
 - **Short, clear labels.** One word, the same as the screen's title in its [`TopBar`](./top-bar.mdx).
-- **Keeping it at the bottom.** BottomNav doesn't fix itself to the screen. Give its parent `position: sticky; bottom: 0` (or similar) in your layout, and leave room for the phone's home indicator (`env(safe-area-inset-bottom)`).
+- **Keeping it at the bottom.** BottomNav doesn't fix itself to the screen. Give its parent `position: sticky; bottom: 0` (or similar) in your layout, 16px from the screen's sides and bottom, and leave room for the phone's home indicator (`env(safe-area-inset-bottom)`). Let the content scroll behind it.
 
 ## Styling
 
-| What               | Token                                                                                     |
-| ------------------ | ----------------------------------------------------------------------------------------- |
-| Background         | `--shk-surface-default`                                                                   |
-| Line above the bar | `--shk-border-width-thin`, `--shk-color-border-subtle`                                    |
-| Icon and label     | `--shk-color-text-secondary`; hover, focus and current `--shk-action-current-fg`          |
-| Label              | `--shk-typography-caption-*`; current `--shk-font-weight-medium`                          |
-| Current bar        | `--shk-action-current-indicator`, 4px tall (`--shk-border-width-thick`), `--shk-radius-4` |
-| Pressed background | `--shk-action-subtle-bg-pressed`, `--shk-radius-12`                                       |
-| Focus ring         | `--shk-action-focus`, `--shk-border-width-medium`, `--shk-radius-12`                      |
+| What                 | Token                                                                                                       |
+| -------------------- | ----------------------------------------------------------------------------------------------------------- |
+| Bar                  | `--shk-surface-default`, `--shk-radius-24`, `--shk-elevation-raised`, padding `--shk-space-1`               |
+| Bar outline          | `--shk-border-width-thin`, `--shk-color-border-subtle`                                                      |
+| Icon and label       | `--shk-color-text-secondary`; hover and focus `--shk-color-text-primary`; current `--shk-action-current-fg` |
+| Label                | `--shk-typography-caption-*`; current `--shk-font-weight-medium`                                            |
+| Pill behind the icon | `--shk-radius-full`; current `--shk-action-current-bg`, hover `--shk-surface-sunken`                        |
+| Pressed pill         | `--shk-action-subtle-bg-pressed`                                                                            |
+| Focus ring           | `--shk-action-focus`, `--shk-border-width-medium`, `--shk-radius-16`                                        |
 
 To change how it looks, set a [design token](../foundations/design-tokens.mdx) on a parent element.
 

@@ -42,10 +42,10 @@ What it does **not** do, and why:
 
 **Variant** (Figma and prop `variant`):
 
-| Value       | Looks                                                    | Use it                                                             |
-| ----------- | -------------------------------------------------------- | ------------------------------------------------------------------ |
-| `ghost`     | Icon only. A fill appears under the pointer.             | In a bar or on a card: `TopBar` actions, a card's corner. Default. |
-| `secondary` | White fill with a grey outline, like `Button` secondary. | On its own on a page, next to `Button`s.                           |
+| Value       | Looks                                                          | Use it                                                             |
+| ----------- | -------------------------------------------------------------- | ------------------------------------------------------------------ |
+| `ghost`     | Icon only. A fill appears under the pointer.                   | In a bar or on a card: `TopBar` actions, a card's corner. Default. |
+| `secondary` | White fill with a light grey outline, like `Button` secondary. | On its own on a page, next to `Button`s.                           |
 
 There is no `primary`: the one main action has words (`Button` primary). Hover and pressed follow `BottomNav` items, so every subtle, icon-led control in the kit reacts the same way.
 

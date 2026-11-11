@@ -3,6 +3,7 @@ export { Card } from "./Card";
 export type {
   CardButtonProps,
   CardLinkProps,
+  CardPadding,
   CardProps,
   CardStaticProps,
 } from "./Card.types";

@@ -1,9 +1,9 @@
 # 0002. Devices have Capabilities, and the kit can control them
 
-- Status: proposed (accepted after the owner's review of the domain model review)
+- Status: accepted (2026-11-08)
 - Date: 2026-11-08
 - Affects: the Domain Model pages (Glossary, Data model, Device lifecycle, Events and commands), the shared types and many components in `@detriz-sh-kit/ui`, the Figma library, the Phase 2 (MVP) scope
-- Details: [Domain model review](../domain-model-revew.md) (decisions 1–23), [implementation plan](../product-requirements/domain-model-change-implementation.md)
+- Details: [Domain model review](../domain-model-revew.md) (decisions 1–25), [implementation plan](../product-requirements/domain-model-change-implementation.md)
 
 ## Context
 

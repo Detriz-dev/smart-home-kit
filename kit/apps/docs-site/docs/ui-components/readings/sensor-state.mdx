@@ -60,7 +60,16 @@ Use SensorState for one State Sensor on its own or in a grid of Sensors. [`Devic
 | `state={null}`   | Loading icon                                         |
 | `isDisconnected` | Disconnected icon. The State is hidden               |
 
-Stale and Fault belong to the Module: [`DeviceCard`](./device-card.mdx) shows them once for all its Sensors.
+Stale belongs to the Module: [`DeviceCard`](./device-card.mdx) shows it once for all its Sensors. A Fault about this Sensor shows inside the card, under the State: pass its Fault Codes in `faults`.
+
+```jsx live
+<SensorState
+  metric="smoke"
+  state="clear"
+  size="md"
+  faults={["sensor_failure"]}
+/>
+```
 
 ## Sizes
 
@@ -85,14 +94,15 @@ Stale and Fault belong to the Module: [`DeviceCard`](./device-card.mdx) shows th
 
 ## Props
 
-| Prop             | Type                                     | Default | Description                                                                   |
-| ---------------- | ---------------------------------------- | ------- | ----------------------------------------------------------------------------- |
-| `metric`         | `StateMetric`                            | –       | **Required.** The State Metric the Sensor measures.                           |
-| `state`          | `StateOf<metric> \| null`                | –       | **Required.** The latest State. `null` while the first Reading is on its way. |
-| `asset`          | `{ name: string; assetType: AssetType }` | none    | The Asset the Sensor watches. Names the card instead of the Metric.           |
-| `isDisconnected` | `boolean`                                | `false` | Hides the State and shows the disconnected icon.                              |
-| `alertLevel`     | `"critical" \| "warning" \| "info"`      | none    | The Alert Level of an Active Alert about this Reading. Colours the State.     |
-| `size`           | `"lg" \| "md"`                           | `"lg"`  | How big the State is drawn.                                                   |
+| Prop             | Type                                     | Default | Description                                                                                                                     |
+| ---------------- | ---------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `metric`         | `StateMetric`                            | –       | **Required.** The State Metric the Sensor measures.                                                                             |
+| `state`          | `StateOf<metric> \| null`                | –       | **Required.** The latest State. `null` while the first Reading is on its way.                                                   |
+| `asset`          | `{ name: string; assetType: AssetType }` | none    | The Asset the Sensor watches. Names the card instead of the Metric.                                                             |
+| `isDisconnected` | `boolean`                                | `false` | Hides the State and shows the disconnected icon.                                                                                |
+| `alertLevel`     | `"critical" \| "warning" \| "info"`      | none    | The Alert Level of an Active Alert about this Reading. Colours the State.                                                       |
+| `size`           | `"lg" \| "md"`                           | `"lg"`  | How big the State is drawn.                                                                                                     |
+| `faults`         | `FaultCode[]`                            | `[]`    | The Fault Codes of the Device's Faults about this Sensor. Each shows under the State with the short message ("Sensor failure"). |
 
 The types `SensorStateProps`, `SensorStateAsset` and `SensorStateSize` are exported too.
 

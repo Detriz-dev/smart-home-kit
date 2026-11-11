@@ -18,7 +18,7 @@ Category: **Readings** ("What is it right now?"), as ModuleCard was. It now also
 | -------- | ------------------------------------------- | ------------------------ | ---------------------------------------------------------------------------------------- |
 | name     | **Device Name**                             | Kitchen kettle           | The user can rename it, so the parent passes it in.                                      |
 | status   | **Connection Status**                       | Connected                | `DeviceConnectionStatus`, as in ModuleCard.                                              |
-| faults   | **Fault**                                   | Sensor failure           | One `DeviceFaultStatus` per Fault, as in ModuleCard.                                     |
+| faults   | **Fault**                                   | Sensor failure           | One `DeviceFaultStatus` per Fault, inside what is faulty (see below).                    |
 | sensors  | **Sensors** (Capabilities that only report) | Temperature 19.8 °C      | `SensorReading` or `SensorState`, the same data as ModuleCard's `sensors`. Now optional. |
 | controls | **Controls** and **Operational State**      | Setpoint, Mode, Socket 1 | The Control components, placed by the parent (see API).                                  |
 
@@ -45,12 +45,12 @@ Heating (thermostat)                    Power strip (no Sensors)
 └─────────────────────────────────┘
 ```
 
-| Question              | Answer                                                                                                         |
-| --------------------- | -------------------------------------------------------------------------------------------------------------- |
-| Order inside the card | Header, Faults, Sensors, Controls. The parent orders the Controls (Operational State first is the convention). |
-| Separators?           | No. Gap `space/4` between Sensors and Controls, `space/3` between Controls.                                    |
-| Layouts               | Sensors: ModuleCard's `row` / `stacked` rules, unchanged. Controls: always one per row, full width.            |
-| Name                  | `h4`, one line, `…` when long (as in ModuleCard).                                                              |
+| Question              | Answer                                                                                                                      |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| Order inside the card | Header, Faults, Sensors, Controls. The parent orders the Controls (Operational State first is the convention).              |
+| Separators?           | No. Gap `space/4` between Sensors and Controls, `space/3` between Controls.                                                 |
+| Layouts               | Sensors: ModuleCard's `row` / `stacked` rules, unchanged. Controls: always one per row, full width.                         |
+| Name                  | `Card` title: `body` size, semibold, one line, `…` when long. Built on `Card` (ADR 0003): header strip, white body, shadow. |
 
 ### States
 
@@ -63,7 +63,7 @@ The same four states as ModuleCard, worked out from `connectionStatus` (no `stat
 | `stale`        | Stale        | Last values, unchanged    | Usable: commands still go to a Stale Device (Device lifecycle rule 14).  |
 | `disconnected` | Disconnected | Hidden, disconnected icon | Hidden and unusable: the parent passes `isDisconnected` to each Control. |
 
-Faults add `DeviceFaultStatus` rows on top of any state, as today.
+Faults add `DeviceFaultStatus` on top of any state. Since 2026-11-11 a Fault is shown inside what is faulty: a Fault whose `metric` matches a Sensor on the card goes to that `SensorReading` / `SensorState` (`faults` prop, short message); a Fault with no `metric`, or one for a Metric the card doesn't show, is about the whole Device and stays in the body above the Sensors, full width. Sensor cards in a row stretch to the same height (`.sensor` is a grid item wrapper).
 
 **Disconnected is passed twice.** The card passes `isDisconnected` to its Sensors itself (it renders them). Controls are rendered by the parent, so the parent passes `isDisconnected` to each Control too. This is the cost of the slot (see API).
 
@@ -76,7 +76,7 @@ DeviceCard                <div role="group" aria-labelledby=name>
 ├── header
 │   ├── name              "Living room heating"
 │   └── status            DeviceConnectionStatus
-├── faults                DeviceFaultStatus × n
+├── faults                DeviceFaultStatus × n (Device-wide only; Sensor Faults sit in their Sensor)
 ├── sensors               <ul role="list">  SensorReading / SensorState × n   (only when there are Sensors)
 └── controls              <div>  the Controls passed in, one per row          (only when there are Controls)
 ```
@@ -196,7 +196,7 @@ The parts bring their own tokens. ModuleCard only adds the card and the spacing 
 | root    | padding       | `space/4`             | `--shk-space-4` (16px)          |
 | root    | gap           | `space/3`             | `--shk-space-3` (12px)          |
 | sensors | gap           | `space/3`             | `--shk-space-3` (12px)          |
-| name    | text          | `typography/h4/*`     | `--shk-typography-h4-*`         |
+| name    | text          | `typography/body/*`   | `--shk-typography-body-*`       |
 | name    | colour        | `color-text/primary`  | `--shk-color-text-primary`      |
 
 The Figma `row` variants are 364px wide (two 160px Sensors) and `stacked` 192px (one 160px Sensor). The card fills its parent, so these are the smallest widths.

@@ -40,7 +40,7 @@ export function FloorSection({
           <span className={styles.count}>{formatSpaceCount(spaceCount)}</span>
         )}
       </div>
-      {children}
+      <div className={styles.body}>{children}</div>
     </section>
   );
 }

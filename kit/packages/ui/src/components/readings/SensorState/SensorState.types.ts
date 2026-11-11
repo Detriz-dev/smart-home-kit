@@ -1,6 +1,7 @@
 import type { AssetType } from "../../../types/assetType";
 import type { AlertLevel } from "../../../types/alert";
 import type { StateValueReading } from "../StateValue";
+import type { FaultCode } from "../../status/DeviceFaultStatus";
 
 /** How big the State is drawn. The same two sizes as SensorReading. */
 export type SensorStateSize = "lg" | "md";
@@ -23,4 +24,6 @@ export type SensorStateProps = StateValueReading & {
   alertLevel?: AlertLevel;
   /** How big the State is drawn. Defaults to `lg`. */
   size?: SensorStateSize;
+  /** The Fault Codes of the Device's Faults about this Sensor. Each shows under the State, with the short message ("Sensor failure"), because the card already names the Sensor. Leave it out when there are none. */
+  faults?: FaultCode[];
 };

@@ -206,7 +206,11 @@ export type {
   IconButtonVariant,
 } from "./components/controls/IconButton";
 export { Button } from "./components/controls/Button";
-export type { ButtonProps, ButtonVariant } from "./components/controls/Button";
+export type {
+  ButtonProps,
+  ButtonSize,
+  ButtonVariant,
+} from "./components/controls/Button";
 export { ColumnLayout } from "./components/layout/ColumnLayout";
 export type {
   ColumnLayoutProps,
@@ -226,9 +230,12 @@ export { Card } from "./components/layout/Card";
 export type {
   CardButtonProps,
   CardLinkProps,
+  CardPadding,
   CardProps,
   CardStaticProps,
 } from "./components/layout/Card";
+export { IconTile } from "./components/layout/IconTile";
+export type { IconTileProps } from "./components/layout/IconTile";
 export { List } from "./components/layout/List";
 export type { ListProps } from "./components/layout/List";
 export { ListItem } from "./components/layout/ListItem";

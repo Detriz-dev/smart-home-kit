@@ -12,36 +12,36 @@ Starts, pauses, resumes and stops the task of a Device that runs one: a kettle (
 
 Category: **Controls**.
 
-| Part    | Domain term                                              | Example           | Rule                                                                             |
-| ------- | -------------------------------------------------------- | ----------------- | -------------------------------------------------------------------------------- |
-| name    | The Device or task                                       | Kettle            | Passed by the parent.                                                            |
-| value   | **Operational State**, **Phase**, **Error Reason**       | Running · Heating | `OperationalStateValue`, reported.                                               |
-| actions | **Allowed Commands**: `start`, `pause`, `resume`, `stop` | [Stop]            | Only allowed commands are shown, and only those that fit the State (see States). |
-| message | **Command Status**, view-only                            | Stopping…         | As in PowerControl.                                                              |
+| Part    | Domain term                                              | Example           | Rule                                                                         |
+| ------- | -------------------------------------------------------- | ----------------- | ---------------------------------------------------------------------------- |
+| name    | The Device or task                                       | Kettle            | Passed by the parent.                                                        |
+| value   | **Operational State**, **Phase**, **Error Reason**       | Running · Heating | `OperationalStateValue`, reported.                                           |
+| actions | **Allowed Commands**: `start`, `pause`, `resume`, `stop` | [Start] [Stop]    | Every allowed command is shown; those that don't fit the State are disabled. |
+| message | **Command Status**, view-only                            | Stopping…         | As in PowerControl.                                                          |
 
-**Which buttons show.** Like `OpenCloseControl`, a command the Device never allows is not shown. Of the allowed ones, only those that make sense in the current State are shown, because Start/Pause/Resume swap places as the task runs (unlike Open/Close, which always point the same way):
+**Which buttons show.** Like `OpenCloseControl`, a command the Device never allows is not shown. Every allowed one is always shown, in a fixed order, [Start / Resume] [Pause] [Stop], so the buttons don't move as the task runs (decided 2026-11-08, replaces "only the buttons that fit"). The first button says Resume while Paused and Start otherwise. A command that doesn't fit the current State is disabled:
 
-| Operational State | Buttons (if allowed) |
-| ----------------- | -------------------- |
-| Stopped           | Start                |
-| Running           | Pause, Stop          |
-| Paused            | Resume, Stop         |
-| Error             | Stop                 |
+| Operational State | Enabled (if allowed) | Disabled     |
+| ----------------- | -------------------- | ------------ |
+| Stopped           | Start                | Pause, Stop  |
+| Running           | Pause, Stop          | Start        |
+| Paused            | Resume, Stop         | Pause        |
+| Error             | Stop                 | Start, Pause |
 
-A kettle that only allows Stop shows nothing while Stopped, and [Stop] while Running. A read-only kettle (no Allowed Commands) is just `OperationalStateValue`.
+A kettle that only allows Stop shows [Stop], disabled while Stopped. A read-only kettle (no Allowed Commands) is just `OperationalStateValue`.
 
-**Power Off.** If the Device also has a Power Control and Power is Off, Start isn't allowed (Data model rule 32). The parent passes `isPoweredOff`, and the component shows "Turn the power on to start" instead of [Start].
+**Power Off.** If the Device also has a Power Control and Power is Off, Start isn't allowed (Data model rule 32). The parent passes `isPoweredOff`; [Start] is disabled and "Turn the power on to start" shows under the buttons.
 
 When is a command **Confirmed**? `start` and `resume` when the Device reports Running; `pause` when it reports Paused; `stop` when it reports Stopped.
 
 ### Visual idea
 
-| Question                        | Answer                                                                                      |
-| ------------------------------- | ------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | Row 1: name, then the `OperationalStateValue` under it. Row 2: the buttons. Row 3: message. |
-| Buttons                         | `Button` `secondary`, text only (decided 2026-11-08).                                       |
-| More than one size?             | One size.                                                                                   |
-| When space is tight             | Name `…`; the value's detail wraps (as in OperationalStateValue); the buttons wrap.         |
+| Question                        | Answer                                                                                                                                                                   |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| What does it roughly look like? | Like OpenCloseControl. Row 1: name on the left, the `OperationalStateValue` on the right. Row 2: the buttons joined into one bar, sharing the full width equally: [Start | Pause | Stop]. Row 3: message. |
+| Buttons                         | `Button` `secondary`, text only (decided 2026-11-08).                                                                                                                    |
+| More than one size?             | One size.                                                                                                                                                                |
+| When space is tight             | Name `…`; the value moves under the name when the row is too narrow; the bar stays on one line and long labels wrap inside their button.                                 |
 
 ### States
 
@@ -51,7 +51,7 @@ When is a command **Confirmed**? `start` and `resume` when the Device reports Ru
 | 2   | `loading`      | `state={null}`             | loading icon      | hidden              | none                                                   |
 | 3   | `pending`      | `command.status="pending"` | reported          | all disabled        | ⟳ "Starting…" / "Pausing…" / "Resuming…" / "Stopping…" |
 | 4   | `view-only`    | `isViewOnly`               | reported          | all disabled        | "View only"                                            |
-| 5   | `powered-off`  | `isPoweredOff`, Stopped    | Stopped           | Start hidden        | "Turn the power on to start"                           |
+| 5   | `powered-off`  | `isPoweredOff`, Stopped    | Stopped           | all disabled        | "Turn the power on to start"                           |
 | 6   | `failed`       | `command.status="failed"`  | reported          | as in 7             | ⚠ "Couldn't start. The device didn't respond."         |
 | 7   | default        | otherwise                  | reported          | per the table above | none                                                   |
 
@@ -84,21 +84,21 @@ OperationalStateControl    <div>
 
 ### Example values
 
-`KettleRunning` (Running · Heating, `["start", "stop"]`: [Stop]), `KettleStopped` ([Start]), `KettleStopOnly` (Stopped, `["stop"]`: no buttons), `WashingRunning` (Running · Rinsing, all four: [Pause] [Stop]), `WashingPaused` ([Resume] [Stop]), `Error` (No water: [Stop]), `PoweredOff`, `Pending` (Stopping…), `Failed`, `ViewOnly`, `Loading`, `Disconnected`, `LongText`, `Minimal` (name "Kettle", Stopped, [Start]).
+`KettleRunning` (Running · Heating, `["start", "stop"]`: [Start] disabled, [Stop]), `KettleStopped` ([Start], [Stop] disabled), `KettleStopOnly` (Stopped, `["stop"]`: [Stop] disabled), `WashingRunning` (Running · Rinsing, all four: [Start] disabled, [Pause] [Stop]), `WashingPaused` ([Resume], [Pause] disabled, [Stop]), `Error` (No water: only [Stop] enabled), `PoweredOff`, `Pending` (Stopping…), `Failed`, `ViewOnly`, `Loading`, `Disconnected`, `LongText`, `Minimal` (name "Kettle", Stopped, [Start]).
 
 ### Tokens
 
-As `PowerControl` and `OperationalStateValue`; `space/2` between buttons.
+As `PowerControl` and `OperationalStateValue`. Name and value share a row (`space/3` gap, at least `size/6` tall), as in OpenCloseControl. The buttons are joined into one bar, the same as OpenCloseControl (Figma: `actions` spacing −1): no gap, the outlines overlap by `border-width/thin` so the shared line is 1px, inner corners `radius/0`, outer corners `radius/8`. Styles: `.row` and `.actionsBar` in `ControlParts.module.css`.
 
 ### Accessibility
 
 - Buttons are a `role="group"` named by `name`.
-- When buttons swap (Start → Pause, Stop), focus could be lost. After a command is confirmed, focus moves to the first button of the new set, so keyboard users don't land on `<body>`.
+- After a command, the pressed button can become disabled (Start once Running), and a disabled button loses focus. Focus then moves to the first enabled button, so keyboard users don't land on `<body>`.
 - Message line: `role="status"`.
 
 ### Open questions
 
-- **Stopped, Stop-only kettle:** no buttons at all, only the value. Show a hint ("Start it on the kettle")? This draft shows nothing extra.
+- **Stopped, Stop-only kettle:** only a disabled [Stop]. Show a hint ("Start it on the kettle")? This draft shows nothing extra.
 
 ### Decisions (2026-11-08, owner)
 

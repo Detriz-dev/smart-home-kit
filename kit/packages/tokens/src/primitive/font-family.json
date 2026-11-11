@@ -2,19 +2,11 @@
   "font-family": {
     "sans": {
       "$type": "fontFamily",
-      "$value": [
-        "Space Grotesk",
-        "system-ui",
-        "sans-serif"
-      ]
+      "$value": ["Space Grotesk", "system-ui", "sans-serif"]
     },
     "mono": {
       "$type": "fontFamily",
-      "$value": [
-        "Space Mono",
-        "ui-monospace",
-        "monospace"
-      ]
+      "$value": ["Space Mono", "ui-monospace", "monospace"]
     }
   }
 }

@@ -1,13 +1,16 @@
 @layer detriz {
-  /* The bar: fills its parent's width, a thin line above it. Where it sits (fixed to the bottom)
-     is the app's layout. */
+  /* The bar: a floating, rounded surface with a thin outline and a soft shadow (like Card).
+     It fills its parent's width. Where it sits (16px from the screen's edges, above the
+     home indicator) is the app's layout. */
   .root {
     box-sizing: border-box;
     inline-size: 100%;
     min-block-size: var(--shk-size-16);
-    border-block-start: var(--shk-border-width-thin) solid
-      var(--shk-color-border-subtle);
+    padding: var(--shk-space-1);
+    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+    border-radius: var(--shk-radius-24);
     background: var(--shk-surface-default);
+    box-shadow: var(--shk-elevation-raised);
   }
 
   /* The items side by side, no bullets or indent. */
@@ -18,15 +21,17 @@
     list-style: none;
   }
 
-  /* Every item gets an equal share of the width, so 3, 4 or 5 look balanced. */
+  /* Every item gets an equal share of the width, so 3, 4 or 5 look balanced.
+     margin: 0 so a page's list styles (e.g. Docusaurus's `li + li` gap) can't push items out of line. */
   .item {
     display: flex;
     flex: 1 1 0;
     min-inline-size: 0;
+    margin: var(--shk-space-0);
   }
 
   /* The whole item is the tap target: icon above its label, centred. Grey by default.
-     position: relative so the current item's bar sits on its top edge. */
+     position: relative so the Badge can sit on the icon's corner. */
   .link {
     position: relative;
     box-sizing: border-box;
@@ -36,56 +41,51 @@
     align-items: center;
     gap: var(--shk-space-1);
     min-inline-size: 0;
-    padding-block: var(--shk-space-2);
-    padding-inline: var(--shk-space-1);
-    border-radius: var(--shk-radius-12);
+    padding: var(--shk-space-1);
+    border-radius: var(--shk-radius-16);
     color: var(--shk-color-text-secondary);
     text-decoration: none;
   }
 
-  /* Hover, keyboard focus and the current section: blue icon and label. */
-  .link:hover,
-  .link:focus-visible,
-  .link[aria-current="page"] {
-    color: var(--shk-action-current-fg);
-  }
-
-  /* Pressed: a light-blue background behind the whole item, grey icon and label. */
-  .link:active,
-  .link:active .indicator {
-    color: var(--shk-color-text-secondary);
-  }
-
-  .link:active {
-    background: var(--shk-action-subtle-bg-pressed);
-  }
-
-  /* The current section: a bar on the item's top edge, as wide as the icon's area
-     (16px + the 24px icon + 16px = 56px) and 4px tall. */
-  .link[aria-current="page"]::before {
-    content: "";
-    position: absolute;
-    inset-block-start: var(--shk-space-0);
-    inset-inline-start: 50%;
-    inline-size: calc(2 * var(--shk-space-4) + var(--shk-size-6));
-    block-size: var(--shk-border-width-thick);
-    border-radius: var(--shk-radius-4);
-    background: var(--shk-action-current-indicator);
-    transform: translateX(-50%);
-  }
-
-  /* The icon's area: 56 x 32px, so items line up whatever the icon. */
+  /* The pill behind the icon: 56 x 32px, so items line up whatever the icon.
+     No fill by default; hover, pressed and current fill it. */
   .indicator {
     display: flex;
     padding-block: var(--shk-space-1);
     padding-inline: var(--shk-space-4);
+    border-radius: var(--shk-radius-full);
+  }
+
+  /* Hover and keyboard focus on other sections: darker icon and label, never blue,
+     so they can't be mistaken for the current section. Hover also shows a grey pill. */
+  .link:hover,
+  .link:focus-visible {
+    color: var(--shk-color-text-primary);
+  }
+
+  .link:hover .indicator {
+    background: var(--shk-surface-sunken);
+  }
+
+  /* The current section: a light-blue pill, blue icon and blue label. */
+  .link[aria-current="page"] {
+    color: var(--shk-action-current-fg);
+  }
+
+  .link[aria-current="page"] .indicator {
+    background: var(--shk-action-current-bg);
+  }
+
+  /* Pressed (any section): a stronger light-blue pill. */
+  .link:active .indicator {
+    background: var(--shk-action-subtle-bg-pressed);
   }
 
   /* The Badge sits on the icon's top-right corner: the icon is 24px wide in the middle of the item,
-     so the Badge starts 4px left of the icon's right edge (50% + 12px - 8px), at the top of the icon's area. */
+     so the Badge starts 4px left of the icon's right edge (50% + 12px - 8px), at the top of the item. */
   .badge {
     position: absolute;
-    inset-block-start: var(--shk-space-2);
+    inset-block-start: var(--shk-space-0);
     inset-inline-start: calc(50% + var(--shk-space-1));
     display: flex;
   }
@@ -109,7 +109,7 @@
     font-weight: var(--shk-font-weight-medium);
   }
 
-  /* The keyboard focus ring around the whole item (12px corners), drawn inside it so the screen's edge
+  /* The keyboard focus ring around the whole item (16px corners), drawn inside it so the bar's edge
      can't cut it off. Dark blue (action-focus), the same ring as every other component. */
   .link:focus-visible {
     outline: var(--shk-border-width-medium) solid var(--shk-action-focus);

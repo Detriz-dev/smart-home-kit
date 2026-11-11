@@ -2,6 +2,7 @@ import { Icon } from "../../../icons/Icon";
 import { SPACE_TYPE_ICONS } from "../../../icons/purposeIcons";
 import { Badge } from "../../feedback/Badge";
 import { activeAlertsLabel } from "../../../utils/alertCountLabel";
+import { IconTile } from "../../layout/IconTile";
 import { ListItem } from "../../layout/ListItem";
 import type { SpaceListItemProps } from "./SpaceListItem.types";
 
@@ -33,7 +34,11 @@ export function SpaceListItem(props: SpaceListItemProps) {
 
   const parts = {
     // Decorative: the name says which Space it is.
-    start: <Icon name={SPACE_TYPE_ICONS[spaceType]} />,
+    start: (
+      <IconTile>
+        <Icon name={SPACE_TYPE_ICONS[spaceType]} />
+      </IconTile>
+    ),
     title: name,
     description,
     end:

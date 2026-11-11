@@ -1,10 +1,13 @@
 # Learning goal and objectives
 
 ### Learning goal
+
 Become an AI-native product designer: a product designer who builds AI applications end to end.
 
 ### Learning objectives
+
 **Engineering**
+
 - Understand elements of frontend engineering system design
 - Understand web technologies (HTML, CSS, JS, Type script, React, APIs)
 - Apply basic / fundamental of web technologies (write code / design API)
@@ -13,10 +16,12 @@ Become an AI-native product designer: a product designer who builds AI applicati
 - Apply basic SLDC with AI
 
 **Interface Design**
-- Incorporate AI to design process 
+
+- Incorporate AI to design process
 
 **Electronics**
-- Understand electronics fundamentals 
+
+- Understand electronics fundamentals
 - Create simple module (using Raspberry py)
 
 ### Assumptions

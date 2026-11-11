@@ -1,5 +1,6 @@
 import { useId } from "react";
 import { SensorLabel } from "../../context/SensorLabel";
+import { DeviceFaultStatus } from "../../status/DeviceFaultStatus";
 import { ReadingValue } from "../ReadingValue";
 import { UnitLabel } from "../UnitLabel";
 import styles from "./SensorReading.module.css";
@@ -13,6 +14,7 @@ export function SensorReading({
   isDisconnected = false,
   fractionDigits = 1,
   size = "lg",
+  faults = [],
 }: SensorReadingProps) {
   const labelId = useId();
   // Same rule as ReadingValue: no number is shown while loading or Disconnected.
@@ -44,6 +46,14 @@ export function SensorReading({
           <UnitLabel unit={unit} size={size} />
         </span>
       </span>
+      {/* The Faults about this Sensor, under its value. No Metric: the label above already names it. */}
+      {faults.length > 0 && (
+        <span className={styles.faults}>
+          {faults.map((faultCode) => (
+            <DeviceFaultStatus key={faultCode} faultCode={faultCode} />
+          ))}
+        </span>
+      )}
     </div>
   );
 }

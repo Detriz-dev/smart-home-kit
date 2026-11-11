@@ -4,13 +4,15 @@
 
 ### Purpose
 
-A small indicator that shows a Device has a Fault: a danger icon and a short message, for example "CO₂ sensor failure". It tells the user the hardware has a problem, so they don't mistake a broken Sensor for a normal value.
+A compact strip that shows a Device has a Fault: a danger icon tile and a short message, for example "CO₂ sensor failure". It looks like a small `AlertBanner` at the Critical level. It tells the user the hardware has a problem, so they don't mistake a broken Sensor for a normal value.
 
-It is used inside `DeviceCard`, and can sit anywhere a Device is shown.
+It sits inside what is faulty: inside `SensorReading` or `SensorState` when the Fault is about one Sensor (`DeviceCard` routes it there), and in the card body when it is about the whole Device. It can also sit anywhere a Device is shown (`DeviceListItem`, `SpaceCard`).
 
 It is read-only and takes props only. It shows the Fault, it doesn't fix it.
 
-Figma: `DeviceFaultStatus` component set in _DeTriz - Smart Home Kit_ (node `344:25`), page `DeviceFaultStatus`.
+Figma: `DeviceFaultStatus` component set in _DeTriz - Smart Home Kit_ (node `344:25`), page `DeviceFaultStatus`. In-context examples (DeviceCard with a Sensor Fault, a single-Sensor Device and a Device-wide Fault) are in the `DeviceFaultStatus – in context` frame (node `798:7006`) on the same page.
+
+Figma variant properties: `faultCode` (`sensor_failure`, `calibration_required`) and `message` (`full` = with a Metric, "CO₂ sensor failure"; `short` = no Metric, "Sensor failure"). `message` mirrors the `metric` prop: `SensorReading` and `SensorState` use `short` (their `hasFault` property), and so does a Device-wide Fault without a Metric. Set the instance to **Fill** width.
 
 ### Component in domain model context
 
@@ -36,19 +38,21 @@ What it does **not** show, and why:
 
 ### Visual idea
 
-| Question                        | Answer                                                                   |
-| ------------------------------- | ------------------------------------------------------------------------ |
-| What does it roughly look like? | One short line, like `DeviceConnectionStatus`: an icon, then the message |
-| Icons?                          | Yes, `error`, in the danger colour                                       |
-| Separators?                     | No                                                                       |
-| More than one layout or size?   | No, one of each                                                          |
-| Text and icon size              | Caption text, 16px icon (`xs`)                                           |
+| Question                        | Answer                                                                               |
+| ------------------------------- | ------------------------------------------------------------------------------------ |
+| What does it roughly look like? | A full-width strip, like a small Critical `AlertBanner`: icon tile, then the message |
+| Icons?                          | Yes, `error`, white on a 20px `status/danger/solid` tile                             |
+| Separators?                     | No                                                                                   |
+| More than one layout or size?   | No, one of each                                                                      |
+| Text and icon size              | Caption text, 16px icon (`xs`)                                                       |
 
 ```
-(!) CO₂ sensor failure
+┌──────────────────────────────┐
+│ [!] CO₂ sensor failure       │   light red fill, light red border
+└──────────────────────────────┘
 ```
 
-The icon comes first here, unlike the dot after `DeviceConnectionStatus`'s label, and aligns to the top, so it stays beside the first line when a long message wraps. The message wraps instead of truncating: a cut-off Fault message could hide what is wrong.
+The colours are AlertBanner's Critical level (2026-11-11), so a Fault reads as a hardware problem at a glance and matches the rest of the danger UI. The text is `color-text/primary`, like AlertBanner's title; the tile carries the colour. The strip fills its parent's width. The icon tile aligns to the top, so it stays beside the first line when a long message wraps. The message wraps instead of truncating: a cut-off Fault message could hide what is wrong.
 
 ### States
 
@@ -74,8 +78,8 @@ Target states:
 ### Anatomy
 
 ```
-root           <span role="status">   icon and message in one row
-├── icon       Icon name="error" size="xs"
+root           <span role="status">   icon tile and message in one row, full width
+├── icon       <span> tile with Icon name="error" size="xs"
 └── label      <span>                 the message
 ```
 
@@ -106,13 +110,17 @@ Stories: `SensorFailure`, `CalibrationRequired`, `LongText`, `Minimal`.
 
 ### Tokens
 
-| Part  | Property | Figma variable         | Code token                   | In `tokens.css`? |
-| ----- | -------- | ---------------------- | ---------------------------- | ---------------- |
-| root  | gap      | `space/1`              | `--shk-space-1` (4px)        | yes              |
-| root  | padding  | `space/0`              | `--shk-space-0` (0px)        | yes              |
-| icon  | colour   | `status/danger/fg`     | `--shk-status-danger-fg`     | yes              |
-| label | colour   | `status/danger/fg`     | `--shk-status-danger-fg`     | yes              |
-| label | text     | `typography/caption/*` | `--shk-typography-caption-*` | yes              |
+| Part  | Property | Figma variable                                     | Code token                                                     | In `tokens.css`? |
+| ----- | -------- | -------------------------------------------------- | -------------------------------------------------------------- | ---------------- |
+| root  | gap      | `space/2`                                          | `--shk-space-2` (8px)                                          | yes              |
+| root  | padding  | `space/1`, right `space/2`                         | `--shk-space-1`, `--shk-space-2`                               | yes              |
+| root  | fill     | `status/danger/bg-subtle`                          | `--shk-status-danger-bg-subtle`                                | yes              |
+| root  | border   | `status/danger/border-subtle`, `border-width/thin` | `--shk-status-danger-border-subtle`, `--shk-border-width-thin` | yes              |
+| root  | radius   | `radius/8`                                         | `--shk-radius-8`                                               | yes              |
+| icon  | tile     | `status/danger/solid`, `size/5`, `radius/4`        | `--shk-status-danger-solid`, `--shk-size-5`, `--shk-radius-4`  | yes              |
+| icon  | colour   | `color-text/inverse`                               | `--shk-color-text-inverse`                                     | yes              |
+| label | colour   | `color-text/primary`                               | `--shk-color-text-primary`                                     | yes              |
+| label | text     | `typography/caption/*`                             | `--shk-typography-caption-*`                                   | yes              |
 
 ### Accessibility
 
@@ -120,7 +128,7 @@ Stories: `SensorFailure`, `CalibrationRequired`, `LongText`, `Minimal`.
 - The icon has no label, because the text says the same thing.
 - Not colour alone: the icon shape and the text both carry the meaning.
 - `metric` needs the spoken name from `SensorLabel`, so a screen reader says "carbon dioxide sensor failure".
-- Contrast: red 800 (`#7f161f`) on white is 10.3:1, above the 4.5:1 needed for text.
+- Contrast: `color-text/primary` on `status/danger/bg-subtle` is well above the 4.5:1 needed for text. The white icon on the tile is decorative.
 
 ### Open questions
 

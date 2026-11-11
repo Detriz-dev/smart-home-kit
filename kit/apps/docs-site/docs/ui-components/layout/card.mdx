@@ -1,12 +1,12 @@
 ---
 sidebar_position: 4
 sidebar_label: Card
-description: The kit's card surface with an optional icon, title, header status and footer. Put anything inside, and make it clickable with href or onClick.
+description: The kit's raised card with an optional icon, title, header status and footer. Put anything inside, and make it clickable with href or onClick.
 ---
 
 # Card
 
-The white card surface the kit's cards share, with an optional icon and title, a spot at the right of the header and a footer. Put anything inside it. Use it to build your own cards that match the kit, like one card per room in a flat.
+The raised card the kit's cards share: a header strip in the page colour with an optional icon, title and a spot at the right, then a white body with your content and an optional footer, and a soft shadow. Put anything inside it. Use it to build your own cards that match the kit, like one card per room in a flat.
 
 ```jsx live
 <div style={{ maxWidth: 320 }}>
@@ -81,7 +81,7 @@ A card is static, a link or a button. Which one depends on the props you pass:
 | Link    | `title` + `href`     | opens `href`      |
 | Button  | `title` + `onClick`  | calls `onClick`   |
 
-A clickable card looks the same as a static one until you use it: it turns grey under the pointer and while pressed, and gets a blue ring when you reach it with the keyboard.
+A clickable card looks the same as a static one until you use it: it turns light blue under the pointer and blue while pressed, and gets a blue ring when you reach it with the keyboard.
 
 ### Static
 
@@ -227,15 +227,16 @@ The card shows no data of its own: `title` is plain text, and the content is up 
 
 ## Props
 
-| Prop        | Type         | Default | Description                                                                                                                                    |
-| ----------- | ------------ | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| `children`  | `ReactNode`  | –       | **Required.** The card's content, top to bottom, 12px apart.                                                                                   |
-| `icon`      | `IconName`   | –       | An icon before the title, 24px, e.g. `countertops` for a Kitchen. Decorative: screen readers skip it. Shown only with a `title`.               |
-| `title`     | `string`     | –       | The card's name, plain text, e.g. "Kitchen". One line, ends with "…" when too long. **Required** when `href` or `onClick` is set.              |
-| `headerEnd` | `ReactNode`  | –       | Shown at the right end of the header, e.g. a `DeviceConnectionStatus` when the card is about one Module. Never shrinks.                        |
-| `footer`    | `ReactNode`  | –       | Shown at the bottom in small grey text, e.g. "Updated 2 min ago". Components passed in keep their own styles.                                  |
-| `href`      | `string`     | –       | Makes the card a link to this address, e.g. `/spaces/kitchen`. Uses your router through [`LinkProvider`](/docs/get-started/links-and-routing). |
-| `onClick`   | `() => void` | –       | Makes the card a button. Called when the card is tapped, clicked, or activated with Enter or Space.                                            |
+| Prop        | Type           | Default | Description                                                                                                                                          |
+| ----------- | -------------- | ------- | ---------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `children`  | `ReactNode`    | –       | **Required.** The card's content, in the white body, top to bottom, 12px apart.                                                                      |
+| `icon`      | `IconName`     | –       | An icon before the title, 24px, e.g. `countertops` for a Kitchen. Decorative: screen readers skip it. Shown only with a `title`.                     |
+| `title`     | `string`       | –       | The card's name, plain text, e.g. "Kitchen". One line, ends with "…" when too long. **Required** when `href` or `onClick` is set.                    |
+| `headerEnd` | `ReactNode`    | –       | Shown at the right end of the header, e.g. a `DeviceConnectionStatus` when the card is about one Module. Never shrinks.                              |
+| `footer`    | `ReactNode`    | –       | Shown at the bottom in small grey text, e.g. "Updated 2 min ago". Components passed in keep their own styles.                                        |
+| `padding`   | `"md" \| "sm"` | `"md"`  | The space inside the white body: `md` is 16px, `sm` is 8px. Use `sm` when the content is a [`List`](./list.mdx), whose rows bring their own padding. |
+| `href`      | `string`       | –       | Makes the card a link to this address, e.g. `/spaces/kitchen`. Uses your router through [`LinkProvider`](/docs/get-started/links-and-routing).       |
+| `onClick`   | `() => void`   | –       | Makes the card a button. Called when the card is tapped, clicked, or activated with Enter or Space.                                                  |
 
 The types `CardProps`, `CardStaticProps`, `CardLinkProps` and `CardButtonProps` are exported too. `CardProps` is the union of the other three:
 
@@ -269,7 +270,7 @@ What you get without doing anything:
 - Keyboard focus shows a 2px ring around the whole card. Enter opens a link card; Enter and Space activate a button card.
 - The title is always shown as text, never as HTML. When it's shortened, the full title is in a tooltip.
 - The icon is decorative, so screen readers skip it and read only the title.
-- The grey hover fill is extra feedback only. The focus ring and pointer cursor don't rely on colour.
+- The blue hover fill is extra feedback only. The focus ring and pointer cursor don't rely on colour.
 
 What's up to you:
 
@@ -280,18 +281,20 @@ What's up to you:
 
 ## Styling
 
-| What                       | Token                                                                  |
-| -------------------------- | ---------------------------------------------------------------------- |
-| Background                 | `--shk-surface-default`                                                |
-| Border                     | `--shk-border-width-thin`, `--shk-color-border-subtle`                 |
-| Corner radius              | `--shk-radius-16`                                                      |
-| Padding                    | `--shk-space-4` (16px, including the border)                           |
-| Gap between parts          | `--shk-space-3` (12px)                                                 |
-| Title, icon                | `--shk-color-text-primary`, `--shk-typography-h4-*`                    |
-| Icon size                  | `--shk-size-6` (24px)                                                  |
-| Footer text                | `--shk-color-text-secondary`, `--shk-typography-caption-*`             |
-| Hover, pressed (clickable) | `--shk-action-secondary-bg-hover`, `--shk-action-secondary-bg-pressed` |
-| Focus ring (clickable)     | `--shk-action-focus`, `--shk-border-width-medium`                      |
+| What                       | Token                                                                                                              |
+| -------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Header strip               | `--shk-surface-page`, at least `--shk-size-11` tall, `--shk-space-1` above and below, `--shk-space-4` at the sides |
+| Body                       | `--shk-surface-default`, a `--shk-color-border-subtle` line on top                                                 |
+| Border                     | `--shk-border-width-thin`, `--shk-color-border-subtle`                                                             |
+| Shadow                     | `--shk-elevation-raised`                                                                                           |
+| Corner radius              | `--shk-radius-16`                                                                                                  |
+| Body padding               | `--shk-space-4` (16px), or `--shk-space-2` (8px) with `padding="sm"`                                               |
+| Gap between parts          | `--shk-space-3` (12px)                                                                                             |
+| Title, icon                | `--shk-color-text-primary`, `--shk-typography-body-*`, weight `--shk-card-title-font-weight` (semibold)            |
+| Icon size                  | `--shk-size-6` (24px)                                                                                              |
+| Footer text                | `--shk-color-text-secondary`, `--shk-typography-caption-*`                                                         |
+| Hover, pressed (clickable) | `--shk-action-secondary-bg-hover`, `--shk-action-secondary-bg-pressed`                                             |
+| Focus ring (clickable)     | `--shk-action-focus`, `--shk-border-width-medium`                                                                  |
 
 To change how it looks, set a [design token](../foundations/design-tokens.mdx) on a parent element. The change applies to everything inside that element, not only Card.
 

@@ -79,12 +79,12 @@ export function OpenCloseControl({
         />
       </div>
       {showsButtons && (
-        // A command the Device never allows isn't offered; one that doesn't fit the State is disabled.
+        // One joined bar of buttons. A command the Device never allows isn't offered; one that doesn't fit the State is disabled.
         <div
           role="group"
           aria-label={name}
           aria-describedby={message ? messageId : undefined}
-          className={styles.actions}
+          className={styles.actionsBar}
         >
           {COMMANDS.filter((c) => allowedCommands.includes(c.command)).map(
             (c) => (

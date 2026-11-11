@@ -1,0 +1,11 @@
+{
+  "badge": {
+    "count": {
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font-weight.bold}",
+        "$description": "Weight of the number in a Badge (caption size), so a small count is easy to read on its light fill."
+      }
+    }
+  }
+}

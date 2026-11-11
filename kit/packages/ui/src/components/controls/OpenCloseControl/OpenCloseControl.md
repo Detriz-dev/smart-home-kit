@@ -29,12 +29,12 @@ What it does **not** do: Position (ValueControl), Tilt (later, not in the MVP), 
 
 ### Visual idea
 
-| Question                        | Answer                                                                                                                                                |
-| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | Row 1: name on the left, the State pill on the right. Row 2: the buttons, left-aligned: [Open] [Stop] [Close]. Row 3: the message, when there is one. |
-| Buttons                         | `Button` `secondary`, text only (no icons needed). In this order: Open, Stop, Close, so Stop sits between the two directions.                         |
-| More than one size?             | One size.                                                                                                                                             |
-| When space is tight             | The name is shortened with `…`; the buttons wrap to a second line.                                                                                    |
+| Question                        | Answer                                                                                                                              |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | Row 1: name on the left, the State pill on the right. Row 2: the buttons joined into one bar, sharing the full width equally: [Open | Stop | Close]. Row 3: the message, when there is one. |
+| Buttons                         | `Button` `secondary`, text only (no icons needed). In this order: Open, Stop, Close, so Stop sits between the two directions.       |
+| More than one size?             | One size.                                                                                                                           |
+| When space is tight             | The name is shortened with `…`; the bar stays on one line and long labels wrap inside their button.                                 |
 
 ### States
 
@@ -86,12 +86,12 @@ OpenCloseControl          <div>
 | `Failed`                              | `state="closed"`, `command={{ command: "open", status: "failed" }}`  | ⚠ Couldn't open. …                    |
 | `NoStop`                              | `allowedCommands={["open", "close"]}`                                | No Stop button                        |
 | `ViewOnly`, `Loading`, `Disconnected` | as in PowerControl                                                   |                                       |
-| `LongText`                            | name "Bedroom blackout blinds by the balcony door", 200px            | Name `…`; buttons wrap                |
+| `LongText`                            | name "Bedroom blackout blinds by the balcony door", 200px            | Name `…`; labels wrap in the bar      |
 | `Minimal`                             | `name="Blinds"`, `state="open"`, `allowedCommands={["close"]}`       | Open; [Close]                         |
 
 ### Tokens
 
-As `PowerControl` (name, message, gaps); `space/2` between buttons; buttons and pill from `Button` and `StateValue`.
+As `PowerControl` (name, message, gaps); buttons and pill from `Button` and `StateValue`. The buttons are joined into one bar (Figma: `actions` spacing −1): no gap, the outlines overlap by `border-width/thin` so the shared line is 1px, inner corners `radius/0`, outer corners `radius/8`. Styles: `.actionsBar` in `ControlParts.module.css`, shared with `OperationalStateControl`, which looks the same.
 
 ### Accessibility
 

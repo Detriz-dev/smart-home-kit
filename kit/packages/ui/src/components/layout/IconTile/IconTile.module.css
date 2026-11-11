@@ -1,0 +1,16 @@
+@layer detriz {
+  /* A 32px box with the icon centred: the app background (surface-page) and a light outline,
+     8px corners. The border sits inside the 32px, like Figma's inside stroke. */
+  .root {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
+    inline-size: var(--shk-size-8);
+    block-size: var(--shk-size-8);
+    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+    border-radius: var(--shk-radius-8);
+    background: var(--shk-surface-page);
+  }
+}

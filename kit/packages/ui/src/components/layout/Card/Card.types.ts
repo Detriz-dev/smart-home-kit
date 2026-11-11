@@ -1,15 +1,20 @@
 import type { ReactNode } from "react";
 import type { IconName } from "../../../icons/Icon";
 
+/** The space inside the card's white body. `md` (16px) for content, `sm` (8px) for a `List`, whose rows bring their own padding. */
+export type CardPadding = "md" | "sm";
+
 /** The parts every card can have, clickable or not. */
 interface CardBaseProps {
   /** An icon before the title, 24px, e.g. `countertops` for a Kitchen. Decorative: screen readers skip it, the title says the name. Shown only with a `title`. */
   icon?: IconName;
   /** Shown at the right end of the header, e.g. a `DeviceConnectionStatus` when the card is about one Module. Never shrinks. */
   headerEnd?: ReactNode;
-  /** The card's content, top to bottom, 12px apart. */
+  /** The card's content, in the white body, top to bottom, 12px apart. */
   children: ReactNode;
-  /** Shown at the bottom in small grey text, e.g. "Updated 2 min ago". Components passed in keep their own styles. */
+  /** The space inside the white body. Defaults to `"md"` (16px). Use `"sm"` (8px) when the content is a `List`. */
+  padding?: CardPadding;
+  /** Shown at the bottom of the body in small grey text, e.g. "Updated 2 min ago". Components passed in keep their own styles. */
   footer?: ReactNode;
 }
 

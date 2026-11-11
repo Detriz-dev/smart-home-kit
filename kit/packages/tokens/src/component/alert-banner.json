@@ -1,0 +1,11 @@
+{
+  "alert-banner": {
+    "title": {
+      "font-weight": {
+        "$type": "fontWeight",
+        "$value": "{font-weight.bold}",
+        "$description": "Weight of the AlertBanner title (body size), so what happened stands out."
+      }
+    }
+  }
+}

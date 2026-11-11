@@ -41,13 +41,13 @@ What it does **not** show, and why:
 
 ### Visual idea
 
-| Question                        | Answer                                                                                               |
-| ------------------------------- | ---------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | A white card like `DeviceCard`: the Space name on top, Faults below it, then a list of rows.         |
-| Icons?                          | Only those of its parts (Metric icons, `refresh`, `link_off`, `error`, the status dot).              |
-| Separators?                     | No. Each row is a line: label on the left, value on the right.                                       |
-| More than one layout?           | No. One stacked layout. Rows never wrap the value.                                                   |
-| Text size                       | Name `h4`. Label `SensorLabel xs`. Value and Unit `sm`. Status: `DeviceConnectionStatus`'s own size. |
+| Question                        | Answer                                                                                                                                                                       |
+| ------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | A white card like `DeviceCard`: the Space name on top, Faults below it, then a list of rows.                                                                                 |
+| Icons?                          | Only those of its parts (Metric icons, `refresh`, `link_off`, `error`, the status dot).                                                                                      |
+| Separators?                     | No. Each row is a line: label on the left, value in a column on the right. The numbers of all Measured rows start on the same left edge, so they read as a column.           |
+| More than one layout?           | No. One stacked layout. Rows never wrap the value.                                                                                                                           |
+| Text size                       | Name `body` size, semibold (`Card` title; SpaceCard is built on `Card`, ADR 0003). Label `SensorLabel xs`. Value and Unit `sm`. Status: `DeviceConnectionStatus`'s own size. |
 
 ```
 ┌───────────────────────────────────┐
@@ -61,6 +61,8 @@ What it does **not** show, and why:
 ```
 
 The card fills the width its parent gives it. The Space name stays on one line and ends with "…", and the full name shows on hover (same as `DeviceCard`). The value, Unit and status never truncate. When a row has no room for the label and the reading side by side, the reading moves onto a line below the label (the row wraps). The `LongText` example needs this: "Illuminance · Stale · 100,000 lx" doesn't fit on one line in 240px.
+
+**Value column.** When the readings area is 240px or wider (a container query), the Measured rows share one grid: label | status | value. The value column is as wide as the widest value, and every value starts on its left edge, so the numbers line up. The Stale status has its own column, so it never pushes a number out of line. State rows (Open, Detected since…) keep their own full-width row, so a long state never widens the column or squeezes the labels. Below 240px, rows wrap as described above. In Figma: each `reading` frame in a variant has the same fixed width (the widest value) and is left-aligned.
 
 ### States
 
@@ -104,7 +106,7 @@ root               <div role="group">     card: background, outline, padding
 ├── faults         <ul>                   only when there are Faults
 │   └── fault      <li>                   DeviceFaultStatus
 └── readings       <ul>                   one row per Metric
-    └── row        <li>                   label left, reading right
+    └── row        <li>                   label left, [status] and reading in the value column
         ├── SensorLabel  size="xs"
         └── reading     <span>            status (only when Stale), value, Unit
             ├── DeviceConnectionStatus  status="stale"
@@ -154,7 +156,7 @@ As in `DeviceCard`, Figma draws the outline inside the card, so in CSS the paddi
 | root     | corner radius    | `radius/16`           | `--shk-radius-16`           |
 | root     | padding          | `space/4`             | `--shk-space-4`             |
 | root     | gap              | `space/3`             | `--shk-space-3`             |
-| name     | text             | `typography/h4/*`     | `--shk-typography-h4-*`     |
+| name     | text             | `typography/body/*`   | `--shk-typography-body-*`   |
 | name     | colour           | `color-text/primary`  | `--shk-color-text-primary`  |
 | faults   | gap              | `space/1`             | `--shk-space-1`             |
 | readings | gap              | `space/2`             | `--shk-space-2`             |

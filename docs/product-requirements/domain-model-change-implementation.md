@@ -45,7 +45,7 @@ flowchart LR
 
 Nothing is built until these are answered. Answers are recorded in the review's "Decisions" section.
 
-- [ ] Owner reviews `docs/domain-model-revew.md`.
+- [x] Owner reviews `docs/domain-model-revew.md` (2026-11-08).
 - [x] Decision 10: Operational State Error and Fault are independent, but linked when a Fault causes the Error (option C).
 - [x] Error reasons (decision 13): a fixed base list from the kit plus device-specific reasons with a label (option C). Later: consider the same pattern for Fault Codes.
 - [x] Power vs. Start (decision 14): devices that run a task use Operational State; Power only if the real device has a separate power button.
@@ -63,13 +63,13 @@ Nothing is built until these are answered. Answers are recorded in the review's 
 
 ## Step 1: Record the decision
 
-- [x] `docs/adr/0002-devices-and-capabilities.md`: new ADR (status: proposed) with the context, the options (hub vs. solo, Devices with Capabilities, one-off types), the decision, the two modelling principles (**follow the industry**, **keep it simple**) and the consequences.
+- [x] `docs/adr/0002-devices-and-capabilities.md`: new ADR (accepted 2026-11-08) with the context, the options (hub vs. solo, Devices with Capabilities, one-off types), the decision, the two modelling principles (**follow the industry**, **keep it simple**) and the consequences.
 - [x] `docs/product-requirements/roadmap.md`: Phase 2 goal, scope and deliverables include Controls; Phase 3 lists what was left out (Tilt, Cool and Auto, pairing screens, setup codes, account linking).
 - [x] `docs/product-requirements/phase-2-mvp-scope.md`: "sensor-only, never control" removed; new needs (Controls, Operational State); `Switch` note updated; decision 8 and the "Update 2026-11-08: Devices and Controls" section with new gaps; earlier decisions 1, 3 and 4 marked as updated.
 - [x] `docs/architecture/project-architecture.md`: Phase 2 description includes controlling Devices.
 - [x] `AGENTS.md`: the roadmap summary includes controlling Devices.
 - [x] `docs/domain-model-revew.md`: status updated and ADR linked.
-- [ ] Owner accepts ADR 0002 (change its status to "accepted").
+- [x] Owner accepted ADR 0002 (2026-11-08).
 - [ ] Optional: rename `domain-model-revew.md` to `domain-model-review.md` (typo) and fix the links in the ADR, the MVP scope and this plan.
 
 **Done when:** the ADR is accepted and the roadmap and MVP scope no longer say "never control".

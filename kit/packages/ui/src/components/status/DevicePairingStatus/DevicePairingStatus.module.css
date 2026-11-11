@@ -1,11 +1,11 @@
 @layer detriz {
-  /* Label then indicator in one row, as in Figma. */
+  /* Label then indicator in one row, as in Figma. No background of its own,
+     so it sits on whatever surface it's placed on (a card header, a list row). */
   .root {
     display: inline-flex;
     align-items: center;
     gap: var(--shk-space-1);
     padding: var(--shk-space-0) var(--shk-space-1);
-    background: var(--shk-surface-default);
     color: var(--shk-color-text-primary);
   }
 

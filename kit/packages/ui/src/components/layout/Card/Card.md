@@ -4,7 +4,7 @@
 
 ### Purpose
 
-The plain card surface (background, border, rounded corners, padding) with an optional header and footer. Anything can go inside it. Apps use it to make their own cards that match the kit, for example one card per room in a flat, and the kit's own cards (`SpaceCard`, `DeviceCard`) will be rebuilt on it so they all share one look.
+The raised card surface (header strip in `surface/page`, white body, border, rounded corners, soft shadow `elevation/raised`) with an optional header and footer (see [ADR 0003](/docs/adr/0003-raised-cards.md)). Anything can go inside it. Apps use it to make their own cards that match the kit, for example one card per room in a flat, and the kit's own cards (`SpaceCard`, `DeviceCard`) are built on it, so they all share one look.
 
 It adds no data of its own. It takes props only and never fetches anything.
 
@@ -28,14 +28,14 @@ What it does **not** do, and why:
 
 ### Visual idea
 
-| Question                        | Answer                                                                                                   |
-| ------------------------------- | -------------------------------------------------------------------------------------------------------- |
-| What does it roughly look like? | The white card that `SpaceCard` and `DeviceCard` already use: subtle border, 16px corners, 16px padding. |
-| Icons?                          | Optional, 24px (`md`), before the title, e.g. the Space Type icon on a room card.                        |
-| Separators?                     | No. The gap separates header, content and footer.                                                        |
-| More than one layout?           | One layout. Header, content and footer are each optional parts. A clickable card adds interaction looks. |
-| Clickable look                  | Same as static at rest. Grey fill on hover and press, blue focus ring from the keyboard, like `Button`.  |
-| Text size                       | Title `h4`, same as `SpaceCard` and `DeviceCard`. Everything else belongs to the content.                |
+| Question                        | Answer                                                                                                                                                                  |
+| ------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| What does it roughly look like? | The white card that `SpaceCard` and `DeviceCard` already use: subtle border, 16px corners, 16px padding.                                                                |
+| Icons?                          | Optional, 24px (`md`), before the title, e.g. the Space Type icon on a room card.                                                                                       |
+| Separators?                     | No. The gap separates header, content and footer.                                                                                                                       |
+| More than one layout?           | One layout. Header, content and footer are each optional parts. A clickable card adds interaction looks.                                                                |
+| Clickable look                  | Same as static at rest. Light blue fill on hover, blue on press, blue focus ring from the keyboard, like `Button`.                                                      |
+| Text size                       | Title `body` size (16px), semibold (`--shk-card-title-font-weight`), so it reads as a header while the Readings stand out more. Everything else belongs to the content. |
 
 ```
 ┌───────────────────────────────────┐
@@ -58,8 +58,8 @@ The card fills the width its parent gives it and grows in height with its conten
 | ------------------------------------ | ------------------------------------ | ------------------------------------------------------------- |
 | `isInteractive=false, state=default` | no `href`, no `onClick`              | The plain card.                                               |
 | `isInteractive=true, state=default`  | `href` or `onClick`                  | Same as the plain card, plus a pointer cursor.                |
-| `isInteractive=true, state=hover`    | `:hover`                             | Fill `action/secondary/bg-hover` (gray 100).                  |
-| `isInteractive=true, state=pressed`  | `:active`                            | Fill `action/secondary/bg-pressed` (gray 200).                |
+| `isInteractive=true, state=hover`    | `:hover`                             | Fill `action/secondary/bg-hover` (blue 100).                  |
+| `isInteractive=true, state=pressed`  | `:active`                            | Fill `action/secondary/bg-pressed` (blue 200).                |
 | `isInteractive=true, state=focus`    | `:focus-visible` on the title's link | 2px `action/focus` ring, 4px outside the card, like `Button`. |
 
 There is no disabled state: a card that leads nowhere is simply not clickable. These are the same tokens `Button` secondary uses, so everything clickable in the kit reacts the same way.
@@ -144,7 +144,7 @@ Figma's sample content and the stories use these:
 | header         | gap               | `--shk-space-2`                                                                |
 | title, icon    | color             | `--shk-color-text-primary`                                                     |
 | icon           | size              | `--shk-size-6` (24px, `Icon` size `md`)                                        |
-| title          | text style        | `--shk-typography-h4-*`                                                        |
+| title          | text style        | `--shk-typography-body-*`, weight `--shk-card-title-font-weight` (semibold)    |
 | footer         | color, text style | `--shk-color-text-secondary`, `--shk-typography-caption-*`                     |
 | root (hover)   | background        | `--shk-action-secondary-bg-hover`                                              |
 | root (pressed) | background        | `--shk-action-secondary-bg-pressed`                                            |

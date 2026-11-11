@@ -39,6 +39,6 @@ export interface DeviceCardProps {
   controls?: ReactNode;
   /** The Device's current Connection Status. */
   connectionStatus: ConnectionStatus;
-  /** The Device's current Faults, one per Fault Code. A Device can report several at once. Leave it out, or pass an empty list, when there are none. */
+  /** The Device's current Faults, one per Fault Code. A Device can report several at once. A Fault with the `metric` of a Sensor on the card shows inside that Sensor's card; the others show above the Sensors. Leave it out, or pass an empty list, when there are none. */
   faults?: DeviceFaultStatusProps[];
 }

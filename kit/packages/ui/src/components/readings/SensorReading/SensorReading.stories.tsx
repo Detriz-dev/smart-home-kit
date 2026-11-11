@@ -64,6 +64,16 @@ export const SizeMd: Story = {
   args: { size: "md" },
 };
 
+// A Fault about this Sensor: the short message under the value. The value still shows.
+export const Fault: Story = {
+  args: { size: "md", faults: ["sensor_failure"] },
+};
+
+// Both Fault Codes at once, one under the other.
+export const SeveralFaults: Story = {
+  args: { size: "md", faults: ["sensor_failure", "calibration_required"] },
+};
+
 // More example values from the spec.
 export const Humidity: Story = {
   args: {

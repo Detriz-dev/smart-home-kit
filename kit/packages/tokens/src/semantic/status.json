@@ -5,9 +5,19 @@
         "$type": "color",
         "$value": "{palette.gray.100}"
       },
+      "bg-subtle": {
+        "$type": "color",
+        "$value": "{palette.gray.50}",
+        "$description": "A lighter fill than bg, for large areas such as AlertBanner."
+      },
       "border": {
         "$type": "color",
         "$value": "{palette.gray.600}"
+      },
+      "border-subtle": {
+        "$type": "color",
+        "$value": "{palette.gray.200}",
+        "$description": "A light outline, paired with bg-subtle, e.g. AlertBanner."
       },
       "fg": {
         "$type": "color",
@@ -27,9 +37,19 @@
         "$type": "color",
         "$value": "{palette.blue.100}"
       },
+      "bg-subtle": {
+        "$type": "color",
+        "$value": "{palette.blue.50}",
+        "$description": "A lighter fill than bg, for large areas such as AlertBanner."
+      },
       "border": {
         "$type": "color",
         "$value": "{palette.blue.600}"
+      },
+      "border-subtle": {
+        "$type": "color",
+        "$value": "{palette.blue.200}",
+        "$description": "A light outline, paired with bg-subtle, e.g. AlertBanner."
       },
       "fg": {
         "$type": "color",
@@ -49,9 +69,19 @@
         "$type": "color",
         "$value": "{palette.green.100}"
       },
+      "bg-subtle": {
+        "$type": "color",
+        "$value": "{palette.green.50}",
+        "$description": "A lighter fill than bg, for large areas such as AlertBanner."
+      },
       "border": {
         "$type": "color",
         "$value": "{palette.green.600}"
+      },
+      "border-subtle": {
+        "$type": "color",
+        "$value": "{palette.green.200}",
+        "$description": "A light outline, paired with bg-subtle, e.g. AlertBanner."
       },
       "fg": {
         "$type": "color",
@@ -71,9 +101,19 @@
         "$type": "color",
         "$value": "{palette.amber.100}"
       },
+      "bg-subtle": {
+        "$type": "color",
+        "$value": "{palette.amber.50}",
+        "$description": "A lighter fill than bg, for large areas such as AlertBanner."
+      },
       "border": {
         "$type": "color",
         "$value": "{palette.amber.600}"
+      },
+      "border-subtle": {
+        "$type": "color",
+        "$value": "{palette.amber.200}",
+        "$description": "A light outline, paired with bg-subtle, e.g. AlertBanner."
       },
       "fg": {
         "$type": "color",
@@ -93,9 +133,19 @@
         "$type": "color",
         "$value": "{palette.red.100}"
       },
+      "bg-subtle": {
+        "$type": "color",
+        "$value": "{palette.red.50}",
+        "$description": "A lighter fill than bg, for large areas such as AlertBanner."
+      },
       "border": {
         "$type": "color",
         "$value": "{palette.red.600}"
+      },
+      "border-subtle": {
+        "$type": "color",
+        "$value": "{palette.red.200}",
+        "$description": "A light outline, paired with bg-subtle, e.g. AlertBanner."
       },
       "fg": {
         "$type": "color",

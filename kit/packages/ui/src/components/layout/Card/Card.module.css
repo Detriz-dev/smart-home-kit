@@ -1,29 +1,73 @@
 @layer detriz {
-  /* The surface: fills its parent and stacks header, children and footer.
-     Figma draws the outline inside the card, so the padding is one border width smaller (same as SpaceCard).
+  /* The raised card: a header strip in the app background colour, then a white body.
+     A soft shadow lifts it off the page (elevation-raised). The outline is drawn inside, like in Figma.
+     No overflow: hidden, so focus rings inside the card are never cut off; the body rounds its own corners instead.
      position: relative so a clickable card's stretched link covers exactly the card. */
   .root {
     position: relative;
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    gap: var(--shk-space-3);
     inline-size: 100%;
-    padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
     border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
     border-radius: var(--shk-radius-16);
-    background: var(--shk-surface-default);
+    background: var(--shk-surface-page);
+    box-shadow: var(--shk-elevation-raised);
   }
 
-  /* Title on the left, headerEnd on the right, always in one row. */
+  /* The header strip: icon, title and headerEnd in one row, at least 44px tall plus 4px above and below
+     (52px with an IconButton). 16px at the start, so the title lines up with the body's content. */
   .header {
     display: flex;
     align-items: center;
     gap: var(--shk-space-2);
+    box-sizing: content-box;
+    min-block-size: var(--shk-size-11);
     min-inline-size: 0;
+    padding-block: var(--shk-space-1);
+    padding-inline: var(--shk-space-4) var(--shk-space-4);
   }
 
-  /* The card name stays on one line and ends with "…". The full name is in the title attribute (shown on hover).
+  /* The white body: the content top to bottom, 12px apart. A thin line separates it from the header.
+     Its corners follow the card's, minus the outline, so the white never pokes out. */
+  .body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--shk-space-3);
+    min-inline-size: 0;
+    padding: var(--shk-space-4);
+    border-end-start-radius: calc(
+      var(--shk-radius-16) - var(--shk-border-width-thin)
+    );
+    border-end-end-radius: calc(
+      var(--shk-radius-16) - var(--shk-border-width-thin)
+    );
+    background: var(--shk-surface-default);
+  }
+
+  .header + .body {
+    border-block-start: var(--shk-border-width-thin) solid
+      var(--shk-color-border-subtle);
+  }
+
+  /* No header: the body is the whole card, so it rounds its top corners too. */
+  .body:first-child {
+    border-start-start-radius: calc(
+      var(--shk-radius-16) - var(--shk-border-width-thin)
+    );
+    border-start-end-radius: calc(
+      var(--shk-radius-16) - var(--shk-border-width-thin)
+    );
+  }
+
+  /* padding="sm": for a List, whose rows bring their own 12px at the sides. */
+  .body[data-padding="sm"] {
+    padding: var(--shk-space-2);
+  }
+
+  /* The card name: body size (16px), semibold (Card's own weight token), so it reads as a header
+     while the Readings still stand out more.
+     It stays on one line and ends with "…". The full name is in the title attribute (shown on hover).
      The same look whether it is a <span>, an <a> or a <button>, so the resets for links and buttons live here too. */
   .title {
     flex: 1 1 auto;
@@ -34,11 +78,11 @@
     border: none;
     background: none;
     color: var(--shk-color-text-primary);
-    font-family: var(--shk-typography-h4-font-family);
-    font-size: var(--shk-typography-h4-font-size);
-    font-weight: var(--shk-typography-h4-font-weight);
-    line-height: var(--shk-typography-h4-line-height);
-    letter-spacing: var(--shk-typography-h4-letter-spacing);
+    font-family: var(--shk-typography-body-font-family);
+    font-size: var(--shk-typography-body-font-size);
+    font-weight: var(--shk-card-title-font-weight);
+    line-height: var(--shk-typography-body-line-height);
+    letter-spacing: var(--shk-typography-body-letter-spacing);
     text-align: start;
     text-decoration: none;
     text-overflow: ellipsis;
@@ -87,12 +131,14 @@
     position: relative;
   }
 
-  /* Grey fill under the pointer and while pressed, the same tokens as Button secondary. */
-  .root[data-interactive]:hover {
+  /* Light blue under the pointer and blue while pressed, header and body together (the same tokens as Button secondary). */
+  .root[data-interactive]:hover,
+  .root[data-interactive]:hover .body {
     background: var(--shk-action-secondary-bg-hover);
   }
 
-  .root[data-interactive]:active {
+  .root[data-interactive]:active,
+  .root[data-interactive]:active .body {
     background: var(--shk-action-secondary-bg-pressed);
   }
 

@@ -6,7 +6,7 @@ description: Starts, pauses, resumes and stops the task of a Device that runs on
 
 # OperationalStateControl
 
-Starts, pauses, resumes and stops the task of a Device that runs one: a kettle boiling water, a washing machine running a programme. It shows what the Device is doing and only the buttons that make sense right now.
+Starts, pauses, resumes and stops the task of a Device that runs one: a kettle boiling water, a washing machine running a programme. It shows what the Device is doing and every command it allows; the ones that don't make sense right now are disabled.
 
 ```jsx live
 function WashingMachine() {
@@ -95,18 +95,20 @@ Don't use it for:
 
 ## Which buttons show
 
-Only commands the Device allows, and only those that fit what it's doing:
+Every command the Device allows is shown, always in the same order: [Start] [Pause] [Stop]. The buttons don't move as the task runs. While Paused, Start becomes Resume. A command that doesn't fit what the Device is doing is disabled:
 
-| Operational State | Buttons (if allowed) |
-| ----------------- | -------------------- |
-| Stopped           | Start                |
-| Running           | Pause, Stop          |
-| Paused            | Resume, Stop         |
-| Error             | Stop                 |
+| Operational State | Enabled (if allowed) | Disabled     |
+| ----------------- | -------------------- | ------------ |
+| Stopped           | Start                | Pause, Stop  |
+| Running           | Pause, Stop          | Start        |
+| Paused            | Resume, Stop         | Pause        |
+| Error             | Stop                 | Start, Pause |
+
+A command the Device doesn't allow isn't shown at all.
 
 ```jsx live
 <StackLayout gap="md">
-  {/* A kettle that allows Start and Stop, while Running: only Stop */}
+  {/* A kettle that allows Start and Stop, while Running: Start is disabled */}
   <OperationalStateControl
     name="Kettle"
     state="running"
@@ -114,14 +116,14 @@ Only commands the Device allows, and only those that fit what it's doing:
     allowedCommands={["start", "stop"]}
     onCommand={() => {}}
   />
-  {/* A kettle that can only be stopped, while Stopped: no buttons */}
+  {/* A kettle that can only be stopped, while Stopped: one disabled Stop */}
   <OperationalStateControl
     name="Kettle"
     state="stopped"
     allowedCommands={["stop"]}
     onCommand={() => {}}
   />
-  {/* Error: Stop */}
+  {/* Error: only Stop is enabled */}
   <OperationalStateControl
     name="Washing machine"
     state="error"
@@ -132,7 +134,7 @@ Only commands the Device allows, and only those that fit what it's doing:
 </StackLayout>
 ```
 
-**Power Off.** If the Device also has a [`PowerControl`](./power-control.mdx) and its Power is Off, pass `isPoweredOff`. Start isn't offered, and "Turn the power on to start" shows instead.
+**Power Off.** If the Device also has a [`PowerControl`](./power-control.mdx) and its Power is Off, pass `isPoweredOff`. Start is disabled, and "Turn the power on to start" shows under the buttons.
 
 ## States
 
@@ -141,7 +143,7 @@ Only commands the Device allows, and only those that fit what it's doing:
 | `command.status="pending"` | Buttons disabled; "Starting…", "Pausing…", "Resuming…" or "Stopping…" |
 | `command.status="failed"`  | Buttons usable; "Couldn't start. The device didn't respond."          |
 | `isViewOnly`               | Buttons disabled; "View only"                                         |
-| `isPoweredOff` (Stopped)   | No Start; "Turn the power on to start"                                |
+| `isPoweredOff` (Stopped)   | Buttons disabled; "Turn the power on to start"                        |
 | `state={null}`             | Loading icon, no buttons                                              |
 | `isDisconnected`           | Disconnected icon, no buttons                                         |
 
@@ -198,7 +200,7 @@ A command is **Confirmed** when the Device reports the matching State: Running f
 | `allowedCommands` | `("start" \| "pause" \| "resume" \| "stop")[]`          | –       | **Required.** The commands the Device accepts. A command not listed isn't shown.      |
 | `onCommand`       | `(command) => void`                                     | –       | **Required.** Called when the user presses a button. Your app sends the command.      |
 | `command`         | `OperationalStateControlCommand`                        | none    | The last command and its Command Status: `{ command, status, failureMessage? }`.      |
-| `isPoweredOff`    | `boolean`                                               | `false` | The Device's Power Control is Off: Start isn't offered.                               |
+| `isPoweredOff`    | `boolean`                                               | `false` | The Device's Power Control is Off: Start is disabled.                                 |
 | `isDisconnected`  | `boolean`                                               | `false` | The Device's Connection Status is Disconnected.                                       |
 | `isViewOnly`      | `boolean`                                               | `false` | The Account can only view this Site. Disables the buttons.                            |
 
@@ -206,7 +208,7 @@ The types `OperationalStateControlProps` and `OperationalStateControlCommand` ar
 
 ## Long text
 
-The name is shortened with "…". The Error Reason wraps under the pill, and the buttons wrap.
+The name is shortened with "…". When the row is too narrow, the State moves under the name, and the Error Reason wraps under the pill. The buttons stay in one bar and long labels wrap inside it.
 
 ```jsx live
 <div style={{ maxWidth: 200 }}>
@@ -228,7 +230,7 @@ The name is shortened with "…". The Error Reason wraps under the pill, and the
 What you get without doing anything:
 
 - The buttons are a group named by `name`: "Kettle, group, Stop, button".
-- **Focus isn't lost when the buttons change.** After Start, the Start button is replaced by Pause and Stop; keyboard focus moves to the first new button.
+- **Focus isn't lost when a button gets disabled.** After Start, the Start button is disabled; keyboard focus moves to the first enabled button (Pause).
 - Pending and Failed messages are announced.
 - While a command is Pending, every button is disabled, so a second command can't be sent.
 
@@ -238,11 +240,11 @@ What's up to you:
 
 ## Styling
 
-| What          | Token                                                                           |
-| ------------- | ------------------------------------------------------------------------------- |
-| State         | from [`OperationalStateValue`](../readings/operational-state-value.mdx#styling) |
-| Buttons       | from [`Button`](./button.mdx) (`secondary`)                                     |
-| Name, message | as in [`PowerControl`](./power-control.mdx#styling)                             |
+| What          | Token                                                                                                                             |
+| ------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| State         | from [`OperationalStateValue`](../readings/operational-state-value.mdx#styling)                                                   |
+| Buttons       | from [`Button`](./button.mdx) (`secondary`), joined into one bar: no gaps, outer corners `--shk-radius-8`, inner `--shk-radius-0` |
+| Name, message | as in [`PowerControl`](./power-control.mdx#styling)                                                                               |
 
 ## Related components
 

@@ -2,7 +2,7 @@
 title: Elevation
 sidebar_position: 6
 sidebar_label: Elevation
-description: How the kit shows depth without shadows, with three surface colors and a thin outline, and what will change when floating components arrive.
+description: "How the kit shows depth: raised cards with a soft shadow and a thin outline on the page, flat messages, and what will change when floating components arrive."
 keywords:
   - elevation
   - shadows
@@ -11,17 +11,16 @@ keywords:
   - high contrast
 ---
 
-The kit is **flat**: none of its components has a shadow. Depth comes from three surface colors and a thin outline. A card is a white surface with a 1px outline, sitting on a light gray page. That's the whole system for now, and it has no tokens of its own: it uses the [surface and border colors](./colors.mdx#surfaces).
+Cards are **raised**: they sit a little above the page, with a soft shadow and a thin outline. Everything else (messages, banners, statuses) stays flat, in the page.
 
 ## The layers
 
-| Layer      | Fill                              | Outline                                               | Used for                                                                                      |
-| ---------- | --------------------------------- | ----------------------------------------------------- | --------------------------------------------------------------------------------------------- |
-| **Page**   | `--shk-surface-page` (gray 50)    | None                                                  | The screen behind everything                                                                  |
-| **Card**   | `--shk-surface-default` (white)   | `--shk-border-width-thin` `--shk-color-border-subtle` | `SensorReading`, `DeviceCard`, `SpaceCard`, `InlineMessage`                                   |
-| **Sunken** | `--shk-surface-sunken` (gray 100) | None                                                  | An area set into a card, like a code sample or an empty slot. Not used by the components yet. |
-
-Cards sit **in** the page, not above it. They don't move, overlap or cover each other, so they don't need a shadow to show what's on top.
+| Layer      | Fill                              | Outline                                               | Shadow                   | Used for                                                                 |
+| ---------- | --------------------------------- | ----------------------------------------------------- | ------------------------ | ------------------------------------------------------------------------ |
+| **Page**   | `--shk-surface-page` (gray 50)    | None                                                  | None                     | The screen behind everything, and the header strip of a card             |
+| **Card**   | `--shk-surface-default` (white)   | `--shk-border-width-thin` `--shk-color-border-subtle` | `--shk-elevation-raised` | `Card`, `DeviceCard`, `SpaceCard`                                        |
+| **Flat**   | `--shk-surface-default` or a tint | `--shk-border-width-thin`                             | None                     | `SensorReading`, `InlineMessage`, `AlertBanner`, `EmptyState`            |
+| **Sunken** | `--shk-surface-sunken` (gray 100) | None                                                  | None                     | An area set into a card, like a code sample. Not used by the components. |
 
 ```jsx live
 <div
@@ -31,59 +30,51 @@ Cards sit **in** the page, not above it. They don't move, overlap or cover each 
     borderRadius: "var(--shk-radius-16)",
   }}
 >
-  <StackLayout gap="md">
+  <Card
+    title="Climate Module"
+    headerEnd={<DeviceConnectionStatus status="connected" />}
+  >
     <SensorReading metric="temperature" value={22.4} unit="celsius" size="md" />
-    <div
-      style={{
-        background: "var(--shk-surface-sunken)",
-        padding: "var(--shk-space-4)",
-        borderRadius: "var(--shk-radius-12)",
-        color: "var(--shk-color-text-secondary)",
-      }}
-    >
-      Sunken: an area set into the page or a card.
-    </div>
-  </StackLayout>
+  </Card>
 </div>
 ```
 
-## Why outlines, not shadows
+## The shadow
 
-- **They survive high contrast.** In Windows High Contrast mode, the browser removes shadows but keeps borders. A card with only a shadow would disappear into the page; a card with an outline keeps its edge.
-- **They say "in the page".** A shadow says "this floats above". Cards, messages and statuses are part of the page, so they get an outline.
-- **They match Figma.** A 1px inside stroke in Figma and a 1px border in code look the same. See [Borders and padding](./shape.mdx#borders-and-padding).
+| Token                    | Value                                |
+| ------------------------ | ------------------------------------ |
+| `--shk-elevation-raised` | `0 1px 4px`, gray 950 at 12% opacity |
+
+It is soft on purpose: it lifts the card just enough to separate it from the page. Keep the 1px outline next to it. In Windows High Contrast mode the browser removes shadows but keeps borders, so the outline is what keeps the card's edge.
 
 ## Building your own surfaces
 
-Make your own cards the same way, so they sit next to the kit's:
+The easiest way is to use [`Card`](../layout/card.mdx): it has the header strip, the white body and the shadow. If you need your own surface, use the same tokens:
 
 ```css title="src/styles/space-summary.css"
 .space-summary {
   background: var(--shk-surface-default);
   border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
   border-radius: var(--shk-radius-16);
+  box-shadow: var(--shk-elevation-raised);
   padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
 }
 ```
 
-Don't add a `box-shadow` to the kit's components. If something must look more important, use [`InlineMessage`](../feedback/inline-message.mdx) or a [status color](./colors.mdx#status) instead.
+Give the shadow room: don't put cards in a parent with `overflow: hidden` right at their edge, or the shadow is cut off.
 
 ## In Figma
 
-The Figma library has no shadow effect styles. Build a card as a frame with:
+Build a card as a frame with:
 
-- **Fill:** `surface/default`
+- **Fill:** `surface/default` (and `surface/page` for a header strip)
 - **Stroke:** `color-border/subtle`, **Inside**, weight `border-width/thin`
-- **Corner radius:** the [`radius`](./shape.mdx#corner-radius) of the kit's card closest in size
+- **Effect:** the effect style `elevation/raised`
+- **Corner radius:** `radius/16`
 
 ## Floating layers: not in the kit yet
 
-Some components will float above the page: a toast, a dialog, a menu. They need what the kit doesn't have yet:
-
-- **Shadow tokens**, to show they are on top.
-- **Layer order** (z-index) tokens, so a dialog always covers a toast, and a toast covers the page.
-
-They will be added together with the first floating component, so their values come from a real use. Until then, if you build a floating element yourself, keep the 1px outline as well as your shadow, so it still has an edge in high contrast mode.
+Some components will float above the page: a toast, a dialog, a menu. They will need a stronger shadow and **layer order** (z-index) tokens, so a dialog always covers a toast. They will be added with the first floating component.
 
 ## Related
 

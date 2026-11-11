@@ -29,7 +29,7 @@ A Sensor measures exactly one Metric, so the Metric name is enough to name the S
 What it does **not** show, and why:
 
 - **Connection Status as a label** ("Connected", "Stale"). A Sensor is not a Device and has no status of its own. The status belongs to the Module, and `DeviceCard` shows it once for all its Sensors. SensorReading only reacts to **Disconnected**, through `ReadingValue` (the value is hidden).
-- **Fault.** Also a Module field. `DeviceCard` shows each Fault once with `DeviceFaultStatus`, and the message names the affected Sensor.
+- **A Device-wide Fault.** A Fault with no Metric is about the whole Device, so `DeviceCard` shows it in its body. A Fault about this Sensor does show here: see `faults` below.
 - **Module, Space, Site.** Where the Sensor sits is `LocationPath` or the `DeviceCard` header.
 - **Time of the Reading** ("Updated 5 s ago"). Context, not part of this card yet.
 
@@ -82,7 +82,7 @@ Target states:
 | Connected    | yes      | The `default` state.                                                                            |
 | Stale        | no       | The value stays as it is. The Module's `DeviceConnectionStatus` (in `DeviceCard`) says "Stale". |
 | Disconnected | yes      | The `disconnected` state. The value is **hidden**, as the glossary says.                        |
-| Fault        | no       | A Module field, shown by `DeviceFaultStatus` in `DeviceCard`.                                   |
+| Fault        | yes      | `faults`: one `DeviceFaultStatus` per Fault about this Sensor, under the value, short message.  |
 
 **Connecting** has no state of its own. Same rule as `ReadingValue`: the parent passes the last value to keep showing it, or `null` to show `loading`.
 
@@ -148,7 +148,11 @@ From the glossary examples. Figma sample text and the stories use these. Stories
 | `LongText` story | `illuminance` | 100000                 | `lux`        | 0              | `md` | Illuminance · 100,000 lx, in a 160px container (a `DeviceCard` column) |
 | `Minimal` story  | `illuminance` | 0                      | `lux`        | 0              | `md` | Illuminance · 0 lx                                                     |
 
-Stories: `Default`, `Loading`, `Disconnected`, `SizeMd`, `LongText`, `Minimal`.
+Stories: `Default`, `Loading`, `Disconnected`, `SizeMd`, `Fault`, `SeveralFaults`, `LongText`, `Minimal`.
+
+Figma: boolean property `hasFault` (off by default) shows an exposed `DeviceFaultStatus` (`message=short`) under the value; change its `faultCode` there.
+
+`faults` (2026-11-11): a Fault is shown inside what is faulty. The parent (`DeviceCard`) passes the Fault Codes of the Faults whose Metric is this Sensor's. `DeviceFaultStatus` gets no `metric` here, so the message is short ("Sensor failure"): the label above already names the Sensor. The value stays visible.
 
 ### Tokens
 

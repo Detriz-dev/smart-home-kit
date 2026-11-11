@@ -26,11 +26,11 @@ Every color on this page is a Figma variable and a CSS variable with the same na
 
 A semantic color points to a palette color, and a component uses the semantic color:
 
-| Palette    | Semantic color                                    | Used by                         |
-| ---------- | ------------------------------------------------- | ------------------------------- |
-| `gray/900` | `color-text/primary` (`--shk-color-text-primary`) | The value in `ReadingValue`     |
-| `red/100`  | `status/danger/bg` (`--shk-status-danger-bg`)     | The fill of `DeviceFaultStatus` |
-| `blue/600` | `action/primary/bg` (`--shk-action-primary-bg`)   | The fill of a primary `Button`  |
+| Palette    | Semantic color                                    | Used by                        |
+| ---------- | ------------------------------------------------- | ------------------------------ |
+| `gray/900` | `color-text/primary` (`--shk-color-text-primary`) | The value in `ReadingValue`    |
+| `red/100`  | `status/danger/bg` (`--shk-status-danger-bg`)     | The fill of a Critical `Badge` |
+| `blue/600` | `action/primary/bg` (`--shk-action-primary-bg`)   | The fill of a primary `Button` |
 
 So to change what "main text" looks like everywhere, you point one semantic color at another palette color. Components never need to change.
 

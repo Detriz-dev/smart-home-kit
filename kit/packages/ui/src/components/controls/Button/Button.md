@@ -27,28 +27,38 @@ It is not a Device command.
 | What it looks like | A rounded rectangle (radius 8), 44px tall, with centred text and 16px padding at the sides. |
 | Icons?             | No. Text only for now.                                                                      |
 | Primary            | Blue fill, white text. The one main action, e.g. "Send prompt".                             |
-| Secondary          | White fill, grey outline, dark text. Every other action, and clarifying answers.            |
+| Secondary          | White fill, light grey outline, dark text. Every other action, and clarifying answers.      |
 | Disabled           | Light grey fill, grey text, for both variants. Clicks are ignored.                          |
 | Focus              | A 2px blue ring, 4px away from the button, when reached with the keyboard (like `Switch`).  |
-| Text size          | Label text style (14px, medium).                                                            |
+| Text size          | Label text style (14px), but bold.                                                          |
 | Width              | As wide as its text. Long text wraps onto a second line instead of being cut off.           |
 
 ### Variants and states
 
 **Variants** (prop `variant`):
 
-| `variant`   | Use for                                                  |
-| ----------- | -------------------------------------------------------- |
-| `primary`   | The single main action in a place: "Send prompt".        |
-| `secondary` | Every other action: "Retry", "Undo", clarifying answers. |
+| `variant`   | Use for                                                                                                 |
+| ----------- | ------------------------------------------------------------------------------------------------------- |
+| `primary`   | The single main action in a place: "Send prompt".                                                       |
+| `secondary` | Every other action: "Retry", "Undo", clarifying answers.                                                |
+| `danger`    | An action that removes or breaks something: "Unpair Module". Outline only (white, red border and text). |
+
+**Sizes** (Figma property `size`, code prop `size`):
+
+| `size` | Height                | Padding (top/bottom, sides) | Use for                                                           |
+| ------ | --------------------- | --------------------------- | ----------------------------------------------------------------- |
+| `md`   | 44px, `size/11` (min) | `space/2`, `space/4`        | Default. Every button on its own.                                 |
+| `sm`   | 32px, `size/8` (min)  | `space/1`, `space/3`        | Inside compact components, e.g. the "View" action in AlertBanner. |
+
+**Icon** (code prop `icon`, Figma boolean `hasIcon` + instance swap `icon`): an optional icon on the left of the text, from the kit's icon set. 20px (`sm`) on a `md` button with an 8px gap (`space/2`), 16px (`xs`) on a `sm` button with a 4px gap (`space/1`). It takes the text's colour. Decorative.
 
 **Interaction states** (Figma property `state`):
 
 | `state`    | How it's set in code | Primary                    | Secondary                                      |
 | ---------- | -------------------- | -------------------------- | ---------------------------------------------- |
-| `default`  | —                    | Blue fill                  | White fill, grey outline                       |
-| `hover`    | CSS `:hover`         | Darker blue fill           | Light grey fill                                |
-| `pressed`  | CSS `:active`        | Darkest blue fill          | Grey fill                                      |
+| `default`  | —                    | Blue fill                  | White fill, light grey outline                 |
+| `hover`    | CSS `:hover`         | Darker blue fill           | Light blue fill                                |
+| `pressed`  | CSS `:active`        | Darkest blue fill          | Blue fill                                      |
 | `focus`    | CSS `:focus-visible` | Default look + blue ring   | Default look + blue ring                       |
 | `disabled` | `isDisabled` prop    | Light grey fill, grey text | Light grey fill, light grey outline, grey text |
 
@@ -78,6 +88,9 @@ The decisions behind them:
 
 - `children` is the text, not a `label` prop, so it reads like HTML. Figma calls it `label`, because designers read that more easily.
 - `variant` defaults to `secondary`: most buttons in a place are not the main action.
+- `icon` takes an `IconName`, like Card's `icon`, so sizes and colours stay consistent. No `iconPosition`: the icon always sits on the left.
+- `danger` is outline only. A solid red button is kept for a later "Are you sure?" step, if one is needed.
+- `size` defaults to `md` (44px, easy to tap). `sm` (32px) is for compact components only, where the row around it is already a large target.
 - Only `disabled` has a prop. Hover, pressed and focus come from the browser.
 - No `type` prop: always `type="button"` (see Open questions).
 
@@ -96,30 +109,34 @@ The decisions behind them:
 
 New semantic tokens (collection `action`, file `kit/packages/tokens/src/semantic/action.json`):
 
-| Part                    | Token                                                                                    | Points to          |
-| ----------------------- | ---------------------------------------------------------------------------------------- | ------------------ |
-| Primary fill            | `--shk-action-primary-bg`                                                                | `palette.blue.600` |
-| Primary fill, hover     | `--shk-action-primary-bg-hover`                                                          | `palette.blue.700` |
-| Primary fill, pressed   | `--shk-action-primary-bg-pressed`                                                        | `palette.blue.800` |
-| Primary text            | `--shk-action-primary-fg`                                                                | `palette.white`    |
-| Secondary fill          | `--shk-action-secondary-bg`                                                              | `palette.white`    |
-| Secondary fill, hover   | `--shk-action-secondary-bg-hover`                                                        | `palette.gray.100` |
-| Secondary fill, pressed | `--shk-action-secondary-bg-pressed`                                                      | `palette.gray.200` |
-| Secondary outline       | `--shk-action-secondary-border`                                                          | `palette.gray.600` |
-| Secondary text          | `--shk-action-secondary-fg`                                                              | `palette.gray.900` |
-| Disabled fill           | `--shk-action-disabled-bg`                                                               | `palette.gray.100` |
-| Disabled outline        | `--shk-action-disabled-border` (secondary only; primary uses `--shk-action-disabled-bg`) | `palette.gray.200` |
-| Disabled text           | `--shk-action-disabled-fg`                                                               | `palette.gray.400` |
-| Focus ring              | `--shk-action-focus`                                                                     | `palette.blue.600` |
+| Part                    | Token                                                                                    | Points to                                            |
+| ----------------------- | ---------------------------------------------------------------------------------------- | ---------------------------------------------------- |
+| Primary fill            | `--shk-action-primary-bg`                                                                | `palette.blue.600`                                   |
+| Primary fill, hover     | `--shk-action-primary-bg-hover`                                                          | `palette.blue.700`                                   |
+| Primary fill, pressed   | `--shk-action-primary-bg-pressed`                                                        | `palette.blue.800`                                   |
+| Primary text            | `--shk-action-primary-fg`                                                                | `palette.white`                                      |
+| Secondary fill          | `--shk-action-secondary-bg`                                                              | `palette.white`                                      |
+| Secondary fill, hover   | `--shk-action-secondary-bg-hover`                                                        | `palette.blue.100`                                   |
+| Secondary fill, pressed | `--shk-action-secondary-bg-pressed`                                                      | `palette.blue.200`                                   |
+| Secondary outline       | `--shk-action-secondary-border`                                                          | `palette.gray.200`                                   |
+| Secondary text          | `--shk-action-secondary-fg`                                                              | `palette.gray.900`                                   |
+| Disabled fill           | `--shk-action-disabled-bg`                                                               | `palette.gray.100`                                   |
+| Disabled outline        | `--shk-action-disabled-border` (secondary only; primary uses `--shk-action-disabled-bg`) | `palette.gray.200`                                   |
+| Disabled text           | `--shk-action-disabled-fg`                                                               | `palette.gray.400`                                   |
+| Focus ring              | `--shk-action-focus`                                                                     | `palette.blue.600`                                   |
+| Danger fill             | `--shk-action-danger-bg`, `-bg-hover`, `-bg-pressed`                                     | `palette.white`, `palette.red.50`, `palette.red.100` |
+| Danger outline, text    | `--shk-action-danger-border`, `--shk-action-danger-fg`                                   | `palette.red.600`, `palette.red.800`                 |
 
-Existing tokens: `--shk-size-11` (height), `--shk-space-4` (side padding), `--shk-space-2` (top and bottom padding when the text wraps), `--shk-radius-8`, `--shk-border-width-thin` (outline), `--shk-border-width-medium` (focus ring width), `--shk-space-1` (focus ring offset), `--shk-typography-label-*`.
+Existing tokens: `--shk-size-11` (height), `--shk-space-4` (side padding), `--shk-space-2` (top and bottom padding when the text wraps), `--shk-radius-8`, `--shk-border-width-thin` (outline), `--shk-border-width-medium` (focus ring width), `--shk-space-1` (focus ring offset), `--shk-typography-label-*` (except the weight).
+
+Component token (file `kit/packages/tokens/src/component/button.json`): `--shk-button-label-font-weight` → `font-weight.bold` (700). Grey is only for disabled; every other state uses the primary blue.
 
 ### Accessibility
 
 - A real `<button type="button">`: Tab reaches it, Enter and Space activate it.
 - Disabled uses the native `disabled` attribute, so it leaves the tab order and screen readers say "dimmed" or "unavailable".
 - The focus ring shows only for keyboard focus (`:focus-visible`), and has at least 3:1 contrast against the page.
-- White text on `blue.600` is about 4.7:1. Dark text on white and on `gray.200` is above 4.5:1.
+- White text on `blue.600` is about 4.7:1. Dark text on white, `blue.100` and `blue.200` is above 4.5:1. The light grey outline is decoration: the button is also marked by its text and 44px size.
 - Primary and secondary differ by fill and outline, not by hue alone.
 - At least 44px tall, so it's easy to hit on touch screens.
 

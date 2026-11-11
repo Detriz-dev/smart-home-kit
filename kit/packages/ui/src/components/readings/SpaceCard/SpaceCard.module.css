@@ -1,40 +1,5 @@
 @layer detriz {
-  /* The card fills its parent and stacks the name, the Faults and the rows.
-     Figma draws the outline inside the card, so the padding is one border width smaller (same as DeviceCard). */
-  .root {
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    gap: var(--shk-space-3);
-    inline-size: 100%;
-    padding: calc(var(--shk-space-4) - var(--shk-border-width-thin));
-    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
-    border-radius: var(--shk-radius-16);
-    background: var(--shk-surface-default);
-  }
-
-  /* The name on the left, the Badge of Active Alerts on the right. The name shrinks, the Badge never does. */
-  .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--shk-space-2);
-    min-inline-size: 0;
-  }
-
-  /* The Space name stays on one line and ends with "…". The full name is in the title (shown on hover). */
-  .name {
-    overflow: hidden;
-    min-inline-size: 0;
-    color: var(--shk-color-text-primary);
-    font-family: var(--shk-typography-h4-font-family);
-    font-size: var(--shk-typography-h4-font-size);
-    font-weight: var(--shk-typography-h4-font-weight);
-    line-height: var(--shk-typography-h4-line-height);
-    letter-spacing: var(--shk-typography-h4-letter-spacing);
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
+  /* The surface and the header strip come from Card. These are the parts in its white body. */
 
   /* Both lists lose their bullets and default spacing. Faults sit closer together than rows. */
   .faults,
@@ -54,19 +19,35 @@
     gap: var(--shk-space-2);
   }
 
-  /* Label on the left, reading on the right. When both don't fit, the reading wraps onto its own line
-     below the label (it starts on the left, like in Figma), so the value is never cut off. */
+  /* Narrow (the default): label on the left, then the status and value on the right. When they don't fit,
+     the value wraps onto its own line below the label (it starts on the left, like in Figma). */
+  /* The box around the readings list: the container the query below measures. */
+  .readingsBox {
+    container-type: inline-size;
+  }
+
   .row {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
     column-gap: var(--shk-space-2);
     row-gap: var(--shk-space-1);
     min-inline-size: 0;
   }
 
-  /* Status (only when Stale), value and Unit on one baseline. Never shrinks or wraps. */
+  /* The label (SensorLabel or AssetLabel) takes the free space, so status and value sit at the right. */
+  .row > :first-child {
+    flex: 1 1 auto;
+    min-inline-size: 0;
+  }
+
+  /* The Stale status, only on Stale rows. */
+  .status {
+    display: inline-flex;
+    flex-shrink: 0;
+  }
+
+  /* Value and Unit on one baseline. Never shrinks or wraps. */
   .reading {
     display: inline-flex;
     flex-shrink: 0;
@@ -75,13 +56,51 @@
     white-space: nowrap;
   }
 
+  /* Wide enough (the readings box is 240px or more): one grid for the measured rows, label | status | value, so every number
+     starts on the same left edge and the numbers line up in a column. Each row shares the list's columns
+     (subgrid). The value column is as wide as the widest value; the label column takes the rest.
+     240px is a raw value because CSS doesn't allow variables in a container query. */
+  @container (inline-size >= 240px) {
+    .readings {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      column-gap: var(--shk-space-2);
+    }
+
+    /* Measured rows (a number and a Unit) share the columns, so their numbers line up. */
+    .row[data-kind="measured"] {
+      display: grid;
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+    }
+
+    /* State rows (Open, Detected since…) keep their own row across the whole width: a long state
+       never widens the value column or squeezes the labels. */
+    .row[data-kind="state"] {
+      grid-column: 1 / -1;
+    }
+
+    .row[data-kind="measured"] > :first-child {
+      grid-column: 1;
+    }
+
+    .row[data-kind="measured"] > .status {
+      grid-column: 2;
+    }
+
+    .row[data-kind="measured"] > .reading {
+      grid-column: 3;
+      justify-self: start;
+    }
+  }
+
   /* Wraps UnitLabel only to hide it from screen readers when there is no value.
      flex keeps it the same height as UnitLabel, with no extra line box (same as SensorReading). */
   .unit {
     display: flex;
   }
 
-  /* State rows: the pill has no text baseline to share with a status, so centre it instead. */
+  /* State rows: the pill has no text baseline to share with the Unit, so centre it instead. */
   .row:has(> .reading [data-state]) .reading {
     align-items: center;
   }

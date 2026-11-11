@@ -13,7 +13,7 @@ The domain model is the kit's **ready-made description of a smart home**: what e
 
 ## How it works
 
-![A flat with two rooms. Each room has a Hub wired to a Module. The Module's Sensors produce Readings, one about the room and one about a plant.](./img/home-cutaway.png)
+![A flat with two rooms. In the Bedroom, a Hub is wired to a Climate Module whose temperature Sensor reads 29.2 °C, and an Alert Rule raises a Warning Alert. In the Living room, a Standalone power strip has two Controls: socket 1 is On and powers a desk lamp, and a Turn on command to socket 2 is Pending. Each Device shows its Device Status.](./img/home-cutaway.png)
 
 - **An Account owns a Site**, like "My flat". A Site is split into **Spaces**, like "Bedroom".
 - **Devices are placed in Spaces.** A **Hub** has **Modules** connected to it, by wire or wirelessly. A **Standalone Device**, like a Wi-Fi kettle or a power strip, connects by itself.
@@ -23,7 +23,7 @@ The domain model is the kit's **ready-made description of a smart home**: what e
 - **Alert Rules watch Capabilities** and raise an **Alert** when their condition becomes true, like Smoke Detected or temperature above 28 °C.
 - **Every Device has a Device Status**: Pairing Status, Connection Status and Fault.
 
-The picture shows one setup: a Hub with a wired Module. The same model covers wireless Modules and Standalone Devices.
+The picture shows two setups: a Hub with a wired Module, and a Standalone Device. The same model covers wireless Modules too.
 
 ## What's in this section
 
