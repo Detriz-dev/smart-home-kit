@@ -16,13 +16,13 @@ Category: **Layout**. It shows no domain terms and doesn't know what its rows ar
 
 What it does **not** do, and why:
 
-- **Add a surface, padding or a heading.** Put it in a `Card` for a surface, and in a `ContentSection` for a heading.
+- **Add a border, corners, padding or a heading.** Put it in a `Card` or a `FloorSection` for those.
 - **Sort, filter or load more.** It shows the rows it's given, in that order.
 - **Show an empty state.** With no rows, render an `EmptyState` (planned) instead of the List.
 
 ### Visual idea
 
-Rows stacked with no gap. With `hasDividers`, a 1px `color-border-subtle` line between rows (not above the first or below the last). No background or border of its own.
+Rows stacked with no gap. With `hasDividers`, a 1px `color-border-subtle` line between rows (not above the first or below the last). A white background (`surface/default`) so the rows stand out from the page, but no border or corners of its own: the parent (`Card`, `FloorSection`) draws those.
 
 ### Variants
 

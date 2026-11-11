@@ -1,5 +1,6 @@
 @layer detriz {
-  /* Rows stacked with no gap, no bullets and no browser indent. No surface of its own.
+  /* Rows stacked with no gap, no bullets and no browser indent, on a white surface (surface-default),
+     so the rows stand out from the page. No border or corners: the parent (Card, FloorSection) draws those.
      It fills its parent, like Card, so each row's end reaches the right edge even inside a flex parent. */
   .root {
     box-sizing: border-box;
@@ -10,6 +11,7 @@
     margin: var(--shk-space-0);
     padding: var(--shk-space-0);
     list-style: none;
+    background: var(--shk-surface-default);
   }
 
   /* With dividers: a thin line above every row but the first, the full width of the row.

@@ -1,21 +1,47 @@
 @layer detriz {
-  /* The header, then the children, in one column as wide as the parent. Like ContentSection, but
-     closer together (8px): the content is usually a list whose rows have their own padding. */
+  /* A raised card, like Card: a header strip in the app background colour, then a white body.
+     The outline is drawn inside and a soft shadow lifts it off the page (elevation-raised).
+     No overflow: hidden, so focus rings on the rows are never cut off; the body rounds its own corners instead. */
   .root {
+    box-sizing: border-box;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     align-content: start;
-    gap: var(--shk-space-2);
     inline-size: 100%;
+    border: var(--shk-border-width-thin) solid var(--shk-color-border-subtle);
+    border-radius: var(--shk-radius-16);
+    background: var(--shk-surface-page);
+    box-shadow: var(--shk-elevation-raised);
   }
 
-  /* Icon, heading and count in one row. The heading takes the free space and ends with "…". */
+  /* Icon, heading and count in one row, at least 44px tall plus 4px above and below, 16px at the sides
+     (the same as Card's header). The heading takes the free space and ends with "…". */
   .header {
     display: flex;
     align-items: center;
     gap: var(--shk-space-2);
+    box-sizing: content-box;
+    min-block-size: var(--shk-size-11);
     min-inline-size: 0;
+    padding-block: var(--shk-space-1);
+    padding-inline: var(--shk-space-4);
     color: var(--shk-color-text-primary);
+  }
+
+  /* The white body under a thin line. 4px of padding only: the content is usually a List,
+     whose rows bring their own padding. Its bottom corners follow the card's, minus the outline. */
+  .body {
+    min-inline-size: 0;
+    padding: var(--shk-space-1);
+    border-block-start: var(--shk-border-width-thin) solid
+      var(--shk-color-border-subtle);
+    border-end-start-radius: calc(
+      var(--shk-radius-16) - var(--shk-border-width-thin)
+    );
+    border-end-end-radius: calc(
+      var(--shk-radius-16) - var(--shk-border-width-thin)
+    );
+    background: var(--shk-surface-default);
   }
 
   .heading {

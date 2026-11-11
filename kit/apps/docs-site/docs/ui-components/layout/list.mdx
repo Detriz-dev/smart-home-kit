@@ -180,7 +180,7 @@ In an app with a router, wrap your app in `LinkProvider` once, so rows use your 
 
 ## A list in a card
 
-Put a List inside a [`Card`](./card.mdx) for a surface and a title. The card's title names the list, so leave `label` out:
+The List has a white background but no border. Put it inside a [`Card`](./card.mdx) for a border, rounded corners and a title. The card's title names the list, so leave `label` out:
 
 ```jsx live
 <div style={{ maxWidth: 320 }}>
@@ -305,7 +305,7 @@ To change how it looks, set a [design token](../foundations/design-tokens.mdx) o
 
 ## Related components
 
-- [`Card`](./card.mdx): a surface and a title for a list. Works the same way when clickable.
+- [`Card`](./card.mdx): a border, rounded corners and a title for a list. Works the same way when clickable.
 - [`SpaceLabel`](../context/space-label.mdx): a Space's icon and name. Its `SPACE_TYPE_ICONS` map gives a room row its icon.
 - [`SensorLabel`](../context/sensor-label.mdx): the left side of a Reading row.
 - [`DeviceListItem`](../status/device-list-item.mdx): a ListItem made for Devices, with their statuses and Faults.

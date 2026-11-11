@@ -6,7 +6,7 @@
 
 Groups the Spaces of one [Floor](/kit/apps/docs-site/docs/domain-model/glossary.mdx#places) under a heading: 🪜 **Ground floor** · 4 Spaces, then the Spaces (usually a `List` of [`SpaceListItem`](../../context/SpaceListItem/SpaceListItem.md)). It is the building block of a Site overview for Sites that use Floors.
 
-It is [`ContentSection`](../ContentSection/ContentSection.md) with the Floor's icon and a Space count: same `<section>` with its heading as its name, same heading levels.
+It works like [`ContentSection`](../ContentSection/ContentSection.md) with the Floor's icon and a Space count (same `<section>` with its heading as its name, same heading levels), but it looks like a [`Card`](../Card/Card.md): a tinted header strip, then the Spaces on white.
 
 Figma: `FloorSection` component set in _DeTriz - Smart Home Kit_ (node `609:134`, page `FloorSection` in the Layout section after ContentSection). The `children` slot is a frame linked to a SLOT property shared by the three variants.
 
@@ -41,10 +41,11 @@ FloorSection            <section aria-labelledby>
 │   ├── icon            PlaceIcon floor (decorative)
 │   ├── heading         "Ground floor"   <h3>
 │   └── count           "4 Spaces"       (body-sm, secondary, right)
-└── children            slot
+└── body                white, top divider
+    └── children        slot
 ```
 
-Gap `space/2` between header and content, `space/2` inside the header. No background, border or padding, like ContentSection.
+Card styling: `surface/page` fill, 1px `color-border-subtle` outline drawn inside, `radius/16` corners and `elevation/raised` shadow. The header has `space/2` between its parts, `space/1` padding above and below, `space/4` at the sides, and is at least `size/11` (44px) tall. The body is `surface/default` with a 1px `color-border-subtle` line on top and `space/1` padding, because the List rows bring their own.
 
 ### Accessibility
 
