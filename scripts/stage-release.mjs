@@ -13,8 +13,9 @@
 // 2. Skip it if npm already has that version (published by hand).
 // 3. `pnpm pack` it (this turns `workspace:*` into real version numbers),
 //    then `npm stage publish` the tarball.
-// 4. Create the git tag and print `New tag: …`. changesets/action pushes the
-//    tags after this script ends.
+// 4. Create the git tag and push it to GitHub right away, so the next run
+//    skips this version even if it isn't approved yet. (changesets/action
+//    doesn't push tags for a custom publish script.)
 //
 // `node scripts/stage-release.mjs --dry-run` does everything except the
 // upload and the git tag.
@@ -91,7 +92,8 @@ for (const dir of PACKAGE_DIRS) {
   staged++;
   if (dryRun) continue;
 
-  run("git", ["tag", tag]);
+  run("git", ["tag", "-a", tag, "-m", tag]);
+  run("git", ["push", "origin", `refs/tags/${tag}`], { stdio: "inherit" });
   console.log(`New tag: ${tag}`);
 }
 
