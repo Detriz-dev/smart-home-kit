@@ -14,7 +14,7 @@
 2. **Domain model** — a ready-made model of a smart home, so builders don't have to design one themselves: the Glossary (shared names such as Site, Space, Hub, Sensor and Reading), the Data model, the Device lifecycle and the Events and commands. Every other part of the kit (components, API, client) uses the same terms.
 3. **Figma library** — the components in Figma, for designers who design the app.
 4. **Storybook** — every component shown in its states or variants, for reviewing components.
-5. **UI packages** — the design tokens (`@detriz-sh-kit/tokens`) and React components (`@detriz-sh-kit/ui`) published on npm, so others can install them and start building.
+5. **UI packages** — the design tokens (`@detriz-sh-kit/tokens`) and React components (`@detriz-sh-kit/ui`) published on npm, so others can install them and start building. ✅ First published as `0.1.0` on 2026-11-11.
 6. **Developer documentation** — the docs site, explaining how to install and use the components.
 
 ## Phase 2 — MVP (minimum viable product)

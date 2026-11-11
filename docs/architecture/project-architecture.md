@@ -79,20 +79,21 @@ Earlier versions of this document described a different plan. These parts are **
 
 ## Key decisions
 
-| Decision                   | Choice                                                                           | Why                                                                                                                                            |
-| -------------------------- | -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| Number of repos            | **One public monorepo, for good**                                                | One place to look. A change that touches tokens, components and docs is one PR. Users pick parts by installing packages.                       |
-| Where kit code lives       | **Everything in `kit/`**                                                         | The folder tree shows what a user gets. `docs/` holds the product thinking.                                                                    |
-| Visibility                 | **Everything public**                                                            | The repo shows the thinking as well as the code.                                                                                               |
-| Package consumption        | **`workspace:*` links, built as if published** (`exports` → `dist/`)             | No release overhead while things change. Publishing to npm later is a config change, not a refactor.                                           |
-| Design system framework    | **React only**                                                                   | Keeps the scope manageable. Tokens are plain CSS variables, so non-React users still get the visual language.                                  |
-| Styling                    | **CSS Modules inside `@layer detriz`, only `var(--shk-…)` tokens**               | No raw colours or sizes in components. The cascade layer means any app's own CSS overrides the kit without specificity fights.                 |
-| Shared language            | **The Glossary is the Ubiquitous Language**                                      | Code, types, UI copy and docs use the same names (Site, Space, Hub, Sensor, Reading…). It lives in the docs site, so there is one public copy. |
-| Documentation              | **One Docusaurus 3 site, deployed on Vercel**                                    | React-based, so it renders the real components in live code blocks. Vercel gives a preview URL for every branch.                               |
-| Search                     | **Algolia DocSearch**                                                            | Free for public technical docs, built into Docusaurus, no search server to run. Setup: the "Docs site search" section of `AGENTS.md`.          |
-| Live data source (planned) | **The Hub and the API Simulator serve the same API**                             | An app built against the simulator works with the real Hub by changing one setting. No hardware needed to start.                               |
-| API contract (planned)     | **Contract first** in `kit/packages/api-spec`                                    | The Hub, the simulator and the client SDK all follow one spec, so they can't drift apart.                                                      |
-| AI context                 | **`AGENTS.md`** holds the rules for AI coding tools; `CLAUDE.md` only imports it | Every AI tool (Claude Code, Codex, Cursor, Copilot) reads the same rules from one file.                                                        |
+| Decision                   | Choice                                                                           | Why                                                                                                                                                       |
+| -------------------------- | -------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Number of repos            | **One public monorepo, for good**                                                | One place to look. A change that touches tokens, components and docs is one PR. Users pick parts by installing packages.                                  |
+| Where kit code lives       | **Everything in `kit/`**                                                         | The folder tree shows what a user gets. `docs/` holds the product thinking.                                                                               |
+| Visibility                 | **Everything public**                                                            | The repo shows the thinking as well as the code.                                                                                                          |
+| Package consumption        | **`workspace:*` links inside the repo; published to npm for everyone else**      | Apps in the repo use the local code, built the same way as the published packages (`exports` → `dist/`). Users install them from npm.                     |
+| Releases                   | **Changesets, staged from GitHub Actions, approved by a person**                 | Versions and changelogs come from notes in each PR. CI only stages a release; a maintainer approves it with 2FA. See [npm publishing](npm-publishing.md). |
+| Design system framework    | **React only**                                                                   | Keeps the scope manageable. Tokens are plain CSS variables, so non-React users still get the visual language.                                             |
+| Styling                    | **CSS Modules inside `@layer detriz`, only `var(--shk-…)` tokens**               | No raw colours or sizes in components. The cascade layer means any app's own CSS overrides the kit without specificity fights.                            |
+| Shared language            | **The Glossary is the Ubiquitous Language**                                      | Code, types, UI copy and docs use the same names (Site, Space, Hub, Sensor, Reading…). It lives in the docs site, so there is one public copy.            |
+| Documentation              | **One Docusaurus 3 site, deployed on Vercel**                                    | React-based, so it renders the real components in live code blocks. Vercel gives a preview URL for every branch.                                          |
+| Search                     | **Algolia DocSearch**                                                            | Free for public technical docs, built into Docusaurus, no search server to run. Setup: the "Docs site search" section of `AGENTS.md`.                     |
+| Live data source (planned) | **The Hub and the API Simulator serve the same API**                             | An app built against the simulator works with the real Hub by changing one setting. No hardware needed to start.                                          |
+| API contract (planned)     | **Contract first** in `kit/packages/api-spec`                                    | The Hub, the simulator and the client SDK all follow one spec, so they can't drift apart.                                                                 |
+| AI context                 | **`AGENTS.md`** holds the rules for AI coding tools; `CLAUDE.md` only imports it | Every AI tool (Claude Code, Codex, Cursor, Copilot) reads the same rules from one file.                                                                   |
 
 There is no `docs/adr/` folder yet. When decisions get Architecture Decision Records, they go in `docs/adr/NNNN-title.md`.
 
@@ -102,14 +103,14 @@ There is no `docs/adr/` folder yet. When decisions get Architecture Decision Rec
 
 The kit has six parts. This table says what each one is, where it lives and whether it exists yet.
 
-| #   | Part                             | What it is                                                                                                                                 | Where it lives                                                                 | Status                         |
-| --- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | ------------------------------ |
-| 1   | **UI components in Figma**       | A Figma library for designing smart home screens, with the same tokens as the code.                                                        | Figma (not in this repo). Tokens are exported to `kit/packages/tokens/figma/`. | ✅ In progress                 |
-| 2   | **UI components in React**       | Typed, props-only React components themed with design tokens.                                                                              | `kit/packages/tokens`, `kit/packages/ui`; later `kit/packages/react`           | ✅ `tokens`, `ui` · ⬜ `react` |
-| 3   | **MCP server and Generative UI** | The MCP server gives AI tools the kit's components, tokens and API. Generative UI lets an app build screens from a plain-language request. | `kit/` (folder not decided)                                                    | ⬜ Planned                     |
-| 4   | **API Simulator**                | Simulated Sensor Readings over REST and WebSocket, so you can build without hardware.                                                      | `kit/` (folder not decided)                                                    | ⬜ Planned                     |
-| 5   | **Raspberry Pi client**          | Software on a Raspberry Pi (the Hub) that reads real Sensors and serves the same API as the simulator, plus a typed SDK for apps.          | `kit/` (Hub software); `kit/packages/client` (SDK)                             | ⬜ Planned                     |
-| 6   | **Smart home domain model**      | The Glossary, Data model, Device lifecycle and Events and commands. Every other part uses it.                                              | `kit/apps/docs-site/docs/domain-model/`                                        | ✅ Published                   |
+| #   | Part                             | What it is                                                                                                                                 | Where it lives                                                                 | Status                                  |
+| --- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------ | --------------------------------------- |
+| 1   | **UI components in Figma**       | A Figma library for designing smart home screens, with the same tokens as the code.                                                        | Figma (not in this repo). Tokens are exported to `kit/packages/tokens/figma/`. | ✅ In progress                          |
+| 2   | **UI components in React**       | Typed, props-only React components themed with design tokens.                                                                              | `kit/packages/tokens`, `kit/packages/ui`; later `kit/packages/react`           | ✅ `tokens`, `ui` (on npm) · ⬜ `react` |
+| 3   | **MCP server and Generative UI** | The MCP server gives AI tools the kit's components, tokens and API. Generative UI lets an app build screens from a plain-language request. | `kit/` (folder not decided)                                                    | ⬜ Planned                              |
+| 4   | **API Simulator**                | Simulated Sensor Readings over REST and WebSocket, so you can build without hardware.                                                      | `kit/` (folder not decided)                                                    | ⬜ Planned                              |
+| 5   | **Raspberry Pi client**          | Software on a Raspberry Pi (the Hub) that reads real Sensors and serves the same API as the simulator, plus a typed SDK for apps.          | `kit/` (Hub software); `kit/packages/client` (SDK)                             | ⬜ Planned                              |
+| 6   | **Smart home domain model**      | The Glossary, Data model, Device lifecycle and Events and commands. Every other part uses it.                                              | `kit/apps/docs-site/docs/domain-model/`                                        | ✅ Published                            |
 
 The order of work follows the [roadmap](../product-requirements/roadmap.md):
 
@@ -173,16 +174,20 @@ smart-home-kit/
 │       ├── design-system/                 conventions, workflows, docs and search plans
 │       └── domain-model/                  internal notes: open questions, API design notes, Hub setup
 │
+├── .changeset/                          release notes waiting for the next version, and the Changesets config
+├── .github/workflows/                   ci.yml (checks on every PR), release.yml (versions and npm releases)
+├── scripts/stage-release.mjs            stages new versions on npm for approval
 ├── AGENTS.md                            rules for AI coding tools (all tools)
 ├── CLAUDE.md                            one line: imports AGENTS.md for Claude Code
 ├── README.md
-├── package.json                         root tools only: turbo, typescript, prettier
+├── LICENSE                              MIT
+├── package.json                         root tools only: turbo, typescript, prettier, changesets, publint, attw
 ├── pnpm-workspace.yaml                  workspace folders, shared React versions (catalog)
 ├── turbo.json                           task pipeline: build, dev, test, typecheck
 └── tsconfig.base.json                   shared TypeScript settings (strict)
 ```
 
-Not in the repo: `docs-ignore/` holds private notes (ideation, retros, project management) and is ignored by git. There is no `.github/` folder yet, so there is no CI.
+Not in the repo: `docs-ignore/` holds private notes (ideation, retros, project management) and is ignored by git.
 
 ---
 
@@ -364,7 +369,9 @@ If a token change doesn't show up, rebuild the tokens. The docs site and Storybo
 - The settings live in the Vercel dashboard, not in the repo. The full list is in `AGENTS.md`.
 - Algolia's crawler reads the deployed site for search, separately from the build.
 
-Storybook isn't deployed yet. Packages aren't published to npm yet.
+Storybook isn't deployed yet.
+
+**Release.** `tokens` and `ui` are published on npm. A merge to `main` with changesets makes the Release workflow open a "Version Packages" PR; merging that PR stages the new versions on npm, and a maintainer approves them with 2FA. Details: [npm publishing](npm-publishing.md).
 
 ---
 
@@ -377,6 +384,8 @@ Storybook isn't deployed yet. Packages aren't published to npm yet.
 | **Architecture decisions**  | ADRs in `docs/adr/NNNN-title.md` (folder not created yet).                                                                |
 | **Component checklist**     | The checklist at the end of [component building](design-system/workflows/component-building.md).                          |
 | **Formatting**              | Prettier (`pnpm format`, `pnpm format:check`).                                                                            |
+| **CI**                      | GitHub Actions on every PR: formatting, build, typecheck and package checks (`.github/workflows/ci.yml`).                 |
+| **Releases**                | A changeset in every PR that changes `tokens` or `ui` (`pnpm changeset`). See [npm publishing](npm-publishing.md).        |
 | **Tests and lint**          | Not set up yet: `pnpm lint` and `pnpm test` exist, but no package defines those scripts.                                  |
 | **AI-assisted development** | `AGENTS.md` holds the rules for every AI coding tool; `CLAUDE.md` imports it. AI-written code is reviewed like any other. |
 
@@ -388,9 +397,8 @@ Storybook isn't deployed yet. Packages aren't published to npm yet.
 - **Hub software language and runtime** on the Raspberry Pi (for example Node/TypeScript, so it can share types with the kit, or Python, for Sensor libraries).
 - **Where the planned parts live:** folder names for the API Simulator, the MCP server and Generative UI, and the Hub software inside `kit/`.
 - **How the browser reaches the Hub:** a page served over HTTPS can't call a plain HTTP address on the local network (mixed content). Does the Hub need its own certificate, or do apps run locally during prototyping?
-- **Publishing:** is the `@detriz-sh-kit` npm scope free? When do `tokens` and `ui` get their first published versions (Phase 1 deliverable)?
-- **Licence** for the repo (MIT is the usual choice for a design system).
-- **CI:** which checks run on every pull request (build, typecheck, format) once tests and lint exist.
+- **Tests and lint in CI:** add them to `ci.yml` once packages define `test` and `lint` scripts.
+- **Older TypeScript setups:** the `ui` type files use imports without file extensions, so they need `moduleResolution: "bundler"`. Supporting `node16`/`nodenext` means bundling the types or adding `.js` extensions (see [npm publishing](npm-publishing.md), step 5).
 - **Ask AI in search:** Algolia DocSearch v4 can answer questions in the search box (`askAi` in the `algolia` config). Algolia doesn't charge for it, but it needs our own LLM provider, which we'd pay for. It fits the kit's AI angle.
 - **Dark mode:** the kit has no dark theme yet; the docs site uses Docusaurus's dark colours for now.
 
@@ -408,11 +416,11 @@ A **package** is a folder of code with a `package.json` file that gives it a **n
 // Without a package: breaks the moment a folder moves
 import { Button } from "../../../kit/packages/ui/src/components/controls/Button/Button";
 
-// With a package: works wherever the package lives (this repo today, npm later)
+// With a package: works wherever the package lives (this repo or npm)
 import { Button } from "@detriz-sh-kit/ui";
 ```
 
-Today pnpm doesn't download `@detriz-sh-kit/ui` from npm. It **links** it from `kit/packages/ui`, because of `"workspace:*"` in the app's `package.json`.
+Inside this repo, pnpm doesn't download `@detriz-sh-kit/ui` from npm. It **links** it from `kit/packages/ui`, because of `"workspace:*"` in the app's `package.json`. Apps outside the repo install the published version from npm.
 
 The important parts of a `package.json`:
 

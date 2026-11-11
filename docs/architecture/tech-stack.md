@@ -11,7 +11,7 @@ Versions are the ones installed today. ✅ means in use; ⬜ means planned and n
 ```
  ┌────────────────────────────────────────────────────────────────────────┐
  │ 9. AI tooling          Claude Code · AGENTS.md · Figma MCP             │
- │ 8. Hosting             Vercel (docs site) · GitHub (code)              │
+ │ 8. Hosting & release   Vercel · GitHub Actions · Changesets · npm      │
  │ 7. Search              Algolia DocSearch                               │
  │ 6. Docs site           Docusaurus 3 · MDX · live code · Mermaid        │
  │ 5. Component workbench Storybook 10                                    │
@@ -21,7 +21,7 @@ Versions are the ones installed today. ✅ means in use; ⬜ means planned and n
  │ 1. Repo foundation     Node 22 · pnpm 11 workspaces · Turborepo        │
  ├────────────────────────────────────────────────────────────────────────┤
  │ ⬜ Planned: API contract · API Simulator · Hub software · client SDK · │
- │            react bindings · MCP server + Generative UI · tests · CI    │
+ │            react bindings · MCP server + Generative UI · tests · lint  │
  └────────────────────────────────────────────────────────────────────────┘
 ```
 
@@ -108,14 +108,21 @@ The public documentation and landing page, at https://smart-home-kit.detriz.com.
 
 Setup details are in the "Docs site search" section of `AGENTS.md`.
 
-## 8. Hosting and deployment
+## 8. Hosting, CI and releases
 
 | Technology | What it does here                                                                                                                                                                            | Where      |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | **Vercel** | Hosts the docs site on a custom domain (`smart-home-kit.detriz.com`). Pushing to `main` deploys the live site; every other branch gets a preview URL. Settings live in the Vercel dashboard. | vercel.com |
-| **npm**    | ⬜ Not yet: `tokens` and `ui` are built as if published (`exports` → `dist/`) and will be published under the `@detriz-sh-kit` scope.                                                        | npmjs.com  |
+| **npm**    | Hosts the published packages `@detriz-sh-kit/tokens` and `@detriz-sh-kit/ui` (org `detriz-sh-kit`). New versions are staged by CI and approved by a maintainer with 2FA (staged publishing). | npmjs.com  |
 
-There is no CI yet (no GitHub Actions). Storybook isn't hosted yet.
+| Technology                                         | Version | What it does here                                                                                                                                                                          | Where                              |
+| -------------------------------------------------- | ------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------- |
+| **GitHub Actions**                                 | n/a     | `ci.yml` checks every PR (format, build, typecheck, package checks). `release.yml` opens the "Version Packages" PR and stages new versions on npm, with no npm token (trusted publishing). | `.github/workflows/`               |
+| **Changesets** (`@changesets/cli`)                 | 3.0     | Each PR adds a short note (`pnpm changeset`). It raises versions and writes `CHANGELOG.md`. `tokens` and `ui` share one version.                                                           | `.changeset/`, root `package.json` |
+| **publint**                                        | 0.3     | Checks that each package's `package.json` and `exports` point to files that exist and work.                                                                                                | `check:package` in each package    |
+| **Are the Types Wrong?** (`@arethetypeswrong/cli`) | 0.18    | Checks that TypeScript finds the `ui` types the way apps will import them.                                                                                                                 | `check:package` in `ui`            |
+
+The release steps are in [npm publishing](npm-publishing.md). Storybook isn't hosted yet.
 
 ## 9. Design and AI tooling
 

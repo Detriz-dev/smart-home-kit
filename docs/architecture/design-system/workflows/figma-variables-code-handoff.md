@@ -162,18 +162,18 @@ The result for the token above:
 ```css
 :root {
   --shk-palette-gray-500: #7a8291;
-  --shk-color-text-muted: #7a8291; /** Labels and secondary text */
+  --shk-color-text-secondary: #7a8291; /** Labels and secondary text */
 }
 ```
 
-Components then use the semantic variable in their CSS Modules: `color: var(--shk-color-text-muted);`.
+Components then use the semantic variable in their CSS Modules: `color: var(--shk-color-text-secondary);`.
 
 ### Keeping aliases in the CSS
 
-By default the alias is resolved, so `--shk-color-text-muted` gets the raw colour. Adding `"options": { "outputReferences": true }` to the file entry in `config.json` keeps the link instead:
+By default the alias is resolved, so `--shk-color-text-secondary` gets the raw colour. Adding `"options": { "outputReferences": true }` to the file entry in `config.json` keeps the link instead:
 
 ```css
---shk-color-text-muted: var(--shk-palette-gray-500);
+--shk-color-text-secondary: var(--shk-palette-gray-500);
 ```
 
 This makes the CSS easier to read and debug, and dark mode needs it: the dark theme only has to swap the semantic variables, and the primitives stay as they are.
@@ -212,7 +212,7 @@ The rule: **one name, three spellings, no translation table.**
 ```
 Figma variable     color/text/muted
 JSON path          color.text.muted          ← alias: {color.text.muted}
-CSS variable       --shk-color-text-muted
+CSS variable       --shk-color-text-secondary
 ```
 
 Figma uses `/` to make groups. On export those groups become JSON nesting, and Style Dictionary joins the parts with `-`. If you name things well in Figma, the code names come out right without extra work.
@@ -231,7 +231,7 @@ Figma uses `/` to make groups. On export those groups become JSON nesting, and S
 - Number scales stay numbers (`palette/gray/900`) and t-shirt sizes stay words (`space/md`).
 - Semantic tokens follow the order **category / property / variant / state**: `color/text/muted`, `color/border/focus`, `color/surface/hover`. Decide the order once, before creating many variables, because renaming later breaks every component that uses them.
 - **Write a description** on every variable you can. It is exported as `$description` and ends up in the code docs.
-- **Set "Code syntax → Web"** on every variable to `var(--shk-color-text-muted)`. Dev Mode then shows the real CSS variable to whoever builds it.
+- **Set "Code syntax → Web"** on every variable to `var(--shk-color-text-secondary)`. Dev Mode then shows the real CSS variable to whoever builds it.
 - **Set scopes.** Text colours get "Text fill" only, spacing gets "Gap / Padding" only. Designers then can't put a spacing token on a corner radius.
 
 ### Status colours use the domain language
