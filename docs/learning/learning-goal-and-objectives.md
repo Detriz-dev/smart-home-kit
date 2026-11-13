@@ -11,7 +11,7 @@ Become an AI-native product designer: a product designer who builds AI applicati
 - Understand elements of frontend engineering system design
 - Understand web technologies (HTML, CSS, JS, Type script, React, APIs)
 - Apply basic / fundamental of web technologies (write code / design API)
-- Understand software development lifecycle SDLC
+- Understand software development lifecycle 
 - Understand fundamental aspects of AI engineering
 - Apply basic SLDC with AI
 
