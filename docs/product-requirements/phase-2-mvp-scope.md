@@ -58,17 +58,17 @@ Every value still follows the target states from the Glossary: loading, Connecte
 
 The model only knows numeric Readings. Everything new needs words before it needs components.
 
-| Gap                                           | Why it matters                                                                                                                                          |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| **On/off state** has no term                  | ✅ Glossary: Two-state Metric and State (decision 1).                                                                                                   |
-| **Detection** has no term                     | ✅ Glossary: Detection (decision 2).                                                                                                                    |
-| **Alert** has no term                         | ✅ Glossary: Alert Rule, Built-in Alert Rule, Alert, Alert Status (decision 3). Some questions still open.                                              |
-| **Metric list** is fixed at 6                 | ✅ Glossary: Power, Contact, Motion, Smoke, CO added (decision 6). Still to add in code.                                                                |
-| **Module Types**: Climate, Light, Air Quality | ✅ Glossary: Motion, Contact, Power, Smoke, CO added.                                                                                                   |
-| **Asset Types**: Plant, Tap, Door, Window     | ✅ Glossary: Appliance added. Contact watches a Door or Window, Power an Appliance (decision 7).                                                        |
-| **Stale** breaks for event sensors            | ✅ Glossary: every Module reports at least once per Expected Interval (decision 4).                                                                     |
-| **Data model, Events and commands**           | ✅ Updated: Reading value (number or State), Alerts section and rules 18–26; events for State changes, Detections and Alerts; Close Alert command.      |
-| **Open questions file** is missing            | `AGENTS.md` points to `docs/architecture/domain-model/open-questions.md`, which doesn't exist. Open questions are in [Still open](#still-open) for now. |
+| Gap                                           | Why it matters                                                                                                                                     |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **On/off state** has no term                  | ✅ Glossary: Two-state Metric and State (decision 1).                                                                                              |
+| **Detection** has no term                     | ✅ Glossary: Detection (decision 2).                                                                                                               |
+| **Alert** has no term                         | ✅ Glossary: Alert Rule, Built-in Alert Rule, Alert, Alert Status (decision 3). Some questions still open.                                         |
+| **Metric list** is fixed at 6                 | ✅ Glossary: Power, Contact, Motion, Smoke, CO added (decision 6). Still to add in code.                                                           |
+| **Module Types**: Climate, Light, Air Quality | ✅ Glossary: Motion, Contact, Power, Smoke, CO added.                                                                                              |
+| **Asset Types**: Plant, Tap, Door, Window     | ✅ Glossary: Appliance added. Contact watches a Door or Window, Power an Appliance (decision 7).                                                   |
+| **Stale** breaks for event sensors            | ✅ Glossary: every Module reports at least once per Expected Interval (decision 4).                                                                |
+| **Data model, Events and commands**           | ✅ Updated: Reading value (number or State), Alerts section and rules 18–26; events for State changes, Detections and Alerts; Close Alert command. |
+| **Open questions file** is missing            | ✅ It lives in the private `docs-ignore/domain-model/open-questions.md`; `AGENTS.md` points there.                                                 |
 
 ### 2. Shared types
 
@@ -196,4 +196,4 @@ Blind Tilt, heating Cool and Auto, pairing screens (Start Search, Device Token),
 
 ## Left over from Phase 1
 
-- The roadmap says `tokens` and `ui` are published on npm, but they aren't yet (`AGENTS.md`, open questions in `project-architecture.md`). Either publish them or move that item into Phase 2.
+- ✅ `tokens` and `ui` are published on npm (see [npm publishing](../architecture/npm-publishing.md)).

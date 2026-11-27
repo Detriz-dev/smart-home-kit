@@ -21,7 +21,8 @@
   "author": "Dawid Kowalczyk",
   "type": "module",
   "files": [
-    "dist"
+    "dist",
+    "THIRD_PARTY_NOTICES.md"
   ],
   "exports": {
     ".": {

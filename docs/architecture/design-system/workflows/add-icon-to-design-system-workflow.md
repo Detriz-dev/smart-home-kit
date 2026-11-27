@@ -145,5 +145,5 @@ import { Icon } from "@detriz-sh-kit/ui";
 
 ## Still to do
 
-1. Write an ADR (`docs/adr/0001-icon-system.md`) recording why we use a curated SVG set and the decisions above.
-2. Licence: `generated/LICENSE` keeps the Apache 2.0 notice in the repo. When `ui` is published to npm, also add the notice to the published package (e.g. a `THIRD_PARTY_NOTICES` file listed in `files` in `package.json`).
+1. Write an ADR (`docs/adr/0004-icon-system.md`; `0001` to `0003` are taken) recording why we use a curated SVG set and the decisions above.
+2. ✅ Licence: `generated/LICENSE` keeps the Apache 2.0 notice in the repo, and `kit/packages/ui/THIRD_PARTY_NOTICES.md` (listed in `files` in `package.json`) ships it in the published package.
