@@ -73,7 +73,7 @@ Start here, before Figma. Writing makes you decide what the component **is** and
 
 ### Pick the name and the folder
 
-1. **Category.** Pick one from [Components categorisation](/docs/architecture/design-system/ds-conventions-and-structure.md#3-components-categorisation) by the question it answers: Context, Readings, History, Comparison, Status, Feedback, Controls or Layout. The folder name is the category in lowercase.
+1. **Category.** Pick one from [Components categorisation](/docs/architecture/design-system/ds-conventions-and-structure.md#3-components-categorisation) by the question it answers: Context, Readings, History, Comparison, Status, Feedback, Controls, Layout or Navigation. The folder name is the category in lowercase.
 2. **Name.** PascalCase, built from domain words: `DeviceConnectionStatus`, not `OnlineBadge`.
 3. **Create the file:** `kit/packages/ui/src/components/<category>/<Name>/<Name>.md`.
 
@@ -361,7 +361,7 @@ Then:
 4. **Commit:** `feat(ui): add <Name>`. Tokens and icons are already in their own commits from step 1b. Never commit `dist/`, `storybook-static/`, `.turbo/` or `node_modules/`.
 5. **Open the PR** and link the issue.
 6. **Publish the Figma library** after the merge.
-7. **Short retro** (optional, 10 minutes): what took more than one round? Does the workflow need a change? Write it in `docs/retro/`.
+7. **Short retro** (optional, 10 minutes): what took more than one round? Does the workflow need a change? Write it in `docs-ignore/retro/` (private, not committed).
 
 ## Rules for agents
 

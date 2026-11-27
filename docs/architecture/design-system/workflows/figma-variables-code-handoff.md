@@ -203,7 +203,7 @@ An LLM can give slightly different output each run, but a token pipeline must gi
 - **Exporting tokens (planned).** Claude reads the variables through the Figma MCP and saves them into `figma/` in the same raw format as Figma's export, then runs the converter (section 2). This skips the manual export and file copying. The conversion is still done by the script, so the output is the same every time.
 - **Drift audits.** "Compare the Figma variables with `src/` and list what's different." Useful before a release.
 - **Design-to-code for components.** Read a frame, get the variables it uses (`get_variable_defs`), and write the component with the right `var(--shk-…)` names.
-- **Code Connect.** Link the Figma `Gauge` to `kit/packages/ui/src/sensor/Gauge`, so Dev Mode shows the real React snippet instead of generated CSS.
+- **Code Connect.** Link a Figma component such as `DeviceCard` to `kit/packages/ui/src/components/readings/DeviceCard`, so Dev Mode shows the real React snippet instead of generated CSS.
 
 ## 6. Naming variables in Figma
 

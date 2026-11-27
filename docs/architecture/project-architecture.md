@@ -171,8 +171,10 @@ smart-home-kit/
 │   └── architecture/
 │       ├── project-architecture.md        this file
 │       ├── tech-stack.md                  every technology, layer by layer
-│       ├── design-system/                 conventions, workflows, docs and search plans
-│       └── domain-model/                  internal notes: open questions, API design notes, Hub setup
+│       └── design-system/                 conventions, workflows, docs and search plans
+│
+├── docs-ignore/                         private notes, never committed: domain model open questions,
+│                                        API design notes, Hub setup, ideation, retros
 │
 ├── .changeset/                          release notes waiting for the next version, and the Changesets config
 ├── .github/workflows/                   ci.yml (checks on every PR), release.yml (versions and npm releases)
